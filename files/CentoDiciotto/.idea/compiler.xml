@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="CentoDiciotto" options="-endorseddirs &quot;C:\Users\matte\OneDrive\Università\Didattica\Introduzione alla programmazione per il web\Progetto\files\CentoDiciotto\target/endorsed&quot;" />
+      <module name="CentoDiciotto" options="-endorseddirs C:\Users\matte\OneDrive\Università\Didattica\ProgettoWeb\files\CentoDiciotto\target/endorsed" />
     </option>
   </component>
 </project>
