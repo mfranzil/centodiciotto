@@ -15,8 +15,8 @@ config.ini
 
 # Package Files #
 *.jar
-*.warcd 
 *.nar
+*.war
 *.ear
 *.zip
 *.tar.gz
