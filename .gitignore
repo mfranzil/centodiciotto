@@ -28,3 +28,4 @@ hs_err_pid*
 # User files
 files/CentoDiciotto/target/
 oldfiles/
+files/CentoDiciotto/.idea/
