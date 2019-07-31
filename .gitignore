@@ -1,3 +1,9 @@
+# IntelliJ Files
+.idea/
+
+# Temporary DB
+sl.db
+
 # Config file
 config.ini
 
