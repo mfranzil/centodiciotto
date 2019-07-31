@@ -21,8 +21,8 @@ config.ini
 
 # Package Files #
 *.jar
-*.war
 *.nar
+*.war
 *.ear
 *.zip
 *.tar.gz
@@ -31,4 +31,7 @@ config.ini
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-ProgettoLaura/
+# User files
+files/CentoDiciotto/target/
+oldfiles/
+files/CentoDiciotto/.idea/
