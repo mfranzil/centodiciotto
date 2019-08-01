@@ -93,7 +93,7 @@ public class UserServlet extends HttpServlet {
         }
 
         if (user == null) {
-            response.sendRedirect(cp + "login.html");
+            response.sendRedirect(cp + "login");
             return;
         }
 

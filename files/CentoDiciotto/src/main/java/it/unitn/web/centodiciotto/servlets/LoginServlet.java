@@ -60,7 +60,7 @@ public class LoginServlet extends HttpServlet {
         try {
             User user = userDao.getByEmailAndPassword(email, password);
             if (user == null) {
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
             } else {
                 request.getSession().setAttribute("user", user);
                 //if (user.getEmail().equals("rewqasdfcxz11@gmail.com")) {

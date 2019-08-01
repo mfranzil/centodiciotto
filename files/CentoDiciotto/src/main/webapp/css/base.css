@@ -1,0 +1,27 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #e6f7ff;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.navbar-logo {
+    border-radius: 50%;
+    -webkit-transition: -webkit-transform .8s ease-in-out;
+    transition: transform .8s ease-in-out;
+}
+
+.navbar-logo:hover {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+.focused {
+    background-color: #cde0f4;
+    border-radius: 10px;
+}

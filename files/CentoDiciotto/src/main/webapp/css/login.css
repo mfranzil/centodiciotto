@@ -1,33 +1,59 @@
-:root {
+.login_modal {
+    display: none;
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
     --input-padding-x: .75rem;
-    --input-padding-y: .75rem;
+    --input-padding-y: .35rem;
 }
 
-html,
-body {
-    /*  height: 100%;*/
-}
-
-body {
-    /*  display: -ms-flexbox;
-      display: -webkit-box;
-      display: flex;*/
-    -ms-flex-align: center;
-    -ms-flex-pack: center;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #f5f5f5;
-}
-
-.form-signin {
+.login {
+    background-color: #cde0f4;
+    border-radius: 10px;
+    margin: 150px auto;
     width: 100%;
     max-width: 420px;
     padding: 15px;
-    margin: 0 auto;
+}
+
+.hover-button {
+    cursor: pointer;
+    flex: 20%;
+    padding: 3vw;
+}
+
+.animate-in {
+    -webkit-animation: animate-zoom-in 0.6s;
+    animation: animate-zoom-in 0.6s
+}
+
+.animate-out {
+    -webkit-animation: animate-zoom-out 0.4s;
+    animation: animate-zoom-out 0.4s;
+}
+
+@-webkit-keyframes animate-zoom-in {
+    from {
+        -webkit-transform: scale(0)
+    }
+    to {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes animate-zoom-in {
+    from {
+        transform: scale(0)
+    }
+    to {
+        transform: scale(1)
+    }
 }
 
 .form-label-group {
@@ -46,7 +72,7 @@ body {
     left: 0;
     display: block;
     width: 100%;
-    margin-bottom: 0; /* Override default `<label>` margin */
+    margin-bottom: 0;
     line-height: 1.5;
     color: #495057;
     border: 1px solid transparent;
