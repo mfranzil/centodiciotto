@@ -1,5 +1,6 @@
-# IntelliJ Files
+# IntelliJ and VSCode Files
 .idea/
+.settings/
 
 # Temporary DB
 sl.db
@@ -27,6 +28,10 @@ config.ini
 *.zip
 *.tar.gz
 *.rar
+
+# N on-web graphic files
+*.ai
+*.psd
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

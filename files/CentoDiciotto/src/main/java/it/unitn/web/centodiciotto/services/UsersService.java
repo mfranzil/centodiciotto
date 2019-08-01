@@ -1,9 +1,4 @@
-/*
- * AA 2018-2019
- * Introduction to Web Programming
- * Lab 12 - Shopping List Implementation
- * UniTN
- */
+
 package it.unitn.web.centodiciotto.services;
 
 import com.alibaba.fastjson.JSON;

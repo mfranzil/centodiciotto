@@ -1,9 +1,4 @@
-/*
- * AA 2018-2019
- * Introduction to Web Programming
- * Lab 12 - Shopping List Implementation
- * UniTN
- */
+
 package it.unitn.web.centodiciotto.filters;
 
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;

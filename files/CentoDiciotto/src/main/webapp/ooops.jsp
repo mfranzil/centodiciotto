@@ -1,14 +1,8 @@
-<%-- 
-    Document   : ooops
-    Created on : May 19, 2019
-    Author     : Stefano Chirico
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Lab 12: Internal Server Error</title>
+    <title>Internal Server Error</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
