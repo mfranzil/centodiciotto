@@ -11,10 +11,10 @@ import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    final private String INSERT_ALL = "INSERT INTO TABLE utenti (email, password, first_name, last_name, avatar_id) " +
+    final private String INSERT_ALL = "INSERT INTO utenti (email, password, first_name, last_name, avatar_id) " +
             "values (?, ?, ?, ?, ?);";
-    final private String INSERT_TEST = "INSERT INTO utenti (email, password, first_name, last_name, avatar_id) " +
-            "values ('test', 'test', 'test', 'test', 1);";
+    //final private String INSERT_TEST = "INSERT INTO utenti (email, password, first_name, last_name, avatar_id) " +
+    //        "values ('test', 'test', 'test', 'test', 1);";
 
     // TODO: insert without avatar_id
 
@@ -24,15 +24,15 @@ public class UserDAOImpl implements UserDAO {
             Connection conn;
             conn = DAOManager.getConnection();
             System.out.println("ok connection");
-    /*
+
             PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ALL);
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getFirstName());
             preparedStatement.setString(4, user.getLastName());
             preparedStatement.setInt(5, user.getAvatarPathId());
-*/
-            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_TEST);
+
+            //PreparedStatement preparedStatement = conn.prepareStatement(INSERT_TEST);
             System.out.println("ok statement");
 
             int row = preparedStatement.executeUpdate();
