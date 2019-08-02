@@ -1,0 +1,30 @@
+<%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Reset your password - CentoDiciotto</title>
+    <%@ include file="/jsp/head.jsp" %>
+</head>
+<body>
+<%@ include file="/jsp/nav.jsp" %>
+<div class="container">
+    <div class="jumbotron mt-4">
+        <h1>Forgot your password?</h1>
+    </div>
+</div>
+<div class="container">
+    <div class="body-content">
+        <div class="md-6" style="text-align: center; margin: auto 15%">
+            <form action="reset_password_handler"id="form" method="POST">
+                <div class="form-label-group">
+                    <input autofocus class="form-control" id="username"
+                           name="username" placeholder="Insert your e-mail" required type="email">
+                </div>
+                <p class="mt-4">We will send you a link to reset your password.</p>
+                <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Reset password</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

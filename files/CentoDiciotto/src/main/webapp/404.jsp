@@ -2,24 +2,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Internal Server Error</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/errorpage.css">
+    <title>404 Not Found - CentoDiciotto</title>
+    <%@ include file="/jsp/head.jsp" %>
 </head>
 <body>
-<%@ include file="/nav.jsp" %>
-<!-- Error Page Content -->
+<%@ include file="/jsp/nav.jsp" %>
 <div class="container">
-    <!-- Jumbotron -->
     <div class="jumbotron mt-4">
-        <h1><span class="glyphicon glyphicon-fire red"></span> 404: Not Found</h1>
+        <h1>404: Not Found</h1>
         <p class="lead">We're sorry.
                         The URL you requested was not found.
         </p>

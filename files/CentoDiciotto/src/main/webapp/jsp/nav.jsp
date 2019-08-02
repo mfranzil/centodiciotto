@@ -9,7 +9,7 @@
 
     <div class="nav-item">
         <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
-            <a class="nav-link" href="${pageContext.request.contextPath}/restricted/logout.handler" style="color: white">
+            <a class="nav-link" href="${pageContext.request.contextPath}/restricted/logout_handler" style="color: white">
             Logout
             <img src="${pageContext.request.contextPath}/images/logout_white.png" style="height: 24px;" alt="">
         <% } else { %>

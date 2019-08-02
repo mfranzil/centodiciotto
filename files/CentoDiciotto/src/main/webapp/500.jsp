@@ -2,16 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Internal Server Error</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/errorpage.css">
+    <title>500 Internal Server Error - CentoDiciotto</title>
+    <%@ include file="/jsp/head.jsp" %>
     <script type="text/javascript">
         function loadDomain() {
             var display = document.getElementById("display-domain");
@@ -20,12 +12,12 @@
     </script>
 </head>
 <body onload="loadDomain();">
-<%@ include file="/nav.jsp" %>
+<%@ include file="/jsp/nav.jsp" %>
 <!-- Error Page Content -->
 <div class="container">
     <!-- Jumbotron -->
     <div class="jumbotron mt-4">
-        <h1><span class="glyphicon glyphicon-fire red"></span> 500: Internal Server Error</h1>
+        <h1>500: Internal Server Error</h1>
         <p class="lead">The web server is returning an internal error for <em><span id="display-domain"></span></em>.
         </p>
         <a href="javascript:document.location.reload(true);" class="btn btn-default btn-lg text-center"><span

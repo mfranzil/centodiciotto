@@ -1,54 +1,48 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-    <title>Autenticazione richiesta</title>
-    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css">
+    <title>Login - CentoDiciotto</title>
+    <%@ include file="/jsp/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
 </head>
 <body>
-<%@ include file="/nav.jsp" %>
-<div class="text-center mb-4 mt-4">
-    <h3 class="h3 mb-1 font-weight-normal">Effettua il login come...</h3>
+<%@ include file="/jsp/nav.jsp" %>
+<div class="container">
+    <div class="jumbotron mt-4">
+        <h1>Login as...</h1>
+    </div>
 </div>
 <div style="text-align: center; display: flex; overflow: fragments; flex-wrap: wrap; padding-left: 10vh; padding-right: 10vh">
     <div class="hover-button" id="user" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Paziente" class="mb-2" src="${pageContext.request.contextPath}/images/classes/user.png" style="width: 128px">
-        <br>Paziente
+        <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/images/classes/user.png" style="width: 128px">
+        <br>Citizen
     </div>
     <div class="hover-button" id="medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Medico di base" class="mb-2" src="${pageContext.request.contextPath}/images/classes/medic.png" style="width: 128px;">
-        <br>Medico di base
+        <img alt="General practitioner" class="mb-2" src="${pageContext.request.contextPath}/images/classes/medic.png" style="width: 128px;">
+        <br>General practitioner
     </div>
-    <div class="hover-button" id="medicsp" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Medico Specialista" class="mb-2" src="${pageContext.request.contextPath}/images/classes/medicsp.png" style="width: 128px;">
-        <br>Medico specialista
+    <div class="hover-button" id="specialized-medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
+        <img alt="Specialized doctor" class="mb-2" src="${pageContext.request.contextPath}/images/classes/specialized-medic.png" style="width: 128px;">
+        <br>Specialized doctor
     </div>
     <div class="hover-button" id="chemist" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Farmacia" class="mb-2" src="${pageContext.request.contextPath}/images/classes/chemist.png" style="width: 128px;">
-        <br>Farmacia
+        <img alt="Chemist's" class="mb-2" src="${pageContext.request.contextPath}/images/classes/chemist.png" style="width: 128px;">
+        <br>Chemist's
     </div>
-    <div class="hover-button" id="ssp" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Servizio Sanitario" class="mb-2" src="${pageContext.request.contextPath}/images/classes/ssp.png" style="width: 128px;">
-        <br>Servizio Sanitario
+    <div class="hover-button" id="health-service" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
+        <img alt="Health Service" class="mb-2" src="${pageContext.request.contextPath}/images/classes/health-service.png" style="width: 128px;">
+        <br>Health Service
     </div>
 </div>
-
 <div class="login_modal" id="form_window">
-    <form action="login.handler" class="login animate-in" id="form" method="POST">
+    <form action="login_handler" class="login animate-in" id="form" method="POST">
         <div style="width: 100%; text-align:center;">
             <img id="form_image" style="width: 32px" src="" alt="...">
         </div>
         <div class="mb-2" id="form_name" style="width: 100%; text-align: center">
-            Accesso come...
+            Logging in as...
         </div>
         <div class="form-label-group">
             <input autofocus class="form-control" id="username" name="username" placeholder="Username" required type="email">
@@ -63,17 +57,16 @@
         <div style="display: flex">
             <div class="checkbox mb-3" style="flex: 30%;">
                 <label>
-                    <input name="rememberMe" type="checkbox" value="true"> Ricordami
+                    <input name="rememberMe" type="checkbox" value="true">Remember me
                 </label>
             </div>
             <div style="text-align: right; flex: 70%">
-                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Hai dimenticato la password?</a>
+                <a href="${pageContext.request.contextPath}/password_recovery">Forgot your password?</a>
             </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Entra</button>
-        <button class="btn btn-lg btn-secondary btn-block" type="button" onclick="closeForm()">Indietro</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <button class="btn btn-lg btn-secondary btn-block" type="button" onclick="closeForm()">Cancel</button>
     </form>
 </div>
 </body>
-
 </html>
