@@ -1,6 +1,7 @@
 # IntelliJ and VSCode Files
 .idea/
 .settings/
+*.iml
 
 # Temporary DB
 sl.db
