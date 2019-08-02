@@ -1,3 +1,7 @@
+function getContextPath() {
+    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+}
+
 function closeForm() {
     // var form = document.getElementById('form');
     // form.classList.remove("animate-in");
@@ -7,7 +11,7 @@ function closeForm() {
 }
 
 function openMenu(id) {
-    document.getElementById('form_image').src = "images/classes/" + id + ".png";
+    document.getElementById('form_image').src = getContextPath().toString() + "/images/classes/" + id + ".png";
     document.getElementById('form_name').innerHTML = "Accesso come " + getNameFromId(id);
     document.getElementById('form_window').style.display = 'block';
 }

@@ -10,9 +10,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link href="css/base.css" rel="stylesheet" type="text/css">
-    <link href="css/login.css" rel="stylesheet" type="text/css">
-    <script src="js/login.js"></script>
+    <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css">
+    <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css">
+    <script src="${pageContext.request.contextPath}/js/login.js"></script>
 </head>
 <body>
 <%@ include file="/nav.jsp" %>
@@ -21,23 +21,23 @@
 </div>
 <div style="text-align: center; display: flex; overflow: fragments; flex-wrap: wrap; padding-left: 10vh; padding-right: 10vh">
     <div class="hover-button" id="user" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Paziente" class="mb-2" src="images/classes/user.png" style="width: 128px">
+        <img alt="Paziente" class="mb-2" src="${pageContext.request.contextPath}/images/classes/user.png" style="width: 128px">
         <br>Paziente
     </div>
     <div class="hover-button" id="medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Medico di base" class="mb-2" src="images/classes/medic.png" style="width: 128px;">
+        <img alt="Medico di base" class="mb-2" src="${pageContext.request.contextPath}/images/classes/medic.png" style="width: 128px;">
         <br>Medico di base
     </div>
     <div class="hover-button" id="medicsp" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Medico Specialista" class="mb-2" src="images/classes/medicsp.png" style="width: 128px;">
+        <img alt="Medico Specialista" class="mb-2" src="${pageContext.request.contextPath}/images/classes/medicsp.png" style="width: 128px;">
         <br>Medico specialista
     </div>
     <div class="hover-button" id="chemist" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Farmacia" class="mb-2" src="images/classes/chemist.png" style="width: 128px;">
+        <img alt="Farmacia" class="mb-2" src="${pageContext.request.contextPath}/images/classes/chemist.png" style="width: 128px;">
         <br>Farmacia
     </div>
     <div class="hover-button" id="ssp" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Servizio Sanitario" class="mb-2" src="images/classes/ssp.png" style="width: 128px;">
+        <img alt="Servizio Sanitario" class="mb-2" src="${pageContext.request.contextPath}/images/classes/ssp.png" style="width: 128px;">
         <br>Servizio Sanitario
     </div>
 </div>

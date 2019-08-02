@@ -10,16 +10,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/errorpage.css">
-    <script type="text/javascript">
-        function loadDomain() {
-            var display = document.getElementById("display-domain");
-            display.innerHTML = document.domain;
-        }
-    </script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/base.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/errorpage.css">
 </head>
-<body onload="loadDomain();">
+<body>
 <%@ include file="/nav.jsp" %>
 <!-- Error Page Content -->
 <div class="container">
@@ -29,7 +23,7 @@
         <p class="lead">We're sorry.
                         The URL you requested was not found.
         </p>
-        <a href="./" class="btn btn-default btn-lg text-center"><span
+        <a href="${pageContext.request.contextPath}/" class="btn btn-default btn-lg text-center"><span
                 class="green">Go to the Home Page</span></a>
     </div>
 </div>
