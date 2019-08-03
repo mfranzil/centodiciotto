@@ -14,8 +14,8 @@
 </div>
 <div class="container">
     <div class="body-content">
-        <div class="md-6" style="text-align: center; margin: auto 15%">
-            <form action="reset_password_handler"id="form" method="POST">
+        <div class="md-c6" style="text-align: center; margin: auto 15%">
+            <form action="reset_password_handler" id="form" method="POST">
                 <div class="form-label-group">
                     <input autofocus class="form-control" id="username"
                            name="username" placeholder="Insert your e-mail" required type="email">

@@ -10,6 +10,12 @@ html, body {
     justify-content: center;
 }
 
+.nav-personal {
+    top: 0; color: white; background-color: rgba(0, 0, 0, 0) !important;
+    background-image: linear-gradient(to right, rgba(0, 153, 230, 0.95), rgba(51, 187, 255, 0.95));
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
 .navbar-logo {
     border-radius: 50%;
     -webkit-transition: -webkit-transform .8s ease-in-out;
@@ -57,4 +63,24 @@ html, body {
 
 .red {
     color: #d9534f;
+}
+
+.bg-118-dark {
+    background-color: rgba(0, 153, 230, 1);
+}
+
+.bg-118-medium {
+    background-color: rgba(51, 187, 255, 1);
+}
+
+.bg-118-light {
+    background-color: rgba(230, 247, 255, 1);
+}
+
+.bg-118-extra-dark {
+    background-color: rgba(0, 76, 115, 1);
+}
+
+.bg-118-medium-light {
+    background-color: rgba(135, 217, 255, 1);
 }

@@ -54,13 +54,13 @@
             <input class="form-control" id="password" name="password" placeholder="Password" required type="password">
             <label for="password">Password</label>
         </div>
-        <div style="display: flex">
-            <div class="checkbox mb-3" style="flex: 30%;">
+        <div class="mb-2" style="display: flex">
+            <div class="checkbox" style="flex: 50%;">
                 <label>
-                    <input name="rememberMe" type="checkbox" value="true">Remember me
+                    <input name="rememberMe" type="checkbox" value="true">  Remember me
                 </label>
             </div>
-            <div style="text-align: right; flex: 70%">
+            <div style="text-align: right; flex: 50%">
                 <a href="${pageContext.request.contextPath}/password_recovery">Forgot your password?</a>
             </div>
         </div>

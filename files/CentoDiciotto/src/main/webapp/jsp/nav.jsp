@@ -1,8 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<nav class="navbar sticky-top navbar-light justify-content-between"
-     style="top: 0; color: white; background-color: rgba(0, 0, 0, 0) !important;
-     background-image: linear-gradient(to right, rgba(0, 153, 230, 1), rgba(51, 187, 255, 1));
-     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);">
+<nav class="navbar sticky-top navbar-light justify-content-between nav-personal">
     <a class="navbar-brand" style="height: 100%; color: white;" href="${pageContext.request.contextPath}/">
         <img class="navbar-logo" src="${pageContext.request.contextPath}/images/logo_white.svg" style="height: 44px;" alt="">
     </a>
