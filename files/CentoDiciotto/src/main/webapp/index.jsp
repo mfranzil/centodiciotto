@@ -1,19 +1,16 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>CentoDiciotto - Home</title>
     <%@ include file="/jsp/head.jsp" %>
-
     <!-- Plugin CSS -->
     <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-
-    <!-- Theme CSS - Includes Bootstrap -->
-    <link href="css/index.css" rel="stylesheet">
-
     <!-- Plugin JavaScript -->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <link href="css/index.css" rel="stylesheet">
 </head>
 <body id="page-top">
 <%@ include file="/jsp/nav.jsp" %>
@@ -25,9 +22,10 @@
                 <h1 class="text-uppercase text-white font-weight-bold">CentoDiciotto</h1>
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <img class="mb-4" src="${pageContext.request.contextPath}/images/logo_white.svg" style="width: 150px">
-                <p class="mb-4" style="color: white">
-                    An all-inclusive platform where your local health service meets citizens, doctors and chemists, providing complete control over visits, exams, prescriptions and costs.
+                <img class="mb-4" src="${pageContext.request.contextPath}/img/logo_white.svg" style="width: 150px">
+                <p class="mb-4 white">
+                    An all-inclusive platform where your local health service meets citizens, doctors and chemists,
+                    providing complete control over visits, exams, prescriptions and costs.
                 </p>
             </div>
         </div>
@@ -41,8 +39,9 @@
             <div class="col-lg-8 text-center">
                 <h2 class="text-white mt-0">We've got what you need!</h2>
                 <hr class="divider light my-4">
-                <p class="mb-4" style="color: white">
-                    As a citizen, you can contact your general practitioner or any specialized doctor, see your past and pending exams and visits, check your prescriptions and keep costs under control.
+                <p class="mb-4 white">
+                    As a citizen, you can contact your general practitioner or any specialized doctor, see your past and
+                    pending exams and visits, check your prescriptions and keep costs under control.
                 </p>
             </div>
         </div>
@@ -55,7 +54,7 @@
         <div class="row no-gutters">
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="images/portfolio/1.jpg" alt="">
+                    <img class="img-fluid" src="img/portfolio/1.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Citizens
@@ -68,7 +67,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="images/portfolio/2.jpg" alt="">
+                    <img class="img-fluid" src="img/portfolio/2.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             General practitioner
@@ -81,7 +80,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="images/portfolio/3.jpg" alt="">
+                    <img class="img-fluid" src="img/portfolio/3.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Specialized doctor
@@ -94,7 +93,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="images/portfolio/4.jpg" alt="">
+                    <img class="img-fluid" src="img/portfolio/4.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Local Health Service
@@ -107,7 +106,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="images/portfolio/5.jpg" alt="">
+                    <img class="img-fluid" src="img/portfolio/5.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Chemist's
@@ -120,7 +119,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="images/portfolio/6.jpg" alt="">
+                    <img class="img-fluid" src="img/portfolio/6.jpg" alt="">
                     <div class="portfolio-box-caption p-3">
                         <div class="project-category">
                             National Health Service
@@ -146,7 +145,9 @@
 <!-- Footer -->
 <footer>
     <div class="container">
-        <div class="small text-center text-muted">Copyright &copy; 2019 - Francesca Annibaletti, Matteo Franzil, Alessia Marcolini, Simone Nascivera</div>
+        <div class="small text-center text-muted pl-4 pr-4">Copyright &copy; 2019 - Francesca Annibaletti, Matteo
+                                                            Franzil, Alessia Marcolini, Simone Nascivera
+        </div>
     </div>
 </footer>
 </body>

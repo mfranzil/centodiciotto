@@ -11,7 +11,7 @@ function closeForm() {
 }
 
 function openMenu(id) {
-    document.getElementById('form_image').src = getContextPath().toString() + "/images/classes/" + id + ".png";
+    document.getElementById('form_image').src = getContextPath().toString() + "/img/classes/" + id + ".png";
     document.getElementById('form_name').innerHTML = "Logging in as " + getNameFromId(id);
     document.getElementById('form_window').style.display = 'block';
 }

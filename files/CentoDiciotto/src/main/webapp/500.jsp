@@ -13,9 +13,7 @@
 </head>
 <body onload="loadDomain();">
 <%@ include file="/jsp/nav.jsp" %>
-<!-- Error Page Content -->
 <div class="container">
-    <!-- Jumbotron -->
     <div class="jumbotron mt-4">
         <h1>500: Internal Server Error</h1>
         <p class="lead">The web server is returning an internal error for <em><span id="display-domain"></span></em>.

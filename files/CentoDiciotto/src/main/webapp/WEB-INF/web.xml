@@ -10,7 +10,7 @@
     <context-param>
         <description>The path where the user avatar images are stored.</description>
         <param-name>avatarsFolder</param-name>
-        <param-value>images/avatars</param-value>
+        <param-value>img/avatars</param-value>
     </context-param>
     <context-param>
         <description>The folder where are stored the exported pdfs</description>

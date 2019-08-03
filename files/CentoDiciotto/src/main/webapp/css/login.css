@@ -14,7 +14,7 @@
 }
 
 .login {
-    background-color: #cde0f4;
+    background-color: rgb(var(--118-light));
     border-radius: 10px;
     margin: 150px auto;
     width: 100%;

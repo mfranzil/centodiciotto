@@ -1,4 +1,4 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,23 +16,23 @@
 </div>
 <div style="text-align: center; display: flex; overflow: fragments; flex-wrap: wrap; padding-left: 10vh; padding-right: 10vh">
     <div class="hover-button" id="user" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/images/classes/user.png" style="width: 128px">
+        <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/user.png" style="width: 128px">
         <br>Citizen
     </div>
     <div class="hover-button" id="medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="General practitioner" class="mb-2" src="${pageContext.request.contextPath}/images/classes/medic.png" style="width: 128px;">
+        <img alt="General practitioner" class="mb-2" src="${pageContext.request.contextPath}/img/classes/medic.png" style="width: 128px;">
         <br>General practitioner
     </div>
     <div class="hover-button" id="specialized-medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Specialized doctor" class="mb-2" src="${pageContext.request.contextPath}/images/classes/specialized-medic.png" style="width: 128px;">
+        <img alt="Specialized doctor" class="mb-2" src="${pageContext.request.contextPath}/img/classes/specialized-medic.png" style="width: 128px;">
         <br>Specialized doctor
     </div>
     <div class="hover-button" id="chemist" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Chemist's" class="mb-2" src="${pageContext.request.contextPath}/images/classes/chemist.png" style="width: 128px;">
+        <img alt="Chemist's" class="mb-2" src="${pageContext.request.contextPath}/img/classes/chemist.png" style="width: 128px;">
         <br>Chemist's
     </div>
     <div class="hover-button" id="health-service" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Health Service" class="mb-2" src="${pageContext.request.contextPath}/images/classes/health-service.png" style="width: 128px;">
+        <img alt="Health Service" class="mb-2" src="${pageContext.request.contextPath}/img/classes/health-service.png" style="width: 128px;">
         <br>Health Service
     </div>
 </div>
@@ -57,14 +57,14 @@
         <div class="mb-2" style="display: flex">
             <div class="checkbox" style="flex: 50%;">
                 <label>
-                    <input name="rememberMe" type="checkbox" value="true">  Remember me
+                    <input name="rememberMe" type="checkbox" value="true"> Remember me
                 </label>
             </div>
             <div style="text-align: right; flex: 50%">
                 <a href="${pageContext.request.contextPath}/password_recovery">Forgot your password?</a>
             </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        <button class="btn btn-lg bg-118-dark btn-block white" type="submit">Login</button>
         <button class="btn btn-lg btn-secondary btn-block" type="button" onclick="closeForm()">Cancel</button>
     </form>
 </div>
