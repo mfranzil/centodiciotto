@@ -3,7 +3,6 @@
     <a class="navbar-brand white" style="height: 100%;" href="${pageContext.request.contextPath}/">
         <img class="navbar-logo" src="${pageContext.request.contextPath}/img/logo_white.svg" style="height: 44px;" alt="">
     </a>
-
     <div class="nav-item">
         <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
             <a class="nav-link" href="${pageContext.request.contextPath}/restricted/logout_handler" style="color: white">

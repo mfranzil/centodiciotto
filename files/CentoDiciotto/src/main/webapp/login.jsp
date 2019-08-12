@@ -16,7 +16,10 @@
 </div>
 <div style="text-align: center; display: flex; overflow: fragments; flex-wrap: wrap; padding-left: 10vh; padding-right: 10vh">
     <div class="hover-button" id="user" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-        <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/user.png" style="width: 128px">
+        <!--ATTENZIONE! Aggiunto link a user_table "scavalcando" la password-->
+        <a href="${pageContext.request.contextPath}/user_table.jsp">
+            <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/user.png" style="width: 128px">
+        </a>
         <br>Citizen
     </div>
     <div class="hover-button" id="medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
