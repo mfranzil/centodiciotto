@@ -23,19 +23,25 @@ html, body {
 
 .nav-personal {
     top: 0;
-    color: white;
     background-color: rgba(0, 0, 0, 0) !important;
     background-image: linear-gradient(to right, rgba(var(--118-dark), 0.95), rgba(var(--118-medium), 0.95));
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
+.nav-link-personal {
+    color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.nav-link-personal:hover {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
 .navbar-logo {
-    border-radius: 50%;
     -webkit-transition: -webkit-transform .8s ease-in-out;
     transition: transform .8s ease-in-out;
 }
 
-.navbar-logo:hover {
+.navbar-logo-animate {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
 }
