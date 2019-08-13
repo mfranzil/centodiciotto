@@ -65,7 +65,7 @@ public class LoginServlet extends HttpServlet {
                 request.getSession().setAttribute("user", user);
                 //if (user.getEmail().equals("rewqasdfcxz11@gmail.com")) {
                 // TODO: Controllare a cosa corrisponde l'indirizzo email e mandare sul path giusto
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/users.html"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
                     log(contextPath);
                /* } else {
                     response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping.lists.html?id=" + user.getId()));

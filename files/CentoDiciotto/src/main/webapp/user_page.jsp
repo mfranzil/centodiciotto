@@ -6,5 +6,5 @@
     <%@ include file="/jsp/head.jsp" %>
 </head>
 <body>
-<%@ include file="/jsp/nav_utente.jsp" %>
+<%@ include file="/jsp/nav.jsp" %>
 </body>

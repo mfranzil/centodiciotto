@@ -24,6 +24,8 @@
 
 .hover-button {
     cursor: pointer;
+    -webkit-box-flex: 20%;
+    -ms-flex: 20%;
     flex: 20%;
     padding: 3vw;
 }
@@ -49,9 +51,11 @@
 
 @keyframes animate-zoom-in {
     from {
+        -webkit-transform: scale(0);
         transform: scale(0)
     }
     to {
+        -webkit-transform: scale(1);
         transform: scale(1)
     }
 }
@@ -77,6 +81,8 @@
     color: #495057;
     border: 1px solid transparent;
     border-radius: .25rem;
+    -webkit-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
     transition: all .1s ease-in-out;
 }
 
