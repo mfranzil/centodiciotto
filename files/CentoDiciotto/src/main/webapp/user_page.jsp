@@ -12,6 +12,9 @@
                     && $('#new-password-confirm').val() != "") {
                     $('#message').html('Passwords match!').css('background-color', 'green');
                     $('#message').removeAttr("disabled");
+                    setTimeout(function () {
+                        $('#message').html('Change your password').css('background-color', '');
+                    }, 2000);
                 } else {
                     $('#message').html('Passwords do not match.').css('background-color', 'red');
                     $('#message').prop('disabled', true);
@@ -95,11 +98,11 @@
                 </h3>
                 <form action="change_password_handler" id="password" method="POST">
                     <div class="form-label-group">
-                        <input class="form-control" id="old-password" style="margin: 5px"
+                        <input class="form-control mb-2" id="old-password"
                                name="old-password" placeholder="Insert your current password" required type="password">
-                        <input class="form-control" id="new-password" style="margin: 5px"
+                        <input class="form-control mb-2" id="new-password"
                                name="new-password" placeholder="Insert your new password" required type="password">
-                        <input class="form-control" id="new-password-confirm" style="margin: 5px"
+                        <input class="form-control mb-2" id="new-password-confirm"
                                name="new-password-confirm" placeholder="Confirm your new password" required type="password">
                     </div>
                     <button id="message" class="btn btn-bg btn-block mt-4 bg-118-dark white" disabled type="submit">
@@ -109,8 +112,8 @@
                 <h3 class="my-4">
                     Change your profile picture
                 </h3>
-                <div class="input-group" style="width: 100%">
-                    <form action="change_avatar_handler" id="avatar" method="POST">
+                <div class="input-group">
+                    <form action="change_avatar_handler" id="avatar" method="POST" style="width: 100%">
                         <div class="custom-file">
                             <input type="file" class="custom-file-input"
                                    name="avatar-select" id="avatar-select" accept="image/png, image/jpeg">
