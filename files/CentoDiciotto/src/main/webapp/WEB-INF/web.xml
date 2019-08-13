@@ -21,7 +21,7 @@
         <param-name>smtp-hostname</param-name>
         <param-value>smtp.gmail.com</param-value>
     </context-param>
-    <context-param>z
+    <context-param>
         <param-name>smtp-port</param-name>
         <param-value>465</param-value>
     </context-param>
