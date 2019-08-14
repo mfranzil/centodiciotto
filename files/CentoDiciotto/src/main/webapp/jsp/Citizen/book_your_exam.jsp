@@ -8,11 +8,11 @@
 <body>
     <%@ include file="/jsp/nav.jsp" %>
 
-<!--<form class="example" action="action_page.php">
+<form class="example" action="action_page.php">
     <input type="text" placeholder="Search Exam..." name="search" style="padding-left: 10vh; padding-right: 10vh; position: absolute; left: 30px; top: 30px">
     <button type="submit"><i class="fa fa-search"></i></button>
-</form>-->
-<!--
+</form>
+
 <table class="table" style="position: absolute; left: 30px; top: 30px">
     <thead>
     <tr>
@@ -43,5 +43,4 @@
     </tr>
     </tbody>
 </table>
--->
 </body>

@@ -21,11 +21,19 @@
                     Home
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item"><!-- style="z-index: 9999">-->
                 <a class="nav-link nav-link-personal">
                     Exams
                 </a>
+                <!--
+                DROPDOWN CHE NON FUNZIONA
+                <div class="dropdown-menu" style="z-index: 9999;">
+                    <a class="dropdown-item" href="#">Exam History</a>
+                    <a class="dropdown-item" href="#">Book your Exam</a>
+                    <a class="dropdown-item" href="#">Booking Notice Board</a>
+                </div>-->
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link nav-link-personal">
                     Prescriptions

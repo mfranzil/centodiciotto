@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>dburl</param-name>
-        <param-value>jdbc:derby:C:\Users\matte\OneDrive\Università\Didattica\ProgettoWeb\files\CentoDiciotto\sl.db</param-value>
+        <param-value>jdbc:derby:/Users/francescaannibaletti/Desktop/LASTPROJECT/centodiciotto/files/CentoDiciotto/sl.db</param-value>
     </context-param>
     <context-param>
         <description>The path where the user avatar images are stored.</description>
@@ -62,6 +62,18 @@
         <jsp-file>/password_recovery.jsp</jsp-file>
     </servlet>
     <servlet>
+        <servlet-name>ExamHistory</servlet-name>
+        <jsp-file>/exam_history.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>BookYourExam</servlet-name>
+        <jsp-file>/book_your_exam.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>BookingNoticingBoard</servlet-name>
+        <jsp-file>/booking_noticing_board.jsp</jsp-file>
+    </servlet>
+    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
     </servlet>
@@ -93,6 +105,18 @@
     <servlet-mapping>
         <servlet-name>ForgotPasswordPage</servlet-name>
         <url-pattern>/password_recovery</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExamHistory</servlet-name>
+        <url-pattern>/restricted/user/exam/exam_history</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookYourExam</servlet-name>
+        <url-pattern>/restricted/user/exam/book_your_exam</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingNoticingBoard</servlet-name>
+        <url-pattern>/restricted/user/exam/booking_noticing_board</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
