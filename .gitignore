@@ -2,6 +2,7 @@
 .idea/
 .settings/
 *.iml
+.DS_Store
 
 # Temporary DB
 sl.db

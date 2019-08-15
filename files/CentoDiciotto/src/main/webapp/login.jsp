@@ -20,23 +20,23 @@
     </div>
 </div>
 <div style="text-align: center; display: flex; overflow: fragments; flex-wrap: wrap; padding-left: 10vh; padding-right: 10vh">
-    <div class="hover-button" id="user" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
-            <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/user.png" style="width: 128px">
+    <div class="hover-button focused" id="citizen" onclick="openMenu(this.id)">
+        <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/citizen.png" style="width: 128px">
         <br>Citizen
     </div>
-    <div class="hover-button" id="medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
+    <div class="hover-button focused" id="medic" onclick="openMenu(this.id)">
         <img alt="General practitioner" class="mb-2" src="${pageContext.request.contextPath}/img/classes/medic.png" style="width: 128px;">
         <br>General practitioner
     </div>
-    <div class="hover-button" id="specialized-medic" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
+    <div class="hover-button focused" id="specialized-medic" onclick="openMenu(this.id)">
         <img alt="Specialized doctor" class="mb-2" src="${pageContext.request.contextPath}/img/classes/specialized-medic.png" style="width: 128px;">
         <br>Specialized doctor
     </div>
-    <div class="hover-button" id="chemist" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
+    <div class="hover-button focused" id="chemist" onclick="openMenu(this.id)">
         <img alt="Chemist's" class="mb-2" src="${pageContext.request.contextPath}/img/classes/chemist.png" style="width: 128px;">
         <br>Chemist's
     </div>
-    <div class="hover-button" id="health-service" onclick="openMenu(this.id)" onmouseout="unfocusAll()" onmouseover="setFocus(this.id)">
+    <div class="hover-button focused" id="health-service" onclick="openMenu(this.id)">
         <img alt="Health Service" class="mb-2" src="${pageContext.request.contextPath}/img/classes/health-service.png" style="width: 128px;">
         <br>Health Service
     </div>

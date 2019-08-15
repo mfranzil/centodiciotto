@@ -32,7 +32,7 @@
 <%@ include file="/jsp/nav.jsp" %>
 <div class="jumbotron">
     <h2 class="my-4">
-        Benvenuto, user.
+        Welcome, user.
     </h2>
     <img class="avatar" src="${pageContext.request.contextPath}/img/avatars/default.png" alt="">
     <p class="lead mt-4 mx-4">

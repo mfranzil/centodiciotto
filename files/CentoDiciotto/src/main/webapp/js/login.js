@@ -1,5 +1,5 @@
 function getContextPath() {
-    return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
+    return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 }
 
 function closeForm() {
@@ -16,22 +16,9 @@ function openMenu(id) {
     document.getElementById('form_window').style.display = 'block';
 }
 
-function setFocus(id) {
-    unfocusAll();
-    document.getElementById(id).classList.add("focused");
-}
-
-function unfocusAll() {
-    document.getElementById("user").classList.remove("focused");
-    document.getElementById("medic").classList.remove("focused");
-    document.getElementById("specialized-medic").classList.remove("focused");
-    document.getElementById("chemist").classList.remove("focused");
-    document.getElementById("health-service").classList.remove("focused");
-}
-
 function getNameFromId(id) {
     switch (id) {
-        case "user":
+        case "citizen":
             return "Citizen";
         case "medic":
             return "General practitioner";
@@ -45,3 +32,18 @@ function getNameFromId(id) {
             return "-";
     }
 }
+
+$("document").ready(function () {
+    $('#form').on('submit', function () {
+        if ($('#rememberMe').is(':checked')) {
+            // save username and password
+            localStorage.userName = $('#username').val();
+            localStorage.password = $('#password').val();
+            localStorage.checkBoxValidation = $('#rememberMe').val();
+        } else {
+            localStorage.userName = '';
+            localStorage.password = '';
+            localStorage.checkBoxValidation = '';
+        }
+    });
+});

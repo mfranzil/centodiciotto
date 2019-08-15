@@ -1,4 +1,4 @@
-.login_modal {
+.login_modal { /* Finestra di login */
     display: none;
     position: fixed;
     z-index: 3;
@@ -13,7 +13,7 @@
     --input-padding-y: .35rem;
 }
 
-.login {
+.login { /* Finestra effettiva di login, senza sfondo */
     background-color: rgb(var(--118-light));
     border-radius: 10px;
     margin: 150px auto;
@@ -22,12 +22,23 @@
     padding: 15px;
 }
 
+/* Bottoni dei vari utenti */
+
 .hover-button {
     cursor: pointer;
     -webkit-box-flex: 20%;
     -ms-flex: 20%;
     flex: 20%;
     padding: 3vw;
+}
+
+.focused {
+    background-color: transparent;
+}
+
+.focused:hover {
+    background-color: rgba(var(--118-medium-light), 0.5);
+    border-radius: 10px;
 }
 
 .animate-in {

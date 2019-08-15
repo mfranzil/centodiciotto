@@ -45,7 +45,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/citizen/unhappy_practitioner">
                     Unhappy with your practitioner?
                 </a>
             </li>

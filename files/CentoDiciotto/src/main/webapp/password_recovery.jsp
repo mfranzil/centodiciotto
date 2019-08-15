@@ -1,4 +1,10 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
+
+<% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
+<c:redirect url="./"/>
+<% } %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

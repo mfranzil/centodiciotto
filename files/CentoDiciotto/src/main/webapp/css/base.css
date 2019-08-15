@@ -21,18 +21,12 @@ html, body {
     overflow-x: hidden;
 }
 
-.current {
+/* NAVBAR */
+
+.current {  /* Evidenzia il link corrente */
     font-weight: bold !important;
     pointer-events: none;
     cursor: default;
-}
-
-.avatar {
-    width: 175px;
-    height: 100%;
-    border-radius: 50%;
-    margin: auto;
-    object-fit: cover;
 }
 
 .nav-personal {
@@ -47,8 +41,6 @@ html, body {
 
 .nav-link-personal {
     color: rgba(255, 255, 255, 0.75) !important;
-    padding-left: 0;
-
 }
 
 .nav-link-personal:hover {
@@ -75,6 +67,8 @@ html, body {
     transform: rotate(360deg);
 }
 
+/* Logo che appare solo quando scompare il menù panino */
+
 @media only screen and (max-width: 991.8px) {
     .landscape-logo {
         display: none;
@@ -88,17 +82,23 @@ html, body {
     }
 }
 
-.focused {
-    background-color: rgba(var(--118-medium-light), 0.5);
-    border-radius: 10px;
+/* Rende gli avatar tondi */
+
+.avatar {
+    width: 175px;
+    height: 100%;
+    border-radius: 50%;
+    margin: auto;
+    object-fit: cover;
 }
 
 .jumbotron {
     font-size: 21px;
     font-weight: 200;
-    line-height: 2.1428571435;
+    /*line-height: 2.1428571435;*/
     color: inherit;
-    padding: 10px 0;
+    margin-bottom: 0;
+    padding: 1rem !important;
     text-align: center;
     background-color: transparent !important;
 }
