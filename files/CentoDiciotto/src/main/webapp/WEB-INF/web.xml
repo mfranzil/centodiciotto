@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>dburl</param-name>
-        <param-value>jdbc:derby:C:\Users\matte\OneDrive\Università\Didattica\ProgettoWeb\files\CentoDiciotto\sl.db</param-value>
+        <param-value>jdbc:derby:/Users/francescaannibaletti/Desktop/centodiciotto/files/CentoDiciotto/sl.db</param-value>
     </context-param>
     <context-param>
         <description>The path where the user avatar images are stored.</description>
@@ -68,10 +68,6 @@
     <servlet>
         <servlet-name>BookYourExam</servlet-name>
         <jsp-file>/jsp/citizen/book_your_exam.jsp</jsp-file>
-    </servlet>
-    <servlet>
-        <servlet-name>BookingNoticingBoard</servlet-name>
-        <jsp-file>/jsp/citizen/booking_noticing_board.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>UnhappyPractitioner</servlet-name>
@@ -139,10 +135,6 @@
     <servlet-mapping>
         <servlet-name>BookYourExam</servlet-name>
         <url-pattern>/restricted/citizen/book_your_exam</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BookingNoticingBoard</servlet-name>
-        <url-pattern>/restricted/citizen/booking_noticing_board</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UnhappyPractitioner</servlet-name>

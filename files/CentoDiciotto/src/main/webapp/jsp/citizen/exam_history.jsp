@@ -8,7 +8,16 @@
 <body>
     <%@ include file="/jsp/nav.jsp" %>
 
-    <table class="table" style="position: relative; left: 30px; top: 20px">
+    <div class="jumbotron mt-4">
+        <h1>Exam History</h1>
+        <p class="lead mt-4 mx-4">
+            In this section you can see all the exams you have ever done.
+            It will be possible to view the report when available.
+        </p>
+    </div>
+
+    <div class="col-md-10" style="margin-left:auto; margin-right:auto">
+        <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
      <thead>
         <tr>
             <th scope="col">Exam</th>
@@ -23,24 +32,25 @@
             <td>23/07/2019</td>
             <td>Not avaiable</td>
             <td>
-                <button type="button" class="btn btn-lg btn-primary" disabled>See Report</button>
+                <button type="button" class="btn btn-block mt-4 btn-personal" disabled>See Report</button>
             </td>
         </tr>
         <tr>
             <th scope="row">ECG</th>
             <td>02/03/2018</td>
             <td>Avaiable</td>
-            <td><button type="button" class="btn btn-lg btn-primary">See Report</button>
+            <td><button type="button" class="btn btn-block mt-4 btn-personal">See Report</button>
             </td>
         </tr>
         <tr>
             <th scope="row">TAC</th>
             <td>23/09/2017</td>
             <td>Avaiable</td>
-            <td><button type="button" class="btn btn-lg btn-primary">See Report</button>
+            <td><button type="button" class="btn btn-block mt-4 btn-personal">See Report</button>
             </td>
         </tr>
         </tbody>
     </table>
+    </div>
 
 </body>
