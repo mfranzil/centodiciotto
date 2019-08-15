@@ -24,7 +24,7 @@
                 <h3 class="my-4">
                     Your general practitioner
                 </h3>
-                <table class="table" style="margin: auto; overflow-wrap: break-word;
+                <table class="table" style="margin: auto; overflow-wrap: break-word; table-layout: fixed;
                 background-color: rgba(120,255,120,0.3)">
                     <tr>
                         <td>Francesca</td>
@@ -42,11 +42,11 @@
                 </h3>
                 <form action="change_practitioner_handler" id="practitioner" method="POST">
                     <div style="margin: auto; text-align: center">
-                        <button class="btn btn-bg mb-4 bg-118-dark white" type="submit">
+                        <button id="submit" class="btn mb-4 btn-personal" disabled type="submit">
                             I want to change my practitioner
                         </button>
                     </div>
-                    <table class="table table-hover" id="table-select" style="margin: auto; overflow-wrap: break-word">
+                    <table class="table table-hover" id="table-select" style="margin: auto; overflow-wrap: break-word; table-layout: fixed;">
                         <tr>
                             <td>Simone</td>
                             <td>Nascivera</td>
@@ -60,7 +60,6 @@
                             <td><input type="radio" name="practitioner" value="VALOREDAMETTERE2"><br></td>
                         </tr>
                     </table>
-
                 </form>
             </div>
         </div>
@@ -70,6 +69,7 @@
     $("document").ready(function () {
         $('#table-select tr').click(function () {
             $(this).find('input[type=radio]').prop('checked', true);
+            $('#submit').removeAttr("disabled");
         });
     });
 </script>

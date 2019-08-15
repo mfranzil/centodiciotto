@@ -7,17 +7,20 @@
     <script>
         $("document").ready(function () {
             $('#new-password, #new-password-confirm').on('keyup', function () {
+                let message = $('#message');
                 if ($('#new-password').val() === $('#new-password-confirm').val()
                     && $('#new-password').val() != ""
                     && $('#new-password-confirm').val() != "") {
-                    $('#message').html('Passwords match!').css('background-color', 'green');
-                    $('#message').removeAttr("disabled");
+                    message.html('Passwords match!')
+                        .css('background-color', 'green')
+                        .removeAttr("disabled");
                     setTimeout(function () {
-                        $('#message').html('Change your password').css('background-color', '');
+                        message.html('Change your password').css('background-color', '');
                     }, 2000);
                 } else {
-                    $('#message').html('Passwords do not match.').css('background-color', 'red');
-                    $('#message').prop('disabled', true);
+                    message.html('Passwords do not match.')
+                        .css('background-color', 'red')
+                        .prop('disabled', true);
                 }
             });
 
@@ -105,7 +108,7 @@
                         <input class="form-control mb-2" id="new-password-confirm"
                                name="new-password-confirm" placeholder="Confirm your new password" required type="password">
                     </div>
-                    <button id="message" class="btn btn-bg btn-block mt-4 bg-118-dark white" disabled type="submit">
+                    <button id="message" class="btn btn-block mt-4 btn-personal" disabled type="submit">
                         Change password
                     </button>
                 </form>
@@ -119,7 +122,7 @@
                                    name="avatar-select" id="avatar-select" accept="image/png, image/jpeg">
                             <label class="custom-file-label" for="avatar-select">Choose file</label>
                         </div>
-                        <button class="btn btn-bg btn-block mt-4 bg-118-dark white" type="submit">
+                        <button class="btn btn-block mt-4 btn-personal" type="submit">
                             Upload
                         </button>
                     </form>

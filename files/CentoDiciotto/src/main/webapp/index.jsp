@@ -12,7 +12,7 @@
 
     <link href="css/index.css" rel="stylesheet">
 </head>
-<body id="page-top">
+<body id="page-top" style="padding-top: 0"> <!-- COZZA CON LA NAVBAR! Non toccare a meno che non sistemiate la nav -->
 <%@ include file="/jsp/nav.jsp" %>
 <!-- Masthead -->
 <header class="masthead">
@@ -22,8 +22,8 @@
                 <h1 class="text-uppercase text-white font-weight-bold">CentoDiciotto</h1>
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <img class="mb-4" src="${pageContext.request.contextPath}/img/logo_white.svg" style="width: 150px">
-                <p class="mb-4 white">
+                <img class="my-4" src="${pageContext.request.contextPath}/img/logo_white.svg" style="width: 150px">
+                <p class="my-4 white">
                     An all-inclusive platform where your local health service meets citizens, doctors and chemists,
                     providing complete control over visits, exams, prescriptions and costs.
                 </p>
@@ -33,13 +33,13 @@
 </header>
 
 <!-- About Section -->
-<section class="page-section bg-118-dark" id="about">
+<section class="page-section bg-118-medium-dark" id="about">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mx-4">
             <div class="col-lg-8 text-center">
                 <h2 class="text-white mt-0">We've got what you need!</h2>
                 <hr class="divider light my-4">
-                <p class="mb-4 white">
+                <p class="my-4 white">
                     As a citizen, you can contact your general practitioner or any specialized doctor, see your past and
                     pending exams and visits, check your prescriptions and keep costs under control.
                 </p>
@@ -135,10 +135,15 @@
 </section>
 
 <!-- Call to Action Section -->
-<section class="page-section bg-118-dark text-white">
+<section class="page-section bg-118-medium-dark text-white">
     <div class="container text-center">
-        <h2 class="mb-4">Already a member? Get started now.</h2>
+        <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
+        <h2 class="mb-4 mx-4">Visit your profile now.</h2>
+        <a class="btn btn-light btn-xl" href="${pageContext.request.contextPath}/restricted/user">Go to my profile</a>
+        <% } else { %>
+        <h2 class="mb-4 mx-4">Already a member? Get started now.</h2>
         <a class="btn btn-light btn-xl" href="${pageContext.request.contextPath}/login">Login</a>
+        <% }%>
     </div>
 </section>
 

@@ -11,22 +11,24 @@ function closeForm() {
 }
 
 function openMenu(id) {
+    let role = getNameFromId(id);
     document.getElementById('form_image').src = getContextPath().toString() + "/img/classes/" + id + ".png";
-    document.getElementById('form_name').innerHTML = "Logging in as " + getNameFromId(id);
+    document.getElementById('form_name').innerHTML = "Logging in as " + role;
     document.getElementById('form_window').style.display = 'block';
+    document.getElementById('role').value = id;
 }
 
 function getNameFromId(id) {
     switch (id) {
         case "citizen":
             return "Citizen";
-        case "medic":
+        case "general_practitioner":
             return "General practitioner";
-        case "specialized-medic":
+        case "specialized_doctor":
             return "Specialized doctor";
         case "chemist":
             return "Chemist's";
-        case "health-service":
+        case "health_service":
             return "Health Service";
         default:
             return "-";

@@ -1,4 +1,3 @@
-
 package it.unitn.web.centodiciotto.servlets;
 
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
@@ -59,14 +58,15 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = userDao.getByEmailAndPassword(email, password);
+
+            // LA SEGUENTE CAGATA E' TEMPORANEA
             if (user == null) {
+                request.setAttribute("errorMessage", "Invalid username or password.");
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
             } else {
                 request.getSession().setAttribute("user", user);
-                //if (user.getEmail().equals("rewqasdfcxz11@gmail.com")) {
-                // TODO: Controllare a cosa corrisponde l'indirizzo email e mandare sul path giusto
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
-                    log(contextPath);
+                log(contextPath);
                /* } else {
                     response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping.lists.html?id=" + user.getId()));
                 }*/

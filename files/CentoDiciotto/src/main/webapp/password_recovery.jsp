@@ -27,7 +27,7 @@
                            name="username" placeholder="Insert your e-mail" required type="email">
                 </div>
                 <p class="mt-4">We will send you a link to reset your password.</p>
-                <button class="btn btn-lg btn-block mt-4 bg-118-dark white" type="submit">Reset password</button>
+                <button class="btn btn-lg btn-block mt-4 btn-personal" type="submit">Reset password</button>
             </form>
         </div>
     </div>

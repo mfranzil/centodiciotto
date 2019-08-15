@@ -1,4 +1,3 @@
-
 package it.unitn.web.centodiciotto.filters;
 
 import it.unitn.web.centodiciotto.persistence.entities.User;
@@ -68,6 +67,29 @@ public class AuthenticationFilter implements Filter {
                     contextPath += "/";
                 }
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
+            } else {
+                // DA AGGIORNARE! -->
+                String[] roles = {"citizen", "chemist", "general_practitioner", "health_service", "specialized_doctor"};
+                String current_role = user.getRole();
+
+                boolean allowed = true;
+                for (String item : roles) {
+                    if (!item.equals(current_role) && ((HttpServletRequest) request).getRequestURL().toString().contains(
+                            "/restricted/" + item
+                    )) {
+                        log(current_role + " ! " + item);
+                        allowed = false;
+                        break;
+                    }
+                }
+                if (!allowed) {
+                    String contextPath = servletContext.getContextPath();
+                    if (!contextPath.endsWith("/")) {
+                        contextPath += "/";
+                    }
+                    ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response)
+                            .encodeRedirectURL(contextPath ));
+                }
             }
         }
     }

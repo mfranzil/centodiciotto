@@ -1,15 +1,15 @@
 :root {
-    --118-dark: 0, 153, 230;
     --118-light: 230, 247, 255;
-    --118-medium: 51, 187, 255;
     --118-medium-light: 135, 217, 255;
-    --118-extra-dark: 0, 76, 115;
+    --118-medium: 51, 187, 255;
+    --118-medium-dark: 0, 153, 230;
+    --118-dark: 0, 119, 179;
     --118-darkest: 0, 32, 48;
 }
 
-html, body {
+body {
     margin: 0;
-    padding: 0;
+    padding: 4rem 0 0;
     background-color: rgb(var(--118-light));
     -ms-flex-align: center;
     -ms-flex-pack: center;
@@ -23,7 +23,7 @@ html, body {
 
 /* NAVBAR */
 
-.current {  /* Evidenzia il link corrente */
+.current { /* Evidenzia il link corrente */
     font-weight: bold !important;
     pointer-events: none;
     cursor: default;
@@ -31,20 +31,79 @@ html, body {
 
 .nav-personal {
     top: 0;
+    z-index: 1;
     background-color: rgba(0, 0, 0, 0) !important;
-    background-image: -webkit-gradient(linear, left top, right top, from(rgba(var(--118-dark), 0.95)), to(rgba(var(--118-medium), 0.95)));
-    background-image: -o-linear-gradient(left, rgba(var(--118-dark), 0.95), rgba(var(--118-medium), 0.95));
-    background-image: linear-gradient(to right, rgba(var(--118-dark), 0.95), rgba(var(--118-medium), 0.95));
+    background-image: -webkit-gradient(linear, left top, right top, from(rgba(var(--118-medium-dark), 0.95)), to(rgba(var(--118-medium), 0.95)));
+    background-image: -o-linear-gradient(left, rgba(var(--118-medium-dark), 0.95), rgba(var(--118-medium), 0.95));
+    background-image: linear-gradient(to right, rgba(var(--118-medium-dark), 0.95), rgba(var(--118-medium), 0.95));
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
 }
 
 .nav-link-personal {
-    color: rgba(255, 255, 255, 0.75) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.nav-link {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 
 .nav-link-personal:hover {
-    color: rgba(255, 255, 255, 0.95) !important;
+    color: rgba(255, 255, 255, 1) !important;
+}
+
+.nav-link:hover {
+    background-color: rgba(var(--118-dark), 1);
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(var(--118-dark), 1);
+}
+
+.dropdown {
+    cursor: pointer;
+}
+
+@media (min-width: 992px) {
+    .landscape-logo {
+        height: 30px;
+        margin-right: 5px;
+    }
+
+    .dropdown-menu {
+        margin-top: 2.5rem;
+    }
+}
+
+@media (max-width: 991.8px) {
+    .landscape-logo {
+        display: none;
+    }
+
+    .dropdown-menu {
+        background: none;
+        border: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .navbar-collapse {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+    vertical-align: .128em !important;
+}
+
+.dropdown-toggle::after {
+    transition: all ease 0.5s;
+    vertical-align: .128em !important;
 }
 
 .navbar-logo {
@@ -65,21 +124,6 @@ html, body {
     -webkit-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
-}
-
-/* Logo che appare solo quando scompare il menù panino */
-
-@media only screen and (max-width: 991.8px) {
-    .landscape-logo {
-        display: none;
-    }
-}
-
-@media only screen and (min-width: 992px) {
-    .landscape-logo {
-        height: 30px;
-        margin-right: 5px;
-    }
 }
 
 /* Rende gli avatar tondi */
@@ -113,6 +157,21 @@ html, body {
     padding: 14px 24px;
 }
 
+.btn-personal {
+    background-color: rgba(var(--118-medium-dark), 1);
+    color: white;
+}
+
+.btn-personal:hover {
+    background-color: rgba(var(--118-dark), 1);
+    color: white;
+}
+
+.btn-personal:disabled {
+    background-color: rgba(100, 100, 100, 1);
+    color: white;
+}
+
 /* Colors */
 
 .green {
@@ -123,8 +182,8 @@ html, body {
     color: white;
 }
 
-.bg-118-dark {
-    background-color: rgba(var(--118-dark), 1);
+.bg-118-medium-dark {
+    background-color: rgba(var(--118-medium-dark), 1);
 }
 
 .bg-118-medium {
@@ -135,8 +194,8 @@ html, body {
     background-color: rgba(var(--118-light), 1);
 }
 
-.bg-118-extra-dark {
-    background-color: rgba(var(--118-extra-dark), 1);
+.bg-118-dark {
+    background-color: rgba(var(--118-dark), 1);
 }
 
 .bg-118-medium-light {

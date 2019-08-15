@@ -31,7 +31,7 @@
     bottom: 0;
     text-align: center;
     opacity: 0;
-    color: rgba(var(--118-extra-dark), 1);
+    color: rgba(var(--118-dark), 1);
     background-color: rgba(var(--118-light), 0.8);
     -webkit-transition: opacity 0.25s ease;
     -o-transition: opacity 0.25s ease;

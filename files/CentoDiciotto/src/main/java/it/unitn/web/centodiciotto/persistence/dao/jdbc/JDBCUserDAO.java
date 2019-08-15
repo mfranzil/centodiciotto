@@ -1,6 +1,5 @@
 
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
-
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
 import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
@@ -9,6 +8,7 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * The JDBC implementation of the {@link UserDAO} interface.
@@ -84,6 +84,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                 user.setFirstName(rs.getString("name"));
                 user.setLastName(rs.getString("lastname"));
                 user.setAvatarPath(rs.getString("avatar_path"));
+                user.setRole(rs.getString("role"));
 
                 try (PreparedStatement todoStatement = CON.prepareStatement("SELECT count(*) FROM USERS_SHOPPING_LISTS WHERE id_user = ?")) {
                     todoStatement.setInt(1, user.getId());
@@ -122,6 +123,8 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
+            Logger.getLogger("In UserDAO: " + "");
+
             try (ResultSet rs = stm.executeQuery()) {
                 PreparedStatement shoppingListStatement = CON.prepareStatement("SELECT count(*) FROM users_shopping_lists WHERE id_user = ?");
 
@@ -137,8 +140,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                     user.setPassword(rs.getString("password"));
                     user.setFirstName(rs.getString("name"));
                     user.setLastName(rs.getString("lastname"));
-                    user.setAvatarPath(rs.getString("avatar_path"));
-
+                    user.setRole(rs.getString("role"));
                     shoppingListStatement.setInt(1, user.getId());
 
                     ResultSet counter = shoppingListStatement.executeQuery();
@@ -181,6 +183,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                     user.setFirstName(rs.getString("name"));
                     user.setLastName(rs.getString("lastname"));
                     user.setAvatarPath(rs.getString("avatar_path"));
+                    user.setRole(rs.getString("role"));
 
                     shoppingListStatement.setInt(1, user.getId());
 
@@ -226,6 +229,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                     user.setFirstName(rs.getString("name"));
                     user.setLastName(rs.getString("lastname"));
                     user.setAvatarPath(rs.getString("avatar_path"));
+                    user.setRole(rs.getString("role"));
 
                     shoppingListStatement.setInt(1, user.getId());
 
@@ -275,6 +279,7 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
                     user.setFirstName(rs.getString("name"));
                     user.setLastName(rs.getString("lastname"));
                     user.setAvatarPath(rs.getString("avatar_path"));
+                    user.setRole(rs.getString("role"));
 
                     shoppingListsStatement.setInt(1, user.getId());
 
@@ -307,13 +312,14 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
             throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
         }
 
-        try (PreparedStatement std = CON.prepareStatement("UPDATE app.users SET email = ?, password = ?, name = ?, lastname = ?, avatar_path = ? WHERE id = ?")) {
+        try (PreparedStatement std = CON.prepareStatement("UPDATE app.users SET email = ?, password = ?, name = ?, lastname = ?, avatar_path = ?, role = ? WHERE id = ?")) {
             std.setString(1, user.getEmail());
             std.setString(2, user.getPassword());
             std.setString(3, user.getFirstName());
             std.setString(4, user.getLastName());
             std.setString(5, user.getAvatarPath());
             std.setInt(6, user.getId());
+            std.setString(7, user.getRole());
             if (std.executeUpdate() == 1) {
                 return user;
             } else {

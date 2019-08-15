@@ -14,6 +14,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String avatarPath;
+    private String role;
 
     private Integer shoppingListsCount;
 
@@ -169,5 +170,13 @@ public class User {
      */
     public void setShoppingListsCount(Integer shoppingListsCount) {
         this.shoppingListsCount = shoppingListsCount;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
