@@ -14,24 +14,22 @@
     </div>
 
     <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
-    <div class="collapse navbar-collapse nav-item" id="navbarNav">
+    <div class="collapse navbar-collapse nav-item" id="navbarNavDropdown">
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
                     Home
                 </a>
             </li>
-            <li class="nav-item"><!-- style="z-index: 9999">-->
-                <a class="nav-link nav-link-personal">
+            <li class="nav-item dropdown" >
+                <a class="nav-link nav-link-personal dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Exams
                 </a>
-                <!--
-                DROPDOWN CHE NON FUNZIONA
-                <div class="dropdown-menu" style="z-index: 9999;">
-                    <a class="dropdown-item" href="#">Exam History</a>
-                    <a class="dropdown-item" href="#">Book your Exam</a>
-                    <a class="dropdown-item" href="#">Booking Notice Board</a>
-                </div>-->
+                <div class="dropdown-menu nav-personal">
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/restricted/citizen/exam_history">Exam History</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/restricted/citizen/book_your_exam">Book your Exam</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/restricted/citizen/booking_noticing_board">Booking Notice Board</a>
+                </div>
             </li>
             
             <li class="nav-item">

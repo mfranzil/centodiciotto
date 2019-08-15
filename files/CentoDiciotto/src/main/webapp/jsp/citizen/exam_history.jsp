@@ -8,7 +8,7 @@
 <body>
     <%@ include file="/jsp/nav.jsp" %>
 
-    <table class="table">
+    <table class="table" style="position: relative; left: 30px; top: 20px">
      <thead>
         <tr>
             <th scope="col">Exam</th>
