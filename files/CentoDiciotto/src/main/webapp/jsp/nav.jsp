@@ -46,10 +46,18 @@
                        href="${pageContext.request.contextPath}/restricted/citizen/exam_history">Exam History</a>
                     <a class="dropdown-item nav-link-personal"
                        href="${pageContext.request.contextPath}/restricted/citizen/book_your_exam">Book your Exam</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-link-personal dropdown-toggle"
+                   id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Visits
+                </a>
+                <div class="dropdown-menu nav-personal">
                     <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/citizen/booking_noticing_board">Booking
-                                                                                                           Notice
-                                                                                                           Board</a>
+                       href="${pageContext.request.contextPath}/restricted/citizen/visit_history">Visit History</a>
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/citizen/book_your_visit">Book your Visit</a>
                 </div>
             </li>
             <li class="nav-item">
