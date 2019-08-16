@@ -4,13 +4,11 @@
 <head>
     <title>CentoDiciotto - Home</title>
     <%@ include file="/jsp/head.jsp" %>
-    <!-- Plugin CSS -->
-    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
-    <!-- Plugin JavaScript -->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-
-    <link href="css/index.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet">
+    <!-- Plugin CSS e JS, presi dal template -->
+    <link href="${pageContext.request.contextPath}/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="${pageContext.request.contextPath}/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 </head>
 <body id="page-top" style="padding-top: 0"> <!-- COZZA CON LA NAVBAR! Non toccare a meno che non sistemiate la nav -->
 <%@ include file="/jsp/nav.jsp" %>
@@ -22,7 +20,8 @@
                 <h1 class="text-uppercase text-white font-weight-bold">CentoDiciotto</h1>
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <img class="my-4" src="${pageContext.request.contextPath}/img/logo_white.svg" style="width: 150px">
+                <img class="my-4" src="${pageContext.request.contextPath}/img/logo_white.svg" style="width: 150px"
+                     alt="Picture of an hospital.">
                 <p class="my-4 white">
                     An all-inclusive platform where your local health service meets citizens, doctors and chemists,
                     providing complete control over visits, exams, prescriptions and costs.
@@ -54,7 +53,7 @@
         <div class="row no-gutters">
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="img/portfolio/1.jpg" alt="">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/1.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Citizens
@@ -67,7 +66,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="img/portfolio/2.jpg" alt="">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/2.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             General practitioner
@@ -80,7 +79,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="img/portfolio/3.jpg" alt="">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/3.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Specialized doctor
@@ -93,7 +92,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="img/portfolio/4.jpg" alt="">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/4.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Local Health Service
@@ -106,7 +105,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="img/portfolio/5.jpg" alt="">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/5.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Chemist's
@@ -119,7 +118,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="img/portfolio/6.jpg" alt="">
+                    <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/6.jpg" alt="">
                     <div class="portfolio-box-caption p-3">
                         <div class="project-category">
                             National Health Service

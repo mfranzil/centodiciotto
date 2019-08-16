@@ -28,28 +28,22 @@
             <div class="col-md-6">
                 <h2>What happened?</h2>
                 <p class="lead">A 500 error status implies there is a problem with the web server's software causing it
-                    to malfunction.</p>
+                                to malfunction.</p>
                 <%
-                    if (exception != null) {
+                    if (exception != null && exception.getCause() != null) {
                 %>
-                <p class="lead">Server returned: <%=exception.getCause() != null ? exception.getCause() : exception%>
-                    : <%=exception.getMessage()%>
+                <p style="background: rgba(var(--118-darkest), 1); padding: 1rem; margin-right: 1rem;
+                color: white; font-family: monospace;">
+                    <%=exception.getCause()%>
                 </p>
-                <%
-                    if (exception.getCause() != null) {
-                %>
-                <p>Cause: <%=exception.getCause()%>
-                </p>
-                <%
-                    }
-                %>
                 <%
                     }
                 %>
             </div>
             <div class="col-md-6">
                 <h2>What can I do?</h2>
-                <p class="lead">Nothing you can do at the moment. If you need immediate assistance, please contact us immediately. We apologize for any inconvenience.</p>
+                <p class="lead">Nothing you can do at the moment. If you need immediate assistance, please contact us
+                                immediately. We apologize for any inconvenience.</p>
             </div>
         </div>
     </div>

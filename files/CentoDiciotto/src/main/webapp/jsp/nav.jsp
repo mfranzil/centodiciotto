@@ -2,9 +2,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
     String role = null;
+    User user = null;
     boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
     if (isLoggedIn) {
-        role = ((User) session.getAttribute("user")).getRole();
+        user = (User) session.getAttribute("user");
+        role = user.getRole();
     }
 %>
 
@@ -86,7 +88,7 @@
     <div id="log-menu-closed">
         <div id="nav-log" class="nav-item" style="padding: 0; display: flex;">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/user">
-                Hi user!
+                Hi <%= user.getFirstName() %>!
             </a>
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">
                 Logout

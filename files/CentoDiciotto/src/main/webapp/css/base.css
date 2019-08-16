@@ -96,6 +96,8 @@ body {
     }
 }
 
+/* Rotazione della freccetta dei dropdown */
+
 .dropdown-toggle[aria-expanded="true"]::after {
     transform: rotate(180deg);
     vertical-align: .128em !important;
@@ -106,7 +108,7 @@ body {
     vertical-align: .128em !important;
 }
 
-.navbar-logo {
+.navbar-logo, .landscape-logo {
     height: 38px;
     -webkit-transition: -webkit-transform .6s ease-in-out;
     transition: -webkit-transform .6s ease-in-out;
@@ -120,7 +122,7 @@ body {
     border-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.navbar-logo-animate {
+.navbar-logo-animate, .landscape-logo:hover {
     -webkit-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);

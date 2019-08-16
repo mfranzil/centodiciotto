@@ -1,11 +1,13 @@
-# IntelliJ and VSCode Files
+# IntelliJ, VSCode, macOS Files
 .idea/
 .settings/
 *.iml
 .DS_Store
+.classpath
+.project
 
 # Temporary DB
-sl.db
+# sl.db
 
 # Config file
 config.ini

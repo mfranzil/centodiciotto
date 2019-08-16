@@ -4,38 +4,13 @@
 <head>
     <title>User_table - CentoDiciotto</title>
     <%@ include file="/jsp/head.jsp" %>
-    <script>
-        $("document").ready(function () {
-            $('#new-password, #new-password-confirm').on('keyup', function () {
-                let message = $('#message');
-                if ($('#new-password').val() === $('#new-password-confirm').val()
-                    && $('#new-password').val() != ""
-                    && $('#new-password-confirm').val() != "") {
-                    message.html('Passwords match!')
-                        .css('background-color', 'green')
-                        .removeAttr("disabled");
-                    setTimeout(function () {
-                        message.html('Change your password').css('background-color', '');
-                    }, 2000);
-                } else {
-                    message.html('Passwords do not match.')
-                        .css('background-color', 'red')
-                        .prop('disabled', true);
-                }
-            });
-
-            $('#avatar-select').on('change', function () {
-                var fileName = $(this).val();
-                $(this).next('.custom-file-label').html(fileName.replace('C:\\fakepath\\', ""));
-            })
-        });
-    </script>
+    <script src="${pageContext.request.contextPath}/js/user.js"></script>
 </head>
 <body>
 <%@ include file="/jsp/nav.jsp" %>
 <div class="jumbotron">
     <h2 class="my-4">
-        Welcome, user.
+        Welcome, <%= user.getFirstName() %>.
     </h2>
     <img class="avatar" src="${pageContext.request.contextPath}/img/avatars/default.png" alt="">
     <p class="lead mt-4 mx-4">
@@ -47,6 +22,7 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md-6">
+                <% if (role.equals("citizen")) { %>
                 <h3 class="my-4">
                     Citizen information
                 </h3>
@@ -93,7 +69,11 @@
                         <td>...DROPDOWN</td>
                     </tr>
                 </table>
-
+                <% } else { %>
+                <h3 class="my-4">
+                    Info da aggiungere...
+                </h3>
+                <% } %>
             </div>
             <div class="col-md-6">
                 <h3 class="my-4">
@@ -101,12 +81,15 @@
                 </h3>
                 <form action="change_password_handler" id="password" method="POST">
                     <div class="form-label-group">
-                        <input class="form-control mb-2" id="old-password"
-                               name="old-password" placeholder="Insert your current password" required type="password">
-                        <input class="form-control mb-2" id="new-password"
-                               name="new-password" placeholder="Insert your new password" required type="password">
-                        <input class="form-control mb-2" id="new-password-confirm"
-                               name="new-password-confirm" placeholder="Confirm your new password" required type="password">
+                        <input class="form-control mb-2" id="old-password" name="old-password"
+                               placeholder="Insert your current password"
+                               required type="password">
+                        <input class="form-control mb-2" id="new-password" name="new-password"
+                               placeholder="Insert your new password"
+                               required type="password">
+                        <input class="form-control mb-2" id="new-password-confirm" name="new-password-confirm"
+                               placeholder="Confirm your new password"
+                               required type="password">
                     </div>
                     <button id="message" class="btn btn-block mt-4 btn-personal" disabled type="submit">
                         Change password
