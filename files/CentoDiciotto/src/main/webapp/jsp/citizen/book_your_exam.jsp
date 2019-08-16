@@ -21,7 +21,7 @@
         <div class="form-label-group my-4" style="display: flex; justify-content: flex-end">
             <input class="form-control mx-2" id="query" name="query"
                    placeholder="Search..." required type="text" style="width: auto">
-            <button id="message" class="btn mx-2 btn-personal" type="submit">
+            <button id="message" class="btn btn-personal" type="submit">
                 <i class="fa fa-search"></i>
             </button>
         </div>

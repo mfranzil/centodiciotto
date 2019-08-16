@@ -162,16 +162,19 @@ body {
 .btn-personal {
     background-color: rgba(var(--118-medium-dark), 1);
     color: white;
+    white-space: nowrap;
 }
 
 .btn-personal:hover {
     background-color: rgba(var(--118-dark), 1);
     color: white;
+    white-space: nowrap;
 }
 
 .btn-personal:disabled {
     background-color: rgba(100, 100, 100, 1);
     color: white;
+    white-space: nowrap;
 }
 
 /* Colors */
