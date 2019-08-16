@@ -38,7 +38,7 @@
                 case "citizen": {%>
             <li class="nav-item dropdown">
                 <a class="nav-link nav-link-personal dropdown-toggle"
-                   id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Exams
                 </a>
                 <div class="dropdown-menu nav-personal">
@@ -50,7 +50,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link nav-link-personal dropdown-toggle"
-                   id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Visits
                 </a>
                 <div class="dropdown-menu nav-personal">
@@ -81,8 +81,21 @@
             break;
                 case "general_practitioner": { %>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal">
-                    Ciao, io sono un placeholder che andrà tolto.
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/general_practitioner/patients">
+                    My patients
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">
+                    Visits and requests
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/general_practitioner/prescriptions">
+                    Prescriptions
                 </a>
             </li>
             <% }

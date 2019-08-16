@@ -22,20 +22,21 @@
         <tr>
             <th scope="col">Practitioner</th>
             <th scope="col"></th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr>
             <th scope="row">Gino</th>
             <td>
-                <button type="button" class="btn btn-block btn-personal">Book Now</button>
+                <button type="button" class="btn btn-block btn-personal">Book now</button>
             </td>
         </tr>
         </tbody>
     </table>
 
     <p class="lead mt-4 mx-4" style="text-align: center">
-            ..or to a specialist using the "Search Menu" to choose the specialization.
+        ..or to a specialist using the "Search Menu" to choose the specialization.
     </p>
 
     <form action="search_specialization" method="POST">
@@ -61,21 +62,21 @@
             <th scope="row">Mario Rossi</th>
             <td>Cardiology</td>
             <td>
-                <button type="button" class="btn btn-block btn-personal">Book Now</button>
+                <button type="button" class="btn btn-block btn-personal">Book now</button>
             </td>
         </tr>
         <tr>
             <th scope="row">Luigi Verdi</th>
             <td>Endocrinology</td>
             <td>
-                <button type="button" class="btn btn-block btn-personal">Book Now</button>
+                <button type="button" class="btn btn-block btn-personal">Book now</button>
             </td>
         </tr>
         <tr>
             <th scope="row">Veronica Bianchi</th>
             <td>Neurology</td>
             <td>
-                <button type="button" class="btn btn-block btn-personal">Book Now</button>
+                <button type="button" class="btn btn-block btn-personal">Book now</button>
             </td>
         </tr>
         </tbody>

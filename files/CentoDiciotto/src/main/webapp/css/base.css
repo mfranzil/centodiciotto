@@ -79,6 +79,15 @@ body {
 }
 
 @media (max-width: 991.8px) {
+    .table {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .container {
+        overflow-x: auto;
+    }
+
     .landscape-logo {
         display: none;
     }
