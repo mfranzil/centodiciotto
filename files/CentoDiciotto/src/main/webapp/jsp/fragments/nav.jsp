@@ -48,17 +48,9 @@
                        href="${pageContext.request.contextPath}/restricted/citizen/book_your_exam">Book your Exam</a>
                 </div>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link nav-link-personal dropdown-toggle"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Visits
-                </a>
-                <div class="dropdown-menu nav-personal">
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/citizen/visit_history">Visit History</a>
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/citizen/book_your_visit">Book your Visit</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/citizen/visits">Visits</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal">

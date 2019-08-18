@@ -19,7 +19,7 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
-        <h1>My patients</h1>
+        <h1>My Patients</h1>
         <p class="lead mt-4 mx-4">
             Click on a patient to get more information, including past visits, exams and prescriptions.
         </p>
@@ -39,6 +39,16 @@
                     </div>
                 </form>
                 <table class="table table-hover" id="table-select">
+                    <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">SSN</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
                                  alt="">
@@ -47,7 +57,7 @@
                         <td>Franzil</td>
                         <td>FRNMTT98E20I452H</td>
                         <td>
-                            <button class="btn btn-personal popup-opener">
+                            <button type="button" class="btn btn-block btn-personal popup-opener">
                                 Patient data
                             </button>
                             <div class="popup_window">
@@ -132,11 +142,12 @@
                         <td>Marcolini</td>
                         <td>MRCLSS98C65L781O</td>
                         <td>
-                            <button class="btn btn-personal">
+                            <button type="button" class="btn btn-block btn-personal popup-opener">
                                 Patient data
                             </button>
                         </td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

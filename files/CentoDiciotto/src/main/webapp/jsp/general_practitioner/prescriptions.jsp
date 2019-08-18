@@ -23,10 +23,11 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
-        <h1>My patients</h1>
+        <h1>Prescription</h1>
         <p class="lead mt-4 mx-4">
             For each patient, you can assign exams and drugs.<br> QUESTA PAGINA E' DA FINIRE; DIPENDE SE LA SINGOLA
             PRESCRIZIONE DIPENDE DALLA VISITA OPPURE E' INDIPENDENTE (forse la seconda)
+            - LA SCELTA E' PER ORA SU INDIPENDENTE, e la pagina di conseguenza
         </p>
     </div>
 </div>
@@ -44,7 +45,7 @@
                         <td>Franzil</td>
                         <td>FRNMTT98E20I452H</td>
                         <td>
-                            <button class="btn btn-personal popup-opener">
+                            <button class="btn btn-block btn-personal popup-opener">
                                 Exam prescription
                             </button>
                             <div class="popup_window">
@@ -78,7 +79,7 @@
                             </div>
                         </td>
                         <td>
-                            <button class="btn btn-personal popup-opener">
+                            <button class="btn btn-block btn-personal popup-opener">
                                 Drug prescription
                             </button>
                         </td>
@@ -91,12 +92,12 @@
                         <td>Marcolini</td>
                         <td>MRCLSS98C65L781O</td>
                         <td>
-                            <button class="btn btn-personal">
+                            <button class="btn btn-block btn-personal popup-opener">
                                 Exam prescription
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-personal">
+                            <button class="btn btn-block btn-personal popup-opener">
                                 Drug prescription
                             </button>
                         </td>
