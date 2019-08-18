@@ -58,15 +58,14 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = userDao.getByEmailAndPassword(email, password);
-
             // LA SEGUENTE CAGATA E' TEMPORANEA
-            if (user == null) {
-                request.setAttribute("errorMessage", "Invalid username or password.");
+
+            if (user == null || !user.getRole().equals(role)) {
+                request.setAttribute("loginResult", true);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
             } else {
                 request.getSession().setAttribute("user", user);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
-                log(contextPath);
                /* } else {
                     response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping.lists.html?id=" + user.getId()));
                 }*/
