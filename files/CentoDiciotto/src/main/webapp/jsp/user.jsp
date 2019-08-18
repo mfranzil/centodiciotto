@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>User_table - CentoDiciotto</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <title>My profile - CentoDiciotto</title>
+    <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/user.js"></script>
 </head>
 <body>
-<%@ include file="/jsp/nav.jsp" %>
+<%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="jumbotron">
     <h2 class="my-4">
         Welcome, <%= user.getFirstName() %>.
@@ -22,23 +22,22 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md-6">
-                <% if (role.equals("citizen")) { %>
                 <h3 class="my-4">
-                    Citizen information
+                    My information
                 </h3>
                 <!-- Sta parte va modificata in maniera dinamica! -->
                 <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
                     <tr>
                         <th>Name</th>
-                        <td>Matteo</td>
+                        <td><%= user.getFirstName() %></td>
                     </tr>
                     <tr>
                         <th>Surname</th>
-                        <td>Franzil</td>
+                        <td><%= user.getLastName() %></td>
                     </tr>
                     <tr>
                         <th>E-mail</th>
-                        <td>rewqasdfcxz11@gmail.com</td>
+                        <td><%= user.getEmail() %></td>
                     </tr>
                     <tr>
                         <th>SSN</th>
@@ -60,6 +59,7 @@
                         <th>Gender</th>
                         <td>Male</td>
                     </tr>
+                    <% if (role.equals("citizen")) { %>
                     <tr>
                         <th>Practitioner</th>
                         <td>Francesca Annibaletti</td>
@@ -68,12 +68,8 @@
                         <th>Profile photo history</th>
                         <td>...DROPDOWN</td>
                     </tr>
+                    <% } %>
                 </table>
-                <% } else { %>
-                <h3 class="my-4">
-                    Info da aggiungere...
-                </h3>
-                <% } %>
             </div>
             <div class="col-md-6">
                 <h3 class="my-4">
@@ -114,4 +110,5 @@
         </div>
     </div>
 </div>
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

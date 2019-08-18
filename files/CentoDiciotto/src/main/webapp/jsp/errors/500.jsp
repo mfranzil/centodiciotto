@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <title>500 Internal Server Error - CentoDiciotto</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <%@ include file="/jsp/fragments/head.jsp" %>
     <script type="text/javascript">
         function loadDomain() {
             var display = document.getElementById("display-domain");
@@ -12,7 +12,7 @@
     </script>
 </head>
 <body onload="loadDomain();">
-<%@ include file="/jsp/nav.jsp" %>
+<%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
         <h1>500: Internal Server Error</h1>
@@ -49,4 +49,5 @@
     </div>
 </div>
 </body>
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </html>

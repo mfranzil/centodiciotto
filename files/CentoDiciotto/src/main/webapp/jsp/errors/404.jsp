@@ -3,10 +3,10 @@
 <html lang="en">
 <head>
     <title>404 Not Found - CentoDiciotto</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <%@ include file="/jsp/fragments/head.jsp" %>
 </head>
 <body>
-<%@ include file="/jsp/nav.jsp" %>
+<%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
         <h1>404: Not Found</h1>
@@ -32,4 +32,5 @@
     </div>
 </div>
 </body>
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </html>

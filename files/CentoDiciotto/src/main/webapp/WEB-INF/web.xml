@@ -43,24 +43,35 @@
         <url-pattern>/restricted/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
+
     <!-- Listener -->
     <listener>
         <description>ServletContextListener</description>
         <listener-class>it.unitn.web.centodiciotto.listeners.WebAppContextListener</listener-class>
     </listener>
-    <!-- Servlet: mapping nome-classe -->
+
+    <!-- Servlet: mapping nome-pading jsp -->
     <servlet>
         <servlet-name>LoginPage</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
+        <jsp-file>/jsp/login.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>UserPage</servlet-name>
-        <jsp-file>/user.jsp</jsp-file>
+        <jsp-file>/jsp/user.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>ForgotPasswordPage</servlet-name>
-        <jsp-file>/password_recovery.jsp</jsp-file>
+        <jsp-file>/jsp/password_recovery.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>Cookies</servlet-name>
+        <jsp-file>/jsp/cookies.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>Privacy</servlet-name>
+        <jsp-file>/jsp/privacy.jsp</jsp-file>
+    </servlet>
+    <!-- Citizen -->
     <servlet>
         <servlet-name>ExamHistory</servlet-name>
         <jsp-file>/jsp/citizen/exam_history.jsp</jsp-file>
@@ -81,6 +92,21 @@
         <servlet-name>UnhappyPractitioner</servlet-name>
         <jsp-file>/jsp/citizen/unhappy_practitioner.jsp</jsp-file>
     </servlet>
+    <!-- General practitioner -->
+    <servlet>
+        <servlet-name>MyPatientsPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/patients.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>VisitsPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/visits.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>PrescriptionsPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/prescriptions.jsp</jsp-file>
+    </servlet>
+
+    <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
@@ -101,7 +127,9 @@
         <servlet-name>SendEmailServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.SendEmailServlet</servlet-class>
     </servlet>
-    <!-- Mapping dei servlet (ovvero con che path accedo a quella JSP/servlet) -->
+
+    <!-- Mapping dei servlet, da nome a effettivo url. -->
+    <!-- Pagine accessibili a tutti -->
     <servlet-mapping>
         <servlet-name>LoginPage</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -114,7 +142,15 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login_handler</url-pattern>
     </servlet-mapping>
-    <!-- PAGINE RESTRICTED, COMUNI A TUTTI I RUOLI -->
+    <servlet-mapping>
+        <servlet-name>Cookies</servlet-name>
+        <url-pattern>/cookies</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Privacy</servlet-name>
+        <url-pattern>/privacy</url-pattern>
+    </servlet-mapping>
+    <!-- Pagine restricted, comuni a tutti i ruoli -->
     <servlet-mapping>
         <servlet-name>UserPage</servlet-name>
         <url-pattern>/restricted/user</url-pattern>
@@ -135,7 +171,7 @@
         <servlet-name>SendEmailServlet</servlet-name>
         <url-pattern>/restricted/send_mail_handler</url-pattern>
     </servlet-mapping>
-    <!-- CITIZEN -->
+    <!-- Citizen -->
     <servlet-mapping>
         <servlet-name>ExamHistory</servlet-name>
         <url-pattern>/restricted/citizen/exam_history</url-pattern>
@@ -156,7 +192,21 @@
         <servlet-name>UnhappyPractitioner</servlet-name>
         <url-pattern>/restricted/citizen/unhappy_practitioner</url-pattern>
     </servlet-mapping>
-    <!-- Devo ancora capire cosa sia sta roba -->
+    <!-- Practitioner -->
+    <servlet-mapping>
+        <servlet-name>MyPatientsPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/patients</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VisitsPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/visits</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PrescriptionsPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/prescriptions</url-pattern>
+    </servlet-mapping>
+
+    <!-- Config aggiuntive e pagine di errore -->
     <session-config>
         <session-timeout>
             30
@@ -164,10 +214,26 @@
     </session-config>
     <error-page>
         <error-code>500</error-code>
-        <location>/500.jsp</location>
+        <location>/jsp/errors/500.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/jsp/errors/403.jsp</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/404.jsp</location>
+        <location>/jsp/errors/404.jsp</location>
     </error-page>
+
+    <!-- Blocco l'accesso diretto alle jsp -->
+    <security-constraint>
+        <display-name>JSP direct access block</display-name>
+        <web-resource-collection>
+            <web-resource-name>JSP</web-resource-name>
+            <url-pattern>/jsp/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>No direct access</description>
+        </auth-constraint>
+    </security-constraint>
 </web-app>

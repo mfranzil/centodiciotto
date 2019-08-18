@@ -9,41 +9,47 @@
 <html lang="en">
 <head>
     <title>Login - CentoDiciotto</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
 </head>
 <body>
-<%@ include file="/jsp/nav.jsp" %>
+<%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
         <h1>Login as...</h1>
     </div>
+    <div style="text-align: center; display: flex; flex-wrap: wrap">
+        <div class="hover-button focused" id="citizen" onclick="openMenu(this.id)">
+            <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/citizen.png"
+                 style="width: 128px">
+            <br>Citizen
+        </div>
+        <div class="hover-button focused" id="general_practitioner" onclick="openMenu(this.id)">
+            <img alt="General practitioner" class="mb-2"
+                 src="${pageContext.request.contextPath}/img/classes/general_practitioner.png" style="width: 128px;">
+            <br>General practitioner
+        </div>
+        <div class="hover-button focused" id="specialized_doctor" onclick="openMenu(this.id)">
+            <img alt="Specialized doctor" class="mb-2"
+                 src="${pageContext.request.contextPath}/img/classes/specialized_doctor.png" style="width: 128px;">
+            <br>Specialized doctor
+        </div>
+        <div class="hover-button focused" id="chemist" onclick="openMenu(this.id)">
+            <img alt="Chemist's" class="mb-2" src="${pageContext.request.contextPath}/img/classes/chemist.png"
+                 style="width: 128px;">
+            <br>Chemist's
+        </div>
+        <div class="hover-button focused" id="health_service" onclick="openMenu(this.id)">
+            <img alt="Health Service" class="mb-2"
+                 src="${pageContext.request.contextPath}/img/classes/health_service.png"
+                 style="width: 128px;">
+            <br>Health Service
+        </div>
+    </div>
 </div>
-<div style="text-align: center; display: flex; overflow: fragments; flex-wrap: wrap; padding-left: 10vh; padding-right: 10vh">
-    <div class="hover-button focused" id="citizen" onclick="openMenu(this.id)">
-        <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/citizen.png" style="width: 128px">
-        <br>Citizen
-    </div>
-    <div class="hover-button focused" id="general_practitioner" onclick="openMenu(this.id)">
-        <img alt="General practitioner" class="mb-2" src="${pageContext.request.contextPath}/img/classes/general_practitioner.png" style="width: 128px;">
-        <br>General practitioner
-    </div>
-    <div class="hover-button focused" id="specialized_doctor" onclick="openMenu(this.id)">
-        <img alt="Specialized doctor" class="mb-2" src="${pageContext.request.contextPath}/img/classes/specialized_doctor.png" style="width: 128px;">
-        <br>Specialized doctor
-    </div>
-    <div class="hover-button focused" id="chemist" onclick="openMenu(this.id)">
-        <img alt="Chemist's" class="mb-2" src="${pageContext.request.contextPath}/img/classes/chemist.png" style="width: 128px;">
-        <br>Chemist's
-    </div>
-    <div class="hover-button focused" id="health_service" onclick="openMenu(this.id)">
-        <img alt="Health Service" class="mb-2" src="${pageContext.request.contextPath}/img/classes/health_service.png" style="width: 128px;">
-        <br>Health Service
-    </div>
-</div>
-<div class="login_modal" id="form_window">
-    <form action="login_handler" class="login animate-in" id="form" method="POST">
+<div class="popup_window" id="form_window">
+    <form action="login_handler" class="popup animate-in" id="form" method="POST">
         <div style="width: 100%; text-align:center;">
             <img id="form_image" style="width: 32px" src="" alt="...">
         </div>
@@ -52,7 +58,8 @@
         </div>
         <input name="role" id="role" type="hidden" value="none">
         <div class="form-label-group">
-            <input autofocus class="form-control" id="username" name="username" placeholder="Username" required type="email">
+            <input autofocus class="form-control" id="username" name="username" placeholder="Username" required
+                   type="email">
             <label for="username">
                 Username
             </label>
@@ -76,4 +83,5 @@
     </form>
 </div>
 </body>
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </html>

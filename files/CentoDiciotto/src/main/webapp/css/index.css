@@ -1,6 +1,43 @@
+/* Spaziature extra per la home page */
+
 .container {
     padding: 40px 0;
 }
+
+.page-section,.masthead {
+    width: 100%;
+}
+
+.masthead, .body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+@media (max-width: 991.8px) {
+    .container.h-100 {
+        overflow-x: hidden;
+    }
+}
+
+
+/* Il footer fa cagare con quei colori in home page, va cambiato. */
+
+footer > .container {
+    padding: 0;
+}
+
+footer {
+    background: none !important;
+    color: rgb(var(--118-dark)) !important;
+    margin-top: 0 !important;
+}
+
+footer a {
+    color: rgb(var(--118-dark)) !important;
+    font-weight: bold !important;
+}
+
+/* Il css seguente è preso da un template. */
 
 #portfolio .container-fluid {
     max-width: 1920px;

@@ -2,11 +2,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>User_table - CentoDiciotto</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <title>Unhappy with your practitioner? - CentoDiciotto</title>
+    <%@ include file="/jsp/fragments/head.jsp" %>
+    <script>
+        $("document").ready(function () {
+            $('#table-select tr').click(function () {
+                $(this).find('input[type=radio]').prop('checked', true);
+                $('#submit').removeAttr("disabled");
+            });
+        });
+    </script>
 </head>
 <body>
-<%@ include file="/jsp/nav.jsp" %>
+<%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
         <h1>Unhappy with your practitioner?</h1>
@@ -24,8 +32,7 @@
                 <h3 class="my-4">
                     Your general practitioner
                 </h3>
-                <table class="table" style="margin: auto; overflow-wrap: break-word; table-layout: fixed;
-                background-color: rgba(120,255,120,0.3)">
+                <table class="table" style="background-color: rgba(120,255,120,0.3)">
                     <tr>
                         <td>Francesca</td>
                         <td>Annibaletti</td>
@@ -46,18 +53,18 @@
                             I want to change my practitioner
                         </button>
                     </div>
-                    <table class="table table-hover" id="table-select" style="margin: auto; overflow-wrap: break-word; table-layout: fixed;">
+                    <table class="table table-hover" id="table-select">
                         <tr>
                             <td>Simone</td>
                             <td>Nascivera</td>
                             <td>SASSARI SS</td>
-                            <td><input type="radio" name="practitioner" value="VALOREDAMETTERE1"><br></td>
+                            <td><input type="radio" name="practitioner" value="VALOREDAMETTERE1"></td>
                         </tr>
                         <tr>
                             <td>Alessia</td>
                             <td>Marcolini</td>
                             <td>SASSARI SS</td>
-                            <td><input type="radio" name="practitioner" value="VALOREDAMETTERE2"><br></td>
+                            <td><input type="radio" name="practitioner" value="VALOREDAMETTERE2"></td>
                         </tr>
                     </table>
                 </form>
@@ -65,12 +72,5 @@
         </div>
     </div>
 </div>
-<script>
-    $("document").ready(function () {
-        $('#table-select tr').click(function () {
-            $(this).find('input[type=radio]').prop('checked', true);
-            $('#submit').removeAttr("disabled");
-        });
-    });
-</script>
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

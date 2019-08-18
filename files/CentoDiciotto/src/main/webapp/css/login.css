@@ -1,27 +1,3 @@
-.login_modal { /* Finestra di login */
-    display: none;
-    position: fixed;
-    z-index: 3;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    --input-padding-x: .75rem;
-    --input-padding-y: .35rem;
-}
-
-.login { /* Finestra effettiva di login, senza sfondo */
-    background-color: rgb(var(--118-light));
-    border-radius: 10px;
-    margin: 150px auto;
-    width: 100%;
-    max-width: 420px;
-    padding: 15px;
-}
-
 /* Bottoni dei vari utenti */
 
 .hover-button {
@@ -41,35 +17,6 @@
     border-radius: 10px;
 }
 
-.animate-in {
-    -webkit-animation: animate-zoom-in 0.6s;
-    animation: animate-zoom-in 0.6s
-}
-
-.animate-out {
-    -webkit-animation: animate-zoom-out 0.4s;
-    animation: animate-zoom-out 0.4s;
-}
-
-@-webkit-keyframes animate-zoom-in {
-    from {
-        -webkit-transform: scale(0)
-    }
-    to {
-        -webkit-transform: scale(1)
-    }
-}
-
-@keyframes animate-zoom-in {
-    from {
-        -webkit-transform: scale(0);
-        transform: scale(0)
-    }
-    to {
-        -webkit-transform: scale(1);
-        transform: scale(1)
-    }
-}
 
 .form-label-group {
     position: relative;

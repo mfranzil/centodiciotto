@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <title>CentoDiciotto - Home</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet">
     <!-- Plugin CSS e JS, presi dal template -->
     <link href="${pageContext.request.contextPath}/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
@@ -11,8 +11,8 @@
     <script src="${pageContext.request.contextPath}/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 </head>
 <body id="page-top" style="padding-top: 0"> <!-- COZZA CON LA NAVBAR! Non toccare a meno che non sistemiate la nav -->
-<%@ include file="/jsp/nav.jsp" %>
-<!-- Masthead -->
+<%@ include file="/jsp/fragments/nav.jsp" %>
+                                            <!-- Masthead -->
 <header class="masthead">
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
@@ -31,7 +31,7 @@
     </div>
 </header>
 
-<!-- About Section -->
+                                            <!-- About Section -->
 <section class="page-section bg-118-medium-dark" id="about">
     <div class="container">
         <div class="row justify-content-center mx-4">
@@ -47,7 +47,7 @@
     </div>
 </section>
 
-<!-- Portfolio Section -->
+                                            <!-- Portfolio Section -->
 <section id="portfolio">
     <div class="container-fluid p-0">
         <div class="row no-gutters">
@@ -133,7 +133,7 @@
     </div>
 </section>
 
-<!-- Call to Action Section -->
+                                            <!-- Call to Action Section -->
 <section class="page-section bg-118-medium-dark text-white">
     <div class="container text-center">
         <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
@@ -145,14 +145,6 @@
         <% }%>
     </div>
 </section>
-
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="small text-center text-muted pl-4 pr-4">Copyright &copy; 2019 - Francesca Annibaletti, Matteo
-                                                            Franzil, Alessia Marcolini, Simone Nascivera
-        </div>
-    </div>
-</footer>
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </body>
 </html>

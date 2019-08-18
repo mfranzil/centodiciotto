@@ -1,3 +1,5 @@
+/* Dichiarazioni dei colori */
+
 :root {
     --118-light: 230, 247, 255;
     --118-medium-light: 135, 217, 255;
@@ -21,13 +23,40 @@ body {
     overflow-x: hidden;
 }
 
-/* NAVBAR */
+/* Allineamenti delle tabelle generici, spaziature per mobile */
 
-.current { /* Evidenzia il link corrente */
+.table td, .table th {
+    vertical-align: middle !important;
+}
+
+.row {
+    align-items: center !important;
+}
+
+.row > div {
+    overflow-wrap: break-word;
+}
+
+@media (max-width: 991.8px) {
+    .table {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .container {
+        overflow-x: auto;
+    }
+}
+
+/* Evidenzia il link corrente ovunque */
+
+.current {
     font-weight: bold !important;
     pointer-events: none;
     cursor: default;
 }
+
+/* Navbar */
 
 .nav-personal {
     top: 0;
@@ -59,6 +88,8 @@ body {
     padding-right: 1rem;
 }
 
+/* Dropdown della navbar; si comporta diversamente a seconda della dimensione */
+
 .dropdown-item:hover {
     background-color: rgba(var(--118-dark), 1);
 }
@@ -67,32 +98,25 @@ body {
     cursor: pointer;
 }
 
+/* Dichiarazioni extra per la navbar e i layout mobile (logo in orizzontale, padding, etc...) */
+
 @media (min-width: 992px) {
     .landscape-logo {
         height: 30px;
         margin-right: 5px;
     }
 
-    .dropdown-menu {
+    .dropdown-menu.nav-personal {
         margin-top: 2.5rem;
     }
 }
 
 @media (max-width: 991.8px) {
-    .table {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .container {
-        overflow-x: auto;
-    }
-
     .landscape-logo {
         display: none;
     }
 
-    .dropdown-menu {
+    .dropdown-menu.nav-personal {
         background: none;
         border: none;
         box-shadow: none;
@@ -116,6 +140,8 @@ body {
     transition: all ease 0.5s;
     vertical-align: .128em !important;
 }
+
+/* Bottone logo della navbar */
 
 .navbar-logo, .landscape-logo {
     height: 38px;
@@ -147,10 +173,19 @@ body {
     object-fit: cover;
 }
 
+.avatar-small {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: auto;
+    object-fit: cover;
+}
+
+/* Titolone di ogni pagina */
+
 .jumbotron {
     font-size: 21px;
     font-weight: 200;
-    /*line-height: 2.1428571435;*/
     color: inherit;
     margin-bottom: 0;
     padding: 1rem !important;
@@ -158,15 +193,7 @@ body {
     background-color: transparent !important;
 }
 
-.masthead, .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-.jumbotron .btn {
-    font-size: 21px;
-    padding: 14px 24px;
-}
+/* Bottoni */
 
 .btn-personal {
     background-color: rgba(var(--118-medium-dark), 1);
@@ -186,7 +213,77 @@ body {
     white-space: nowrap;
 }
 
-/* Colors */
+/* Popup */
+.popup_window { /* Finestra di login */
+    display: none;
+    position: fixed;
+    z-index: 3;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    --input-padding-x: .75rem;
+    --input-padding-y: .35rem;
+}
+
+.popup {
+    background-color: rgb(var(--118-light));
+    border-radius: 10px;
+}
+
+@media (min-width: 992px) {
+    .popup {
+        max-height: 500px;
+        width: 600px;
+        padding: 20px;
+        margin-top: -250px;
+        margin-left: -300px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+    }
+}
+
+@media (max-width: 991.8px) {
+    .popup {
+        width: 100%;
+        padding: 2rem;
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+}
+
+/* Animazione del popup */
+
+.animate-in {
+    -webkit-animation: animate-zoom-in 0.6s;
+    animation: animate-zoom-in 0.6s
+}
+
+@-webkit-keyframes animate-zoom-in {
+    from {
+        -webkit-transform: scale(0)
+    }
+    to {
+        -webkit-transform: scale(1)
+    }
+}
+
+@keyframes animate-zoom-in {
+    from {
+        -webkit-transform: scale(0);
+        transform: scale(0)
+    }
+    to {
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+/* Colori */
 
 .green {
     color: #5cb85c;

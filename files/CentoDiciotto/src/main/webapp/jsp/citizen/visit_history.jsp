@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>User_table - CentoDiciotto</title>
-    <%@ include file="/jsp/head.jsp" %>
+    <title>Visit history - CentoDiciotto</title>
+    <%@ include file="/jsp/fragments/head.jsp" %>
 </head>
 <body>
-<%@ include file="/jsp/nav.jsp" %>
+<%@ include file="/jsp/fragments/nav.jsp" %>
 
 <div class="jumbotron mt-4">
     <h1>Visit History</h1>
@@ -58,5 +58,5 @@
         </tbody>
     </table>
 </div>
-
+<%@ include file="/jsp/fragments/foot.jsp" %>
 </body>
