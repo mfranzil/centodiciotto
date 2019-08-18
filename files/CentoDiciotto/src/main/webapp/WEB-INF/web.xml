@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <param-name>dburl</param-name>
-        <param-value>jdbc:derby:C:\Users\matte\OneDrive\Università\Didattica\ProgettoWeb\files\CentoDiciotto\sl.db</param-value>
+        <param-value>jdbc:derby:/Users/francescaannibaletti/Desktop/centodiciotto/files/CentoDiciotto/sl.db</param-value>
     </context-param>
     <context-param>
         <description>The path where the user avatar images are stored.</description>
@@ -104,6 +104,14 @@
     <servlet>
         <servlet-name>PrescriptionsPractitioner</servlet-name>
         <jsp-file>/jsp/general_practitioner/prescriptions.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>VisitsHistoryPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/visit_history.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>VisitsCalendaryPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/visit_calendary.jsp</jsp-file>
     </servlet>
 
     <!-- Mapping dei servlet alle classi effettive -->
@@ -204,6 +212,14 @@
     <servlet-mapping>
         <servlet-name>PrescriptionsPractitioner</servlet-name>
         <url-pattern>/restricted/general_practitioner/prescriptions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VisitsHistoryPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/visit_history</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VisitsCalendaryPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/visit_calendary</url-pattern>
     </servlet-mapping>
 
     <!-- Config aggiuntive e pagine di errore -->

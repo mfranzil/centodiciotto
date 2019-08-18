@@ -86,11 +86,19 @@
                     My patients
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">
-                    Visits and requests
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-link-personal dropdown-toggle"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Visits and Request
                 </a>
+                <div class="dropdown-menu nav-personal">
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">Requests</a>
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendary">Calendary</a>
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history">History</a>
+                </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal"
