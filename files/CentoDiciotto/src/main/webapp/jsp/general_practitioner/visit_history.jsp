@@ -20,13 +20,18 @@
     <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
         <thead>
         <tr>
+            <th scope="col">&nbsp;</th>
             <th scope="col">Patient</th>
             <th scope="col">Date</th>
-            <th scope="col">Insert report</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr>
+            <td>
+                <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                     alt="">
+            </td>
             <th scope="row">Renato Lo Cigno</th>
             <td>20/07/2019</td>
             <td>
@@ -34,6 +39,10 @@
             </td>
         </tr>
         <tr>
+            <td>
+                <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                     alt="">
+            </td>
             <th scope="row">Anneliese De Franceschi</th>
             <td>18/07/2019</td>
             <td>

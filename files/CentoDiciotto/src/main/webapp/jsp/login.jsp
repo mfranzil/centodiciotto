@@ -12,7 +12,8 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
-    <%--<% if (request.getAttribute("loginResult") != null && request.getAttribute("loginResult") == "true") {%>
+    <script src="${pageContext.request.contextPath}/js/popup.js"></script>
+<%--<% if (request.getAttribute("loginResult") != null && request.getAttribute("loginResult") == "true") {%>
     <script>
         alert("Invalid username or password, please try again.");
     </script>

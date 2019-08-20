@@ -15,26 +15,11 @@
     </p>
 </div>
 
-<div class="container">
-
-    <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
-        <thead>
-        <tr>
-            <th scope="col">Practitioner</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">Gino</th>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">Book now</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
+<div style="text-align: center; " class="container">
+    <div style="width: 50%; margin: auto">
+        <h4>Gino Perna</h4>
+        <button type="button" class="btn btn-block btn-personal">Book now</button>
+    </div>
 </div>
 
 <div class="jumbotron mt-4">
@@ -57,7 +42,7 @@
         </thead>
         <tbody>
         <tr>
-            <td>Gino</td>
+            <th scope="row">Gino</th>
             <td>23/07/2019</td>
             <td>Not available</td>
             <td>
@@ -65,7 +50,7 @@
             </td>
         </tr>
         <tr>
-            <td>Luigi Verdi</td>
+            <th scope="row">Luigi Verdi</th>
             <td>02/03/2018</td>
             <td>Available</td>
             <td>
@@ -73,7 +58,7 @@
             </td>
         </tr>
         <tr>
-            <td>Luigi Verdi</td>
+            <th scope="row">Luigi Verdi</th>
             <td>23/09/2017</td>
             <td>Available</td>
             <td>

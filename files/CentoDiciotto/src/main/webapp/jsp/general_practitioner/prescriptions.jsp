@@ -4,14 +4,9 @@
 <head>
     <title>My patients - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/popup.js"></script>
     <script>
         $("document").ready(function () {
-            $(".popup-opener").click(function () {
-                $(this).next().show();
-            });
-            $(".popup-closer").click(function () {
-                $(".popup_window").hide();
-            });
             $('#table-select tr').click(function () {
                 $(this).find('input[type=radio]').prop('checked', true);
                 $('#submit').removeAttr("disabled");
@@ -36,13 +31,21 @@
         <div class="row">
             <div class="col-md">
                 <table class="table table-hover" id="table-select">
+                    <thead>
+                    <tr>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">Patient</th>
+                        <th scope="col">SSN</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>
                             <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
                                  alt="">
                         </td>
-                        <td>Matteo</td>
-                        <td>Franzil</td>
+                        <th scope="row">Matteo Franzil</th>
                         <td>FRNMTT98E20I452H</td>
                         <td>
                             <button class="btn btn-block btn-personal popup-opener">
@@ -88,8 +91,7 @@
                         <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
                                  alt="">
                         </td>
-                        <td>Alessia</td>
-                        <td>Marcolini</td>
+                        <th scope="row">Alessia Marcolini</th>
                         <td>MRCLSS98C65L781O</td>
                         <td>
                             <button class="btn btn-block btn-personal popup-opener">
@@ -102,6 +104,7 @@
                             </button>
                         </td>
                     </tr>
+                    </tbody>
                 </table>
             </div>
         </div>

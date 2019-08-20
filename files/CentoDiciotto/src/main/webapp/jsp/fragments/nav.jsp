@@ -87,7 +87,7 @@
                     <a class="dropdown-item nav-link-personal"
                        href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">Requests</a>
                     <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendary">Calendary</a>
+                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar">Calendar</a>
                     <a class="dropdown-item nav-link-personal"
                        href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history">History</a>
                 </div>
@@ -107,13 +107,13 @@
         </ul>
     </div>
     <div id="log-menu-closed">
-        <div id="nav-log" class="nav-item" style="padding: 0; display: flex;">
+        <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/user">
                 Hi <%= user.getFirstName() %>!
             </a>
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">
                 Logout
-                <img src="${pageContext.request.contextPath}/img/logout_white.png" style="height: 24px;" alt="">
+                <img src="${pageContext.request.contextPath}/img/logout_white.png" style="height: 20px;" alt="">
             </a>
         </div>
     </div>
@@ -129,10 +129,10 @@
     </div>
 
     <div id="log-menu-closed">
-        <div id="nav-log" class="nav-item" style="padding: 0">
+        <div id="nav-log" class="nav-item">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
                 Login
-                <img src="${pageContext.request.contextPath}/img/login_white.png" style="height: 24px;" alt="">
+                <img src="${pageContext.request.contextPath}/img/login_white.png" style="height: 20px;" alt="">
             </a>
         </div>
     </div>

@@ -4,16 +4,7 @@
 <head>
     <title>Visits - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-    <script>
-        $("document").ready(function () {
-            $(".popup-opener").click(function () {
-                $(this).next().show();
-            });
-            $(".popup-closer").click(function () {
-                $(".popup_window").hide();
-            });
-        });
-    </script>
+    <script src="${pageContext.request.contextPath}/js/popup.js"></script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -32,9 +23,8 @@
                 <table class="table table-hover" id="table-select">
                     <thead>
                     <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Surname</th>
+                        <th scope="col">&nbsp;</th>
+                        <th scope="col">Patient</th>
                         <th scope="col">SSN</th>
                         <th scope="col"></th>
                     </tr>
@@ -44,8 +34,7 @@
                         <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
                                  alt="">
                         </td>
-                        <td>Matteo</td>
-                        <td>Franzil</td>
+                        <th scope="row">Matteo Franzil</th>
                         <td>FRNMTT98E20I452H</td>
                         <td>
                             <button class="btn btn-block btn-personal popup-opener">
@@ -67,8 +56,7 @@
                         <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
                                  alt="">
                         </td>
-                        <td>Alessia</td>
-                        <td>Marcolini</td>
+                        <th scope="row">Alessia Marcolini</th>
                         <td>MRCLSS98C65L781O</td>
                         <td>
                             <button class="btn btn-block btn-personal popup-opener">

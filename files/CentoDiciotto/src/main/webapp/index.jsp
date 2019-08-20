@@ -138,10 +138,14 @@
     <div class="container text-center">
         <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
         <h2 class="mb-4 mx-4">Visit your profile now.</h2>
-        <a class="btn btn-light btn-xl" href="${pageContext.request.contextPath}/restricted/user">Go to my profile</a>
+        <div style="width: 50%; margin: auto">
+            <a class="btn btn-light btn-block" href="${pageContext.request.contextPath}/restricted/user">Go to my profile</a>
+        </div>
         <% } else { %>
         <h2 class="mb-4 mx-4">Already a member? Get started now.</h2>
-        <a class="btn btn-light btn-xl" href="${pageContext.request.contextPath}/login">Login</a>
+        <div style="width: 50%; margin: auto">
+            <a class="btn btn-light btn-block" href="${pageContext.request.contextPath}/login">Login</a>
+        </div>
         <% }%>
     </div>
 </section>
