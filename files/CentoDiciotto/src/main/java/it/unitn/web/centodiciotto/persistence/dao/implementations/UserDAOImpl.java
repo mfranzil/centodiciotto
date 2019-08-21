@@ -11,12 +11,8 @@ import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
-    final private String INSERT_ALL = "INSERT INTO utenti (email, password, first_name, last_name, avatar_id) " +
-            "values (?, ?, ?, ?, ?);";
-    //final private String INSERT_TEST = "INSERT INTO utenti (email, password, first_name, last_name, avatar_id) " +
-    //        "values ('test', 'test', 'test', 'test', 1);";
+    final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
 
-    // TODO: insert without avatar_id
 
     @Override
     public void insert(User user) {
@@ -25,12 +21,9 @@ public class UserDAOImpl implements UserDAO {
             conn = DAOManager.getConnection();
             System.out.println("ok connection");
 
-            PreparedStatement preparedStatement = conn.prepareStatement(INSERT_ALL);
+            PreparedStatement preparedStatement = conn.prepareStatement(INSERT);
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getFirstName());
-            preparedStatement.setString(4, user.getLastName());
-            preparedStatement.setInt(5, user.getAvatarPathId());
 
             //PreparedStatement preparedStatement = conn.prepareStatement(INSERT_TEST);
             System.out.println("ok statement");
@@ -55,19 +48,15 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User getById(int user_id) {
+    public User getByEmail(String email) {
         return null;
     }
 
 
     public User mapRowToActor(ResultSet rs) throws SQLException {
         User user = new User(
-                rs.getInt("user_id"),
                 rs.getString("email"),
-                rs.getString("password"),
-                rs.getString("first_name"),
-                rs.getString("last_name"),
-                rs.getInt("avatar_id"));
+                rs.getString("password"));
         return user;
     }
 }

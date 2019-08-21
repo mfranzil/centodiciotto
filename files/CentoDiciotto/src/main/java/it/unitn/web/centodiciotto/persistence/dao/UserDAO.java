@@ -10,6 +10,6 @@ public interface UserDAO {
 
     public void delete(User user);
 
-    public User getById(int user_id);
+    public User getByEmail(String email);
 
 }
