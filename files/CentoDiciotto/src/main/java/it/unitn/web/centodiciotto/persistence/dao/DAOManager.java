@@ -5,12 +5,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import it.unitn.web.centodiciotto.persistence.dao.implementations.PatientDaoImpl;
 import it.unitn.web.centodiciotto.persistence.dao.implementations.UserDAOImpl;
 import org.ini4j.*;
 
 public class DAOManager {
 
     public UserDAO userDAO = new UserDAOImpl();
+    public PatientDAO patientDAO = new PatientDaoImpl();
 
 
     public static Connection initConn() {
