@@ -53,7 +53,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
 
-    public User mapRowToActor(ResultSet rs) throws SQLException {
+    public User mapRowToUser(ResultSet rs) throws SQLException {
         User user = new User(
                 rs.getString("email"),
                 rs.getString("password"));
