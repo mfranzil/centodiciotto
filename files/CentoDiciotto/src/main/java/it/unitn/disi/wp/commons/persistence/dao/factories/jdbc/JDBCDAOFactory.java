@@ -10,6 +10,9 @@ import it.unitn.disi.wp.commons.persistence.dao.DAO;
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.disi.wp.commons.persistence.dao.factories.DAOFactory;
 import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
+import org.ini4j.Wini;
+
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -32,58 +35,75 @@ public class JDBCDAOFactory implements DAOFactory {
     
     /**
      * Call this method before use the instance of this class.
-     * @param dbUrl the url to access to the database.
+     *
+     * @param ini_file the initialization file
      * @throws DAOFactoryException if an error occurred during dao factory
-     * configuration.
-     * 
+     *                             configuration.
      * @author Stefano Chirico
      * @since 1.0.0.190406
      */
-    public static void configure(String dbUrl) throws DAOFactoryException {
+    public static void configure(String ini_file) throws DAOFactoryException {
         if (instance == null) {
-            instance = new JDBCDAOFactory(dbUrl);
+            instance = new JDBCDAOFactory(ini_file);
         } else {
             throw new DAOFactoryException("DAOFactory already configured. You can call configure only one time");
         }
     }
-    
+
     /**
      * Returns the singleton instance of this {@link DAOFactory}.
+     *
      * @return the singleton instance of this {@code DAOFactory}.
      * @throws DAOFactoryException if an error occurred if this dao factory is
-     * not yet configured.
-     * 
+     *                             not yet configured.
      * @author Stefano Chirico
      * @since 1.0.0.190406
      */
     public static JDBCDAOFactory getInstance() throws DAOFactoryException {
         if (instance == null) {
-            throw new DAOFactoryException("DAOFactory not yet configured. Call DAOFactory.configure(String dbUrl) before use the class");
+            throw new DAOFactoryException("DAOFactory not yet configured. Call DAOFactory.configure(String ini_file) before use the class");
         }
         return instance;
     }
-    
+
     /**
      * The private constructor used to create the singleton instance of this
      * {@code DAOFactory}.
-     * @param dbUrl the url to access the database.
+     *
+     * @param ini_file the initialization file
      * @throws DAOFactoryException if an error occurred during {@code DAOFactory}
-     * creation.
-     * 
+     *                             creation.
      * @author Stefano Chirico
      * @since 1.0.0.190406
      */
-    private JDBCDAOFactory(String dbUrl) throws DAOFactoryException {
+    private JDBCDAOFactory(String ini_file) throws DAOFactoryException {
         super();
 
+        String url = null;
+        String username = null;
+        String password = null;
+
         try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver", true, getClass().getClassLoader());
+            Wini ini = new Wini(new File(ini_file));
+            String hostname = ini.get("database", "HostName");
+            String defaultDatabase = ini.get("database", "DefaultDatabase");
+
+            username = ini.get("database", "UserName");
+            password = ini.get("database", "Password");
+
+            url = "jdbc:postgresql://" + hostname + "/" + defaultDatabase;
+        } catch (Exception e) {
+            throw new RuntimeException("Error reading configuration file: " + e.getMessage());
+        }
+
+        try {
+            Class.forName("org.postgresql.Driver", true, getClass().getClassLoader());
         } catch (ClassNotFoundException cnfe) {
             throw new RuntimeException(cnfe.getMessage(), cnfe.getCause());
         }
 
         try {
-            CON = DriverManager.getConnection(dbUrl);
+            CON = DriverManager.getConnection(url, username, password);
         } catch (SQLException sqle) {
             throw new DAOFactoryException("Cannot create connection", sqle);
         }
@@ -93,14 +113,14 @@ public class JDBCDAOFactory implements DAOFactory {
 
     /**
      * Shutdowns the access to the storage system.
-     * 
+     *
      * @author Stefano Chirico
      * @since 1.0.0.190406
      */
     @Override
     public void shutdown() {
         try {
-            DriverManager.getConnection("jdbc:derby:;shutdown=true");
+            DriverManager.getConnection("jdbc:postgresql:;shutdown=true");
         } catch (SQLException sqle) {
             Logger.getLogger(JDBCDAOFactory.class.getName()).info(sqle.getMessage());
         }
@@ -115,7 +135,6 @@ public class JDBCDAOFactory implements DAOFactory {
      * @return the concrete {@code dao} which type is the class passed as
      * parameter.
      * @throws DAOFactoryException if an error occurred during the operation.
-     *
      * @author Stefano Chirico
      * @since 1.0.0.190406
      */
@@ -131,7 +150,7 @@ public class JDBCDAOFactory implements DAOFactory {
         
         try {
             Class daoClass = Class.forName(prefix + daoInterface.getSimpleName());
-            
+
             Constructor<DAO_CLASS> constructor = daoClass.getConstructor(Connection.class);
             DAO_CLASS daoInstance = constructor.newInstance(CON);
             if (!(daoInstance instanceof JDBCDAO)) {

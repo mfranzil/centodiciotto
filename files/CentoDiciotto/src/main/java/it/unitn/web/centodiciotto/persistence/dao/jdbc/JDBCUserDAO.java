@@ -1,159 +1,91 @@
-
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
 import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Logger;
 
-/**
- * The JDBC implementation of the {@link UserDAO} interface.
- *
- * @author Stefano Chirico &lt;stefano dot chirico at unitn dot it&gt;
- * @since 2019.05.19
- */
-public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
+public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
-    /**
-     * The default constructor of the class.
-     *
-     * @param con the connection to the persistence system.
-     * @author Stefano Chirico
-     * @since 1.0.0.190519
-     */
+    final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
+
     public JDBCUserDAO(Connection con) {
         super(con);
     }
 
-    /**
-     * Returns the number of {@link User users} stored on the persistence system
-     * of the application.
-     *
-     * @return the number of records present into the storage system.
-     * @throws DAOException if an error occurred during the information
-     *                      retrieving.
-     * @author Stefano Chirico
-     * @since 1.0.0.190519
-     */
+    @Override
+    public void insert(User user) {
+        try {
+            System.out.println("ok connection");
+
+            PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getPassword());
+
+            //PreparedStatement preparedStatement = conn.prepareStatement(INSERT_TEST);
+            System.out.println("ok statement");
+
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error inserting User: " + e.getMessage());
+        }
+        // Connection and Prepared Statement automatically closed
+    }
+
+    @Override
+    public User update(User user) {
+        return null;
+    }
+
+    @Override
+    public void delete(User user) {
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return null;
+    }
+
+
+    public User mapRowToUser(ResultSet rs) throws SQLException {
+        User user = new User(
+                rs.getString("email"),
+                rs.getString("password"));
+        return user;
+    }
+
     @Override
     public Long getCount() throws DAOException {
-        try (Statement stmt = CON.createStatement()) {
-            ResultSet counter = stmt.executeQuery("SELECT COUNT(*) FROM users");
-            if (counter.next()) {
-                return counter.getLong(1);
-            }
-
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to count users", ex);
-        }
-
-        return 0L;
+        return null;
     }
 
-    /**
-     * Returns the {@link User user} with the primary key equals to the one
-     * passed as parameter.
-     *
-     * @param primaryKey the {@code id} of the {@code user} to get.
-     * @return the {@code user} with the id equals to the one passed as
-     * parameter or {@code null} if no entities with that id are present into
-     * the storage system.
-     * @throws DAOException if an error occurred during the information
-     *                      retrieving.
-     * @author Stefano Chirico
-     * @since 1.0.0.190519
-     */
     @Override
-    public User getByPrimaryKey(Integer primaryKey) throws DAOException {
-        if (primaryKey == null) {
-            throw new DAOException("primaryKey is null");
-        }
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE id = ?")) {
-            stm.setInt(1, primaryKey);
-            try (ResultSet rs = stm.executeQuery()) {
-
-                rs.next();
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setFirstName(rs.getString("name"));
-                user.setLastName(rs.getString("lastname"));
-                user.setAvatarPath(rs.getString("avatar_path"));
-                user.setRole(rs.getString("role"));
-
-                try (PreparedStatement todoStatement = CON.prepareStatement("SELECT count(*) FROM USERS_SHOPPING_LISTS WHERE id_user = ?")) {
-                    todoStatement.setInt(1, user.getId());
-
-                    ResultSet counter = todoStatement.executeQuery();
-                    counter.next();
-                    user.setShoppingListsCount(counter.getInt(1));
-                }
-
-                return user;
-            }
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the user for the passed primary key", ex);
-        }
+    public User getByPrimaryKey(String primaryKey) throws DAOException {
+        return null;
     }
 
-    /**
-     * Returns the {@link User user} with the given {@code email} and
-     * {@code password}.
-     *
-     * @param email    the email of the user to get.
-     * @param password the password of the user to get.
-     * @return the {@link User user} with the given {@code email} and
-     * {@code password}..
-     * @throws DAOException if an error occurred during the information
-     *                      retrieving.
-     * @author Stefano Chirico
-     * @since 1.0.0.190519
-     */
-    @Override
+
     public User getByEmailAndPassword(String email, String password) throws DAOException {
-        if ((email == null) || (password == null)) {
+        if (email == null || password == null) {
             throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
         }
 
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?")) {
+        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM user_ WHERE email = ? AND password = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
-            Logger.getLogger("In UserDAO: " + "");
 
             try (ResultSet rs = stm.executeQuery()) {
-                PreparedStatement shoppingListStatement = CON.prepareStatement("SELECT count(*) FROM users_shopping_lists WHERE id_user = ?");
-
-                int count = 0;
-                while (rs.next()) {
-                    count++;
-                    if (count > 1) {
-                        throw new DAOException("Unique constraint violated! There are more than one user with the same email! WHY???");
-                    }
-                    User user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setFirstName(rs.getString("name"));
-                    user.setLastName(rs.getString("lastname"));
-                    user.setRole(rs.getString("role"));
-                    shoppingListStatement.setInt(1, user.getId());
-
-                    ResultSet counter = shoppingListStatement.executeQuery();
-                    counter.next();
-                    user.setShoppingListsCount(counter.getInt(1));
-
+                if (rs.next()) {
+                    User user = new User(rs.getString("email"), rs.getString("password"));
                     return user;
                 }
-
-                if (!shoppingListStatement.isClosed()) {
-                    shoppingListStatement.close();
-                }
-
                 return null;
             }
         } catch (SQLException ex) {
@@ -163,170 +95,17 @@ public class JDBCUserDAO extends JDBCDAO<User, Integer> implements UserDAO {
 
     @Override
     public List<User> findBySearchValue(String searchValue) throws DAOException {
-        if ((searchValue == null) || searchValue.trim().isEmpty()) {
-            return getAll();
-        }
-
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE lower(email) like ? OR lower(name) like ? OR lower(lastName) like ?")) {
-            stm.setString(1, "%" + searchValue + "%");
-            stm.setString(2, "%" + searchValue + "%");
-            stm.setString(3, "%" + searchValue + "%");
-            try (ResultSet rs = stm.executeQuery()) {
-                PreparedStatement shoppingListStatement = CON.prepareStatement("SELECT count(*) FROM users_shopping_lists WHERE id_user = ?");
-
-                List<User> users = new ArrayList<>();
-                while (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setFirstName(rs.getString("name"));
-                    user.setLastName(rs.getString("lastname"));
-                    user.setAvatarPath(rs.getString("avatar_path"));
-                    user.setRole(rs.getString("role"));
-
-                    shoppingListStatement.setInt(1, user.getId());
-
-                    ResultSet counter = shoppingListStatement.executeQuery();
-                    counter.next();
-                    user.setShoppingListsCount(counter.getInt(1));
-
-                    users.add(user);
-                }
-
-                if (!shoppingListStatement.isClosed()) {
-                    shoppingListStatement.close();
-                }
-
-                return users;
-            }
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
-        }
+        return null;
     }
 
     @Override
     public List<User> pageBySearchValue(String searchValue, Long start, Long length) throws DAOException {
-        if ((start == null) && (length == null)) {
-            return findBySearchValue(searchValue);
-        }
-
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM users WHERE lower(email) like ? OR lower(name) like ? OR lower(lastName) like ? OFFSET ? ROWS FETCH NEXT ? ROWS ONLY")) {
-            stm.setString(1, "%" + searchValue + "%");
-            stm.setString(2, "%" + searchValue + "%");
-            stm.setString(3, "%" + searchValue + "%");
-            stm.setLong(4, start);
-            stm.setLong(5, length);
-            try (ResultSet rs = stm.executeQuery()) {
-                PreparedStatement shoppingListStatement = CON.prepareStatement("SELECT count(*) FROM users_shopping_lists WHERE id_user = ?");
-
-                List<User> users = new ArrayList<>();
-                while (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setFirstName(rs.getString("name"));
-                    user.setLastName(rs.getString("lastname"));
-                    user.setAvatarPath(rs.getString("avatar_path"));
-                    user.setRole(rs.getString("role"));
-
-                    shoppingListStatement.setInt(1, user.getId());
-
-                    ResultSet counter = shoppingListStatement.executeQuery();
-                    counter.next();
-                    user.setShoppingListsCount(counter.getInt(1));
-
-                    users.add(user);
-                }
-
-                if (!shoppingListStatement.isClosed()) {
-                    shoppingListStatement.close();
-                }
-
-                return users;
-            }
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
-        }
+        return null;
     }
 
-
-    /**
-     * Returns the list of all the valid {@link User users} stored by the
-     * storage system.
-     *
-     * @return the list of all the valid {@code users}.
-     * @throws DAOException if an error occurred during the information
-     *                      retrieving.
-     * @author Stefano Chirico
-     * @since 1.0.0.190519
-     */
     @Override
     public List<User> getAll() throws DAOException {
-        List<User> users = new ArrayList<>();
-
-        try (Statement stm = CON.createStatement()) {
-            try (ResultSet rs = stm.executeQuery("SELECT * FROM users ORDER BY lastname")) {
-
-                PreparedStatement shoppingListsStatement = CON.prepareStatement("SELECT count(*) FROM users_shopping_lists WHERE id_user = ?");
-
-                while (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setEmail(rs.getString("email"));
-                    user.setPassword(rs.getString("password"));
-                    user.setFirstName(rs.getString("name"));
-                    user.setLastName(rs.getString("lastname"));
-                    user.setAvatarPath(rs.getString("avatar_path"));
-                    user.setRole(rs.getString("role"));
-
-                    shoppingListsStatement.setInt(1, user.getId());
-
-                    ResultSet counter = shoppingListsStatement.executeQuery();
-                    counter.next();
-                    user.setShoppingListsCount(counter.getInt(1));
-
-                    users.add(user);
-                }
-            }
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to get the list of users", ex);
-        }
-
-        return users;
+        return null;
     }
 
-    /**
-     * Update the user passed as parameter and returns it.
-     *
-     * @param user the user used to update the persistence system.
-     * @return the updated user.
-     * @throws DAOException if an error occurred during the action.
-     * @author Stefano Chirico
-     * @since 1.0.190519
-     */
-    @Override
-    public User update(User user) throws DAOException {
-        if (user == null) {
-            throw new DAOException("parameter not valid", new IllegalArgumentException("The passed user is null"));
-        }
-
-        try (PreparedStatement std = CON.prepareStatement("UPDATE app.users SET email = ?, password = ?, name = ?, lastname = ?, avatar_path = ?, role = ? WHERE id = ?")) {
-            std.setString(1, user.getEmail());
-            std.setString(2, user.getPassword());
-            std.setString(3, user.getFirstName());
-            std.setString(4, user.getLastName());
-            std.setString(5, user.getAvatarPath());
-            std.setInt(6, user.getId());
-            std.setString(7, user.getRole());
-            if (std.executeUpdate() == 1) {
-                return user;
-            } else {
-                throw new DAOException("Impossible to update the user");
-            }
-        } catch (SQLException ex) {
-            throw new DAOException("Impossible to update the user", ex);
-        }
-    }
 }

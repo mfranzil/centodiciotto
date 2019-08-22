@@ -35,7 +35,8 @@
                 </a>
             </li>
             <% switch (role) {
-                case "citizen": {%>
+                case "citizen": {
+            %>
             <li class="nav-item dropdown">
                 <a class="nav-link nav-link-personal dropdown-toggle"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
