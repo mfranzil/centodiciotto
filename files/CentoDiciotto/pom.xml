@@ -96,15 +96,17 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.3.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.ini4j</groupId>
             <artifactId>ini4j</artifactId>
             <version>0.5.4</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.ancoron.postgresql</groupId>
+            <artifactId>org.postgresql</artifactId>
+            <version>9.1.901.jdbc4.1-rc9</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
