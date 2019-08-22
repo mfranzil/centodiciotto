@@ -4,10 +4,15 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
-        <param-name>dburl</param-name>
+        <param-name>ini_file</param-name>
+        <param-value>config.ini</param-value>
+    </context-param>
+    <context-param>
+        <param-name>old_db_url</param-name>
         <!--Sta cosa è geniale, grazie mille!
         <param-value>jdbc:derby:/Users/francescaannibaletti/Desktop/centodiciotto/files/CentoDiciotto/sl.db</param-value>-->
-        <param-value>jdbc:derby:C:/Users/matte/OneDrive/Università/Didattica/ProgettoWeb/files/CentoDiciotto/sl.db</param-value>
+        <param-value>jdbc:derby:C:/Users/matte/OneDrive/Università/Didattica/ProgettoWeb/files/CentoDiciotto/sl.db
+        </param-value>
     </context-param>
     <context-param>
         <description>The path where the user avatar images are stored.</description>
