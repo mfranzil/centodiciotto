@@ -40,8 +40,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     }
 
     @Override
-    public User update(User user) {
-        return null;
+    public void update(User user) {
     }
 
     @Override
@@ -53,28 +52,10 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         return null;
     }
 
-
-    public User mapRowToUser(ResultSet rs) throws SQLException {
-        User user = new User(
-                rs.getString("email"),
-                rs.getString("password"));
-        return user;
-    }
-
-    @Override
-    public Long getCount() throws DAOException {
-        return null;
-    }
-
-    @Override
-    public User getByPrimaryKey(String primaryKey) throws DAOException {
-        return null;
-    }
-
-
     public User getByEmailAndPassword(String email, String password) throws DAOException {
         if (email == null || password == null) {
-            throw new DAOException("Email and password are mandatory fields", new NullPointerException("email or password are null"));
+            throw new DAOException("Email and password are mandatory fields",
+                    new NullPointerException("email or password are null"));
         }
 
         try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM user_ WHERE email = ? AND password = ?")) {
@@ -94,12 +75,12 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     }
 
     @Override
-    public List<User> findBySearchValue(String searchValue) throws DAOException {
+    public Long getCount() throws DAOException {
         return null;
     }
 
     @Override
-    public List<User> pageBySearchValue(String searchValue, Long start, Long length) throws DAOException {
+    public User getByPrimaryKey(String primaryKey) throws DAOException {
         return null;
     }
 
@@ -107,5 +88,4 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     public List<User> getAll() throws DAOException {
         return null;
     }
-
 }
