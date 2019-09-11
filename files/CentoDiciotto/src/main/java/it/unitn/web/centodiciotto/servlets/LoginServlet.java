@@ -57,10 +57,10 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            User user = userDao.getByEmailAndPassword(email, password);
+            User user = userDao.getByEmailAndPassword(email, password, role);
             // LA SEGUENTE CAGATA E' TEMPORANEA
 
-            if (user == null || !user.getRole().equals(role)) {
+            if (user == null) {
                 request.setAttribute("loginResult", true);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
             } else {

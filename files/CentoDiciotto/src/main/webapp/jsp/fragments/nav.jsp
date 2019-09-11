@@ -1,12 +1,19 @@
 <%@ page import="it.unitn.web.centodiciotto.persistence.entities.User" %>
+<%@ page import="it.unitn.web.centodiciotto.persistence.entities.Patient" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
     String role = null;
+    String displayName = null;
+
     User user = null;
+
     boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
     if (isLoggedIn) {
         user = (User) session.getAttribute("user");
-        role = user.getRole();
+        if(user instanceof Patient){
+            role = "citizen";
+            displayName = ((Patient) user).getFirstName();
+        }
     }
 %>
 
@@ -110,7 +117,7 @@
     <div id="log-menu-closed">
         <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/user">
-                Hi <%= user.getFirstName() %>!
+                Hi <%= displayName %>!
             </a>
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">
                 Logout

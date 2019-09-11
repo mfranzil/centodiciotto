@@ -1,8 +1,8 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class User {
-    private String email;
-    private String password;
+    protected String email;
+    protected String password;
 
 
     public User(String email, String password){
@@ -24,21 +24,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    // TODO
-    // TODO
-    // DA MODIFICARE: E' UN PLACEHOLDER
-    // TODO
-    // TODO
-
-    public String getRole() {
-        return "citizen";
-    }
-    public String getFirstName() {
-        return "citizen";
-    }
-    public String getLastName() {
-        return "citizen";
     }
 }
