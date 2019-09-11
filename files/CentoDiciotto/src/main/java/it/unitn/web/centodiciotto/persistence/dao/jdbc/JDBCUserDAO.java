@@ -40,8 +40,8 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     public void update(User user) {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, user.getEmail());
-            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(1, user.getPassword());
+            preparedStatement.setString(2, user.getEmail());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);

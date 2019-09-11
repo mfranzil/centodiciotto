@@ -21,7 +21,7 @@ function openMenu(id) {
 function getNameFromId(id) {
     switch (id) {
         case "patient":
-            return "patient";
+            return "Patient";
         case "general_practitioner":
             return "General practitioner";
         case "specialized_doctor":

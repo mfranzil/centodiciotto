@@ -29,7 +29,7 @@
         <div class="hover-button focused" id="patient" onclick="openMenu(this.id)">
             <img alt="patient" class="mb-2" src="${pageContext.request.contextPath}/img/classes/patient.png"
                  style="width: 128px">
-            <br>patient
+            <br>Patient
         </div>
         <div class="hover-button focused" id="general_practitioner" onclick="openMenu(this.id)">
             <img alt="General practitioner" class="mb-2"

@@ -81,7 +81,8 @@
                 <h3 class="my-4">
                     Change your password
                 </h3>
-                <form action="restricted/password_change_handler" id="password" method="POST">
+                <form action="${pageContext.request.contextPath}/restricted/password_change_handler"
+                      id="password-change" method="POST">
                     <div class="form-label-group">
                         <input class="form-control mb-2" id="old-password" name="old-password"
                                placeholder="Insert your current password"
@@ -93,7 +94,7 @@
                                placeholder="Confirm your new password"
                                required type="password">
                     </div>
-                    <button id="message" class="btn btn-block mt-4 btn-personal" disabled type="submit">
+                    <button id="password-change-button" class="btn btn-block mt-4 btn-personal" disabled type="submit">
                         Change password
                     </button>
                 </form>

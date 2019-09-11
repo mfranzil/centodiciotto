@@ -69,11 +69,8 @@ public class AuthenticationFilter implements Filter {
                 }
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
             } else {
-                boolean allowed = false;
+                boolean allowed = true;
 
-                if (((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/user")) {
-                    allowed = true;
-                }
                 if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/patient")) {
                     allowed = true;
                 }
