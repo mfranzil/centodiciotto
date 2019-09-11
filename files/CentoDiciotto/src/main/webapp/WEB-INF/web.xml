@@ -81,10 +81,6 @@
         <jsp-file>/jsp/patient/visits.jsp</jsp-file>
     </servlet>
     <servlet>
-        <servlet-name>UnhappyPractitioner</servlet-name>
-        <jsp-file>/jsp/patient/unhappy_practitioner.jsp</jsp-file>
-    </servlet>
-    <servlet>
         <servlet-name>PhotoGallery</servlet-name>
         <jsp-file>/jsp/patient/photo_gallery.jsp</jsp-file>
     </servlet>
@@ -127,7 +123,10 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.LogoutServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>UnhappyPractitioner</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.ChangePractitionerServlet</servlet-class>
+    </servlet>
     <!-- Mapping dei servlet, da nome a effettivo url. -->
     <!-- Pagine accessibili a tutti -->
     <servlet-mapping>

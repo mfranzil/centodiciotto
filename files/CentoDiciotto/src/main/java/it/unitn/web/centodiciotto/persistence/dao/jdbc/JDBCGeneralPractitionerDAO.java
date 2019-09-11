@@ -11,12 +11,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
 
     final private String INSERT = "INSERT INTO general_practitioner (email, first_name, last_name, working_province) values (?, ?, ?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
+    final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -69,7 +71,6 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try(PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
-            System.out.println(FINDBYEMAIL);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                      res = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
@@ -80,6 +81,28 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             System.err.println("Error getting GeneralPractitioner by email: " + e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public List<GeneralPractitioner> getByProvince(String province_abbreviation){
+        List<GeneralPractitioner> res = new ArrayList<GeneralPractitioner>();
+        GeneralPractitioner tmp;
+        try(PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
+            stm.setString(1, province_abbreviation);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                    res.add(tmp);
+
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting GeneralPractitioners by Province: " + e.getMessage());
+        }
+        return null;
+
     }
 
 
