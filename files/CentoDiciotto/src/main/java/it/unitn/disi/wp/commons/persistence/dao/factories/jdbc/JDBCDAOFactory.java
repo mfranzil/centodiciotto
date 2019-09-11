@@ -10,15 +10,15 @@ import it.unitn.disi.wp.commons.persistence.dao.DAO;
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.disi.wp.commons.persistence.dao.factories.DAOFactory;
 import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
-import org.ini4j.Wini;
 
-import java.io.File;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 /**
@@ -83,13 +83,17 @@ public class JDBCDAOFactory implements DAOFactory {
         String username = null;
         String password = null;
 
-        try {
-            Wini ini = new Wini(new File(ini_file));
-            String hostname = ini.get("database", "HostName");
-            String defaultDatabase = ini.get("database", "DefaultDatabase");
+        Properties data = new Properties();
 
-            username = ini.get("database", "UserName");
-            password = ini.get("database", "Password");
+        try (InputStream stream = JDBCDAOFactory.class
+                .getClassLoader().getResourceAsStream("server.properties")) {
+            data.load(stream);
+
+
+            String hostname = data.getProperty("HostName");
+            String defaultDatabase = data.getProperty("DefaultDatabase");
+            username = data.getProperty("UserName");
+            password = data.getProperty("Password");
 
             url = "jdbc:postgresql://" + hostname + "/" + defaultDatabase;
         } catch (Exception e) {

@@ -77,7 +77,7 @@
         <div class="mb-2" style="display: flex">
             <div class="checkbox" style="flex: 50%;">
                 <label>
-                    <input name="rememberMe" type="checkbox" value="true">Remember me
+                    <input id="rememberMe" name="rememberMe" type="checkbox" value="false">Remember me
                 </label>
             </div>
             <div style="text-align: right; flex: 50%">

@@ -1,4 +1,5 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
+
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
 import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
@@ -21,8 +22,6 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     @Override
     public void insert(User user) {
         try {
-            System.out.println("ok connection");
-
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());

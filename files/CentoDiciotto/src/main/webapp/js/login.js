@@ -36,6 +36,12 @@ function getNameFromId(id) {
 }
 
 $("document").ready(function () {
+    if (localStorage.checkBoxValidation) {
+        $('#username').val(localStorage.userName);
+        $('#password').val(localStorage.password);
+        $('#rememberMe').val(localStorage.checkBoxValidation);
+    }
+
     $('#form').on('submit', function () {
         if ($('#rememberMe').is(':checked')) {
             // save username and password
