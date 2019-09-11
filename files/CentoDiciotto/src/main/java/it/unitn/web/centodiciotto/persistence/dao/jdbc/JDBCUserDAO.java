@@ -1,10 +1,10 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
-import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +15,7 @@ import java.util.List;
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
+    final private String UPDATE = "UPDATE user_ SET password = ? WHERE email = ?;";
 
     public JDBCUserDAO(Connection con) {
         super(con);
@@ -27,22 +28,30 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             preparedStatement.setString(1, user.getEmail());
             preparedStatement.setString(2, user.getPassword());
 
-            //PreparedStatement preparedStatement = conn.prepareStatement(INSERT_TEST);
-            System.out.println("ok statement");
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error inserting user: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void update(User user) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getPassword());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting User: " + e.getMessage());
+            System.err.println("Error updating user: " + e.getMessage());
         }
-        // Connection and Prepared Statement automatically closed
     }
 
-    @Override
-    public void update(User user) {
-    }
-
+/*
     @Override
     public void delete(User user) {
     }
@@ -51,6 +60,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     public User getByEmail(String email) {
         return null;
     }
+*/
 
     public User getByEmailAndPassword(String email, String password, String role) throws DAOException {
         if (email == null || password == null) {
@@ -61,7 +71,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         String role_table;
 
         switch (role) {
-            case "citizen":
+            case "patient":
                 role_table = "patient";
                 break;
             case "general_practitioner":
@@ -89,7 +99,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                 if (rs.next()) {
                     User user; // = new User(rs.getString("email"), rs.getString("password"));
                     switch (role) {
-                        case "citizen":
+                        case "patient":
                             user = new Patient(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("living_province"), rs.getString("general_practitioner_email"));
                             break;
                         case "general_practitioner":
@@ -108,6 +118,8 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             throw new DAOException("Impossible to get the list of users", ex);
         }
     }
+
+    // TODO Da modificare
 
     @Override
     public Long getCount() throws DAOException {

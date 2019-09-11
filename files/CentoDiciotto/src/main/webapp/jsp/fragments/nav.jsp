@@ -11,7 +11,7 @@
     if (isLoggedIn) {
         user = (User) session.getAttribute("user");
         if(user instanceof Patient){
-            role = "citizen";
+            role = "patient";
             displayName = ((Patient) user).getFirstName();
         }
     }
@@ -42,7 +42,7 @@
                 </a>
             </li>
             <% switch (role) {
-                case "citizen": {
+                case "patient": {
             %>
             <li class="nav-item dropdown">
                 <a class="nav-link nav-link-personal dropdown-toggle"
@@ -51,14 +51,14 @@
                 </a>
                 <div class="dropdown-menu nav-personal">
                     <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/citizen/exam_history">Exam History</a>
+                       href="${pageContext.request.contextPath}/restricted/patient/exam_history">Exam History</a>
                     <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/citizen/book_your_exam">Book your Exam</a>
+                       href="${pageContext.request.contextPath}/restricted/patient/book_your_exam">Book your Exam</a>
                 </div>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/citizen/visits">Visits</a>
+                   href="${pageContext.request.contextPath}/restricted/patient/visits">Visits</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal">
@@ -72,7 +72,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/citizen/unhappy_practitioner">
+                   href="${pageContext.request.contextPath}/restricted/patient/unhappy_practitioner">
                     Unhappy with your practitioner?
                 </a>
             </li>

@@ -1,6 +1,6 @@
 package it.unitn.web.centodiciotto.persistence.dao;
 
-import it.unitn.disi.wp.commons.persistence.dao.DAO;
+import it.unitn.web.persistence.dao.DAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 
 public interface PatientDAO extends DAO<Patient, String> {

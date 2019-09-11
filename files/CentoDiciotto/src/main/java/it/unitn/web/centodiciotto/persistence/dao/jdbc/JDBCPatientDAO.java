@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
-import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 

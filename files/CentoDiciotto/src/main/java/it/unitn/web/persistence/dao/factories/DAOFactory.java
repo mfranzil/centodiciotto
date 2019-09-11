@@ -4,10 +4,10 @@
  * Lab 08 - Commons - DAO interface
  * UniTN
  */
-package it.unitn.disi.wp.commons.persistence.dao.factories;
+package it.unitn.web.persistence.dao.factories;
 
-import it.unitn.disi.wp.commons.persistence.dao.DAO;
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.persistence.dao.DAO;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 
 /**
  * This interface must be implemented by all the concrete {@code DAOFactor(y)}ies.

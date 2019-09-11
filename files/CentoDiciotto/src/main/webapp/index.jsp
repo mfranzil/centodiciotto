@@ -23,7 +23,7 @@
                 <img class="my-4" src="${pageContext.request.contextPath}/img/logo_white.svg" style="width: 150px"
                      alt="Picture of an hospital.">
                 <p class="my-4 white">
-                    An all-inclusive platform where your local health service meets citizens, doctors and chemists,
+                    An all-inclusive platform where your local health service meets patients, doctors and chemists,
                     providing complete control over visits, exams, prescriptions and costs.
                 </p>
             </div>
@@ -39,7 +39,7 @@
                 <h2 class="text-white mt-0">We've got what you need!</h2>
                 <hr class="divider light my-4">
                 <p class="my-4 white">
-                    As a citizen, you can contact your general practitioner or any specialized doctor, see your past and
+                    As a patient, you can contact your general practitioner or any specialized doctor, see your past and
                     pending exams and visits, check your prescriptions and keep costs under control.
                 </p>
             </div>
@@ -56,7 +56,7 @@
                     <img class="img-fluid" src="${pageContext.request.contextPath}/img/portfolio/1.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
-                            Citizens
+                            Patients
                         </div>
                         <div class="project-name">
                             Find all you need for your health, in one place.

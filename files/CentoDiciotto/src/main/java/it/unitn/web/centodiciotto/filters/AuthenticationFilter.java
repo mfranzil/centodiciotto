@@ -74,7 +74,7 @@ public class AuthenticationFilter implements Filter {
                 if (((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/user")) {
                     allowed = true;
                 }
-                if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/citizen")) {
+                if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/patient")) {
                     allowed = true;
                 }
                 //TODO implement all different classes

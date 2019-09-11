@@ -4,10 +4,6 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
-        <param-name>ini_file</param-name>
-        <param-value>config.ini</param-value>
-    </context-param>
-    <context-param>
         <description>The path where the user avatar images are stored.</description>
         <param-name>avatarsFolder</param-name>
         <param-value>img/avatars</param-value>
@@ -71,22 +67,22 @@
         <servlet-name>Privacy</servlet-name>
         <jsp-file>/jsp/privacy.jsp</jsp-file>
     </servlet>
-    <!-- Citizen -->
+    <!-- Patient -->
     <servlet>
         <servlet-name>ExamHistory</servlet-name>
-        <jsp-file>/jsp/citizen/exam_history.jsp</jsp-file>
+        <jsp-file>/jsp/patient/exam_history.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>BookYourExam</servlet-name>
-        <jsp-file>/jsp/citizen/book_your_exam.jsp</jsp-file>
+        <jsp-file>/jsp/patient/book_your_exam.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>Visits</servlet-name>
-        <jsp-file>/jsp/citizen/visits.jsp</jsp-file>
+        <jsp-file>/jsp/patient/visits.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>UnhappyPractitioner</servlet-name>
-        <jsp-file>/jsp/citizen/unhappy_practitioner.jsp</jsp-file>
+        <jsp-file>/jsp/patient/unhappy_practitioner.jsp</jsp-file>
     </servlet>
     <!-- General practitioner -->
     <servlet>
@@ -112,24 +108,16 @@
 
     <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
+        <servlet-name>PasswordChangeServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordChangeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.UserServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PDFServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PDFServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SendEmailServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.SendEmailServlet</servlet-class>
     </servlet>
 
     <!-- Mapping dei servlet, da nome a effettivo url. -->
@@ -160,37 +148,29 @@
         <url-pattern>/restricted/user</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>PasswordChangeServlet</servlet-name>
+        <url-pattern>/restricted/password_change_handler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/restricted/logout_handler</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/restricted/user_handler</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PDFServlet</servlet-name>
-        <url-pattern>/restricted/export2PDF</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SendEmailServlet</servlet-name>
-        <url-pattern>/restricted/send_mail_handler</url-pattern>
-    </servlet-mapping>
-    <!-- Citizen -->
+    <!-- Patient -->
     <servlet-mapping>
         <servlet-name>ExamHistory</servlet-name>
-        <url-pattern>/restricted/citizen/exam_history</url-pattern>
+        <url-pattern>/restricted/patient/exam_history</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookYourExam</servlet-name>
-        <url-pattern>/restricted/citizen/book_your_exam</url-pattern>
+        <url-pattern>/restricted/patient/book_your_exam</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Visits</servlet-name>
-        <url-pattern>/restricted/citizen/visits</url-pattern>
+        <url-pattern>/restricted/patient/visits</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>UnhappyPractitioner</servlet-name>
-        <url-pattern>/restricted/citizen/unhappy_practitioner</url-pattern>
+        <url-pattern>/restricted/patient/unhappy_practitioner</url-pattern>
     </servlet-mapping>
     <!-- Practitioner -->
     <servlet-mapping>

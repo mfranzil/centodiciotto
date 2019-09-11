@@ -4,7 +4,7 @@
  * Lab 08 - Commons - DAO interface
  * UniTN
  */
-package it.unitn.disi.wp.commons.persistence.dao.exceptions;
+package it.unitn.web.persistence.dao.exceptions;
 
 /**
  * The exception thrown when something goes wrong in dao factoring.

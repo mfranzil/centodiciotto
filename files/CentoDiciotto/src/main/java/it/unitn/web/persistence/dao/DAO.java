@@ -4,10 +4,11 @@
  * Lab 08 - Commons - DAO interface
  * UniTN
  */
-package it.unitn.disi.wp.commons.persistence.dao;
+package it.unitn.web.persistence.dao;
 
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
+
 import java.util.List;
 
 /**

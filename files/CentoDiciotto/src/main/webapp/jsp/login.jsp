@@ -26,10 +26,10 @@
         <h1>Login as...</h1>
     </div>
     <div style="text-align: center; display: flex; flex-wrap: wrap">
-        <div class="hover-button focused" id="citizen" onclick="openMenu(this.id)">
-            <img alt="Citizen" class="mb-2" src="${pageContext.request.contextPath}/img/classes/citizen.png"
+        <div class="hover-button focused" id="patient" onclick="openMenu(this.id)">
+            <img alt="patient" class="mb-2" src="${pageContext.request.contextPath}/img/classes/patient.png"
                  style="width: 128px">
-            <br>Citizen
+            <br>patient
         </div>
         <div class="hover-button focused" id="general_practitioner" onclick="openMenu(this.id)">
             <img alt="General practitioner" class="mb-2"

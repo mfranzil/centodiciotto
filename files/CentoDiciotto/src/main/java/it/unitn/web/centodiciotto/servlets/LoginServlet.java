@@ -1,8 +1,8 @@
 package it.unitn.web.centodiciotto.servlets;
 
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.disi.wp.commons.persistence.dao.factories.DAOFactory;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 

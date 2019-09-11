@@ -1,9 +1,9 @@
 
 package it.unitn.web.centodiciotto.listeners;
 
-import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.disi.wp.commons.persistence.dao.factories.DAOFactory;
-import it.unitn.disi.wp.commons.persistence.dao.factories.jdbc.JDBCDAOFactory;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

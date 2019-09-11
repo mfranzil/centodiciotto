@@ -27,7 +27,7 @@
                 </h3>
                 <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
                     <% switch (role) {
-                        case "citizen": { %>
+                        case "patient": { %>
                     <tr>
                         <th>Name</th>
                         <td><%= ((Patient)user).getFirstName() %></td>
@@ -76,7 +76,7 @@
                 <h3 class="my-4">
                     Change your password
                 </h3>
-                <form action="change_password_handler" id="password" method="POST">
+                <form action="restricted/password_change_handler" id="password" method="POST">
                     <div class="form-label-group">
                         <input class="form-control mb-2" id="old-password" name="old-password"
                                placeholder="Insert your current password"
