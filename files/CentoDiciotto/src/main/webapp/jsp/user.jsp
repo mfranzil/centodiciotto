@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +54,8 @@
                     </tr>
                     <tr>
                         <th>Birthdate</th>
-                        <td><%= ((Patient)user).getBirthDate() %></td> <!--USARE CLASSE DATA JSTL-->
+                        <c:set var = "birthdate" value = "<%=((Patient)user).getBirthDate()%>" />
+                        <td> <fmt:formatDate type = "date" dateStyle = "long"  value = "${birthdate}" /></td>
                     </tr>
                     <tr>
                         <th>Current province</th>
