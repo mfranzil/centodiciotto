@@ -1,5 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
+import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
+
 import java.sql.Date;
 
 public class Patient extends User {

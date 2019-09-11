@@ -1,5 +1,8 @@
 package it.unitn.web.centodiciotto.servlets;
 
+import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
+import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -21,6 +24,7 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     private UserDAO userDao;
+    private GeneralPractitionerDAO practitionerDao;
 
     @Override
     public void init() throws ServletException {
@@ -30,6 +34,7 @@ public class LoginServlet extends HttpServlet {
         }
         try {
             userDao = daoFactory.getDAO(UserDAO.class);
+            practitionerDao = daoFactory.getDAO(GeneralPractitionerDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -64,6 +69,12 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
             } else {
                 request.getSession().setAttribute("user", user);
+
+                if (user instanceof Patient) {
+                    GeneralPractitioner practitioner = practitionerDao.getByEmail(((Patient) user).getGeneralPractitionerEmail());
+                    request.getSession().setAttribute("practitioner", practitioner);
+                }
+
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
             }
         } catch (DAOException ex) {

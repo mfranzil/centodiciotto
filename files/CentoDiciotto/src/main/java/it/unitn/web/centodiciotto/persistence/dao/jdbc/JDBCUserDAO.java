@@ -18,6 +18,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
     final private String UPDATE = "UPDATE user_ SET password = ? WHERE email = ?;";
+    final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
 
     private static boolean containsItemFromArray(String inputString, String[] items) {
         // Convert the array of String items as a Stream

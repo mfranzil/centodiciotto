@@ -64,12 +64,11 @@
                     </tr>
                     <tr>
                         <th>Gender</th>
-                        <td>Male</td>
+                        <td><%= ((Patient)user).getGender() %></td>
                     </tr>
                     <tr>
                         <th>Practitioner</th>
-                        <%= ((Patient) user).getGeneralPractitionerEmail() %>
-                        <td><%= ((Patient)user).getGeneralPractitionerEmail() %></td>
+                        <td><%= patient_practitioner.getFirstName() %>  <%= patient_practitioner.getLastName() %></td>
                     </tr>
                     <tr>
                         <th>Profile photo history</th>

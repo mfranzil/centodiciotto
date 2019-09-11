@@ -69,9 +69,10 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try(PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
+            System.out.println(FINDBYEMAIL);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                     res = new GeneralPractitioner(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                     res = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
                      return res;
                 }
             }

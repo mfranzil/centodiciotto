@@ -1,5 +1,6 @@
 package it.unitn.web.centodiciotto.filters;
 
+import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
@@ -72,6 +73,9 @@ public class AuthenticationFilter implements Filter {
                 boolean allowed = true;
 
                 if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/patient")) {
+                    allowed = true;
+                }
+                if (user instanceof GeneralPractitioner && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/general_practitioner")) {
                     allowed = true;
                 }
                 //TODO implement all different classes

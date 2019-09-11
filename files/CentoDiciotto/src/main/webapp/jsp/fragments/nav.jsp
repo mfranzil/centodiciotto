@@ -6,6 +6,7 @@
     String role = null;
     String displayName = null;
     User user = null;
+    GeneralPractitioner patient_practitioner = null;
 
     boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
     if (isLoggedIn) {
@@ -13,6 +14,7 @@
         //TODO: add all classes
         if(user instanceof Patient){
             role = "patient";
+            patient_practitioner = (GeneralPractitioner) session.getAttribute("practitioner");
             displayName = ((Patient) user).getFirstName();
         }else if(user instanceof GeneralPractitioner){
             role = "general_practitioner";
