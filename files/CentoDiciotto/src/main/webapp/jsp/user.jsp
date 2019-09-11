@@ -1,3 +1,4 @@
+<%@ page import="it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -67,11 +68,30 @@
                     </tr>
                     <tr>
                         <th>Practitioner</th>
+                        <%= ((Patient) user).getGeneralPractitionerEmail() %>
                         <td><%= ((Patient)user).getGeneralPractitionerEmail() %></td>
                     </tr>
                     <tr>
                         <th>Profile photo history</th>
                         <td>...DROPDOWN</td>
+                    </tr>
+                    <% }; break;
+                        case "general_practitioner" : { %>
+                    <tr>
+                        <th>Name</th>
+                        <td><%= ((GeneralPractitioner)user).getFirstName() %></td>
+                    </tr>
+                    <tr>
+                        <th>Surname</th>
+                        <td><%= ((GeneralPractitioner)user).getLastName() %></td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td><%= ((GeneralPractitioner)user).getEmail() %></td>
+                    </tr>
+                    <tr>
+                        <th>Working province</th>
+                        <td><%= ((GeneralPractitioner)user).getWorkingProvince() %></td>
                     </tr>
                     <% }; break;
                         default: break;}%>
@@ -110,6 +130,9 @@
                         </div>
                         <button class="btn btn-block mt-4 btn-personal" type="submit">
                             Upload
+                        </button>
+                        <button class="btn btn-block mt-4 btn-personal" type="submit" formaction="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
+                            See gallery
                         </button>
                     </form>
                 </div>

@@ -1,6 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
+import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
@@ -10,12 +11,20 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
     final private String UPDATE = "UPDATE user_ SET password = ? WHERE email = ?;";
+
+    private static boolean containsItemFromArray(String inputString, String[] items) {
+        // Convert the array of String items as a Stream
+        // For each element of the Stream call inputString.contains(element)
+        // If you have any match returns true, false otherwise
+        return Arrays.stream(items).anyMatch(inputString::contains);
+    }
 
     public JDBCUserDAO(Connection con) {
         super(con);
@@ -70,25 +79,13 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
         String role_table;
 
-        switch (role) {
-            case "patient":
-                role_table = "patient";
-                break;
-            case "general_practitioner":
-                role_table = "general_practitioner";
-                break;
-            case "specialized_doctor":
-                role_table = "specializeddoctor";
-                break;
-            case "chemist":
-                role_table = "pharmacy";
-                break;
-            case "health_service":
-                role_table = "ssp";
-                break;
-            default:
-                role_table = "user_";
+        String[] roles = { "patient", "general_practitioner", "specialized_doctor", "chemist", "health_service"};
+
+        role_table = role;
+        if(!containsItemFromArray(role, roles)){
+            role_table = "user_";
         }
+
         String Select = "SELECT * FROM user_ JOIN " + role_table + " ON user_.email = " + role_table + ".email ";
 
         try (PreparedStatement stm = CON.prepareStatement(Select + "WHERE user_.email = ? AND password = ?")) {
@@ -98,11 +95,14 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     User user; // = new User(rs.getString("email"), rs.getString("password"));
+                    //TODO add all classes
                     switch (role) {
                         case "patient":
                             user = new Patient(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("living_province"), rs.getString("general_practitioner_email"));
                             break;
                         case "general_practitioner":
+                            user = new GeneralPractitioner(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                            break;
                         case "specialized_doctor":
                         case "chemist":
                         case "health_service":

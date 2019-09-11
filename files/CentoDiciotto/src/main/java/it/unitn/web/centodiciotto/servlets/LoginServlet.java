@@ -58,7 +58,6 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = userDao.getByEmailAndPassword(email, password, role);
-            // LA SEGUENTE CAGATA E' TEMPORANEA
 
             if (user == null) {
                 request.setAttribute("loginResult", true);
@@ -66,9 +65,6 @@ public class LoginServlet extends HttpServlet {
             } else {
                 request.getSession().setAttribute("user", user);
                 response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
-               /* } else {
-                    response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping.lists.html?id=" + user.getId()));
-                }*/
             }
         } catch (DAOException ex) {
             //TODO: log exception

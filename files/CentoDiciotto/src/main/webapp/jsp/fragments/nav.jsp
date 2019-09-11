@@ -1,22 +1,25 @@
 <%@ page import="it.unitn.web.centodiciotto.persistence.entities.User" %>
 <%@ page import="it.unitn.web.centodiciotto.persistence.entities.Patient" %>
+<%@ page import="it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
     String role = null;
     String displayName = null;
-
     User user = null;
 
     boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
     if (isLoggedIn) {
         user = (User) session.getAttribute("user");
+        //TODO: add all classes
         if(user instanceof Patient){
             role = "patient";
             displayName = ((Patient) user).getFirstName();
+        }else if(user instanceof GeneralPractitioner){
+            role = "general_practitioner";
+            displayName = ((GeneralPractitioner) user).getFirstName();
         }
     }
 %>
-
 <script src="${pageContext.request.contextPath}/js/nav.js"></script>
 <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-light justify-content-between nav-personal">
     <button id="nav-logo-container" type="button"
@@ -61,7 +64,8 @@
                    href="${pageContext.request.contextPath}/restricted/patient/visits">Visits</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/patient/prescriptions">
                     Prescriptions
                 </a>
             </li>
