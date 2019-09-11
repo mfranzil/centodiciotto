@@ -33,7 +33,7 @@ public class PasswordChangeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
+        /*
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
@@ -64,11 +64,12 @@ public class PasswordChangeServlet extends HttpServlet {
                 request.getSession().setAttribute("user", user);
                /* } else {
                     response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/shopping.lists.html?id=" + user.getId()));
-                }*/
+                }
             }
         } catch (DAOException ex) {
             //TODO: log exception
             request.getServletContext().log("Error while updating the user", ex);
         }
+        */
     }
 }
