@@ -64,7 +64,8 @@
                    href="${pageContext.request.contextPath}/restricted/patient/visits">Visits</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/patient/prescriptions">
                     Prescriptions
                 </a>
             </li>

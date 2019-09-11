@@ -129,6 +129,9 @@
                         <button class="btn btn-block mt-4 btn-personal" type="submit">
                             Upload
                         </button>
+                        <button class="btn btn-block mt-4 btn-personal" type="submit" formaction="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
+                            See gallery
+                        </button>
                     </form>
                 </div>
             </div>
