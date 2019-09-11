@@ -68,6 +68,7 @@
                     </tr>
                     <tr>
                         <th>Practitioner</th>
+                        <%= ((Patient) user).getGeneralPractitionerEmail() %>
                         <td><%= ((Patient)user).getGeneralPractitionerEmail() %></td>
                     </tr>
                     <tr>
