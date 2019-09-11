@@ -10,7 +10,7 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="jumbotron">
     <h2 class="my-4">
-        Welcome, <%= user.getFirstName() %>.
+        Welcome, <%= displayName %>.
     </h2>
     <img class="avatar" src="${pageContext.request.contextPath}/img/avatars/default.png" alt="">
     <p class="lead mt-4 mx-4">
@@ -25,50 +25,51 @@
                 <h3 class="my-4">
                     My information
                 </h3>
-                <!-- Sta parte va modificata in maniera dinamica! -->
                 <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
+                    <% switch (role) {
+                        case "citizen": { %>
                     <tr>
                         <th>Name</th>
-                        <td><%= user.getFirstName() %></td>
+                        <td><%= ((Patient)user).getFirstName() %></td>
                     </tr>
                     <tr>
                         <th>Surname</th>
-                        <td><%= user.getLastName() %></td>
+                        <td><%= ((Patient)user).getLastName() %></td>
                     </tr>
                     <tr>
                         <th>E-mail</th>
-                        <td><%= user.getEmail() %></td>
+                        <td><%= ((Patient)user).getEmail() %></td>
                     </tr>
                     <tr>
                         <th>SSN</th>
-                        <td>FRNMTT98E20I452H</td>
+                        <td><%= ((Patient)user).getSsn() %></td>
                     </tr>
                     <tr>
                         <th>Birthplace</th>
-                        <td>Sassari (SS)</td>
+                        <td><%= ((Patient)user).getBirthPlace() %></td>
                     </tr>
                     <tr>
                         <th>Birthdate</th>
-                        <td>May 20, 1998</td> <!--USARE CLASSE DATA JSTL-->
+                        <td><%= ((Patient)user).getBirthDate() %></td> <!--USARE CLASSE DATA JSTL-->
                     </tr>
                     <tr>
                         <th>Current province</th>
-                        <td>SASSARI SS</td>
+                        <td><%= ((Patient)user).getLivingProvince() %></td>
                     </tr>
                     <tr>
                         <th>Gender</th>
                         <td>Male</td>
                     </tr>
-                    <% if (role.equals("citizen")) { %>
                     <tr>
                         <th>Practitioner</th>
-                        <td>Francesca Annibaletti</td>
+                        <td><%= ((Patient)user).getGeneralPractitionerEmail() %></td>
                     </tr>
                     <tr>
                         <th>Profile photo history</th>
                         <td>...DROPDOWN</td>
                     </tr>
-                    <% } %>
+                    <% }; break;
+                        default: break;}%>
                 </table>
             </div>
             <div class="col-md-6">

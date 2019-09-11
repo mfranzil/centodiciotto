@@ -2,8 +2,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 
 import java.sql.Date;
 
-public class Patient {
-    private String email;
+public class Patient extends User {
     private String firstName;
     private String lastName;
     private Date birthDate;
@@ -14,9 +13,9 @@ public class Patient {
     private String generalPractitionerEmail;
     private Integer photoId;
 
-    public Patient(String email, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
-                   Character gender, String livingProvince, String generalPractitionerEmail, Integer photoId) {
-        this.email = email;
+    public Patient(String email, String password, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
+                   Character gender, String livingProvince, String generalPractitionerEmail) {
+        super(email, password);
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -25,7 +24,6 @@ public class Patient {
         this.gender = gender;
         this.livingProvince = livingProvince;
         this.generalPractitionerEmail = generalPractitionerEmail;
-        this.photoId = photoId;
     }
 
     public String getEmail() {

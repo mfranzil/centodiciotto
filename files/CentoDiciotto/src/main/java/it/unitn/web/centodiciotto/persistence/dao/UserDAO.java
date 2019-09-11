@@ -14,5 +14,5 @@ public interface UserDAO extends DAO<User, String> {
 
     User getByEmail(String email);
 
-    User getByEmailAndPassword(String email, String password) throws DAOException;
+    User getByEmailAndPassword(String email, String password, String role) throws DAOException;
 }

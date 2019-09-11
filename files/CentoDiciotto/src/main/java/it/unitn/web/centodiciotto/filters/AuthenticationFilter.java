@@ -1,5 +1,6 @@
 package it.unitn.web.centodiciotto.filters;
 
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
 import javax.servlet.*;
@@ -68,27 +69,23 @@ public class AuthenticationFilter implements Filter {
                 }
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
             } else {
-                // DA AGGIORNARE! -->
-                String[] roles = {"citizen", "chemist", "general_practitioner", "health_service", "specialized_doctor"};
-                String current_role = user.getRole();
+                boolean allowed = false;
 
-                boolean allowed = true;
-                for (String item : roles) {
-                    if (!item.equals(current_role) && ((HttpServletRequest) request).getRequestURL().toString().contains(
-                            "/restricted/" + item
-                    )) {
-                        log(current_role + " ! " + item);
-                        allowed = false;
-                        break;
-                    }
+                if (((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/user")) {
+                    allowed = true;
                 }
+                if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/citizen")) {
+                    allowed = true;
+                }
+                //TODO implement all different classes
+
+
                 if (!allowed) {
                     String contextPath = servletContext.getContextPath();
                     if (!contextPath.endsWith("/")) {
                         contextPath += "/";
                     }
-                    ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response)
-                            .encodeRedirectURL(contextPath ));
+                    ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath));
                 }
             }
         }

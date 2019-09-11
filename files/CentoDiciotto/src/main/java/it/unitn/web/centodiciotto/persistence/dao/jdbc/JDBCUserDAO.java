@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.disi.wp.commons.persistence.dao.exceptions.DAOException;
 import it.unitn.disi.wp.commons.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
 import java.sql.Connection;
@@ -51,19 +52,54 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         return null;
     }
 
-    public User getByEmailAndPassword(String email, String password) throws DAOException {
+    public User getByEmailAndPassword(String email, String password, String role) throws DAOException {
         if (email == null || password == null) {
             throw new DAOException("Email and password are mandatory fields",
                     new NullPointerException("email or password are null"));
         }
 
-        try (PreparedStatement stm = CON.prepareStatement("SELECT * FROM user_ WHERE email = ? AND password = ?")) {
+        String role_table;
+
+        switch (role) {
+            case "citizen":
+                role_table = "patient";
+                break;
+            case "general_practitioner":
+                role_table = "general_practitioner";
+                break;
+            case "specialized_doctor":
+                role_table = "specializeddoctor";
+                break;
+            case "chemist":
+                role_table = "pharmacy";
+                break;
+            case "health_service":
+                role_table = "ssp";
+                break;
+            default:
+                role_table = "user_";
+        }
+        String Select = "SELECT * FROM user_ JOIN " + role_table + " ON user_.email = " + role_table + ".email ";
+
+        try (PreparedStatement stm = CON.prepareStatement(Select + "WHERE user_.email = ? AND password = ?")) {
             stm.setString(1, email);
             stm.setString(2, password);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    User user = new User(rs.getString("email"), rs.getString("password"));
+                    User user; // = new User(rs.getString("email"), rs.getString("password"));
+                    switch (role) {
+                        case "citizen":
+                            user = new Patient(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("living_province"), rs.getString("general_practitioner_email"));
+                            break;
+                        case "general_practitioner":
+                        case "specialized_doctor":
+                        case "chemist":
+                        case "health_service":
+                        default:
+                            user = new User(rs.getString("email"), rs.getString("password"));
+                    }
+                    System.out.println(user instanceof Patient);
                     return user;
                 }
                 return null;
