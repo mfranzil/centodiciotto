@@ -1,6 +1,4 @@
-<%@ page import="it.unitn.web.centodiciotto.persistence.entities.User" %>
-<%@ page import="it.unitn.web.centodiciotto.persistence.entities.Patient" %>
-<%@ page import="it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner" %>
+<%@ page import="it.unitn.web.centodiciotto.persistence.entities.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
     String role = null;
@@ -19,6 +17,15 @@
         }else if(user instanceof GeneralPractitioner){
             role = "general_practitioner";
             displayName = ((GeneralPractitioner) user).getFirstName();
+        }else if(user instanceof SpecializedDoctor){
+            role = "specialized_doctor";
+            displayName = ((SpecializedDoctor) user).getFirstName();
+        }else if(user instanceof Chemist){
+            role = "chemist";
+            displayName = ((Chemist) user).getName();
+        }else if(user instanceof HealthService){
+            role = "health_service";
+            displayName = ((HealthService) user).getOperatingProvince();
         }
     }
 %>
@@ -82,9 +89,8 @@
                     Unhappy with your practitioner?
                 </a>
             </li>
-            <% }
-            ;
-            break;
+            <%      };
+                    break;
                 case "general_practitioner": { %>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal"
@@ -112,9 +118,8 @@
                     Prescriptions
                 </a>
             </li>
-            <% }
-            ;
-            break;
+            <%      };
+                    break;
                 default:
                     break;
             } %>

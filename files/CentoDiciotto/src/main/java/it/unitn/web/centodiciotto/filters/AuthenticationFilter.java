@@ -1,8 +1,6 @@
 package it.unitn.web.centodiciotto.filters;
 
-import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.*;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -75,11 +73,18 @@ public class AuthenticationFilter implements Filter {
                 if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/patient")) {
                     allowed = true;
                 }
-                if (user instanceof GeneralPractitioner && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/general_practitioner")) {
+                else if (user instanceof GeneralPractitioner && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/general_practitioner")) {
                     allowed = true;
                 }
-                //TODO implement all different classes
-
+                else if (user instanceof SpecializedDoctor && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/specialized_doctor")) {
+                    allowed = true;
+                }
+                else if (user instanceof Chemist && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/chemist")) {
+                    allowed = true;
+                }
+                else if (user instanceof HealthService && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/health_service")) {
+                    allowed = true;
+                }
 
                 if (!allowed) {
                     String contextPath = servletContext.getContextPath();

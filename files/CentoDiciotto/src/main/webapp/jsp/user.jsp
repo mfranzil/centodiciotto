@@ -99,12 +99,19 @@
                         <td><%= ((GeneralPractitioner) user).getWorkingProvince() %>
                         </td>
                     </tr>
-                    <% }
-                    ;
+                    <%      };
                     break;
-                        default:
-                            break;
-                    }%>
+                        default: { %>
+                    <tr>
+                        <th>Error</th>
+                        <td>Not supported yet
+                        </td>
+                    </tr>
+                    <tr>
+
+                    <% };
+                    break;
+                    } %>
                 </table>
             </div>
             <div class="col-md-6">

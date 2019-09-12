@@ -1,9 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
-import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
@@ -105,8 +103,14 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                             user = new GeneralPractitioner(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
                             break;
                         case "specialized_doctor":
+                            user = new SpecializedDoctor(rs.getString("email"), rs.getString("password"), rs.getString("first_name"), rs.getString("last_name"));
+                            break;
                         case "chemist":
+                            user = new Chemist(rs.getString("email"), rs.getString("password"), rs.getString("name"), rs.getString("chemist_province"));
+                            break;
                         case "health_service":
+                            user = new HealthService(rs.getString("email"), rs.getString("password"), rs.getString("operating_province"));
+                            break;
                         default:
                             user = new User(rs.getString("email"), rs.getString("password"));
                     }
