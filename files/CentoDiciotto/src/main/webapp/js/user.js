@@ -9,9 +9,7 @@ $("document").ready(function () {
             url: url,
             data: form.serialize(),
             success: function (data) {
-                $('#old-password').val("");
-                $('#new-password-confirm').val("");
-                $('#new-password').val("");
+                $('#old-password,#new-password-confirm,#new-password').val("");
                 alert("Password cambiata con successo.");
             },
             error: function (data) {

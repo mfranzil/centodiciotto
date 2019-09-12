@@ -30,7 +30,7 @@ body {
 }
 
 .row {
-    align-items: center !important;
+    /* align-items: center !important; */
 }
 
 .row > div {

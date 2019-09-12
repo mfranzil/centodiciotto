@@ -1,13 +1,14 @@
 package it.unitn.web.centodiciotto.servlets;
 
+import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
+import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
-import it.unitn.web.centodiciotto.persistence.entities.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -63,23 +64,28 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = userDao.getByEmailAndPassword(email, password, role);
+            JSONObject jobj = new JSONObject();
 
             if (user == null) {
-                request.setAttribute("loginResult", true);
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
+                response.setStatus(400);
+
+                jobj.put("url", "");
             } else {
+                response.setStatus(200);
                 request.getSession().setAttribute("user", user);
 
-                if (user instanceof Patient) {
-                    GeneralPractitioner practitioner = practitionerDao.getByEmail(((Patient) user).getGeneralPractitionerEmail());
+                if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
+                    GeneralPractitioner practitioner =
+                            practitionerDao.getByEmail(((Patient) user).getGeneralPractitionerEmail());
                     request.getSession().setAttribute("practitioner", practitioner);
                 }
 
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
+                jobj.put("url", response.encodeRedirectURL(contextPath + "restricted/user"));
             }
+
+            response.getWriter().write(jobj.toString());
         } catch (DAOException ex) {
-            //TODO: log exception
-            request.getServletContext().log("Impossible to retrieve the user", ex);
+            request.getServletContext().log("Impossible to retrieve the user.", ex);
         }
     }
 }

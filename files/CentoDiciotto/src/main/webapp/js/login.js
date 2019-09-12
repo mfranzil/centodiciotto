@@ -36,22 +36,43 @@ function getNameFromId(id) {
 }
 
 $("document").ready(function () {
-    if (localStorage.checkBoxValidation) {
-        $('#username').val(localStorage.userName);
-        $('#password').val(localStorage.password);
-        $('#rememberMe').val(localStorage.checkBoxValidation);
-    }
-
-    $('#form').on('submit', function () {
+    $("#login").submit(function (e) {
+        e.preventDefault();
         if ($('#rememberMe').is(':checked')) {
             // save username and password
             localStorage.userName = $('#username').val();
             localStorage.password = $('#password').val();
-            localStorage.checkBoxValidation = $('#rememberMe').val();
+            localStorage.checkBoxValidation = true;
         } else {
             localStorage.userName = '';
             localStorage.password = '';
-            localStorage.checkBoxValidation = '';
+            localStorage.checkBoxValidation = false;
         }
+
+        let form = $(this);
+        let url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function(__data) {
+                __data = JSON.parse(__data);
+                window.location = __data.url;
+            },
+            error: function (data) {
+                alert("Nome utente o password non corretti.");
+                $('#username,#password').css("background", "rgba(255, 0, 0, 0.2)").css("border-color", "red");
+                setTimeout(function () {
+                    $('#username,#password').css("background", "").css("border-color", "");
+                }, 2000);
+            }
+        });
     });
+
+    if (localStorage.checkBoxValidation) {
+        $('#username').val(localStorage.userName);
+        $('#password').val(localStorage.password);
+        $('#rememberMe').prop("checked", true);
+    }
 });

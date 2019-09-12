@@ -29,8 +29,6 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     @Override
     public void insert(Patient patient) {
         try {
-            System.out.println("ok connection");
-
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, patient.getEmail());
             preparedStatement.setString(2, patient.getFirstName());
@@ -42,9 +40,6 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             preparedStatement.setString(8, patient.getGeneralPractitionerEmail());
             preparedStatement.setString(9, patient.getLivingProvince());
             preparedStatement.setInt(10, patient.getPhotoId());
-
-            //PreparedStatement preparedStatement = conn.prepareStatement(INSERT_TEST);
-            System.out.println("ok statement");
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);

@@ -110,7 +110,6 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                         default:
                             user = new User(rs.getString("email"), rs.getString("password"));
                     }
-                    System.out.println(user instanceof Patient);
                     return user;
                 }
                 return null;

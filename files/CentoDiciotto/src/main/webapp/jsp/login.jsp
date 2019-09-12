@@ -55,7 +55,7 @@
     </div>
 </div>
 <div class="popup_window" id="form_window">
-    <form action="login_handler" class="popup animate-in" id="form" method="POST">
+    <form action="login_handler" class="popup animate-in" id="login" method="POST">
         <div style="width: 100%; text-align:center;">
             <img id="form_image" style="width: 32px" src="" alt="...">
         </div>
@@ -77,7 +77,7 @@
         <div class="mb-2" style="display: flex">
             <div class="checkbox" style="flex: 50%;">
                 <label>
-                    <input id="rememberMe" name="rememberMe" type="checkbox" value="false">Remember me
+                    <input id="rememberMe" name="rememberMe" type="checkbox">Remember me
                 </label>
             </div>
             <div style="text-align: right; flex: 50%">
