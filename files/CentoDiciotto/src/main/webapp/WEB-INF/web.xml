@@ -56,7 +56,7 @@
         <jsp-file>/jsp/user.jsp</jsp-file>
     </servlet>
     <servlet>
-        <servlet-name>ForgotPasswordPage</servlet-name>
+        <servlet-name>PasswordRecoveryPage</servlet-name>
         <jsp-file>/jsp/password_recovery.jsp</jsp-file>
     </servlet>
     <servlet>
@@ -116,6 +116,10 @@
         <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordChangeServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PasswordResetServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordResetServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
     </servlet>
@@ -134,12 +138,8 @@
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>ForgotPasswordPage</servlet-name>
+        <servlet-name>PasswordRecoveryPage</servlet-name>
         <url-pattern>/password_recovery</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login_handler</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Cookies</servlet-name>
@@ -148,6 +148,14 @@
     <servlet-mapping>
         <servlet-name>Privacy</servlet-name>
         <url-pattern>/privacy</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PasswordResetServlet</servlet-name>
+        <url-pattern>/password_reset_handler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login_handler</url-pattern>
     </servlet-mapping>
     <!-- Pagine restricted, comuni a tutti i ruoli -->
     <servlet-mapping>

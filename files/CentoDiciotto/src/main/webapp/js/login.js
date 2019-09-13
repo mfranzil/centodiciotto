@@ -2,22 +2,6 @@ function getContextPath() {
     return window.location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
 }
 
-function closeForm() {
-    // var form = document.getElementById('form');
-    // form.classList.remove("animate-in");
-    // form.classList.add("animate-out");
-    document.getElementById('form_window').style.display = "none";
-    return false;
-}
-
-function openMenu(id) {
-    let role = getNameFromId(id);
-    document.getElementById('form_image').src = getContextPath().toString() + "/img/classes/" + id + ".png";
-    document.getElementById('form_name').innerHTML = "Logging in as " + role;
-    document.getElementById('form_window').style.display = 'block';
-    document.getElementById('role').value = id;
-}
-
 function getNameFromId(id) {
     switch (id) {
         case "patient":
@@ -36,12 +20,21 @@ function getNameFromId(id) {
 }
 
 $("document").ready(function () {
+    $(".hover-button").click(function () {
+        let id = this.id;
+        let role = getNameFromId(id);
+        $('#form-image').attr('src', getContextPath().toString() + "/img/classes/" + id + ".png");
+        $('#form-name').html("Logging in as " + role);
+        $('#form-window').show();
+        $('#role').val(id);
+    });
+
     $("#login").submit(function (e) {
         e.preventDefault();
-        if ($('#rememberMe').is(':checked')) {
+        if ($('#remember-me').is(':checked')) {
             // save username and password
-            localStorage.userName = $('#username').val();
-            localStorage.password = $('#password').val();
+            localStorage.userName = $('#email-login').val();
+            localStorage.password = $('#password-login').val();
             localStorage.checkBoxValidation = true;
         } else {
             localStorage.userName = '';
@@ -56,18 +49,54 @@ $("document").ready(function () {
             type: "POST",
             url: url,
             data: form.serialize(),
-            success: function(__data) {
+            success: function (__data) {
                 __data = JSON.parse(__data);
                 window.location = __data.url;
             },
             error: function (data) {
                 alert("Nome utente o password non corretti.");
-                $('#username,#password').css("background", "rgba(255, 0, 0, 0.2)").css("border-color", "red");
+                $('#email-login,#password-login').css("background", "rgba(255, 0, 0, 0.2)")
+                    .css("border-color", "red");
                 setTimeout(function () {
-                    $('#username,#password').css("background", "").css("border-color", "");
+                    $('#email-login,#password-login').css("background", "").css("border-color", "");
                 }, 2000);
             }
         });
+    });
+
+    $("#recovery").submit(function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function (data) {
+                $('#message').html("If " + $('#email-recovery').val() + " corresponds to a valid email," +
+                    " you'll receive instructions for resetting your password in your inbox. <br>" +
+                    "The link is valid for 24 hours.");
+                $('#email-recovery').css("background", "rgba(0, 255, 0, 0.2)")
+                    .css("border-color", "green").val("");
+                $('#submit-recovery').prop('disabled', true);
+            }
+        });
+    });
+
+    $('#to-recovery').click(function (e) {
+        e.preventDefault();
+        $('#recovery').slideDown();
+        $('#login').slideUp();
+    });
+
+    $('#to-login').click(function () {
+        $('#recovery').slideUp();
+        $('#login').slideDown();
+    });
+
+    $('#close-form').click(function () {
+        $('#form-window').fadeOut();
     });
 
     if (localStorage.checkBoxValidation) {

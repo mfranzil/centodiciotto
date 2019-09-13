@@ -11,6 +11,7 @@
 
 # Config file
 config.ini
+server.properties
 
 # Compiled class file
 *.clas

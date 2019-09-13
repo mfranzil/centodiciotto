@@ -16,7 +16,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
     final private String UPDATE = "UPDATE user_ SET password = ? WHERE email = ?;";
-    final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE email = ?;";
 
     private static boolean containsItemFromArray(String inputString, String[] items) {
         // Convert the array of String items as a Stream
@@ -58,18 +58,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             System.err.println("Error updating user: " + e.getMessage());
         }
     }
-
-/*
-    @Override
-    public void delete(User user) {
-    }
-
-    @Override
-    public User getByEmail(String email) {
-        return null;
-    }
-*/
-
+    
     public User getByEmailAndPassword(String email, String password, String role) throws DAOException {
         if (email == null || password == null) {
             throw new DAOException("Email and password are mandatory fields",
@@ -122,19 +111,34 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             throw new DAOException("Impossible to get the list of users", ex);
         }
     }
+    
+    @Override
+    public User getByPrimaryKey(String primaryKey) throws DAOException {
+        User res;
+        try(PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+            stm.setString(1, primaryKey);
 
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    res = new User(
+                            rs.getString("email"),
+                            rs.getString("password"));
+                    return res;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting User by email: " + e.getMessage());
+        }
+        return null;
+    }
+
+    
     // TODO Da modificare
 
     @Override
     public Long getCount() throws DAOException {
         return null;
     }
-
-    @Override
-    public User getByPrimaryKey(String primaryKey) throws DAOException {
-        return null;
-    }
-
     @Override
     public List<User> getAll() throws DAOException {
         return null;
