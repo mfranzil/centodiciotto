@@ -25,7 +25,7 @@
             displayName = ((Chemist) user).getName();
         }else if(user instanceof HealthService){
             role = "health_service";
-            displayName = ((HealthService) user).getOperatingProvince();
+            displayName = ((HealthService) user).getOperatingProvince() + " Health Service";
         }
     }
 %>

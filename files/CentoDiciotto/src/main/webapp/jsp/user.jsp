@@ -100,7 +100,51 @@
                         </td>
                     </tr>
                     <%      };
+                            break;
+                        case "specialized_doctor": { %>
+                    <tr>
+                        <th>Name</th>
+                        <td><%= ((SpecializedDoctor) user).getFirstName() %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Surname</th>
+                        <td><%= ((SpecializedDoctor) user).getLastName() %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td><%= ((SpecializedDoctor) user).getEmail() %>
+                        </td>
+                    </tr>
+                    <%      };
+                            break;
+                        case "chemist": { %>
+                    <tr>
+                        <th>Name</th>
+                        <td><%= ((Chemist) user).getName() %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Province</th>
+                        <td><%= ((Chemist) user).getChemistProvince() %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td><%= ((Chemist) user).getEmail() %>
+                        </td>
+                    </tr>
+                    <%      };
                     break;
+                        case "health_service": { %>
+                    <tr>
+                        <th>Operating Province</th>
+                        <td><%= ((HealthService) user).getOperatingProvince() %>
+                        </td>
+                    </tr>
+                    <%      };
+                            break;
                         default: { %>
                     <tr>
                         <th>Error</th>
