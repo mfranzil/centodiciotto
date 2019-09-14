@@ -55,15 +55,15 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     }
 
     @Override
-    public HealthService getByEmail(String email) {
+    public HealthService getByPrimaryKey(String email) {
         HealthService res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                     res = new HealthService(rs.getString("email"), "", rs.getString("operating_province"));
-                     return res;
+                    res = new HealthService(rs.getString("email"), "", rs.getString("operating_province"));
+                    return res;
                 }
             }
         } catch (SQLException e) {
@@ -74,11 +74,6 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
-    }
-
-    @Override
-    public HealthService getByPrimaryKey(String primaryKey) throws DAOException {
         return null;
     }
 

@@ -56,15 +56,15 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     }
 
     @Override
-    public SpecializedDoctor getByEmail(String email) {
+    public SpecializedDoctor getByPrimaryKey(String email) {
         SpecializedDoctor res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                     res = new SpecializedDoctor(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"));
-                     return res;
+                    res = new SpecializedDoctor(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"));
+                    return res;
                 }
             }
         } catch (SQLException e) {
@@ -73,15 +73,8 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
         return null;
     }
 
-
-
     @Override
     public Long getCount() throws DAOException {
-        return null;
-    }
-
-    @Override
-    public SpecializedDoctor getByPrimaryKey(String primaryKey) throws DAOException {
         return null;
     }
 

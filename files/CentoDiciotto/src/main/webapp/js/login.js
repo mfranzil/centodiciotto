@@ -20,6 +20,10 @@ function getNameFromId(id) {
 }
 
 $("document").ready(function () {
+    $('#email-login').val(localStorage.email);
+    $('#password-login').val(localStorage.password);
+    $('#rememberMe').prop("checked", localStorage.checkBoxValidation);
+
     $(".hover-button").click(function () {
         let id = this.id;
         let role = getNameFromId(id);
@@ -31,13 +35,14 @@ $("document").ready(function () {
 
     $("#login").submit(function (e) {
         e.preventDefault();
+
         if ($('#remember-me').is(':checked')) {
             // save username and password
-            localStorage.userName = $('#email-login').val();
+            localStorage.email = $('#email-login').val();
             localStorage.password = $('#password-login').val();
             localStorage.checkBoxValidation = true;
         } else {
-            localStorage.userName = '';
+            localStorage.email = '';
             localStorage.password = '';
             localStorage.checkBoxValidation = false;
         }
@@ -66,6 +71,7 @@ $("document").ready(function () {
 
     $("#recovery").submit(function (e) {
         e.preventDefault();
+        $('#submit-recovery').prop('disabled', true);
         let form = $(this);
         let url = form.attr('action');
 
@@ -78,8 +84,7 @@ $("document").ready(function () {
                     " you'll receive instructions for resetting your password in your inbox. <br>" +
                     "The link is valid for 24 hours.");
                 $('#email-recovery').css("background", "rgba(0, 255, 0, 0.2)")
-                    .css("border-color", "green").val("");
-                $('#submit-recovery').prop('disabled', true);
+                    .css("border-color", "green").val("").prop('disabled', true);
             }
         });
     });
@@ -98,10 +103,4 @@ $("document").ready(function () {
     $('#close-form').click(function () {
         $('#form-window').fadeOut();
     });
-
-    if (localStorage.checkBoxValidation) {
-        $('#username').val(localStorage.userName);
-        $('#password').val(localStorage.password);
-        $('#rememberMe').prop("checked", true);
-    }
 });

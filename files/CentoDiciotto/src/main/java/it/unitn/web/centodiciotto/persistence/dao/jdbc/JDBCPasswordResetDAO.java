@@ -55,9 +55,13 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     }
 
     @Override
+    public void delete(PasswordReset passwordReset) {
+    }
+
+    @Override
     public PasswordReset getByToken(String token) {
         PasswordReset res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYTOKEN)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYTOKEN)) {
             stm.setString(1, token);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -83,7 +87,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     @Override
     public PasswordReset getByPrimaryKey(String primaryKey) throws DAOException {
         PasswordReset res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {

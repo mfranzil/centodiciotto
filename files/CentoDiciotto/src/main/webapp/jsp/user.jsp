@@ -7,6 +7,7 @@
     <title>My profile - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/user.js"></script>
+    <script src="${pageContext.request.contextPath}/js/new_password.js"></script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>

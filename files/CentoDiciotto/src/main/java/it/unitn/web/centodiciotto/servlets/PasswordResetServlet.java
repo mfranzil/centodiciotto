@@ -44,25 +44,6 @@ public class PasswordResetServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
-        String token = request.getParameter("token");
-
-        PasswordReset pr = prDao.getByToken(token);
-
-        if (pr != null && pr.getExpiringDate().after(new Date(System.currentTimeMillis()))) {
-            request.setAttribute("email", pr.getEmail());
-            request.getRequestDispatcher("/jsp/password_recovery.jsp").forward(request, response);
-        } else {
-            response.sendRedirect(response.encodeRedirectURL(contextPath));
-        }
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user;
         PasswordReset pr;
@@ -83,13 +64,13 @@ public class PasswordResetServlet extends HttpServlet {
                 } else {
                     prDao.update(pr);
                 }
-                pr.setEmail("rewqasdfcxz11@gmail.com");
                 sendEmail(pr);
             }
             response.getWriter().write("None");
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user.", ex);
         } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).severe(ex.toString());
             // No matter what, bisogna terminare la richiesta e dire che è stata mandata.
         }
     }
@@ -101,7 +82,7 @@ public class PasswordResetServlet extends HttpServlet {
         }
 
         String email = pr.getEmail();
-        String url = "http://localhost:8080" + contextPath + "password_reset_handler?token=" + pr.getToken();
+        String url = "http://localhost:8080" + contextPath + "finalize_password_reset?token=" + pr.getToken();
         String message =
                 "Somebody (hopefully you) requested a new password for Centodiciotto for "
                         + email + ". No changes have been done to your account, yet.\n\n" +

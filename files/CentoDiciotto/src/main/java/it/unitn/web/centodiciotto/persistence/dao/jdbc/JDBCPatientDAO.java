@@ -1,9 +1,9 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.util.List;
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
 
     final private String INSERT = "INSERT INTO patient (email, first_name, last_name, birth_date, birth_place, ssn, " +
-        "gender, general_practitioner_email, living_province, photo_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            "gender, general_practitioner_email, living_province, photo_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -62,17 +62,12 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     }
 
     @Override
-    public Patient getByEmail(String email) {
+    public Patient getByPrimaryKey(String email) {
         return null;
     }
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
-    }
-
-    @Override
-    public Patient getByPrimaryKey(String primaryKey) throws DAOException {
         return null;
     }
 

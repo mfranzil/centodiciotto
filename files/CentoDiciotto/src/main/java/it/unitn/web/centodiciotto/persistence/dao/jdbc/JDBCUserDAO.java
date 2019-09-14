@@ -18,15 +18,15 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     final private String UPDATE = "UPDATE user_ SET password = ? WHERE email = ?;";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE email = ?;";
 
+    public JDBCUserDAO(Connection con) {
+        super(con);
+    }
+
     private static boolean containsItemFromArray(String inputString, String[] items) {
         // Convert the array of String items as a Stream
         // For each element of the Stream call inputString.contains(element)
         // If you have any match returns true, false otherwise
         return Arrays.stream(items).anyMatch(inputString::contains);
-    }
-
-    public JDBCUserDAO(Connection con) {
-        super(con);
     }
 
     @Override
@@ -58,7 +58,12 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             System.err.println("Error updating user: " + e.getMessage());
         }
     }
-    
+
+    @Override
+    public void delete(User user) {
+
+    }
+
     public User getByEmailAndPassword(String email, String password, String role) throws DAOException {
         if (email == null || password == null) {
             throw new DAOException("Email and password are mandatory fields",
@@ -67,10 +72,10 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
         String role_table;
 
-        String[] roles = { "patient", "general_practitioner", "specialized_doctor", "chemist", "health_service"};
+        String[] roles = {"patient", "general_practitioner", "specialized_doctor", "chemist", "health_service"};
 
         role_table = role;
-        if(!containsItemFromArray(role, roles)){
+        if (!containsItemFromArray(role, roles)) {
             role_table = "user_";
         }
 
@@ -111,11 +116,11 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             throw new DAOException("Impossible to get the list of users", ex);
         }
     }
-    
+
     @Override
     public User getByPrimaryKey(String primaryKey) throws DAOException {
         User res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -132,13 +137,11 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         return null;
     }
 
-    
-    // TODO Da modificare
-
     @Override
     public Long getCount() throws DAOException {
         return null;
     }
+
     @Override
     public List<User> getAll() throws DAOException {
         return null;

@@ -59,15 +59,15 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     }
 
     @Override
-    public GeneralPractitioner getByEmail(String email) {
+    public GeneralPractitioner getByPrimaryKey(String email) {
         GeneralPractitioner res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                     res = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
-                     return res;
+                    res = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                    return res;
                 }
             }
         } catch (SQLException e) {
@@ -77,10 +77,10 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     }
 
     @Override
-    public List<GeneralPractitioner> getByProvince(String province_abbreviation){
+    public List<GeneralPractitioner> getByProvince(String province_abbreviation) {
         List<GeneralPractitioner> res = new ArrayList<GeneralPractitioner>();
         GeneralPractitioner tmp;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
             stm.setString(1, province_abbreviation);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -98,15 +98,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     }
 
-
-
     @Override
     public Long getCount() throws DAOException {
-        return null;
-    }
-
-    @Override
-    public GeneralPractitioner getByPrimaryKey(String primaryKey) throws DAOException {
         return null;
     }
 

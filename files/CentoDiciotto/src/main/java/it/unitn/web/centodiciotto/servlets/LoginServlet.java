@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
@@ -76,7 +76,7 @@ public class LoginServlet extends HttpServlet {
 
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
                     GeneralPractitioner practitioner =
-                            practitionerDao.getByEmail(((Patient) user).getGeneralPractitionerEmail());
+                            practitionerDao.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
                     request.getSession().setAttribute("practitioner", practitioner);
                 }
 

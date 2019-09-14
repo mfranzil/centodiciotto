@@ -7,13 +7,11 @@ import java.util.List;
 
 public interface ChemistDAO extends DAO<Chemist, String> {
 
-    public void insert(Chemist chemist);
+    void insert(Chemist chemist);
 
-    public void update(Chemist chemist);
+    void update(Chemist chemist);
 
-    public void delete(Chemist chemist);
+    void delete(Chemist chemist);
 
-    public Chemist getByEmail(String email);
-
-    public List<Chemist> getByProvince(String province_abbreviation);
+    List<Chemist> getByProvince(String province_abbreviation);
 }

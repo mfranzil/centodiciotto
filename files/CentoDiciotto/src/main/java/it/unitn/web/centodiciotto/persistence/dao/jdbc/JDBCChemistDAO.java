@@ -58,15 +58,15 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     }
 
     @Override
-    public Chemist getByEmail(String email) {
+    public Chemist getByPrimaryKey(String email) {
         Chemist res;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                     res = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
-                     return res;
+                    res = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
+                    return res;
                 }
             }
         } catch (SQLException e) {
@@ -76,10 +76,10 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     }
 
     @Override
-    public List<Chemist> getByProvince(String province_abbreviation){
+    public List<Chemist> getByProvince(String province_abbreviation) {
         List<Chemist> res = new ArrayList<Chemist>();
         Chemist tmp;
-        try(PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
             stm.setString(1, province_abbreviation);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -97,15 +97,8 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
     }
 
-
-
     @Override
     public Long getCount() throws DAOException {
-        return null;
-    }
-
-    @Override
-    public Chemist getByPrimaryKey(String primaryKey) throws DAOException {
         return null;
     }
 
