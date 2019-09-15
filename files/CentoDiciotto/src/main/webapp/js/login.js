@@ -53,6 +53,7 @@ $("document").ready(function () {
         $.ajax({
             type: "POST",
             url: url,
+            cache: false,
             data: form.serialize(),
             success: function (__data) {
                 __data = JSON.parse(__data);
@@ -78,6 +79,7 @@ $("document").ready(function () {
         $.ajax({
             type: "POST",
             url: url,
+            cache: false,
             data: form.serialize(),
             success: function (data) {
                 $('#message').html("If " + $('#email-recovery').val() + " corresponds to a valid email," +

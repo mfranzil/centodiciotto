@@ -15,6 +15,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
     final private String INSERT = "INSERT INTO password_reset (email, token, expiring_date) values (?, ?, ?);";
     final private String UPDATE = "UPDATE password_reset SET token = ?, expiring_date = ? WHERE email = ?;";
+    final private String DELETE = "DELETE from password_reset WHERE email = ?;";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM password_reset WHERE email = ?;";
     final private String FINDBYTOKEN = "SELECT * FROM password_reset WHERE token = ?;";
 
@@ -56,6 +57,16 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
     @Override
     public void delete(PasswordReset passwordReset) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(DELETE);
+            preparedStatement.setString(1, passwordReset.getEmail());
+
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error deleting PasswordReset: " + e.getMessage());
+        }
     }
 
     @Override

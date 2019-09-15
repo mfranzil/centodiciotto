@@ -14,6 +14,30 @@
                 $(this).find('input[type=radio]').prop('checked', true);
                 $('#submit').removeAttr("disabled");
             });
+
+
+            $("#practitioner").submit(function (e) {
+                e.preventDefault();
+                $('#submit').prop('disabled', true);
+
+                let form = $(this);
+                let url = form.attr('action');
+                let pract = $("input[name='practitioner_email']:checked");
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    cache: false,
+                    data: form.serialize(),
+                    success: function (data) {
+                        $("#current-practitioner").css("background-color", "");
+                        $("#check").html("");
+                        pract.parent().html("✔").parent().css("background-color", "rgba(120,255,120,0.3)");
+                        $('#message').html("Your practitioner has been successfully changed.");
+
+                    }
+                });
+            });
         });
     </script>
 </head>
@@ -36,41 +60,51 @@
                 <h3 class="my-4">
                     Your general practitioner
                 </h3>
-                <table class="table" style="background-color: rgba(120,255,120,0.3)">
+                <table id="current-practitioner" class="table" style="background-color: rgba(120,255,120,0.3)">
                     <% GeneralPractitioner mypractitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
                     <tr>
-                        <td><%= mypractitioner.getFirstName() %></td>
-                        <td><%= mypractitioner.getLastName() %></td>
-                        <td><%= mypractitioner.getWorkingProvince() %></td>
-                        <td>✔</td>
+                        <td><%= mypractitioner.getFirstName() %>
+                        </td>
+                        <td><%= mypractitioner.getLastName() %>
+                        </td>
+                        <td><%= mypractitioner.getWorkingProvince() %>
+                        </td>
+                        <td id="check">✔</td>
                     </tr>
                 </table>
                 <h3 class="my-4">
                     Available practitioners
-                    <p class="lead mt-4">
+                    <p id="message" class="lead mt-4">
                         To choose a practitioner, select the corresponding name and then confirm your changes clicking
                         on the "I want to change my practitioner" button.
                     </p>
                 </h3>
-                <form action="change_practitioner_handler" id="practitioner" method="POST">
+                <form action="${pageContext.request.contextPath}/restricted/patient/unhappy_practitioner"
+                      id="practitioner" method="POST">
                     <div style="margin: auto; text-align: center">
                         <button id="submit" class="btn mb-4 btn-personal" disabled type="submit">
                             I want to change my practitioner
                         </button>
                     </div>
                     <table class="table table-hover" id="table-select">
-                        <% List<GeneralPractitioner> available_practitioners = (List<GeneralPractitioner>) session.getAttribute("available_practitioners"); %>
+                        <% List<GeneralPractitioner> available_practitioners
+                                = (List<GeneralPractitioner>) request.getAttribute("available_practitioners"); %>
                         <%
-                            for(int i=0; i<available_practitioners.size();i++){
-                                if(((GeneralPractitioner)available_practitioners.get(i)).getEmail().compareTo(mypractitioner.getEmail()) != 0){%>
-                        <tr>
-                            <td><%= ((GeneralPractitioner)available_practitioners.get(i)).getFirstName() %></td>
-                            <td><%= ((GeneralPractitioner)available_practitioners.get(i)).getLastName() %></td>
-                            <td><%= ((GeneralPractitioner)available_practitioners.get(i)).getWorkingProvince() %></td>
-                            <td><input type="radio" name="practitioner" value="VALOREDAMETTERE2"></td>
+                            for (GeneralPractitioner available_practitioner : available_practitioners) {
+                                if (available_practitioner.getEmail().compareTo(mypractitioner.getEmail()) != 0) {%>
+                        <tr id="<%=available_practitioner.getEmail()%>">
+                            <td><%= available_practitioner.getFirstName() %>
+                            </td>
+                            <td><%= available_practitioner.getLastName() %>
+                            </td>
+                            <td><%= available_practitioner.getWorkingProvince() %>
+                            </td>
+                            <td>
+                                <input type="radio" name="practitioner_email" value="<%=available_practitioner.getEmail()%>">
+                            </td>
                         </tr>
-                        <%  }
-                            }%>
+                        <% }
+                        }%>
                     </table>
                 </form>
             </div>

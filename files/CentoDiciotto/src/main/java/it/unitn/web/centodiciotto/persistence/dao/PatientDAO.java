@@ -10,4 +10,7 @@ public interface PatientDAO extends DAO<Patient, String> {
     void update(Patient patient);
 
     void delete(Patient patient);
+
+    void updatePractitioner(Patient patient);
+
 }

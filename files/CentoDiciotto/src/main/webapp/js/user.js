@@ -7,6 +7,7 @@ $("document").ready(function () {
         $.ajax({
             type: "POST",
             url: url,
+            cache: false,
             data: form.serialize(),
             success: function (data) {
                 $('#old-password,#new-password-confirm,#new-password').val("");

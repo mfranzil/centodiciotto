@@ -14,6 +14,8 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
 
     final private String INSERT = "INSERT INTO patient (email, first_name, last_name, birth_date, birth_place, ssn, " +
             "gender, general_practitioner_email, living_province, photo_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
+
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -52,13 +54,26 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     }
 
     @Override
-    public void update(Patient patient) {
-
-    }
+    public void update(Patient patient) {}
 
     @Override
     public void delete(Patient patient) {
 
+    }
+
+    @Override
+    public void updatePractitioner(Patient patient) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATEPRACTITIONER);
+            preparedStatement.setString(1, patient.getGeneralPractitionerEmail());
+            preparedStatement.setString(2, patient.getEmail());
+
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error updating user: " + e.getMessage());
+        }
     }
 
     @Override

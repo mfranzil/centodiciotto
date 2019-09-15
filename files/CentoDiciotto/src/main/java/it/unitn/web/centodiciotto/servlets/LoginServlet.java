@@ -82,7 +82,6 @@ public class LoginServlet extends HttpServlet {
 
                 jobj.put("url", response.encodeRedirectURL(contextPath + "restricted/user"));
             }
-
             response.getWriter().write(jobj.toString());
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to retrieve the user.", ex);

@@ -37,9 +37,6 @@ public class PasswordChangeServlet extends HttpServlet {
         String oldPassword = request.getParameter("old-password");
         String newPassword = request.getParameter("new-password");
 
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-
         if (user.getPassword().equals(oldPassword)) {
             user.setPassword(newPassword);
             userDao.update(user);

@@ -49,8 +49,6 @@ public class PasswordResetServlet extends HttpServlet {
         PasswordReset pr;
 
         response.setStatus(200);
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
 
         try {
             String email = request.getParameter("email");

@@ -2,8 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
 
 <%
-    String loginUrl = request.getParameter("login_url");
-    String email = request.getParameter("email");
+    String email = (String) request.getAttribute("email");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,26 +17,27 @@
                 let form = $(this);
                 let url = form.attr('action');
 
+                if ($("#email").val() !== "<%= email %>") {
+                    alert("Email non corrispondente alla richiesta.");
+                    return;
+                }
+
                 $.ajax({
                     type: "POST",
                     url: url,
+                    cache: false,
                     data: form.serialize(),
                     success: function (__data) {
                         $("#message").html("Password changed successfully.");
                         $("#new-password,#new-password-confirm,#email").slideUp();
-                        $("#password-change-button").html("Go to login").click(function (e){
+                        $("#password-change-button").html("Go to login").click(function (e) {
                             e.preventDefault();
                             window.location = window.location.pathname.substring(
                                 0, window.location.pathname.indexOf("/", 2)) + "/login";
                         });
                     },
                     error: function (data) {
-                        alert("Errore durante il cambiamento della password. L'email inserita non corrisponde.");
-                        $('#email').css("background", "rgba(255, 0, 0, 0.2)")
-                            .css("border-color", "red");
-                        setTimeout(function () {
-                            $('#email').css("background", "").css("border-color", "");
-                        }, 2000);
+                        alert("Errore durante il cambiamento della password.");
                     }
                 });
             });
@@ -68,7 +68,8 @@
                            required type="password">
                 </div>
                 <button id="password-change-button"
-                        class="btn btn-lg btn-block mt-4 btn-personal" type="submit">Reset password</button>
+                        class="btn btn-lg btn-block mt-4 btn-personal" type="submit">Reset password
+                </button>
             </form>
         </div>
     </div>

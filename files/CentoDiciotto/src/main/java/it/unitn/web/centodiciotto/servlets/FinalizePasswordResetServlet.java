@@ -19,7 +19,6 @@ public class FinalizePasswordResetServlet extends HttpServlet {
 
     private UserDAO userDao;
     private PasswordResetDAO prDao;
-    private String emailRequestingReset;
 
     @Override
     public void init() throws ServletException {
@@ -47,7 +46,7 @@ public class FinalizePasswordResetServlet extends HttpServlet {
         PasswordReset pr = prDao.getByToken(token);
 
         if (pr != null && pr.getExpiringDate().after(new Date(System.currentTimeMillis()))) {
-            emailRequestingReset = pr.getEmail();
+            request.setAttribute("email", pr.getEmail());
             request.getRequestDispatcher("/jsp/password_recovery.jsp").forward(request, response);
         } else {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
@@ -62,19 +61,14 @@ public class FinalizePasswordResetServlet extends HttpServlet {
         String email = request.getParameter("email");
         String newPassword = request.getParameter("new-password");
 
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
-
-        if (!email.equals(emailRequestingReset)) {
-            response.setStatus(400);
-            return;
-        }
         try {
             user = userDao.getByPrimaryKey(email);
             user.setPassword(newPassword);
             userDao.update(user);
+            prDao.delete(prDao.getByPrimaryKey(email));
             response.setStatus(200);
-        } catch (DAOException e) {
+        } catch (DAOException ex) {
+            request.getServletContext().log("Impossible to add a new password", ex);
             response.setStatus(400);
         }
 
