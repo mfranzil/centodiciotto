@@ -18,6 +18,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
     final private String SELECTALL = "SELECT * FROM general_practitioner;";
+    final private String DELETE = "DELETE FROM general_practitioner WHERE email = ?;";
+
     /**
      * The base constructor for all the JDBC DAOs.
      *
@@ -48,6 +50,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     }
 
+    //TODO
     @Override
     public void update(GeneralPractitioner generalPractitioner) {
 
@@ -55,7 +58,17 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     @Override
     public void delete(GeneralPractitioner generalPractitioner) {
+        try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
+            stm.setString(1, generalPractitioner.getEmail());
 
+            ResultSet rs = stm.executeQuery();
+            try {
+            } finally {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting GeneralPractitioner by email: " + e.getMessage());
+        };
     }
 
     @Override

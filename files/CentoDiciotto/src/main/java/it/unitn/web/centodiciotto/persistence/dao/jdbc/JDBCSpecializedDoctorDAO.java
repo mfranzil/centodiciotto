@@ -17,6 +17,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String INSERT = "INSERT INTO specialized_doctor (email, first_name, last_name) values (?, ?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM specialized_doctor WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
+    final private String DELETE = "DELETE FROM specialized_doctor WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -54,7 +55,17 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
     @Override
     public void delete(SpecializedDoctor specializedDoctor) {
+        try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
+            stm.setString(1, specializedDoctor.getEmail());
 
+            ResultSet rs = stm.executeQuery();
+            try {
+            } finally {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting SpecializesDoctor by email: " + e.getMessage());
+        };
     }
 
     @Override

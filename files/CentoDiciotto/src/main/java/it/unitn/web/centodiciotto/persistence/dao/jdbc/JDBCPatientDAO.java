@@ -18,6 +18,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             "gender, general_practitioner_email, living_province, photo_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM patient;";
+    final private String DELETE = "DELETE FROM patient WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -60,7 +61,17 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
 
     @Override
     public void delete(Patient patient) {
+        try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
+            stm.setString(1, patient.getEmail());
 
+            ResultSet rs = stm.executeQuery();
+            try {
+            } finally {
+                rs.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error deleting Patient by email: " + e.getMessage());
+        };
     }
 
     @Override
