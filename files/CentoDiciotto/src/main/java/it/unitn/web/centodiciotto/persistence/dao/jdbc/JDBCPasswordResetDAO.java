@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> implements PasswordResetDAO {
@@ -18,6 +19,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     final private String DELETE = "DELETE from password_reset WHERE email = ?;";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM password_reset WHERE email = ?;";
     final private String FINDBYTOKEN = "SELECT * FROM password_reset WHERE token = ?;";
+    final private String SELECTALL = "SELECT * FROM password_reset;";
 
     public JDBCPasswordResetDAO(Connection con) {
         super(con);
@@ -92,7 +94,17 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting PasswordResets: " + e.getMessage());
+        }
+        return res;
     }
 
     @Override
@@ -118,6 +130,19 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
     @Override
     public List<PasswordReset> getAll() throws DAOException {
+        List<PasswordReset> res = new ArrayList<PasswordReset>();
+        PasswordReset tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new PasswordReset(rs.getString("email"), rs.getString("token"), rs.getDate("expiring_date"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all PasswordResets: " + e.getMessage());
+        }
         return null;
     }
 }

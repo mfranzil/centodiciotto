@@ -17,6 +17,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     final private String INSERT = "INSERT INTO chemist (email, name, chemist_province) values (?, ?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM chemist WHERE email = ?;";
     final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
+    final private String SELECTALL = "SELECT * FROM chemist;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -86,7 +87,6 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
                 while (rs.next()) {
                     tmp = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
                     res.add(tmp);
-
                 }
                 return res;
             }
@@ -99,11 +99,34 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting Chemists: " + e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<Chemist> getAll() throws DAOException {
+        List<Chemist> res = new ArrayList<Chemist>();
+        Chemist tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all Chemists: " + e.getMessage());
+        }
         return null;
     }
 }

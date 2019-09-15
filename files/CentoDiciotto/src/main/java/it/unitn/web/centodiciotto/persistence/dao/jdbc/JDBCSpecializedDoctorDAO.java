@@ -9,12 +9,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String> implements SpecializedDoctorDAO {
 
     final private String INSERT = "INSERT INTO specialized_doctor (email, first_name, last_name) values (?, ?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM specialized_doctor WHERE email = ?;";
+    final private String SELECTALL = "SELECT * FROM specialized_doctor;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -75,11 +77,35 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting SpecializedDoctors: " + e.getMessage());
+        }
+        return res;
     }
+
 
     @Override
     public List<SpecializedDoctor> getAll() throws DAOException {
+        List<SpecializedDoctor> res = new ArrayList<SpecializedDoctor>();
+        SpecializedDoctor tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new SpecializedDoctor(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all SpecializedDoctors: " + e.getMessage());
+        }
         return null;
     }
 }

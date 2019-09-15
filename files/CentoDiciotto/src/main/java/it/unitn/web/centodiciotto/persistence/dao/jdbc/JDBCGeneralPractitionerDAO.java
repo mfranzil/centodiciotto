@@ -17,7 +17,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     final private String INSERT = "INSERT INTO general_practitioner (email, first_name, last_name, working_province) values (?, ?, ?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
-
+    final private String SELECTALL = "SELECT * FROM general_practitioner;";
     /**
      * The base constructor for all the JDBC DAOs.
      *
@@ -87,7 +87,6 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 while (rs.next()) {
                     tmp = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
                     res.add(tmp);
-
                 }
                 return res;
             }
@@ -95,16 +94,38 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             System.err.println("Error getting GeneralPractitioners by Province: " + e.getMessage());
         }
         return null;
-
     }
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting GeneralPractitioners: " + e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<GeneralPractitioner> getAll() throws DAOException {
+        List<GeneralPractitioner> res = new ArrayList<GeneralPractitioner>();
+        GeneralPractitioner tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all GeneralPractitioners: " + e.getMessage());
+        }
         return null;
     }
 }

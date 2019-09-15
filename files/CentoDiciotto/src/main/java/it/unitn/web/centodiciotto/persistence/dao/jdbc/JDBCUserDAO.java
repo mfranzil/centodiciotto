@@ -9,15 +9,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (email, password) values (?, ?);";
-    final private String UPDATE = "UPDATE user_ SET password = ? WHERE email = ?;";
+    final private String UPDATE = "UPDATE DELETE FROM \"public\".\"patient\" WHERE \"email\" LIKE 'verdiana.mazzanti@gmail.com' SET password = ? WHERE email = ?;";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE email = ?;";
-
+    final private String SELECTALL = "SELECT * FROM user_;";
+    final private String DELETE = "DELETE FROM user_ WHERE email LIKE ?;";
+    
     public JDBCUserDAO(Connection con) {
         super(con);
     }
@@ -139,11 +142,34 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting Users: " + e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<User> getAll() throws DAOException {
+        List<User> res = new ArrayList<User>();
+        User tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new User(rs.getString("email"), rs.getString("password"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all Users: " + e.getMessage());
+        }
         return null;
     }
 }

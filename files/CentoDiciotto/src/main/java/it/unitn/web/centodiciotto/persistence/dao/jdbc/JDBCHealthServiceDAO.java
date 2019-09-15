@@ -9,12 +9,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> implements HealthServiceDAO {
 
     final private String INSERT = "INSERT INTO health_service (email, operating_province) values (?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM health_service WHERE email = ?;";
+    final private String SELECTALL = "SELECT * FROM health_service;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -74,11 +76,34 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting HealthServices: " + e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<HealthService> getAll() throws DAOException {
+        List<HealthService> res = new ArrayList<HealthService>();
+        HealthService tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new HealthService(rs.getString("email"), "", rs.getString("operating_province"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all HealthServices: " + e.getMessage());
+        }
         return null;
     }
 }

@@ -7,7 +7,9 @@ import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
@@ -15,7 +17,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String INSERT = "INSERT INTO patient (email, first_name, last_name, birth_date, birth_place, ssn, " +
             "gender, general_practitioner_email, living_province, photo_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
-
+    final private String SELECTALL = "SELECT * FROM patient;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -83,11 +85,34 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
 
     @Override
     public Long getCount() throws DAOException {
-        return null;
+        Long res = 0L;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    res++;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting Patients: " + e.getMessage());
+        }
+        return res;
     }
 
     @Override
     public List<Patient> getAll() throws DAOException {
+        List<Patient> res = new ArrayList<Patient>();
+        Patient tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new Patient(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("general_practitioner_email"), rs.getString("living_province"));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting all Patients: " + e.getMessage());
+        }
         return null;
     }
 }
