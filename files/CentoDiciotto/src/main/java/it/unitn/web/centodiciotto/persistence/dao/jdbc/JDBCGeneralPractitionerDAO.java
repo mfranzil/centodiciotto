@@ -19,6 +19,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
     final private String SELECTALL = "SELECT * FROM general_practitioner;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE email = ?;";
+    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) = (?, ?, ?) WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -50,10 +51,21 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     }
 
-    //TODO
     @Override
     public void update(GeneralPractitioner generalPractitioner) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
+            preparedStatement.setString(1, generalPractitioner.getFirstName());
+            preparedStatement.setString(2, generalPractitioner.getLastName());
+            preparedStatement.setString(3, generalPractitioner.getWorkingProvince());
+            preparedStatement.setString(4, generalPractitioner.getEmail());
 
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error updating GeneralPractitioner: " + e.getMessage());
+        }
     }
 
     @Override

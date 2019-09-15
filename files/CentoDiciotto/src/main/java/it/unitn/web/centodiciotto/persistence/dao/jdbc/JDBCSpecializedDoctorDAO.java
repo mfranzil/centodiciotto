@@ -18,6 +18,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String FINDBYEMAIL = "SELECT * FROM specialized_doctor WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
     final private String DELETE = "DELETE FROM specialized_doctor WHERE email = ?;";
+    final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?) WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -50,7 +51,18 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
     @Override
     public void update(SpecializedDoctor specializedDoctor) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
+            preparedStatement.setString(1, specializedDoctor.getFirstName());
+            preparedStatement.setString(2, specializedDoctor.getLastName());
+            preparedStatement.setString(3, specializedDoctor.getEmail());
 
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error updating SpecializedDoctor: " + e.getMessage());
+        }
     }
 
     @Override

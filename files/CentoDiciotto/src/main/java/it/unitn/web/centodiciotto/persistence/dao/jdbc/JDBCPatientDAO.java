@@ -19,6 +19,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM patient;";
     final private String DELETE = "DELETE FROM patient WHERE email = ?;";
+    final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, general_practitioner_email, living_province, photo_id) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -57,7 +58,27 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     }
 
     @Override
-    public void update(Patient patient) {}
+    public void update(Patient patient) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
+            preparedStatement.setString(1, patient.getFirstName());
+            preparedStatement.setString(2, patient.getLastName());
+            preparedStatement.setDate(3, patient.getBirthDate());
+            preparedStatement.setString(4, patient.getBirthPlace());
+            preparedStatement.setString(5, patient.getSsn());
+            preparedStatement.setString(6, String.valueOf(patient.getGender()));
+            preparedStatement.setString(7, patient.getGeneralPractitionerEmail());
+            preparedStatement.setString(8, patient.getLivingProvince());
+            preparedStatement.setInt(9, patient.getPhotoId());
+            preparedStatement.setString(10, patient.getEmail());
+
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error updating Patient: " + e.getMessage());
+        }
+    }
 
     @Override
     public void delete(Patient patient) {

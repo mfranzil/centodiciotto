@@ -18,6 +18,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String FINDBYEMAIL = "SELECT * FROM health_service WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM health_service;";
     final private String DELETE = "DELETE FROM health_service WHERE email = ?;";
+    final private String UPDATE = "UPDATE health_service SET (operating_province) = (?) WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -47,10 +48,19 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
 
     }
 
-    //TODO
     @Override
     public void update(HealthService healthService) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
+            preparedStatement.setString(1, healthService.getOperatingProvince());
+            preparedStatement.setString(2, healthService.getEmail());
 
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error updating HealthService: " + e.getMessage());
+        }
     }
 
     @Override

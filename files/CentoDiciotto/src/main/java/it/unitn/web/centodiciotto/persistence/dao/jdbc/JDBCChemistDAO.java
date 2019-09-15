@@ -50,7 +50,6 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
     }
 
-    //TODO
     @Override
     public void update(Chemist chemist) {
         try {
