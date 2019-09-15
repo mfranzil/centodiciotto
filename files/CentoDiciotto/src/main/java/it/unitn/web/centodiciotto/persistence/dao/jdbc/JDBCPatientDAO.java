@@ -64,11 +64,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, patient.getEmail());
 
-            ResultSet rs = stm.executeQuery();
-            try {
-            } finally {
-                rs.close();
-            }
+            int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting Patient by email: " + e.getMessage());
         };

@@ -58,11 +58,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, specializedDoctor.getEmail());
 
-            ResultSet rs = stm.executeQuery();
-            try {
-            } finally {
-                rs.close();
-            }
+            int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting SpecializesDoctor by email: " + e.getMessage());
         };

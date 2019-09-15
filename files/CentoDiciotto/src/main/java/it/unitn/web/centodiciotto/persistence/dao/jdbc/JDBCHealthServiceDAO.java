@@ -59,10 +59,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(1, healthService.getEmail());
 
             ResultSet rs = stm.executeQuery();
-            try {
-            } finally {
-                rs.close();
-            }
+           int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting HealthService by email: " + e.getMessage());
         };

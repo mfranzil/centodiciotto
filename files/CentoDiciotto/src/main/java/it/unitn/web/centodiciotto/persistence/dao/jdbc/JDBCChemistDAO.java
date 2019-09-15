@@ -19,7 +19,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
     final private String SELECTALL = "SELECT * FROM chemist;";
     final private String DELETE = "DELETE FROM chemist WHERE email = ?;";
-
+    final private String UPDATE = "UPDATE chemist SET (name, chemist_province) = (?, ?) WHERE email = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
@@ -53,7 +53,18 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     //TODO
     @Override
     public void update(Chemist chemist) {
+        try {
+            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
+            preparedStatement.setString(1, chemist.getName());
+            preparedStatement.setString(2, chemist.getChemistProvince());
+            preparedStatement.setString(3, chemist.getEmail());
 
+            int row = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + row);
+
+        } catch (SQLException e) {
+            System.err.println("Error updating Chemist: " + e.getMessage());
+        }
     }
 
     @Override
@@ -61,11 +72,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, chemist.getEmail());
 
-            ResultSet rs = stm.executeQuery();
-            try {
-            } finally {
-                rs.close();
-            }
+            int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting Chemist by email: " + e.getMessage());
         };

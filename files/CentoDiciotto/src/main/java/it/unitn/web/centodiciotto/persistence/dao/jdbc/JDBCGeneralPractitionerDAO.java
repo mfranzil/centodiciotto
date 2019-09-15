@@ -61,11 +61,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, generalPractitioner.getEmail());
 
-            ResultSet rs = stm.executeQuery();
-            try {
-            } finally {
-                rs.close();
-            }
+            int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting GeneralPractitioner by email: " + e.getMessage());
         };
