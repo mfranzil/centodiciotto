@@ -79,7 +79,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/patient/tickets">
                     Tickets
                 </a>
             </li>

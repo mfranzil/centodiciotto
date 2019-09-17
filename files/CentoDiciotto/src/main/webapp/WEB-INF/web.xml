@@ -84,6 +84,10 @@
         <servlet-name>Prescriptions</servlet-name>
         <jsp-file>/jsp/patient/prescriptions.jsp</jsp-file>
     </servlet>
+    <servlet>
+        <servlet-name>Tickets</servlet-name>
+        <jsp-file>/jsp/patient/tickets.jsp</jsp-file>
+    </servlet>
     <!-- General practitioner -->
     <servlet>
         <servlet-name>MyPatientsPractitioner</servlet-name>
@@ -215,6 +219,10 @@
     <servlet-mapping>
         <servlet-name>Prescriptions</servlet-name>
         <url-pattern>/restricted/patient/prescriptions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Tickets</servlet-name>
+        <url-pattern>/restricted/patient/tickets</url-pattern>
     </servlet-mapping>
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
