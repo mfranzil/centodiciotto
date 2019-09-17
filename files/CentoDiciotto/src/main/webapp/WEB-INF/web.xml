@@ -122,6 +122,15 @@
         <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
         <jsp-file>/jsp/specialized_doctor/patients-sd.jsp</jsp-file>
     </servlet>
+    <!-- Health Service -->
+    <servlet>
+        <servlet-name>PrescriptionsHealthService</servlet-name>
+        <jsp-file>/jsp/health_service/prescriptions-hs.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>PatientsHealthService</servlet-name>
+        <jsp-file>/jsp/health_service/patients-hs.jsp</jsp-file>
+    </servlet>
     <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
         <servlet-name>PhotoUploadServlet</servlet-name>
@@ -264,6 +273,15 @@
     <servlet-mapping>
         <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
         <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
+    </servlet-mapping>
+    <!-- Health Service -->
+    <servlet-mapping>
+        <servlet-name>PrescriptionsHealthService</servlet-name>
+        <url-pattern>/restricted/health_service/prescriptions-hs</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PatientsHealthService</servlet-name>
+        <url-pattern>/restricted/health_service/patients-hs</url-pattern>
     </servlet-mapping>
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
