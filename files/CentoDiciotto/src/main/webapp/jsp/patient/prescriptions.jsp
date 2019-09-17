@@ -1,4 +1,7 @@
 <%@ page import="java.util.List" %>
+<%@ page import="java.sql.Date" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="it.unitn.web.centodiciotto.servlets.PDFServlet" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,12 +33,27 @@
         <% List<Prescription> prescriptions = (List<Prescription>) request.getAttribute("prescriptions"); %>
         <% for (Prescription prescription : prescriptions) {%>
         <tr>
-            <th scope="row"><%=prescription.getPrescriptionPractitioner()%></th>
+            <th scope="row"><%=prescription.getPractitionerFirstName()%> <%=prescription.getPractitionerLastName()%></th>
             <td><%=prescription.getPrescriptionDate()%></td>
-            <td>Available</td>
+            <td><%  Calendar now = Calendar.getInstance();
+
+                    Calendar prescriptionDate = Calendar.getInstance();
+                    prescriptionDate.setTime(prescription.getPrescriptionDate());
+                    prescriptionDate.add(Calendar.MONTH, 1);
+
+                System.out.println(prescriptionDate.getTime());
+                    if(prescriptionDate.getTime().after(now.getTime())){%>
+                Available
             <td>
                 <button type="button" class="btn btn-block btn-personal">Download</button>
             </td>
+                <% } else { %>
+            Not Available
+            <td>
+                <button type="button" class="btn btn-block btn-personal disabled">Download</button>
+            </td>
+                <% }
+                    PDFServlet %>
         </tr>
         <% } %>
         </tbody>

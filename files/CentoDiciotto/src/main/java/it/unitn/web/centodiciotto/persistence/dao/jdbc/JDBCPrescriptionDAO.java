@@ -18,7 +18,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     final private String SELECTALL = "SELECT * FROM prescription;";
     final private String DELETE = "DELETE FROM prescription WHERE prescriptionid = ?;";
     final private String UPDATE = "UPDATE prescription SET (practitionerid, patientid, emission_date, description) = (?, ?, ?, ?) WHERE prescriptionid = ?;";
-    final private String FINDBYPATIENT = "SELECT * FROM  prescription WHERE patientid = ?;";
+    final private String FINDBYPATIENT = "SELECT * FROM  prescription JOIN general_practitioner ON practitionerid = email  WHERE patientid = ?;";
     final private String FINDBYPRACTITIONER = "SELECT * FROM  prescription WHERE practitionerid = ?;";
     final private String FINDEXPIRED = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' < now();";
     final private String FINDVALID = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' >= now();";
@@ -108,7 +108,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"));
+                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"), rs.getString("first_name"), rs.getString("last_name"));
                     res.add(tmp);
                 }
                 return res;

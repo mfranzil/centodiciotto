@@ -105,7 +105,23 @@
         <servlet-name>VisitsCalendarPractitioner</servlet-name>
         <jsp-file>/jsp/general_practitioner/visit_calendar.jsp</jsp-file>
     </servlet>
-
+    <!-- Specialized doctor -->
+    <servlet>
+        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_request.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_history.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_calendar.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/patients-sd.jsp</jsp-file>
+    </servlet>
     <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
         <servlet-name>PasswordChangeServlet</servlet-name>
@@ -223,6 +239,23 @@
     <servlet-mapping>
         <servlet-name>VisitsCalendarPractitioner</servlet-name>
         <url-pattern>/restricted/general_practitioner/visit_calendar</url-pattern>
+    </servlet-mapping>
+    <!-- Specialized Doctor -->
+    <servlet-mapping>
+        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_history</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_calendar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
     </servlet-mapping>
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
