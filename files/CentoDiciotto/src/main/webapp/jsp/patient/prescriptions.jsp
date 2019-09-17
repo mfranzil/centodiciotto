@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,31 +27,17 @@
         </tr>
         </thead>
         <tbody>
+        <% List<Prescription> prescriptions = (List<Prescription>) request.getAttribute("prescriptions"); %>
+        <% for (Prescription prescription : prescriptions) {%>
         <tr>
-            <th scope="row">Mario Rossi</th>
-            <td>23/07/2019</td>
+            <th scope="row"><%=prescription.getPrescriptionPractitioner()%></th>
+            <td><%=prescription.getPrescriptionDate()%></td>
             <td>Available</td>
             <td>
                 <button type="button" class="btn btn-block btn-personal">Download</button>
             </td>
         </tr>
-        <tr>
-        <tr>
-            <th scope="row">Anita Bianchi</th>
-            <td>01/04/2019</td>
-            <td>Already delivered</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>Download</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">Anita Bianchi</th>
-            <td>30/01/2019</td>
-            <td>Already delivered</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>Download</button>
-            </td>
-        </tr>
+        <% } %>
         </tbody>
     </table>
 </div>
