@@ -81,8 +81,8 @@
         <jsp-file>/jsp/patient/photo_gallery.jsp</jsp-file>
     </servlet>
     <servlet>
-        <servlet-name>Prescriptions</servlet-name>
-        <jsp-file>/jsp/patient/prescriptions.jsp</jsp-file>
+        <servlet-name>Tickets</servlet-name>
+        <jsp-file>/jsp/patient/tickets.jsp</jsp-file>
     </servlet>
     <!-- General practitioner -->
     <servlet>
@@ -105,7 +105,23 @@
         <servlet-name>VisitsCalendarPractitioner</servlet-name>
         <jsp-file>/jsp/general_practitioner/visit_calendar.jsp</jsp-file>
     </servlet>
-
+    <!-- Specialized doctor -->
+    <servlet>
+        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_request.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_history.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_calendar.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/patients-sd.jsp</jsp-file>
+    </servlet>
     <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
         <servlet-name>PhotoUploadServlet</servlet-name>
@@ -134,6 +150,10 @@
     <servlet>
         <servlet-name>UnhappyPractitioner</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.ChangePractitionerServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Prescriptions</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PrescriptionServlet</servlet-class>
     </servlet>
     <!-- Mapping dei servlet, da nome a effettivo url. -->
     <!-- Pagine accessibili a tutti -->
@@ -195,6 +215,18 @@
         <servlet-name>UnhappyPractitioner</servlet-name>
         <url-pattern>/restricted/patient/unhappy_practitioner</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Prescriptions</servlet-name>
+        <url-pattern>/restricted/patient/prescriptions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Tickets</servlet-name>
+        <url-pattern>/restricted/patient/tickets</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PhotoGallery</servlet-name>
+        <url-pattern>/restricted/patient/photo_gallery</url-pattern>
+    </servlet-mapping>
     <!-- Practitioner -->
     <servlet-mapping>
         <servlet-name>MyPatientsPractitioner</servlet-name>
@@ -216,13 +248,22 @@
         <servlet-name>VisitsCalendarPractitioner</servlet-name>
         <url-pattern>/restricted/general_practitioner/visit_calendar</url-pattern>
     </servlet-mapping>
+    <!-- Specialized Doctor -->
     <servlet-mapping>
-        <servlet-name>PhotoGallery</servlet-name>
-        <url-pattern>/restricted/patient/photo_gallery</url-pattern>
+        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Prescriptions</servlet-name>
-        <url-pattern>/restricted/patient/prescriptions</url-pattern>
+        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_history</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_calendar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
     </servlet-mapping>
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>

@@ -80,7 +80,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/patient/tickets">
                     Tickets
                 </a>
             </li>
@@ -123,12 +124,37 @@
             <% }
             ;
             break;
+                case "specialized_doctor": { %>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/patients">
+                    My patients
+                </a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link nav-link-personal dropdown-toggle"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Exams
+                </a>
+                <div class="dropdown-menu nav-personal">
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_request">Requests</a>
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_calendar">Calendar</a>
+                    <a class="dropdown-item nav-link-personal"
+                       href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_history">History</a>
+                </div>
+            </li>
+            <% }
+            ;
+            break;
                 default:
                     break;
             } %>
         </ul>
     </div>
     <div id="log-menu-closed">
+        <%--suppress XmlDuplicatedId --%>
         <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/user">
                 Hi <%= displayName %>!
@@ -151,6 +177,7 @@
     </div>
 
     <div id="log-menu-closed">
+        <%--suppress XmlDuplicatedId --%>
         <div id="nav-log" class="nav-item">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
                 Login

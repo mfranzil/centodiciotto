@@ -1,3 +1,7 @@
+<%@ page import="java.util.List" %>
+<%@ page import="java.sql.Date" %>
+<%@ page import="java.util.Calendar" %>
+<%@ page import="it.unitn.web.centodiciotto.servlets.PDFServlet" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,31 +30,32 @@
         </tr>
         </thead>
         <tbody>
+        <% List<Prescription> prescriptions = (List<Prescription>) request.getAttribute("prescriptions"); %>
+        <% for (Prescription prescription : prescriptions) {%>
         <tr>
-            <th scope="row">Mario Rossi</th>
-            <td>23/07/2019</td>
-            <td>Available</td>
+            <th scope="row"><%=prescription.getPractitionerFirstName()%> <%=prescription.getPractitionerLastName()%></th>
+            <td><%=prescription.getPrescriptionDate()%></td>
+            <td><%  Calendar now = Calendar.getInstance();
+
+                    Calendar prescriptionDate = Calendar.getInstance();
+                    prescriptionDate.setTime(prescription.getPrescriptionDate());
+                    prescriptionDate.add(Calendar.MONTH, 1);
+
+                System.out.println(prescriptionDate.getTime());
+                    if(prescriptionDate.getTime().after(now.getTime())){%>
+                Available
             <td>
                 <button type="button" class="btn btn-block btn-personal">Download</button>
             </td>
-        </tr>
-        <tr>
-        <tr>
-            <th scope="row">Anita Bianchi</th>
-            <td>01/04/2019</td>
-            <td>Already delivered</td>
+                <% } else { %>
+            Not Available
             <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>Download</button>
+                <button type="button" class="btn btn-block btn-personal disabled">Download</button>
             </td>
+                <% }
+                    PDFServlet %>
         </tr>
-        <tr>
-            <th scope="row">Anita Bianchi</th>
-            <td>30/01/2019</td>
-            <td>Already delivered</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>Download</button>
-            </td>
-        </tr>
+        <% } %>
         </tbody>
     </table>
 </div>
