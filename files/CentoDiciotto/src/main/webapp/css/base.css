@@ -181,6 +181,14 @@ body {
     object-fit: cover;
 }
 
+.avatar-tiny {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin: auto;
+    object-fit: cover;
+}
+
 /* Titolone di ogni pagina */
 
 .jumbotron {
@@ -193,7 +201,7 @@ body {
     background-color: transparent !important;
 }
 
-/* Bottoni */
+/* Bottoni e input */
 
 .btn-personal {
     background-color: rgba(var(--118-medium-dark), 1);
@@ -211,6 +219,10 @@ body {
     background-color: rgba(100, 100, 100, 1);
     color: white;
     white-space: nowrap;
+}
+
+.custom-file {
+    cursor: pointer;
 }
 
 /* Popup */

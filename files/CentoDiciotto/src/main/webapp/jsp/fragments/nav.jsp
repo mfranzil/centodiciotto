@@ -1,10 +1,11 @@
 <%@ page import="it.unitn.web.centodiciotto.persistence.entities.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%
-    String role = null;
-    String displayName = null;
-    String photo_path = null;
+    String role = "default";
     User user = null;
+    String displayName = "default";
+    
+    String photo_path = "/img/avatars/default.png";
     GeneralPractitioner patient_practitioner = null;
 
     boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
@@ -12,9 +13,9 @@
         user = (User) session.getAttribute("user");
         if (user instanceof Patient) {
             role = "patient";
+            displayName = ((Patient) user).getFirstName();
             patient_practitioner = (GeneralPractitioner) session.getAttribute("practitioner");
             photo_path = (String) session.getAttribute("photo_path");
-            displayName = ((Patient) user).getFirstName();
         } else if (user instanceof GeneralPractitioner) {
             role = "general_practitioner";
             displayName = ((GeneralPractitioner) user).getFirstName();
@@ -156,7 +157,7 @@
     <div id="log-menu-closed">
         <%--suppress XmlDuplicatedId --%>
         <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
-            <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/user">
+            <a class="nav-link nav-link-personal " href="${pageContext.request.contextPath}/restricted/user">
                 Hi <%= displayName %>!
             </a>
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">

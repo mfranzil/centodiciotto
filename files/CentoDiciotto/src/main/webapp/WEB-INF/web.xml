@@ -77,10 +77,6 @@
         <jsp-file>/jsp/patient/visits.jsp</jsp-file>
     </servlet>
     <servlet>
-        <servlet-name>PhotoGallery</servlet-name>
-        <jsp-file>/jsp/patient/photo_gallery.jsp</jsp-file>
-    </servlet>
-    <servlet>
         <servlet-name>Tickets</servlet-name>
         <jsp-file>/jsp/patient/tickets.jsp</jsp-file>
     </servlet>
@@ -126,6 +122,10 @@
     <servlet>
         <servlet-name>PhotoUploadServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.PhotoUploadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PhotoGalleryServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PhotoGalleryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PasswordChangeServlet</servlet-name>
@@ -224,7 +224,7 @@
         <url-pattern>/restricted/patient/tickets</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PhotoGallery</servlet-name>
+        <servlet-name>PhotoGalleryServlet</servlet-name>
         <url-pattern>/restricted/patient/photo_gallery</url-pattern>
     </servlet-mapping>
     <!-- Practitioner -->

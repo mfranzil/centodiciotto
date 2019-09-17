@@ -3,6 +3,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<% List<GeneralPractitioner> available_practitioners = (List<GeneralPractitioner>) request.getAttribute("available_practitioners"); %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -74,11 +76,11 @@
                 </table>
                 <h3 class="my-4">
                     Available practitioners
-                    <p id="message" class="lead mt-4">
-                        To choose a practitioner, select the corresponding name and then confirm your changes clicking
-                        on the "I want to change my practitioner" button.
-                    </p>
                 </h3>
+                <p id="message" class="lead my-4">
+                    To choose a practitioner, select the corresponding name and then confirm your changes clicking
+                    on the "I want to change my practitioner" button.
+                </p>
                 <form action="${pageContext.request.contextPath}/restricted/patient/unhappy_practitioner"
                       id="practitioner" method="POST">
                     <div style="margin: auto; text-align: center">
@@ -87,11 +89,8 @@
                         </button>
                     </div>
                     <table class="table table-hover" id="table-select">
-                        <% List<GeneralPractitioner> available_practitioners
-                                = (List<GeneralPractitioner>) request.getAttribute("available_practitioners"); %>
-                        <%
-                            for (GeneralPractitioner available_practitioner : available_practitioners) {
-                                if (available_practitioner.getEmail().compareTo(mypractitioner.getEmail()) != 0) {%>
+                        <% for (GeneralPractitioner available_practitioner : available_practitioners) {
+                            if (available_practitioner.getEmail().compareTo(mypractitioner.getEmail()) != 0) {%>
                         <tr id="<%=available_practitioner.getEmail()%>">
                             <td><%= available_practitioner.getFirstName() %>
                             </td>
@@ -100,7 +99,8 @@
                             <td><%= available_practitioner.getWorkingProvince() %>
                             </td>
                             <td>
-                                <input type="radio" name="practitioner_email" value="<%=available_practitioner.getEmail()%>">
+                                <input type="radio" name="practitioner_email"
+                                       value="<%=available_practitioner.getEmail()%>">
                             </td>
                         </tr>
                         <% }

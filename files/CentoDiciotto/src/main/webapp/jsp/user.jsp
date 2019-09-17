@@ -16,7 +16,7 @@
         Welcome, <%= displayName %>.
     </h2>
     <% if (role.equals("patient")) { %>
-    <img class="avatar" src="${pageContext.request.contextPath}<%=photo_path%>" alt="">
+    <img class="avatar" src="${pageContext.request.contextPath}/<%= photo_path %>" alt="">
     <% } %>
     <p class="lead mt-4 mx-4">
         To get started, use the navigation bar on top.
@@ -102,8 +102,9 @@
                         <td><%= ((GeneralPractitioner) user).getWorkingProvince() %>
                         </td>
                     </tr>
-                    <%      };
-                            break;
+                    <% }
+                    ;
+                    break;
                         case "specialized_doctor": { %>
                     <tr>
                         <th>Name</th>
@@ -120,8 +121,9 @@
                         <td><%= ((SpecializedDoctor) user).getEmail() %>
                         </td>
                     </tr>
-                    <%      };
-                            break;
+                    <% }
+                    ;
+                    break;
                         case "chemist": { %>
                     <tr>
                         <th>Name</th>
@@ -138,7 +140,8 @@
                         <td><%= ((Chemist) user).getEmail() %>
                         </td>
                     </tr>
-                    <%      };
+                    <% }
+                    ;
                     break;
                         case "health_service": { %>
                     <tr>
@@ -146,8 +149,9 @@
                         <td><%= ((HealthService) user).getOperatingProvince() %>
                         </td>
                     </tr>
-                    <%      };
-                            break;
+                    <% }
+                    ;
+                    break;
                         default: { %>
                     <tr>
                         <th>Error</th>
@@ -156,7 +160,7 @@
                     </tr>
                     <tr>
 
-                    <% };
+                            <% };
                     break;
                     } %>
                 </table>
@@ -199,10 +203,12 @@
                             Upload
                         </button>
                     </form>
-                    <button class="btn btn-block mt-4 btn-personal"
-                            formaction="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
-                        See gallery
-                    </button>
+                    <form style="width: 100%"
+                          action="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
+                        <button class="btn btn-block mt-4 btn-personal" type="submit">
+                            See gallery
+                        </button>
+                    </form>
                 </div>
                 <% } %>
             </div>

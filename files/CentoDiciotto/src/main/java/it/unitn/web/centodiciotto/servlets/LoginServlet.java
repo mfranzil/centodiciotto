@@ -11,13 +11,12 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Common;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -85,16 +84,7 @@ public class LoginServlet extends HttpServlet {
                             practitionerDao.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
                     Photo photo = photoDao.getLastPhotoByEmail(user.getEmail());
 
-                    String photoPath = getServletContext().getRealPath("/")
-                            + "/img/avatars/" + user.getEmail() + "/" + photo.getPhotoid();
-
-                    if (new File(photoPath + ".jpg").exists()) {
-                        photoPath = "/img/avatars/" + user.getEmail() + "/" + photo.getPhotoid() + ".jpg";
-                    } else if (new File(photoPath + ".png").exists()) {
-                        photoPath = "/img/avatars/" + user.getEmail() + "/" + photo.getPhotoid() + ".png";
-                    } else {
-                        throw new FileNotFoundException("Cannot find user photo.");
-                    }
+                    String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), photo.getPhotoid());
 
                     request.getSession().setAttribute("practitioner", practitioner);
                     request.getSession().setAttribute("photo_path", photoPath);

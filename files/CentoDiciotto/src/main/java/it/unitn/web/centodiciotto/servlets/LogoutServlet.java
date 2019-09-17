@@ -38,6 +38,8 @@ public class LogoutServlet extends HttpServlet {
             User user = (User) session.getAttribute("user");
             if (user != null) {
                 session.setAttribute("user", null);
+                session.setAttribute("practitioner", null);
+                session.setAttribute("photo_path", null);
                 session.invalidate();
                 user = null;
             }

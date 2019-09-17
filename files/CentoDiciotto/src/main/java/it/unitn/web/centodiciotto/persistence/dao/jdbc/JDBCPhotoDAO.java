@@ -20,7 +20,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
     final private String DELETE = "DELETE from photo WHERE photoid = ?, email = ?;";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photoid = ?, email = ?;";
     final private String SELECTALL = "SELECT * FROM photo;";
-    final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC;";
+    final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC, photoid DESC;";
     final private String SELECTMAX = "SELECT MAX(photoid) + 1 AS nextid FROM photo WHERE email = ?;";
 
     public JDBCPhotoDAO(Connection con) {
