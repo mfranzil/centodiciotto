@@ -146,6 +146,24 @@
                        href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_history">History</a>
                 </div>
             </li>
+            <%      };
+            break;
+                case "health_service": { %>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/patients-hs">
+                    Patients
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/prescriptions-hs">
+                    Prescriptions
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
+                    Recall
+                </a>
+            </li>
             <% }
             ;
             break;
