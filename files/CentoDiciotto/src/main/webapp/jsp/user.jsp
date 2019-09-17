@@ -15,7 +15,9 @@
     <h2 class="my-4">
         Welcome, <%= displayName %>.
     </h2>
-    <img class="avatar" src="${pageContext.request.contextPath}/img/avatars/default.png" alt="">
+    <% if (role.equals("patient")) { %>
+    <img class="avatar" src="${pageContext.request.contextPath}<%=photo_path%>" alt="">
+    <% } %>
     <p class="lead mt-4 mx-4">
         To get started, use the navigation bar on top.
     </p>
@@ -185,12 +187,13 @@
                     Change your profile picture
                 </h3>
                 <div class="input-group">
-                    <form action="${pageContext.request.contextPath}/restricted/picture_change_handler"
-                          id="avatar" method="POST" style="width: 100%">
+                    <form action="${pageContext.request.contextPath}/restricted/photo_upload_handler"
+                          id="avatar" style="width: 100%" method="POST" enctype="multipart/form-data">
                         <div class="custom-file" style="z-index: 0;">
                             <input type="file" class="custom-file-input"
                                    name="avatar-select" id="avatar-select" accept="image/png, image/jpeg">
                             <label class="custom-file-label" for="avatar-select">Choose file</label>
+                            <input id="extension" type="hidden" name="extension" value="none">
                         </div>
                         <button class="btn btn-block mt-4 btn-personal" type="submit">
                             Upload

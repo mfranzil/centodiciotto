@@ -2,9 +2,11 @@ package it.unitn.web.centodiciotto.servlets;
 
 import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
+import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
@@ -14,6 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -26,6 +30,7 @@ public class LoginServlet extends HttpServlet {
 
     private UserDAO userDao;
     private GeneralPractitionerDAO practitionerDao;
+    private PhotoDAO photoDao;
 
     @Override
     public void init() throws ServletException {
@@ -36,6 +41,7 @@ public class LoginServlet extends HttpServlet {
         try {
             userDao = daoFactory.getDAO(UserDAO.class);
             practitionerDao = daoFactory.getDAO(GeneralPractitionerDAO.class);
+            photoDao = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -77,7 +83,21 @@ public class LoginServlet extends HttpServlet {
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
                     GeneralPractitioner practitioner =
                             practitionerDao.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                    Photo photo = photoDao.getLastPhotoByEmail(user.getEmail());
+
+                    String photoPath = getServletContext().getRealPath("/")
+                            + "/img/avatars/" + user.getEmail() + "/" + photo.getPhotoid();
+
+                    if (new File(photoPath + ".jpg").exists()) {
+                        photoPath = "/img/avatars/" + user.getEmail() + "/" + photo.getPhotoid() + ".jpg";
+                    } else if (new File(photoPath + ".png").exists()) {
+                        photoPath = "/img/avatars/" + user.getEmail() + "/" + photo.getPhotoid() + ".png";
+                    } else {
+                        throw new FileNotFoundException("Cannot find user photo.");
+                    }
+
                     request.getSession().setAttribute("practitioner", practitioner);
+                    request.getSession().setAttribute("photo_path", photoPath);
                 }
 
                 jobj.put("url", response.encodeRedirectURL(contextPath + "restricted/user"));

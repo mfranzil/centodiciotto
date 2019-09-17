@@ -108,6 +108,10 @@
 
     <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
+        <servlet-name>PhotoUploadServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PhotoUploadServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>PasswordChangeServlet</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordChangeServlet</servlet-class>
     </servlet>
@@ -165,6 +169,10 @@
     <servlet-mapping>
         <servlet-name>PasswordChangeServlet</servlet-name>
         <url-pattern>/restricted/password_change_handler</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PhotoUploadServlet</servlet-name>
+        <url-pattern>/restricted/photo_upload_handler</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>

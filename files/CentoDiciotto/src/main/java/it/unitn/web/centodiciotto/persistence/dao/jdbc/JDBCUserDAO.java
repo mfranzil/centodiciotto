@@ -20,7 +20,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM user_;";
     final private String DELETE = "DELETE FROM user_ WHERE email = ?;";
-    
+
     public JDBCUserDAO(Connection con) {
         super(con);
     }
@@ -70,7 +70,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting User by email: " + e.getMessage());
-        };
+        }
     }
 
     public User getByEmailAndPassword(String email, String password, String role) throws DAOException {

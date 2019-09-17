@@ -3,27 +3,28 @@
 <%
     String role = null;
     String displayName = null;
+    String photo_path = null;
     User user = null;
     GeneralPractitioner patient_practitioner = null;
 
     boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
     if (isLoggedIn) {
         user = (User) session.getAttribute("user");
-        //TODO: add all classes
-        if(user instanceof Patient){
+        if (user instanceof Patient) {
             role = "patient";
             patient_practitioner = (GeneralPractitioner) session.getAttribute("practitioner");
+            photo_path = (String) session.getAttribute("photo_path");
             displayName = ((Patient) user).getFirstName();
-        }else if(user instanceof GeneralPractitioner){
+        } else if (user instanceof GeneralPractitioner) {
             role = "general_practitioner";
             displayName = ((GeneralPractitioner) user).getFirstName();
-        }else if(user instanceof SpecializedDoctor){
+        } else if (user instanceof SpecializedDoctor) {
             role = "specialized_doctor";
             displayName = ((SpecializedDoctor) user).getFirstName();
-        }else if(user instanceof Chemist){
+        } else if (user instanceof Chemist) {
             role = "chemist";
             displayName = ((Chemist) user).getName();
-        }else if(user instanceof HealthService){
+        } else if (user instanceof HealthService) {
             role = "health_service";
             displayName = ((HealthService) user).getOperatingProvince() + " Health Service";
         }
@@ -89,8 +90,9 @@
                     Unhappy with your practitioner?
                 </a>
             </li>
-            <%      };
-                    break;
+            <% }
+            ;
+            break;
                 case "general_practitioner": { %>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal"
@@ -118,8 +120,9 @@
                     Prescriptions
                 </a>
             </li>
-            <%      };
-                    break;
+            <% }
+            ;
+            break;
                 default:
                     break;
             } %>

@@ -22,8 +22,42 @@ $("document").ready(function () {
             }
         });
     });
+
     $('#avatar-select').on('change', function () {
-        var fileName = $(this).val();
-        $(this).next('.custom-file-label').html(fileName.replace('C:\\fakepath\\', ""));
-    })
+        const filename = $("#avatar-select").val();
+        let extension = filename.replace(/^.*\./, '');
+
+        if (extension === filename) {
+            extension = '';
+        } else {
+            extension = extension.toLowerCase();
+        }
+
+        $('#extension').attr('value', extension);
+        $(this).next('.custom-file-label').html(filename.replace('C:\\fakepath\\', ""));
+    });
+
+    $("#avatar").submit(function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            cache: false,
+            processData: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            data: new FormData(form[0]),
+            success: function (data) {
+                alert("Profile photo uploaded successfully.");
+                location.reload();
+            },
+            error: function (data) {
+                alert("Error in profile photo upload");
+            }
+        });
+    });
+
 });
