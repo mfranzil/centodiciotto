@@ -131,6 +131,12 @@
         <servlet-name>RecallsHealthService</servlet-name>
         <jsp-file>/jsp/health_service/recalls-hs.jsp</jsp-file>
     </servlet>
+    <!-- Chemist -->
+    <servlet>
+        <servlet-name>PrescriptionsChemist</servlet-name>
+        <jsp-file>/jsp/chemist/prescriptions-c.jsp</jsp-file>
+    </servlet>
+
     <!-- Mapping dei servlet alle classi effettive -->
     <servlet>
         <servlet-name>PhotoUploadServlet</servlet-name>
@@ -290,6 +296,11 @@
     <servlet-mapping>
         <servlet-name>RecallsHealthService</servlet-name>
         <url-pattern>/restricted/health_service/recalls-hs</url-pattern>
+    </servlet-mapping>
+    <!-- Chemist -->
+    <servlet-mapping>
+        <servlet-name>PrescriptionsChemist</servlet-name>
+        <url-pattern>/restricted/chemist/prescriptions-c</url-pattern>
     </servlet-mapping>
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>

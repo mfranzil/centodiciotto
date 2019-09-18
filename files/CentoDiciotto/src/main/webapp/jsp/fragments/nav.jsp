@@ -164,6 +164,14 @@
                     Recall
                 </a>
             </li>
+            <%      };
+            break;
+                case "chemist": { %>
+            <li class="nav-item">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/chemist/prescriptions-c">
+                    Prescriptions
+                </a>
+            </li>
             <% }
             ;
             break;
