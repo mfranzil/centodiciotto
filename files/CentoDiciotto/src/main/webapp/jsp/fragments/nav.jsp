@@ -160,7 +160,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/recalls-hs">
                     Recall
                 </a>
             </li>
