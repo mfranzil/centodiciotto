@@ -1,19 +1,19 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Photo {
     private int photoid;
     private String email;
-    private Date uploadDate;
+    private Timestamp uploadDate;
 
-    public Photo(int photoid, String email, Date uploadDate) {
+    public Photo(int photoid, String email, Timestamp uploadDate) {
         this.photoid = photoid;
         this.email = email;
         this.uploadDate = uploadDate;
     }
 
-    public Photo(String email, Date uploadDate) {
+    public Photo(String email, Timestamp uploadDate) {
         this.email = email;
         this.uploadDate = uploadDate;
     }
@@ -34,11 +34,11 @@ public class Photo {
         this.email = email;
     }
 
-    public Date getUploadDate() {
+    public Timestamp getUploadDate() {
         return uploadDate;
     }
 
-    public void setUploadDate(Date uploadDate) {
+    public void setUploadDate(Timestamp uploadDate) {
         this.uploadDate = uploadDate;
     }
 }

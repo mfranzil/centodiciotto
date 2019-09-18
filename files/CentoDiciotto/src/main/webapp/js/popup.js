@@ -3,11 +3,12 @@ $("document").ready(function () {
         $(this).next().show();
     });
     $(".popup-closer").click(function () {
-        $(".popup_window").hide();
+        e.preventDefault();
+        $(".popup-window").hide();
     });
-    $(".popup_window").click(function (e) {
-        if ($(".popup_window").is(e.target)) {
-            $(".popup_window").hide();
+    $(".popup-window").click(function (e) {
+        if ($(this).is(e.target)) {
+            $(this).hide();
         }
     });
 });

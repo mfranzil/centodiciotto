@@ -16,11 +16,11 @@ import java.util.List;
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implements PhotoDAO {
 
     final private String INSERT = "INSERT INTO photo values (?, ?, ?);";
-    final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photoid = ?, email = ?;";
-    final private String DELETE = "DELETE from photo WHERE photoid = ?, email = ?;";
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photoid = ?, email = ?;";
+    final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photoid = ? AND email = ?;";
+    final private String DELETE = "DELETE from photo WHERE photoid = ? AND email = ?;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photoid = ? AND email = ?;";
     final private String SELECTALL = "SELECT * FROM photo;";
-    final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC, photoid DESC;";
+    final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC;";
     final private String SELECTMAX = "SELECT MAX(photoid) + 1 AS nextid FROM photo WHERE email = ?;";
 
     public JDBCPhotoDAO(Connection con) {
@@ -29,7 +29,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
 
     @Override
     public Integer insert(Photo photo) {
-        int photoid = 0;
+        int photoid = 1;
         try {
             PreparedStatement maxStatement = CON.prepareStatement(SELECTMAX);
             maxStatement.setString(1, photo.getEmail());
@@ -43,7 +43,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setInt(1, photoid);
             preparedStatement.setString(2, photo.getEmail());
-            preparedStatement.setDate(3, photo.getUploadDate());
+            preparedStatement.setTimestamp(3, photo.getUploadDate());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -58,7 +58,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
     public void update(Photo photo) {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setDate(1, photo.getUploadDate());
+            preparedStatement.setTimestamp(1, photo.getUploadDate());
             preparedStatement.setInt(2, photo.getPhotoid());
             preparedStatement.setString(3, photo.getEmail());
 
@@ -109,7 +109,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
                     res = new Photo(
                             rs.getInt("photoid"),
                             rs.getString("email"),
-                            rs.getDate("upload_date"));
+                            rs.getTimestamp("upload_date"));
                     return res;
                 }
             }
@@ -129,7 +129,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
                     tmp = new Photo(
                             rs.getInt("photoid"),
                             rs.getString("email"),
-                            rs.getDate("upload_date"));
+                            rs.getTimestamp("upload_date"));
                     res.add(tmp);
                 }
                 return res;
@@ -153,7 +153,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
                     tmp = new Photo(
                             rs.getInt("photoid"),
                             rs.getString("email"),
-                            rs.getDate("upload_date"));
+                            rs.getTimestamp("upload_date"));
                     res.add(tmp);
                 }
                 return res;
@@ -176,7 +176,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
                     tmp = new Photo(
                             rs.getInt("photoid"),
                             rs.getString("email"),
-                            rs.getDate("upload_date"));
+                            rs.getTimestamp("upload_date"));
                     return tmp;
                 }
             }

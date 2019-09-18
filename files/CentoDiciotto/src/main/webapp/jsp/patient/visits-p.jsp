@@ -15,7 +15,7 @@
     </p>
 </div>
 
-<div style="text-align: center; " class="container">
+<div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
         <h4>Gino Perna</h4>
         <button type="button" class="btn btn-block btn-personal">Book now</button>

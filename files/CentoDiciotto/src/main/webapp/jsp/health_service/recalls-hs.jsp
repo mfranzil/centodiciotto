@@ -4,12 +4,10 @@
 <head>
     <title>My patients - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-    <script src="${pageContext.request.contextPath}/js/popup.js"></script>
     <script>
-        /*$(".js-example-tags").select2({
-            tags: true
-        });*/
-        $(document).ready(function() { $("#e1").select2(); });
+        $(document).ready(function () {
+            $("#e1").select2();
+        });
     </script>
 </head>
 <body>
@@ -26,13 +24,16 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <select class="form-control mb-2">
-                    <option selected="selected">Select an exam</option>
-                    <option>Agobiopsia ecoguidata transtracheale o transbronchiale di linfonodi ilo mediastinici</option>
-                    <option>Biopsia a cielo aperto del polmone</option>
-                    <option>Biopsia a cielo aperto delle ghiandole surrenali</option>
-                    <option>Biopsia delle strutture articolari della caviglia</option>
-                </select>
+                <label>
+                    <select class="form-control mb-2">
+                        <option selected="selected">Select an exam</option>
+                        <option>Agobiopsia ecoguidata transtracheale o transbronchiale di linfonodi ilo mediastinici
+                        </option>
+                        <option>Biopsia a cielo aperto del polmone</option>
+                        <option>Biopsia a cielo aperto delle ghiandole surrenali</option>
+                        <option>Biopsia delle strutture articolari della caviglia</option>
+                    </select>
+                </label>
 
                 <button type="button" class="btn btn-block btn-personal popup-opener">
                     Confirm

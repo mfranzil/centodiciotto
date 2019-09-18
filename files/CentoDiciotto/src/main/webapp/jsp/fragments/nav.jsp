@@ -67,7 +67,7 @@
                     <a class="dropdown-item nav-link-personal"
                        href="${pageContext.request.contextPath}/restricted/patient/exam_history">Exam History</a>
                     <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/patient/book_your_exam">Book your Exam</a>
+                       href="${pageContext.request.contextPath}/restricted/patient/exam_booking">Book your Exam</a>
                 </div>
             </li>
             <li class="nav-item">
@@ -88,7 +88,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/patient/unhappy_practitioner">
+                   href="${pageContext.request.contextPath}/restricted/patient/change_practitioner">
                     Unhappy with your practitioner?
                 </a>
             </li>
@@ -150,17 +150,17 @@
             break;
                 case "health_service": { %>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/patients-hs">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/patients">
                     Patients
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/prescriptions-hs">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/prescriptions">
                     Prescriptions
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/recalls-hs">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/recalls">
                     Recall
                 </a>
             </li>
@@ -168,7 +168,7 @@
             break;
                 case "chemist": { %>
             <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/chemist/prescriptions-c">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/chemist/prescriptions">
                     Prescriptions
                 </a>
             </li>
@@ -188,7 +188,7 @@
             </a>
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">
                 Logout
-                <img src="${pageContext.request.contextPath}/img/logout_white.png" style="height: 20px;" alt="">
+                <img src="${pageContext.request.contextPath}/img/logout_white.png" style="height: 20px;" alt="Logout">
             </a>
         </div>
     </div>
@@ -208,7 +208,7 @@
         <div id="nav-log" class="nav-item">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
                 Login
-                <img src="${pageContext.request.contextPath}/img/login_white.png" style="height: 20px;" alt="">
+                <img src="${pageContext.request.contextPath}/img/login_white.png" style="height: 20px;" alt="Login">
             </a>
         </div>
     </div>

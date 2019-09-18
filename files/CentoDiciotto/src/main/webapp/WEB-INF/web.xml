@@ -29,6 +29,7 @@
         <param-name>smtp-password</param-name>
         <param-value>rewqasdfcxz112</param-value>
     </context-param>
+
     <!-- Filtri: mapping filtri-classi -->
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
@@ -46,262 +47,285 @@
         <listener-class>it.unitn.web.centodiciotto.listeners.WebAppContextListener</listener-class>
     </listener>
 
-    <!-- Servlet: mapping nome-pading jsp -->
-    <servlet>
-        <servlet-name>LoginPage</servlet-name>
-        <jsp-file>/jsp/login.jsp</jsp-file>
-    </servlet>
-    <servlet>
-        <servlet-name>UserPage</servlet-name>
-        <jsp-file>/jsp/user.jsp</jsp-file>
-    </servlet>
+    <!-- Mapping nome - jsp/servlet -->
     <servlet>
         <servlet-name>Cookies</servlet-name>
         <jsp-file>/jsp/cookies.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Cookies</servlet-name>
+        <url-pattern>/cookies</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PasswordResetServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordResetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordResetServlet</servlet-name>
+        <url-pattern>/password_reset</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Privacy</servlet-name>
         <jsp-file>/jsp/privacy.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Privacy</servlet-name>
+        <url-pattern>/privacy</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserPage</servlet-name>
+        <jsp-file>/jsp/user.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserPage</servlet-name>
+        <url-pattern>/restricted/user</url-pattern>
+    </servlet-mapping>
+
     <!-- Patient -->
     <servlet>
+        <servlet-name>ChangePractitioner</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ChangePractitionerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChangePractitioner</servlet-name>
+        <url-pattern>/restricted/patient/change_practitioner</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExamBooking</servlet-name>
+        <jsp-file>/jsp/patient/exam_booking-p.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamBooking</servlet-name>
+        <url-pattern>/restricted/patient/exam_booking</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>ExamHistory</servlet-name>
-        <jsp-file>/jsp/patient/exam_history.jsp</jsp-file>
+        <jsp-file>/jsp/patient/exam_history-p.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamHistory</servlet-name>
+        <url-pattern>/restricted/patient/exam_history</url-pattern>
+    </servlet-mapping>
+
     <servlet>
-        <servlet-name>BookYourExam</servlet-name>
-        <jsp-file>/jsp/patient/book_your_exam.jsp</jsp-file>
+        <servlet-name>PhotoGallery</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PhotoGalleryServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>PhotoGallery</servlet-name>
+        <url-pattern>/restricted/patient/photo_gallery</url-pattern>
+    </servlet-mapping>
+
     <servlet>
-        <servlet-name>Visits</servlet-name>
-        <jsp-file>/jsp/patient/visits.jsp</jsp-file>
+        <servlet-name>PrescriptionsServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PrescriptionServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>PrescriptionsServlet</servlet-name>
+        <url-pattern>/restricted/patient/prescriptions</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>Tickets</servlet-name>
-        <jsp-file>/jsp/patient/tickets.jsp</jsp-file>
+        <jsp-file>/jsp/patient/tickets-p.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Tickets</servlet-name>
+        <url-pattern>/restricted/patient/tickets</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Visits</servlet-name>
+        <jsp-file>/jsp/patient/visits-p.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Visits</servlet-name>
+        <url-pattern>/restricted/patient/visits</url-pattern>
+    </servlet-mapping>
+
     <!-- General practitioner -->
     <servlet>
-        <servlet-name>MyPatientsPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/patients.jsp</jsp-file>
+        <servlet-name>PatientsPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/patients-gp.jsp</jsp-file>
     </servlet>
-    <servlet>
-        <servlet-name>VisitsPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/visits.jsp</jsp-file>
-    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientsPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/patients</url-pattern>
+    </servlet-mapping>
+
+
     <servlet>
         <servlet-name>PrescriptionsPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/prescriptions.jsp</jsp-file>
+        <jsp-file>/jsp/general_practitioner/prescriptions-gp.jsp</jsp-file>
     </servlet>
-    <servlet>
-        <servlet-name>VisitsHistoryPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/visit_history.jsp</jsp-file>
-    </servlet>
+    <servlet-mapping>
+        <servlet-name>PrescriptionsPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/prescriptions</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>VisitsCalendarPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/visit_calendar.jsp</jsp-file>
+        <jsp-file>/jsp/general_practitioner/visit_calendar-gp.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>VisitsPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/visits</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VisitsHistoryPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/visit_history-gp.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VisitsHistoryPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/visit_history</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>VisitsPractitioner</servlet-name>
+        <jsp-file>/jsp/general_practitioner/visits-gp.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VisitsCalendarPractitioner</servlet-name>
+        <url-pattern>/restricted/general_practitioner/visit_calendar</url-pattern>
+    </servlet-mapping>
+
+
     <!-- Specialized doctor -->
     <servlet>
-        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/exam_request.jsp</jsp-file>
+        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_calendar-sd.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_calendar</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/exam_history.jsp</jsp-file>
+        <jsp-file>/jsp/specialized_doctor/exam_history-sd.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_history</url-pattern>
+    </servlet-mapping>
+
     <servlet>
-        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/exam_calendar.jsp</jsp-file>
+        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
+        <jsp-file>/jsp/specialized_doctor/exam_request-sd.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
         <jsp-file>/jsp/specialized_doctor/patients-sd.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
+    </servlet-mapping>
+
     <!-- Health Service -->
-    <servlet>
-        <servlet-name>PrescriptionsHealthService</servlet-name>
-        <jsp-file>/jsp/health_service/prescriptions-hs.jsp</jsp-file>
-    </servlet>
     <servlet>
         <servlet-name>PatientsHealthService</servlet-name>
         <jsp-file>/jsp/health_service/patients-hs.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>PrescriptionsHealthService</servlet-name>
+        <url-pattern>/restricted/health_service/prescriptions</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PrescriptionsHealthService</servlet-name>
+        <jsp-file>/jsp/health_service/prescriptions-hs.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientsHealthService</servlet-name>
+        <url-pattern>/restricted/health_service/patients</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>RecallsHealthService</servlet-name>
         <jsp-file>/jsp/health_service/recalls-hs.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>RecallsHealthService</servlet-name>
+        <url-pattern>/restricted/health_service/recalls</url-pattern>
+    </servlet-mapping>
+
     <!-- Chemist -->
     <servlet>
         <servlet-name>PrescriptionsChemist</servlet-name>
         <jsp-file>/jsp/chemist/prescriptions-c.jsp</jsp-file>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>PrescriptionsChemist</servlet-name>
+        <url-pattern>/restricted/chemist/prescriptions</url-pattern>
+    </servlet-mapping>
 
-    <!-- Mapping dei servlet alle classi effettive -->
+    <!-- Servlet senza JSP (POST-only) -->
+    <servlet>
+        <servlet-name>RequestPasswordResetServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.RequestPasswordResetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RequestPasswordResetServlet</servlet-name>
+        <url-pattern>/request_password_reset</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>PhotoUploadServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PhotoUploadServlet</servlet-class>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PhotoUploadServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>PhotoGalleryServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PhotoGalleryServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PasswordChangeServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordChangeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PasswordResetServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordResetServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FinalizePasswordResetServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.FinalizePasswordResetServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UnhappyPractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.ChangePractitionerServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Prescriptions</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PrescriptionServlet</servlet-class>
-    </servlet>
-    <!-- Mapping dei servlet, da nome a effettivo url. -->
-    <!-- Pagine accessibili a tutti -->
-    <servlet-mapping>
-        <servlet-name>LoginPage</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Cookies</servlet-name>
-        <url-pattern>/cookies</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Privacy</servlet-name>
-        <url-pattern>/privacy</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PasswordResetServlet</servlet-name>
-        <url-pattern>/password_reset_handler</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FinalizePasswordResetServlet</servlet-name>
-        <url-pattern>/finalize_password_reset</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login_handler</url-pattern>
-    </servlet-mapping>
-    <!-- Pagine restricted, comuni a tutti i ruoli -->
-    <servlet-mapping>
-        <servlet-name>UserPage</servlet-name>
-        <url-pattern>/restricted/user</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PasswordChangeServlet</servlet-name>
-        <url-pattern>/restricted/password_change_handler</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PhotoUploadServlet</servlet-name>
         <url-pattern>/restricted/photo_upload_handler</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PasswordChangeServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordChangeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PasswordChangeServlet</servlet-name>
+        <url-pattern>/restricted/password_change_handler</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SendEmail</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.SendEmailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SendEmail</servlet-name>
+        <url-pattern>/restricted/send_email</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.LogoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/restricted/logout_handler</url-pattern>
     </servlet-mapping>
-    <!-- Patient -->
-    <servlet-mapping>
-        <servlet-name>ExamHistory</servlet-name>
-        <url-pattern>/restricted/patient/exam_history</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BookYourExam</servlet-name>
-        <url-pattern>/restricted/patient/book_your_exam</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Visits</servlet-name>
-        <url-pattern>/restricted/patient/visits</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UnhappyPractitioner</servlet-name>
-        <url-pattern>/restricted/patient/unhappy_practitioner</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Prescriptions</servlet-name>
-        <url-pattern>/restricted/patient/prescriptions</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Tickets</servlet-name>
-        <url-pattern>/restricted/patient/tickets</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PhotoGalleryServlet</servlet-name>
-        <url-pattern>/restricted/patient/photo_gallery</url-pattern>
-    </servlet-mapping>
-    <!-- Practitioner -->
-    <servlet-mapping>
-        <servlet-name>MyPatientsPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/patients</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>VisitsPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/visits</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PrescriptionsPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/prescriptions</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>VisitsHistoryPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/visit_history</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>VisitsCalendarPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/visit_calendar</url-pattern>
-    </servlet-mapping>
-    <!-- Specialized Doctor -->
-    <servlet-mapping>
-        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/exam_history</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/exam_calendar</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
-    </servlet-mapping>
-    <!-- Health Service -->
-    <servlet-mapping>
-        <servlet-name>PrescriptionsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/prescriptions-hs</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PatientsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/patients-hs</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RecallsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/recalls-hs</url-pattern>
-    </servlet-mapping>
-    <!-- Chemist -->
-    <servlet-mapping>
-        <servlet-name>PrescriptionsChemist</servlet-name>
-        <url-pattern>/restricted/chemist/prescriptions-c</url-pattern>
-    </servlet-mapping>
+
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
         <session-timeout>

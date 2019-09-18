@@ -31,7 +31,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, passwordReset.getEmail());
             preparedStatement.setString(2, passwordReset.getToken());
-            preparedStatement.setDate(3, passwordReset.getExpiringDate());
+            preparedStatement.setTimestamp(3, passwordReset.getExpiringDate());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -46,7 +46,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, passwordReset.getToken());
-            preparedStatement.setDate(2, passwordReset.getExpiringDate());
+            preparedStatement.setTimestamp(2, passwordReset.getExpiringDate());
             preparedStatement.setString(3, passwordReset.getEmail());
 
             int row = preparedStatement.executeUpdate();
@@ -82,7 +82,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                     res = new PasswordReset(
                             rs.getString("email"),
                             rs.getString("token"),
-                            rs.getDate("expiring_date"));
+                            rs.getTimestamp("expiring_date"));
                     return res;
                 }
             }
@@ -118,7 +118,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                     res = new PasswordReset(
                             rs.getString("email"),
                             rs.getString("token"),
-                            rs.getDate("expiring_date"));
+                            rs.getTimestamp("expiring_date"));
                     return res;
                 }
             }
@@ -135,7 +135,9 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new PasswordReset(rs.getString("email"), rs.getString("token"), rs.getDate("expiring_date"));
+                    tmp = new PasswordReset(rs.getString("email"),
+                            rs.getString("token"),
+                            rs.getTimestamp("expiring_date"));
                     res.add(tmp);
                 }
                 return res;

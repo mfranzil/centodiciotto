@@ -50,8 +50,8 @@
                             <button type="button" class="btn btn-block btn-personal popup-opener">
                                 Patient data
                             </button>
-                            <div class="popup_window">
-                                <div class="popup animate-in" style="overflow-y: auto">
+                            <div class="popup-window">
+                                <div class="popup animate-in">
                                     <div>
                                         <h4>Patient data</h4>
                                         <table class="table">

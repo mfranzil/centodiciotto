@@ -32,8 +32,7 @@
                 <%
                     if (exception != null && exception.getCause() != null) {
                 %>
-                <p style="background: rgba(var(--118-darkest), 1); padding: 1rem; margin-right: 1rem;
-                color: white; font-family: monospace;">
+                <p class="exception">
                     <%=exception.getCause()%>
                 </p>
                 <%

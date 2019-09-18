@@ -17,6 +17,10 @@
     border-radius: 10px;
 }
 
+.icon {
+    width: 128px;
+    height: 128px;
+}
 
 .form-label-group {
     position: relative;

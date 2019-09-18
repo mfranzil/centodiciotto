@@ -81,7 +81,7 @@
                     To choose a practitioner, select the corresponding name and then confirm your changes clicking
                     on the "I want to change my practitioner" button.
                 </p>
-                <form action="${pageContext.request.contextPath}/restricted/patient/unhappy_practitioner"
+                <form action="${pageContext.request.contextPath}/restricted/patient/change_practitioner"
                       id="practitioner" method="POST">
                     <div style="margin: auto; text-align: center">
                         <button id="submit" class="btn mb-4 btn-personal" disabled type="submit">

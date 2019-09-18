@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.servlets;
+package it.unitn.web.centodiciotto.servlets.patient;
 
 import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
@@ -17,14 +17,14 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @WebServlet("/upload")
 @MultipartConfig
 
 public class PhotoUploadServlet extends HttpServlet {
 
-    private PhotoDAO photoDao;
+    private PhotoDAO photoDAO;
 
     @Override
     public void init() throws ServletException {
@@ -33,7 +33,7 @@ public class PhotoUploadServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            photoDao = daoFactory.getDAO(PhotoDAO.class);
+            photoDAO = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -51,8 +51,8 @@ public class PhotoUploadServlet extends HttpServlet {
 
         System.out.println(extension);
 
-        Photo photo = new Photo(user.getEmail(), new Date(System.currentTimeMillis()));
-        String fileName = photoDao.insert(photo).toString();
+        Photo photo = new Photo(user.getEmail(), new Timestamp(System.currentTimeMillis()));
+        String fileName = photoDAO.insert(photo).toString();
 
         String path = getServletContext().getRealPath("/") + "/img/avatars/" + user.getEmail();
         Files.createDirectories(Paths.get(path));

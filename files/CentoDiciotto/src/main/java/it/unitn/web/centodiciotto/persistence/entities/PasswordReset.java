@@ -1,13 +1,13 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 import java.security.SecureRandom;
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Base64;
 
 public class PasswordReset {
     private String email;
     private String token;
-    private Date expiringDate;
+    private Timestamp expiringDate;
 
     public static String generateRandomBase64Token() {
         SecureRandom secureRandom = new SecureRandom();
@@ -16,7 +16,7 @@ public class PasswordReset {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
     }
 
-    public PasswordReset(String email, String token, Date expiringDate) {
+    public PasswordReset(String email, String token, Timestamp expiringDate) {
         this.email = email;
         this.token = token;
         this.expiringDate = expiringDate;
@@ -38,11 +38,11 @@ public class PasswordReset {
         this.token = token;
     }
 
-    public Date getExpiringDate() {
+    public Timestamp getExpiringDate() {
         return expiringDate;
     }
 
-    public void setExpiringDate(Date expiringDate) {
+    public void setExpiringDate(Timestamp expiringDate) {
         this.expiringDate = expiringDate;
     }
 }

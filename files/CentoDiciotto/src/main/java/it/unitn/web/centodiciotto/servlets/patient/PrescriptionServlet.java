@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.servlets;
+package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
@@ -46,6 +46,6 @@ public class PrescriptionServlet extends HttpServlet {
 
             }
         }
-        request.getRequestDispatcher("/jsp/patient/prescriptions.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/patient/prescriptions-gp.jsp").forward(request, response);
     }
 }

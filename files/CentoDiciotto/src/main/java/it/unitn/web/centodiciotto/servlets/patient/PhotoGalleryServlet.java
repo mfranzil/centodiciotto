@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.servlets;
+package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
@@ -8,12 +8,14 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Common;
+import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,23 +42,53 @@ public class PhotoGalleryServlet extends HttpServlet {
 
         if (user != null) {
             if (user instanceof Patient) {
-                List<Photo> photos = null;
-                List<String> photoPathList = new ArrayList<>();
+                List<Photo> photos;
+                List<Pair<String, Integer>> photoPathList = new ArrayList<>();
                 try {
                     photos = photoDAO.getByEmail(user.getEmail());
 
                     for (Photo photo : photos) {
                         String photoPath = Common.getPhotoPosition(getServletContext(),
-                                user.getEmail(),photo.getPhotoid());
-                        photoPathList.add(photoPath);
+                                user.getEmail(), photo.getPhotoid());
+                        photoPathList.add(Pair.makePair(photoPath, photo.getPhotoid()));
                     }
 
                     request.setAttribute("photos", photoPathList);
-                    request.getRequestDispatcher("/jsp/patient/photo_gallery.jsp").forward(request, response);
-                } catch (DAOException e) {
-                    e.printStackTrace();
+                    request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
+                } catch (DAOException ex) {
+                    throw new ServletException("Cannot load page for photo gallery", ex);
                 }
             }
+        }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        String photoId = request.getParameter("photoid");
+
+        Pair<Integer, String> primaryKey = Pair.makePair(Integer.parseInt(photoId), user.getEmail());
+
+        System.out.println(primaryKey.getFirst());
+        System.out.println(primaryKey.getSecond());
+        try {
+            Photo chosenPhoto = photoDAO.getByPrimaryKey(primaryKey);
+            chosenPhoto.setUploadDate(new Timestamp(System.currentTimeMillis()));
+            photoDAO.update(chosenPhoto);
+
+            String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), chosenPhoto.getPhotoid());
+            request.getSession().setAttribute("photo_path", photoPath);
+        } catch (DAOException ex) {
+            throw new ServletException("Cannot update profile photo", ex);
+        }
+
+
+        String contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
+        }
+
+        if (!response.isCommitted()) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
         }
     }
 }

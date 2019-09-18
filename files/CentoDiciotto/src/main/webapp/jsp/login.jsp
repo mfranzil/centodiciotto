@@ -13,11 +13,6 @@
     <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
     <script src="${pageContext.request.contextPath}/js/popup.js"></script>
-    <%--<% if (request.getAttribute("loginResult") != null && request.getAttribute("loginResult") == "true") {%>
-        <script>
-            alert("Invalid username or password, please try again.");
-        </script>
-        <% }%>--%>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -25,46 +20,41 @@
     <div class="jumbotron mt-4">
         <h1>Login as...</h1>
     </div>
-    <div style="text-align: center; display: flex; flex-wrap: wrap">
+    <div class="flex-wrap">
         <div class="hover-button focused" id="patient">
-            <img alt="pPtient" class="mb-2"
-                 src="${pageContext.request.contextPath}/img/classes/patient.png"
-                 style="width: 128px">
+            <img alt="Patient" class="mb-2 icon"
+                 src="${pageContext.request.contextPath}/img/classes/patient.png"">
             <br>Patient
         </div>
         <div class="hover-button focused" id="general_practitioner">
-            <img alt="General practitioner" class="mb-2"
-                 src="${pageContext.request.contextPath}/img/classes/general_practitioner.png"
-                 style="width: 128px;">
+            <img alt="General practitioner" class="mb-2 icon"
+                 src="${pageContext.request.contextPath}/img/classes/general_practitioner.png">
             <br>General practitioner
         </div>
         <div class="hover-button focused" id="specialized_doctor">
-            <img alt="Specialized doctor" class="mb-2"
-                 src="${pageContext.request.contextPath}/img/classes/specialized_doctor.png"
-                 style="width: 128px;">
+            <img alt="Specialized doctor" class="mb-2 icon"
+                 src="${pageContext.request.contextPath}/img/classes/specialized_doctor.png">
             <br>Specialized doctor
         </div>
         <div class="hover-button focused" id="chemist">
-            <img alt="Chemist's" class="mb-2"
-                 src="${pageContext.request.contextPath}/img/classes/chemist.png"
-                 style="width: 128px;">
+            <img alt="Chemist's" class="mb-2 icon"
+                 src="${pageContext.request.contextPath}/img/classes/chemist.png">
             <br>Chemist's
         </div>
         <div class="hover-button focused" id="health_service">
-            <img alt="Health Service" class="mb-2"
-                 src="${pageContext.request.contextPath}/img/classes/health_service.png"
-                 style="width: 128px;">
+            <img alt="Health Service" class="mb-2 icon"
+                 src="${pageContext.request.contextPath}/img/classes/health_service.png">
             <br>Health Service
         </div>
     </div>
 </div>
-<div class="popup_window" id="form-window">
+<div class="popup-window" id="form-window">
     <div class="popup animate-in">
-        <form action="${pageContext.request.contextPath}/login_handler" id="login" method="POST">
-            <div style="width: 100%; text-align:center;">
+        <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
+            <div class="center-100">
                 <img id="form-image" style="width: 32px" src="" alt="...">
             </div>
-            <div class="mb-2" id="form-name" style="width: 100%; text-align: center">
+            <div class="mb-2 center-100" id="form-name">
                 Logging in as...
             </div>
             <input name="role" id="role" type="hidden" value="none">
@@ -91,9 +81,9 @@
             <button class="btn btn-lg btn-block btn-personal" type="submit">Login</button>
             <button class="btn btn-lg btn-block btn-secondary" type="button" id="close-form">Cancel</button>
         </form>
-        <form action="${pageContext.request.contextPath}/password_reset_handler"
+        <form action="${pageContext.request.contextPath}/request_password_reset"
               id="recovery" method="POST" style="display: none">
-            <div id="message" class="mb-2" style="width: 100%; text-align: center">
+            <div id="message center-100" class="mb-2">
                 Insert your email.<br>We will send you a link to reset your password.
             </div>
             <div class="mb-2">

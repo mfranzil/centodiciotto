@@ -51,8 +51,8 @@
                             <button class="btn btn-block btn-personal popup-opener">
                                 Exam prescription
                             </button>
-                            <div class="popup_window">
-                                <div class="popup animate-in" style="overflow-y: auto">
+                            <div class="popup-window">
+                                <div class="popup animate-in">
                                     <form action="prescription_exam_practitioner" id="form1" method="POST">
                                         <div>
                                             <h4>Choose a prescription...</h4>

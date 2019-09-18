@@ -42,8 +42,8 @@
                             <button class="btn btn-block btn-personal popup-opener">
                                 Choose date and time
                             </button>
-                            <div class="popup_window">
-                                <div class="popup animate-in" style="overflow-y: auto">
+                            <div class="popup-window">
+                                <div class="popup animate-in">
                                     Insert a date and time for the appointment, then confirm.
                                     <input class="form-control my-4" type="datetime-local">
                                     <button class="btn btn-lg btn-block btn-personal" type="submit">

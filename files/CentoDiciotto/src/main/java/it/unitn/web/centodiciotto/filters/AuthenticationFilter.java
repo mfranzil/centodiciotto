@@ -40,6 +40,7 @@ public class AuthenticationFilter implements Filter {
             sw.close();
             stackTrace = sw.getBuffer().toString();
         } catch (IOException | RuntimeException ex) {
+            System.err.println("Cannot get stack trace for " + t);
         }
         return stackTrace;
     }
@@ -69,20 +70,17 @@ public class AuthenticationFilter implements Filter {
                 ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
             } else {
                 boolean allowed = true;
+                String requestedUrl = ((HttpServletRequest) request).getRequestURL().toString();
 
-                if (user instanceof Patient && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/patient")) {
+                if (user instanceof Patient && requestedUrl.contains("/restricted/patient")) {
                     allowed = true;
-                }
-                else if (user instanceof GeneralPractitioner && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/general_practitioner")) {
+                } else if (user instanceof GeneralPractitioner && requestedUrl.contains("/restricted/general_practitioner")) {
                     allowed = true;
-                }
-                else if (user instanceof SpecializedDoctor && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/specialized_doctor")) {
+                } else if (user instanceof SpecializedDoctor && requestedUrl.contains("/restricted/specialized_doctor")) {
                     allowed = true;
-                }
-                else if (user instanceof Chemist && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/chemist")) {
+                } else if (user instanceof Chemist && requestedUrl.contains("/restricted/chemist")) {
                     allowed = true;
-                }
-                else if (user instanceof HealthService && ((HttpServletRequest) request).getRequestURL().toString().contains("/restricted/health_service")) {
+                } else if (user instanceof HealthService && requestedUrl.contains("/restricted/health_service")) {
                     allowed = true;
                 }
 

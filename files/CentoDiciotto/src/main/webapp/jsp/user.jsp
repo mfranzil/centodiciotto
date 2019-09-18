@@ -192,7 +192,7 @@
                 </h3>
                 <div class="input-group">
                     <form action="${pageContext.request.contextPath}/restricted/photo_upload_handler"
-                          id="avatar" style="width: 100%" method="POST" enctype="multipart/form-data">
+                          id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
                         <div class="custom-file" style="z-index: 0;">
                             <input type="file" class="custom-file-input"
                                    name="avatar-select" id="avatar-select" accept="image/png, image/jpeg">
@@ -203,7 +203,7 @@
                             Upload
                         </button>
                     </form>
-                    <form style="width: 100%"
+                    <form class="center-100"
                           action="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
                         <button class="btn btn-block mt-4 btn-personal" type="submit">
                             See gallery

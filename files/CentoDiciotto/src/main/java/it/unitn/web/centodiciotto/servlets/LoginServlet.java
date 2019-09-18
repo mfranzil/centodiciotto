@@ -27,9 +27,9 @@ import java.io.IOException;
  */
 public class LoginServlet extends HttpServlet {
 
-    private UserDAO userDao;
-    private GeneralPractitionerDAO practitionerDao;
-    private PhotoDAO photoDao;
+    private UserDAO userDAO;
+    private GeneralPractitionerDAO practitionerDAO;
+    private PhotoDAO photoDAO;
 
     @Override
     public void init() throws ServletException {
@@ -38,24 +38,28 @@ public class LoginServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            userDao = daoFactory.getDAO(UserDAO.class);
-            practitionerDao = daoFactory.getDAO(GeneralPractitionerDAO.class);
-            photoDao = daoFactory.getDAO(PhotoDAO.class);
+            userDAO = daoFactory.getDAO(UserDAO.class);
+            practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
+            photoDAO = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request  servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
-     * @author Stefano Chirico
-     * @since 1.0.0.190519
-     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession(false) != null && request.getSession().getAttribute("user") != null) {
+            String contextPath = getServletContext().getContextPath();
+            if (!contextPath.endsWith("/")) {
+                contextPath += "/";
+            }
+
+            response.sendRedirect(response.encodeRedirectURL(contextPath));
+        } else {
+            request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
+        }
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
@@ -68,7 +72,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            User user = userDao.getByEmailAndPassword(email, password, role);
+            User user = userDAO.getByEmailAndPassword(email, password, role);
             JSONObject jobj = new JSONObject();
 
             if (user == null) {
@@ -81,8 +85,8 @@ public class LoginServlet extends HttpServlet {
 
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
                     GeneralPractitioner practitioner =
-                            practitionerDao.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
-                    Photo photo = photoDao.getLastPhotoByEmail(user.getEmail());
+                            practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                    Photo photo = photoDAO.getLastPhotoByEmail(user.getEmail());
 
                     String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), photo.getPhotoid());
 
@@ -94,7 +98,7 @@ public class LoginServlet extends HttpServlet {
             }
             response.getWriter().write(jobj.toString());
         } catch (DAOException ex) {
-            request.getServletContext().log("Impossible to retrieve the user.", ex);
+            throw new ServletException("Impossible to retrieve the user.", ex);
         }
     }
 }

@@ -55,7 +55,7 @@
     <div class="body-content">
         <div class="mt-4" style="text-align: center; margin: auto 15%">
             <p id="message" class="mt-4">Insert your email and your new password, then confirm.</p>
-            <form action="${pageContext.request.contextPath}/finalize_password_reset"
+            <form action="${pageContext.request.contextPath}/password_reset"
                   id="password-reset" method="POST">
                 <div class="form-label-group">
                     <input autofocus class="form-control mb-2" id="email" name="email"

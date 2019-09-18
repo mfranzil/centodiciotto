@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.servlets;
+package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -18,8 +18,8 @@ import java.util.List;
 
 public class ChangePractitionerServlet extends HttpServlet {
 
-    private GeneralPractitionerDAO practitionerDao;
-    private PatientDAO patientDao;
+    private GeneralPractitionerDAO practitionerDAO;
+    private PatientDAO patientDAO;
 
     @Override
     public void init() throws ServletException {
@@ -28,8 +28,8 @@ public class ChangePractitionerServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            practitionerDao = daoFactory.getDAO(GeneralPractitionerDAO.class);
-            patientDao = daoFactory.getDAO(PatientDAO.class);
+            practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
+            patientDAO = daoFactory.getDAO(PatientDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -42,20 +42,18 @@ public class ChangePractitionerServlet extends HttpServlet {
 
         if (user instanceof Patient) {
             try {
-                GeneralPractitioner pract = practitionerDao.getByPrimaryKey(pract_email);
+                GeneralPractitioner pract = practitionerDAO.getByPrimaryKey(pract_email);
                 ((Patient) user).setGeneralPractitionerEmail(pract_email);
                 request.getSession().setAttribute("practitioner", pract);
-                patientDao.updatePractitioner((Patient) user);
+                patientDAO.updatePractitioner((Patient) user);
                 response.setStatus(200);
             } catch (NullPointerException | ClassCastException | DAOException ex) {
                 response.setStatus(400);
-                request.getServletContext().log("Impossible to retrieve the patient.", ex);
+                throw new ServletException("Impossible to retrieve the patient.", ex);
             }
         } else {
             response.setStatus(400);
         }
-
-
     }
 
     @Override
@@ -65,11 +63,11 @@ public class ChangePractitionerServlet extends HttpServlet {
         if (user != null) {
             if (user instanceof Patient) {
                 List<GeneralPractitioner> available_practitioners =
-                        practitionerDao.getByProvince(((Patient) user).getLivingProvince());
+                        practitionerDAO.getByProvince(((Patient) user).getLivingProvince());
                 request.setAttribute("available_practitioners", available_practitioners);
 
             }
         }
-        request.getRequestDispatcher("/jsp/patient/unhappy_practitioner.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class PasswordChangeServlet extends HttpServlet {
 
-    private UserDAO userDao;
+    private UserDAO userDAO;
 
     @Override
     public void init() throws ServletException {
@@ -23,7 +23,7 @@ public class PasswordChangeServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            userDao = daoFactory.getDAO(UserDAO.class);
+            userDAO = daoFactory.getDAO(UserDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -39,7 +39,7 @@ public class PasswordChangeServlet extends HttpServlet {
 
         if (user.getPassword().equals(oldPassword)) {
             user.setPassword(newPassword);
-            userDao.update(user);
+            userDAO.update(user);
             response.setStatus(200);
         } else {
             response.setStatus(400);
