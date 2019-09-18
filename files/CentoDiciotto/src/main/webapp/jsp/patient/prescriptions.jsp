@@ -1,7 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.Date" %>
 <%@ page import="java.util.Calendar" %>
-<%@ page import="it.unitn.web.centodiciotto.servlets.PDFServlet" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,19 +40,24 @@
                     prescriptionDate.setTime(prescription.getPrescriptionDate());
                     prescriptionDate.add(Calendar.MONTH, 1);
 
-                System.out.println(prescriptionDate.getTime());
                     if(prescriptionDate.getTime().after(now.getTime())){%>
                 Available
             <td>
-                <button type="button" class="btn btn-block btn-personal">Download</button>
+            <form target="_blank" action="${pageContext.request.contextPath}/restricted/patient/prescriptions" id="pdf" method="POST">
+                <input type="hidden" name="practitioner_id" value="<%= prescription.getPrescriptionPractitioner() %>" />
+                <input type="hidden" name="patient_ssn" value="<%= ((Patient) user).getSsn() %>" />
+                <input type="hidden" name="prescription_date" value="<%= prescription.getPrescriptionDate() %>" />
+                <input type="hidden" name="prescription_id" value="<%= prescription.getPrescriptionID() %>" />
+                <input type="hidden" name="prescription_description" value="<%= prescription.getDrugDescription() %>" />
+                <button type="submit" class="btn btn-block btn-personal">Download</button>
+            </form>
             </td>
                 <% } else { %>
             Not Available
             <td>
                 <button type="button" class="btn btn-block btn-personal disabled">Download</button>
             </td>
-                <% }
-                    PDFServlet %>
+                <% } %>
         </tr>
         <% } %>
         </tbody>
