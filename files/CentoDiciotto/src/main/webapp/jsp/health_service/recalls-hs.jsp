@@ -6,9 +6,10 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/popup.js"></script>
     <script>
-        $(".js-example-tags").select2({
+        /*$(".js-example-tags").select2({
             tags: true
-        });
+        });*/
+        $(document).ready(function() { $("#e1").select2(); });
     </script>
 </head>
 <body>
@@ -25,8 +26,8 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <select class="form-control">
-                    <option selected="selected">orange</option>
+                <select class="form-control mb-2">
+                    <option selected="selected">Select an exam</option>
                     <option>Agobiopsia ecoguidata transtracheale o transbronchiale di linfonodi ilo mediastinici</option>
                     <option>Biopsia a cielo aperto del polmone</option>
                     <option>Biopsia a cielo aperto delle ghiandole surrenali</option>
@@ -39,9 +40,9 @@
 
                 <div class="container">
                     <div class="jumbotron mt-4">
-                        <h1>Story of the recalls</h1>
+                        <h1>Recalls History</h1>
                         <p class="lead mt-4 mx-4">
-                            This is the story of all the recalls.
+                            This is the history of all the recalls.
                         </p>
                     </div>
                 </div>
