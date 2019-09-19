@@ -10,8 +10,7 @@
 # sl.db
 
 # Config file
-config.ini
-server.properties
+*.properties
 
 # Compiled class file
 *.clas

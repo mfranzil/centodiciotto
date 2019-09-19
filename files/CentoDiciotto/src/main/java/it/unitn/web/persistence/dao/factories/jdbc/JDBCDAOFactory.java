@@ -21,62 +21,12 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-/**
- * This JDBC implementation of {@code DAOFactory}.
- *
- * @author Stefano Chirico &lt;stefano dot chirico at unitn dot it&gt;
- * @since 2019.04.06
- */
 public class JDBCDAOFactory implements DAOFactory {
+    private static JDBCDAOFactory instance;
     private final transient Connection CON;
     private final transient HashMap<Class, DAO> DAO_CACHE;
 
-    private static JDBCDAOFactory instance;
-    
-    /**
-     * Call this method before use the instance of this class.
-     *
-     * @param ini_file the initialization file
-     * @throws DAOFactoryException if an error occurred during dao factory
-     *                             configuration.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
-    public static void configure(String ini_file) throws DAOFactoryException {
-        if (instance == null) {
-            instance = new JDBCDAOFactory(ini_file);
-        } else {
-            throw new DAOFactoryException("DAOFactory already configured. You can call configure only one time");
-        }
-    }
-
-    /**
-     * Returns the singleton instance of this {@link DAOFactory}.
-     *
-     * @return the singleton instance of this {@code DAOFactory}.
-     * @throws DAOFactoryException if an error occurred if this dao factory is
-     *                             not yet configured.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
-    public static JDBCDAOFactory getInstance() throws DAOFactoryException {
-        if (instance == null) {
-            throw new DAOFactoryException("DAOFactory not yet configured. Call DAOFactory.configure(String ini_file) before use the class");
-        }
-        return instance;
-    }
-
-    /**
-     * The private constructor used to create the singleton instance of this
-     * {@code DAOFactory}.
-     *
-     * @param ini_file the initialization file
-     * @throws DAOFactoryException if an error occurred during {@code DAOFactory}
-     *                             creation.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
-    private JDBCDAOFactory(String ini_file) throws DAOFactoryException {
+    private JDBCDAOFactory() throws DAOFactoryException {
         super();
 
         String url = null;
@@ -86,9 +36,8 @@ public class JDBCDAOFactory implements DAOFactory {
         Properties data = new Properties();
 
         try (InputStream stream = JDBCDAOFactory.class
-                .getClassLoader().getResourceAsStream("server.properties")) {
+                .getClassLoader().getResourceAsStream("database.properties")) {
             data.load(stream);
-
 
             String hostname = data.getProperty("HostName");
             String defaultDatabase = data.getProperty("DefaultDatabase");
@@ -111,16 +60,26 @@ public class JDBCDAOFactory implements DAOFactory {
         } catch (SQLException sqle) {
             throw new DAOFactoryException("Cannot create connection", sqle);
         }
-        
+
         DAO_CACHE = new HashMap<>();
     }
 
-    /**
-     * Shutdowns the access to the storage system.
-     *
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
+    public static void configure() throws DAOFactoryException {
+        if (instance == null) {
+            instance = new JDBCDAOFactory();
+        } else {
+            throw new DAOFactoryException("DAOFactory already configured. You can call configure only one time");
+        }
+    }
+
+    public static JDBCDAOFactory getInstance() throws DAOFactoryException {
+        if (instance == null) {
+            throw new DAOFactoryException("DAOFactory not yet configured. " +
+                    "Call DAOFactory.configure(String ini_file) before use the class");
+        }
+        return instance;
+    }
+
     @Override
     public void shutdown() {
         try {
@@ -130,28 +89,16 @@ public class JDBCDAOFactory implements DAOFactory {
         }
     }
 
-    /**
-     * Returns the concrete {@link DAO dao} which type is the class passed as
-     * parameter.
-     *
-     * @param <DAO_CLASS> the class name of the {@code dao} to get.
-     * @param daoInterface the class instance of the {@code dao} to get.
-     * @return the concrete {@code dao} which type is the class passed as
-     * parameter.
-     * @throws DAOFactoryException if an error occurred during the operation.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     @Override
     public <DAO_CLASS extends DAO> DAO_CLASS getDAO(Class<DAO_CLASS> daoInterface) throws DAOFactoryException {
         DAO dao = DAO_CACHE.get(daoInterface);
         if (dao != null) {
             return (DAO_CLASS) dao;
         }
-        
+
         Package pkg = daoInterface.getPackage();
         String prefix = pkg.getName() + ".jdbc.JDBC";
-        
+
         try {
             Class daoClass = Class.forName(prefix + daoInterface.getSimpleName());
 

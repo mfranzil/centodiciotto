@@ -19,12 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Servlet that handles the login web page.
- *
- * @author Stefano Chirico &lt;stefano dot chirico at unitn dot it&gt;
- * @since 2019.05.19
- */
 public class LoginServlet extends HttpServlet {
 
     private UserDAO userDAO;

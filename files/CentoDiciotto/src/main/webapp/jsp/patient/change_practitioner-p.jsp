@@ -20,7 +20,7 @@
 
             $("#practitioner").submit(function (e) {
                 e.preventDefault();
-                $('#submit').prop('disabled', true);
+                $('#submit').prop('disabled', true).html("Requesting change...");
 
                 let form = $(this);
                 let url = form.attr('action');
@@ -35,7 +35,9 @@
                         $("#current-practitioner").css("background-color", "");
                         $("#check").html("");
                         pract.parent().html("✔").parent().css("background-color", "rgba(120,255,120,0.3)");
-                        $('#message').html("Your practitioner has been successfully changed.");
+                        $('#message').html("Your practitioner change request has been receieved. " +
+                            "You will receive a confirmation email soon.");
+                        $('#submit,#current-practitioner,#available').slideUp();
 
                     }
                 });
@@ -74,7 +76,7 @@
                         <td id="check">✔</td>
                     </tr>
                 </table>
-                <h3 class="my-4">
+                <h3 id="available" class="my-4">
                     Available practitioners
                 </h3>
                 <p id="message" class="lead my-4">

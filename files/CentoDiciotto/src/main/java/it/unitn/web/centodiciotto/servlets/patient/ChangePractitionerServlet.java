@@ -8,7 +8,9 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.SendEmail;
 
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,18 +40,59 @@ public class ChangePractitionerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String pract_email = request.getParameter("practitioner_email");
 
         if (user instanceof Patient) {
             try {
-                GeneralPractitioner pract = practitionerDAO.getByPrimaryKey(pract_email);
-                ((Patient) user).setGeneralPractitionerEmail(pract_email);
-                request.getSession().setAttribute("practitioner", pract);
+                String newPractEmail = request.getParameter("practitioner_email");
+
+                GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractEmail);
+
+                ((Patient) user).setGeneralPractitionerEmail(newPractEmail);
+                request.getSession().setAttribute("practitioner", newPract);
                 patientDAO.updatePractitioner((Patient) user);
+
+                String recipient = oldPract.getEmail();
+                String message = "Dear " + oldPract.getFirstName() + " " + oldPract.getLastName() + ",\n\n" +
+                        "one of your patients just asked for a change of practitioner " +
+                        "and will be no longer on your patient list.\n" +
+                        "Here are the patient details:\n\n" +
+                        ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + "\n" +
+                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                String subject = "CentoDiciotto - Patient change notification";
+
+                // Avviso il vecchio practitioner
+                SendEmail.send(recipient, message, subject);
+
+                recipient = newPract.getEmail();
+                message = "Dear " + newPract.getFirstName() + " " + newPract.getLastName() + ",\n\n" +
+                        "we are glad to tell you that you have a new patient on your patient list.\n" +
+                        "Here are the patient details:\n\n" +
+                        ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + "\n" +
+                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                subject = "CentoDiciotto - New patient notification";
+
+                // Avviso il nuovo practitioner
+                SendEmail.send(recipient, message, subject);
+
+                recipient = user.getEmail();
+                message = "Dear " + ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + ",\n\n" +
+                        "we inform you that your general practitioner has been successfully changed.\n" +
+                        "Here are the practitioner details:\n\n" +
+                        oldPract.getFirstName() + " " + oldPract.getLastName() + "\n" +
+                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                subject = "CentoDiciotto - Practitioner change notification";
+
+                // Avviso il nuovo practitioner
+                SendEmail.send(recipient, message, subject);
+
                 response.setStatus(200);
             } catch (NullPointerException | ClassCastException | DAOException ex) {
                 response.setStatus(400);
                 throw new ServletException("Impossible to retrieve the patient.", ex);
+            } catch (MessagingException ex) {
+                response.setStatus(400);
+                throw new ServletException("Cannot send email notification. Database was modified.", ex);
             }
         } else {
             response.setStatus(400);
@@ -65,7 +108,6 @@ public class ChangePractitionerServlet extends HttpServlet {
                 List<GeneralPractitioner> available_practitioners =
                         practitionerDAO.getByProvince(((Patient) user).getLivingProvince());
                 request.setAttribute("available_practitioners", available_practitioners);
-
             }
         }
         request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);

@@ -4,24 +4,20 @@ package it.unitn.web.centodiciotto.listeners;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
+import it.unitn.web.utils.SendEmail;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.logging.Logger;
 
-/**
- * Web application life-cycle listener.
- *
- * @author Stefano Chirico &lt;stefano dot chirico at unitn dot it&gt;
- * @since 2019.05.19
- */
+
 public class WebAppContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         String ini_file = sce.getServletContext().getInitParameter("ini_file");
         try {
-            JDBCDAOFactory.configure(ini_file);
+            JDBCDAOFactory.configure();
+            SendEmail.configure();
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
             sce.getServletContext().setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException ex) {

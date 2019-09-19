@@ -13,22 +13,6 @@
         <param-name>pdfFolder</param-name>
         <param-value>pdfs</param-value>
     </context-param>
-    <context-param>
-        <param-name>smtp-hostname</param-name>
-        <param-value>smtp.gmail.com</param-value>
-    </context-param>
-    <context-param>
-        <param-name>smtp-port</param-name>
-        <param-value>465</param-value>
-    </context-param>
-    <context-param>
-        <param-name>smtp-username</param-name>
-        <param-value>rewqasdfcxz11@gmail.com</param-value>
-    </context-param>
-    <context-param>
-        <param-name>smtp-password</param-name>
-        <param-value>rewqasdfcxz112</param-value>
-    </context-param>
 
     <!-- Filtri: mapping filtri-classi -->
     <filter>
@@ -306,15 +290,6 @@
     <servlet-mapping>
         <servlet-name>PasswordChangeServlet</servlet-name>
         <url-pattern>/restricted/password_change_handler</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>SendEmail</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.SendEmailServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SendEmail</servlet-name>
-        <url-pattern>/restricted/send_email</url-pattern>
     </servlet-mapping>
 
     <servlet>
