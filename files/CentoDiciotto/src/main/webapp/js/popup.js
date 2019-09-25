@@ -2,7 +2,7 @@ $("document").ready(function () {
     $(".popup-opener").click(function () {
         $(this).next().show();
     });
-    $(".popup-closer").click(function () {
+    $(".popup-closer").click(function (e) {
         e.preventDefault();
         $(".popup-window").hide();
     });

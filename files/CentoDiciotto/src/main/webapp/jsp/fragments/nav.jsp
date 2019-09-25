@@ -4,7 +4,6 @@
     String role = "default";
     User user = null;
     String displayName = "default";
-    
     String photo_path = "/img/avatars/default.png";
     GeneralPractitioner patient_practitioner = null;
 

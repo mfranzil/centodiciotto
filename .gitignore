@@ -11,6 +11,9 @@
 
 # Config file
 *.properties
+database.properties
+server.properties
+email.properties
 
 # Compiled class file
 *.clas

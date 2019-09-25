@@ -5,12 +5,12 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <context-param>
         <description>The path where the user avatar images are stored.</description>
-        <param-name>avatarsFolder</param-name>
+        <param-name>avatar-folder</param-name>
         <param-value>img/avatars</param-value>
     </context-param>
     <context-param>
         <description>The folder where are stored the exported pdfs</description>
-        <param-name>pdfFolder</param-name>
+        <param-name>pdf-folder</param-name>
         <param-value>pdfs</param-value>
     </context-param>
 

@@ -19,44 +19,40 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = ((HttpServletRequest) request).getSession(false);
         User user = null;
 
-        if (session != null) {
-            user = (User) session.getAttribute("user");
+        String contextPath = servletContext.getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
         }
 
-        if (user == null) {
-            String contextPath = servletContext.getContextPath();
-            if (!contextPath.endsWith("/")) {
-                contextPath += "/";
-            }
-            ((HttpServletResponse) response)
-                    .sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
+        if (session == null) {
+            ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
         } else {
-            boolean allowed = true;
-            String requestedUrl = ((HttpServletRequest) request).getRequestURL().toString();
+            user = (User) session.getAttribute("user");
+            if (user == null) {
+                ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
+            } else {
+                boolean allowed = true;
+                String requestedUrl = ((HttpServletRequest) request).getRequestURL().toString();
 
-            if (!(user instanceof Patient) && requestedUrl.contains("/restricted/patient")) {
-                allowed = false;
-            } else if (!(user instanceof GeneralPractitioner) && requestedUrl.contains("/restricted/general_practitioner")) {
-                allowed = false;
-            } else if (!(user instanceof SpecializedDoctor) && requestedUrl.contains("/restricted/specialized_doctor")) {
-                allowed = false;
-            } else if (!(user instanceof Chemist) && requestedUrl.contains("/restricted/chemist")) {
-                allowed = false;
-            } else if (!(user instanceof HealthService) && requestedUrl.contains("/restricted/health_service")) {
-                allowed = false;
-            }
-
-            if (!allowed) {
-                String contextPath = servletContext.getContextPath();
-                if (!contextPath.endsWith("/")) {
-                    contextPath += "/";
+                if (!(user instanceof Patient) && requestedUrl.contains("/restricted/patient")) {
+                    allowed = false;
+                } else if (!(user instanceof GeneralPractitioner) && requestedUrl.contains("/restricted/general_practitioner")) {
+                    allowed = false;
+                } else if (!(user instanceof SpecializedDoctor) && requestedUrl.contains("/restricted/specialized_doctor")) {
+                    allowed = false;
+                } else if (!(user instanceof Chemist) && requestedUrl.contains("/restricted/chemist")) {
+                    allowed = false;
+                } else if (!(user instanceof HealthService) && requestedUrl.contains("/restricted/health_service")) {
+                    allowed = false;
                 }
-                ((HttpServletResponse) response).sendRedirect(
-                        ((HttpServletResponse) response).encodeRedirectURL(contextPath));
+
+                if (!allowed) {
+                    ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath));
+                } else {
+                    chain.doFilter(request, response);
+                }
             }
         }
-
-        chain.doFilter(request, response);
     }
 
     public FilterConfig getFilterConfig() {

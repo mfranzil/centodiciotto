@@ -21,7 +21,7 @@
         <div class="row">
             <div class="col-md">
                 <form action="search_patient" method="POST">
-                    <div class="form-label-group my-4" style="display: flex; justify-content: flex-end">
+                    <div class="form-label-group my-4 mx-4 ls-search">
                         <input class="form-control mx-2" id="query" name="query"
                                placeholder="Search..." required type="text" style="width: auto">
                         <button id="message" class="btn btn-personal" type="submit">
@@ -41,7 +41,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                            <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
                         </td>
                         <th scope="row">Matteo Franzil</th>
@@ -126,7 +126,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                            <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
                         </td>
                         <th scope="row">Alessia Marcolini</th>

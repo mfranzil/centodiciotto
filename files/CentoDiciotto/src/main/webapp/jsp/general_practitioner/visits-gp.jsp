@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
                         </td>
                         <th scope="row">Matteo Franzil</th>
@@ -53,7 +53,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
                         </td>
                         <th scope="row">Alessia Marcolini</th>

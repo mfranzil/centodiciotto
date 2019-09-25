@@ -18,7 +18,7 @@
 
 <div class="container">
     <form action="search_exam" method="POST">
-        <div class="form-label-group my-4" style="display: flex; justify-content: flex-end">
+        <div class="form-label-group my-4 mx-4 ls-search">
             <input class="form-control mx-2" id="query" name="query"
                    placeholder="Search..." required type="text" style="width: auto">
             <button id="message" class="btn btn-personal" type="submit">

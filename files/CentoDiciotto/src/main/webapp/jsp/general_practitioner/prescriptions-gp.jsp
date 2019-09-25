@@ -42,7 +42,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                            <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
                         </td>
                         <th scope="row">Matteo Franzil</th>
@@ -53,20 +53,24 @@
                             </button>
                             <div class="popup-window">
                                 <div class="popup animate-in">
-                                    <form action="prescription_exam_practitioner" id="form1" method="POST">
+                                    <form action="" id="form1" method="POST">
                                         <div>
                                             <h4>Choose a prescription...</h4>
                                             <table class="table">
                                                 <tr>
                                                     <td>Esame1</td>
-                                                    <td><input type="radio" name="form1"
-                                                               value="VALOREDAMETTERE1">
+                                                    <td><label>
+                                                        <input type="radio" name="form1"
+                                                                   value="VALOREDAMETTERE1">
+                                                    </label>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Esame2</td>
-                                                    <td><input type="radio" name="form1"
-                                                               value="VALOREDAMETTERE2">
+                                                    <td><label>
+                                                        <input type="radio" name="form1"
+                                                                   value="VALOREDAMETTERE2">
+                                                    </label>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -88,7 +92,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
                         </td>
                         <th scope="row">Alessia Marcolini</th>

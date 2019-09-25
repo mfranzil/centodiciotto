@@ -31,7 +31,7 @@
         <tbody>
         <tr>
             <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                      alt="">
             </td>
             <th scope="row">Alberto Montresor</th>
@@ -44,7 +44,7 @@
         </tr>
         <tr>
             <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                      alt="">
             </td>
             <th scope="row">Renato Lo Cigno</th>
@@ -57,7 +57,7 @@
         </tr>
         <tr>
             <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/img/avatars/default.png"
+                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                      alt="">
             </td>
             <th scope="row">Anneliese De Franceschi</th>
