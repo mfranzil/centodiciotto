@@ -3,35 +3,35 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 public class Photo {
-    private int photoid;
-    private String email;
+    private int photoId;
+    private String patientEmail;
     private Timestamp uploadDate;
 
-    public Photo(int photoid, String email, Timestamp uploadDate) {
-        this.photoid = photoid;
-        this.email = email;
+    public Photo(int photoId, String patientEmail, Timestamp uploadDate) {
+        this.photoId = photoId;
+        this.patientEmail = patientEmail;
         this.uploadDate = uploadDate;
     }
 
-    public Photo(String email, Timestamp uploadDate) {
-        this.email = email;
+    public Photo(String patientEmail, Timestamp uploadDate) {
+        this.patientEmail = patientEmail;
         this.uploadDate = uploadDate;
     }
 
-    public int getPhotoid() {
-        return photoid;
+    public int getPhotoId() {
+        return photoId;
     }
 
-    public void setPhotoid(int photoid) {
-        this.photoid = photoid;
+    public void setPhotoId(int photoId) {
+        this.photoId = photoId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPatientEmail() {
+        return patientEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPatientEmail(String patientEmail) {
+        this.patientEmail = patientEmail;
     }
 
     public Timestamp getUploadDate() {

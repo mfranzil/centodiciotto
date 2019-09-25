@@ -4,7 +4,6 @@ import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
-import it.unitn.web.utils.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,45 +12,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implements PhotoDAO {
+public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
-    final private String INSERT = "INSERT INTO photo values (?, ?, ?);";
-    final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photoid = ? AND email = ?;";
-    final private String DELETE = "DELETE from photo WHERE photoid = ? AND email = ?;";
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photoid = ? AND email = ?;";
+    final private String INSERT = "INSERT INTO photo (email, upload_date) values  (?, ?) RETURNING photo_id;;";
+    final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
+    final private String DELETE = "DELETE from photo WHERE photo_id = ?";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photo_id = ?;";
     final private String SELECTALL = "SELECT * FROM photo;";
-    final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC;";
-    final private String SELECTMAX = "SELECT MAX(photoid) + 1 AS nextid FROM photo WHERE email = ?;";
+    final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC, photo_id DESC;";
+    //final private String SELECTMAX = "SELECT MAX(photoid) + 1 AS nextid FROM photo WHERE email = ?;";
 
     public JDBCPhotoDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public Integer insert(Photo photo) {
-        int photoid = 1;
-        try {
-            PreparedStatement maxStatement = CON.prepareStatement(SELECTMAX);
-            maxStatement.setString(1, photo.getEmail());
-            ResultSet rs = maxStatement.executeQuery();
+    public void insert(Photo photo) {
 
-            if (rs.next()) { // Assumo ci sia un risultato solo
-                photoid = rs.getInt("nextid");
-                photo.setPhotoid(photoid);
-            }
+        try {
 
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setInt(1, photoid);
-            preparedStatement.setString(2, photo.getEmail());
-            preparedStatement.setTimestamp(3, photo.getUploadDate());
+            preparedStatement.setString(1, photo.getPatientEmail());
+            preparedStatement.setTimestamp(2, photo.getUploadDate());
 
-            int row = preparedStatement.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            int photoId = preparedStatement.executeUpdate();
+            //System.out.println("Rows affected: " + row);
+
+            photo.setPhotoId(photoId);
 
         } catch (SQLException e) {
             System.err.println("Error inserting Photo: " + e.getMessage());
         }
-        return photoid;
     }
 
     @Override
@@ -59,8 +50,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setTimestamp(1, photo.getUploadDate());
-            preparedStatement.setInt(2, photo.getPhotoid());
-            preparedStatement.setString(3, photo.getEmail());
+            preparedStatement.setInt(2, photo.getPhotoId());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -73,13 +63,22 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
     @Override
     public void delete(Photo photo) {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, photo.getPhotoid());
-            stm.setString(2, photo.getEmail());
+            stm.setInt(1, photo.getPhotoId());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting Photo: " + e.getMessage());
         }
+    }
+
+    @Override
+    public Photo mapRowToPhoto(ResultSet resultSet) throws SQLException {
+        Photo photo = new Photo(
+                resultSet.getInt("photo_id"),
+                resultSet.getString("email"),
+                resultSet.getTimestamp("upload_date")
+        );
+        return photo;
     }
 
     @Override
@@ -98,41 +97,35 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
     }
 
     @Override
-    public Photo getByPrimaryKey(Pair<Integer, String> primaryKey) throws DAOException {
-        Photo res;
+    public Photo getByPrimaryKey(Integer photoId) throws DAOException {
+        Photo photo = null;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setInt(1, primaryKey.getFirst());
-            stm.setString(2, primaryKey.getSecond());
+            stm.setInt(1, photoId);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new Photo(
-                            rs.getInt("photoid"),
-                            rs.getString("email"),
-                            rs.getTimestamp("upload_date"));
-                    return res;
+                    photo = mapRowToPhoto(rs);
                 }
             }
         } catch (SQLException e) {
             System.err.println("Error getting Photo:" + e.getMessage());
         }
-        return null;
+        return photo;
     }
+
+
 
     @Override
     public List<Photo> getAll() throws DAOException {
-        List<Photo> res = new ArrayList<>();
+        List<Photo> photos = new ArrayList<>();
         Photo tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Photo(
-                            rs.getInt("photoid"),
-                            rs.getString("email"),
-                            rs.getTimestamp("upload_date"));
-                    res.add(tmp);
+                    tmp = mapRowToPhoto(rs);
+                    photos.add(tmp);
                 }
-                return res;
+                return photos;
             }
         } catch (SQLException e) {
             System.err.println("Error getting all Photos: " + e.getMessage());
@@ -142,7 +135,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
 
     @Override
     public List<Photo> getByEmail(String email) throws DAOException {
-        List<Photo> res = new ArrayList<>();
+        List<Photo> photos = new ArrayList<>();
         Photo tmp;
 
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
@@ -150,34 +143,28 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Pair<Integer, String>> implemen
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Photo(
-                            rs.getInt("photoid"),
-                            rs.getString("email"),
-                            rs.getTimestamp("upload_date"));
-                    res.add(tmp);
+                    tmp = mapRowToPhoto(rs);
+                    photos.add(tmp);
                 }
-                return res;
+                return photos;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Photo:" + e.getMessage());
+            System.err.println("Error getting Photos:" + e.getMessage());
         }
         return null;
     }
 
     @Override
     public Photo getLastPhotoByEmail(String email) throws DAOException {
-        Photo tmp;
+        Photo photo;
 
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    tmp = new Photo(
-                            rs.getInt("photoid"),
-                            rs.getString("email"),
-                            rs.getTimestamp("upload_date"));
-                    return tmp;
+                    photo = mapRowToPhoto(rs);
+                    return photo;
                 }
             }
         } catch (SQLException e) {
