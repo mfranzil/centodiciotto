@@ -10,10 +10,8 @@
 # sl.db
 
 # Config file
+resources/
 *.properties
-database.properties
-server.properties
-email.properties
 
 # Compiled class file
 *.clas
