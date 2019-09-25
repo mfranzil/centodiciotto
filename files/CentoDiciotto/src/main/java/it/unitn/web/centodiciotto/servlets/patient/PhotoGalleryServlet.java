@@ -43,14 +43,14 @@ public class PhotoGalleryServlet extends HttpServlet {
         if (user != null) {
             if (user instanceof Patient) {
                 List<Photo> photos;
-                List<Pair<String, Integer>> photoPathList = new ArrayList<>();
+                List<Pair<String, Integer>> photoPathList = new ArrayList<>(); // TODO: fix
                 try {
                     photos = photoDAO.getByEmail(user.getEmail());
 
                     for (Photo photo : photos) {
                         String photoPath = Common.getPhotoPosition(getServletContext(),
-                                user.getEmail(), photo.getPhotoid());
-                        photoPathList.add(Pair.makePair(photoPath, photo.getPhotoid()));
+                                user.getEmail(), photo.getPhotoId());
+                        photoPathList.add(Pair.makePair(photoPath, photo.getPhotoId())); // TODO: fix
                     }
 
                     request.setAttribute("photos", photoPathList);
@@ -64,18 +64,19 @@ public class PhotoGalleryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String photoId = request.getParameter("photoid");
+        Integer photoId = request.getParameter("photoid"); // TODO: fix
 
-        Pair<Integer, String> primaryKey = Pair.makePair(Integer.parseInt(photoId), user.getEmail());
+        //Pair<Integer, String> primaryKey = Pair.makePair(Integer.parseInt(photoId), user.getEmail());
 
-        System.out.println(primaryKey.getFirst());
-        System.out.println(primaryKey.getSecond());
+        System.out.println(photoId);
+        //System.out.println(primaryKey.getFirst());
+        //System.out.println(primaryKey.getSecond());
         try {
-            Photo chosenPhoto = photoDAO.getByPrimaryKey(primaryKey);
+            Photo chosenPhoto = photoDAO.getByPrimaryKey(photoId);
             chosenPhoto.setUploadDate(new Timestamp(System.currentTimeMillis()));
             photoDAO.update(chosenPhoto);
 
-            String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), chosenPhoto.getPhotoid());
+            String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), chosenPhoto.getPhotoId());
             request.getSession().setAttribute("photo_path", photoPath);
         } catch (DAOException ex) {
             throw new ServletException("Cannot update profile photo", ex);

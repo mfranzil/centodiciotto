@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
                             practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
                     Photo photo = photoDAO.getLastPhotoByEmail(user.getEmail());
 
-                    String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), photo.getPhotoid());
+                    String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), photo.getPhotoId());
 
                     request.getSession().setAttribute("practitioner", practitioner);
                     request.getSession().setAttribute("photo_path", photoPath);

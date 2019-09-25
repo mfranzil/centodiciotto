@@ -52,10 +52,11 @@ public class PhotoUploadServlet extends HttpServlet {
         System.out.println(extension);
 
         Photo photo = new Photo(user.getEmail(), new Timestamp(System.currentTimeMillis()));
-        String fileName = photoDAO.insert(photo).toString();
+        photoDAO.insert(photo);
+        String fileName = Integer.toString(photo.getPhotoId());
 
         String path = getServletContext().getRealPath("/") + File.separator
-                + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getEmail();
+        + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getEmail();
         Files.createDirectories(Paths.get(path));
 
         JSONObject jobj = new JSONObject();
