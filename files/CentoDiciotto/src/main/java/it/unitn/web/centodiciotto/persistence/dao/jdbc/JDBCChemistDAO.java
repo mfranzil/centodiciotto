@@ -85,7 +85,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
+                    res = new Chemist(rs.getString("email"), "","", rs.getString("name"), rs.getString("chemist_province"));
                     return res;
                 }
             }
@@ -104,7 +104,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
+                    tmp = new Chemist(rs.getString("email"), "", "",rs.getString("name"), rs.getString("chemist_province"));
                     res.add(tmp);
                 }
                 return res;
@@ -138,7 +138,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Chemist(rs.getString("email"), "", rs.getString("name"), rs.getString("chemist_province"));
+                    tmp = new Chemist(rs.getString("email"), "","", rs.getString("name"), rs.getString("chemist_province"));
                     res.add(tmp);
                 }
                 return res;

@@ -37,8 +37,8 @@ public class PasswordChangeServlet extends HttpServlet {
         String oldPassword = request.getParameter("old-password");
         String newPassword = request.getParameter("new-password");
 
-        if (user.getPassword().equals(oldPassword)) {
-            user.setPassword(newPassword);
+        if (user.getHash().equals(oldPassword)) {
+            user.setHash(newPassword);
             userDAO.update(user);
             response.setStatus(200);
         } else {

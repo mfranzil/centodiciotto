@@ -83,7 +83,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new HealthService(rs.getString("email"), "", rs.getString("operating_province"));
+                    res = new HealthService(rs.getString("email"), "","", rs.getString("operating_province"));
                     return res;
                 }
             }
@@ -115,7 +115,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new HealthService(rs.getString("email"), "", rs.getString("operating_province"));
+                    tmp = new HealthService(rs.getString("email"), "","", rs.getString("operating_province"));
                     res.add(tmp);
                 }
                 return res;

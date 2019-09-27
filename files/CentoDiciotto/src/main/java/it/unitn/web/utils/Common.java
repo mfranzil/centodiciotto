@@ -3,6 +3,7 @@ package it.unitn.web.utils;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class Common {
     public static String getPhotoPosition(ServletContext servletContext, String email, Integer id) throws FileNotFoundException {
@@ -20,5 +21,9 @@ public class Common {
         }
 
         return photoPath;
+    }
+
+    public static boolean containsItemFromArray(String inputString, String[] items) {
+        return Arrays.stream(items).anyMatch(inputString::contains);
     }
 }

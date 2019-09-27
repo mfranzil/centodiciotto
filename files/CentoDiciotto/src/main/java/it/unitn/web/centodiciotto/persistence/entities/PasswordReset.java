@@ -1,20 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.util.Base64;
 
 public class PasswordReset {
     private String email;
     private String token;
     private Timestamp expiringDate;
-
-    public static String generateRandomBase64Token() {
-        SecureRandom secureRandom = new SecureRandom();
-        byte[] token = new byte[32];
-        secureRandom.nextBytes(token);
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
-    }
 
     public PasswordReset(String email, String token, Timestamp expiringDate) {
         this.email = email;

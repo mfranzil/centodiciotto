@@ -4,8 +4,8 @@ public class Chemist extends User{
         private String Name;
         private String ChemistProvince;
 
-        public Chemist(String email, String password, String Name, String ChemistProvince) {
-            super(email, password);
+        public Chemist(String email, String hash, String salt, String Name, String ChemistProvince) {
+            super(email, hash, salt);
             this.Name = Name;
             this.ChemistProvince = ChemistProvince;
         }

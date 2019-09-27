@@ -1,14 +1,13 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Prescription;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.PDFCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,12 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-import it.unitn.web.utils.PDFCreator;
-
 public class PrescriptionServlet extends HttpServlet {
 
     private PrescriptionDAO prescriptionDAO;
-    private GeneralPractitionerDAO generalPractitionerDAO;
+   // private GeneralPractitionerDAO generalPractitionerDAO;
 
     @Override
     public void init() throws ServletException {
@@ -32,7 +29,7 @@ public class PrescriptionServlet extends HttpServlet {
         }
         try {
             prescriptionDAO = daoFactory.getDAO(PrescriptionDAO.class);
-            generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
+            //generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
 
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);

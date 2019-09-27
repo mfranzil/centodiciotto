@@ -49,8 +49,6 @@ public class PhotoUploadServlet extends HttpServlet {
         Part filePart = request.getPart("avatar-select");
         String extension = request.getParameter("extension");
 
-        System.out.println(extension);
-
         Photo photo = new Photo(user.getEmail(), new Timestamp(System.currentTimeMillis()));
         photoDAO.insert(photo);
         String fileName = Integer.toString(photo.getPhotoId());

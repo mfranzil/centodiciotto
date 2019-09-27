@@ -7,6 +7,7 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Crypto;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -45,7 +46,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
             user = userDAO.getByPrimaryKey(email);
             if (user != null) {
                 Timestamp date = new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)); // 24 ore di durata
-                pr = new PasswordReset(email, PasswordReset.generateRandomBase64Token(), date);
+                pr = new PasswordReset(email, Crypto.getNextBase64Token(), date);
 
                 if (prDAO.getByPrimaryKey(email) == null) {
                     prDAO.insert(pr);

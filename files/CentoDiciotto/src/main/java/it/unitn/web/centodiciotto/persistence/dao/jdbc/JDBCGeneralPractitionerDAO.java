@@ -44,8 +44,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
 
-        } catch (SQLException e) {
-            System.err.println("Error inserting User: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.err.println("Error inserting User: " + ex.getMessage());
         }
         // Connection and Prepared Statement automatically closed
 
@@ -76,7 +76,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting GeneralPractitioner by email: " + e.getMessage());
-        };
+        }
     }
 
     @Override
@@ -87,7 +87,13 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                    res = new GeneralPractitioner(
+                            rs.getString("email"),
+                            "",
+                            "",
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("working_province"));
                     return res;
                 }
             }
@@ -106,7 +112,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                    tmp = new GeneralPractitioner(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
                     res.add(tmp);
                 }
                 return res;
@@ -139,7 +145,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new GeneralPractitioner(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
+                    tmp = new GeneralPractitioner(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"), rs.getString("working_province"));
                     res.add(tmp);
                 }
                 return res;

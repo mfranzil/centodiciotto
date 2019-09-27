@@ -5,8 +5,8 @@ public class GeneralPractitioner extends User{
         private String lastName;
         private String workingProvince;
 
-        public GeneralPractitioner(String email, String password, String firstName, String lastName, String workingProvince) {
-            super(email, password);
+        public GeneralPractitioner(String email, String hash, String salt, String firstName, String lastName, String workingProvince) {
+            super(email, hash, salt);
             this.firstName = firstName;
             this.lastName = lastName;
             this.workingProvince = workingProvince;

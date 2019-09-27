@@ -14,7 +14,7 @@ import java.util.List;
 
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
-    final private String INSERT = "INSERT INTO photo (email, upload_date) values  (?, ?) RETURNING photo_id;;";
+    final private String INSERT = "INSERT INTO photo (email, upload_date) values (?, ?) RETURNING photo_id;";
     final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
     final private String DELETE = "DELETE from photo WHERE photo_id = ?";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photo_id = ?;";
@@ -30,7 +30,6 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public void insert(Photo photo) {
 
         try {
-
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, photo.getPatientEmail());
             preparedStatement.setTimestamp(2, photo.getUploadDate());
@@ -71,7 +70,6 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
         }
     }
 
-    @Override
     public Photo mapRowToPhoto(ResultSet resultSet) throws SQLException {
         Photo photo = new Photo(
                 resultSet.getInt("photo_id"),

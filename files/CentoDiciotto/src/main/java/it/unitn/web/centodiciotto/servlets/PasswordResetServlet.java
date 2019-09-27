@@ -63,7 +63,7 @@ public class PasswordResetServlet extends HttpServlet {
 
         try {
             user = userDAO.getByPrimaryKey(email);
-            user.setPassword(newPassword);
+            user.setHash(newPassword);
             userDAO.update(user);
             prDAO.delete(prDAO.getByPrimaryKey(email));
             response.setStatus(200);

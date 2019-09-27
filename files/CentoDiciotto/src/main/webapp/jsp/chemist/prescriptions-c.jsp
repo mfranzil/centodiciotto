@@ -5,6 +5,24 @@
     <title>Patients - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/popup.js"></script>
+    <style>
+        .table-cell.avt {
+            width: 10%;
+        }
+
+        .table-cell.name {
+            width: 35%;
+        }
+
+        .table-cell.ssn {
+            width: 30%;
+        }
+
+        .table-cell.action {
+            width: 25%;
+        }
+
+    </style>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -29,95 +47,6 @@
                         </button>
                     </div>
                 </form>
-                <style>
-                    .ls-search {
-                        margin:auto; display: flex; justify-content: center
-                    }
-
-                    @media (min-width: 992px) {
-                        .table-personal {
-                            display: table;
-                            padding: .5em 1em;
-                        }
-
-                        .table-cell {
-                            display: table-cell;
-                            vertical-align: middle;
-                        }
-
-                        .table-cell.avt {
-                            width: 10%;
-                        }
-
-                        .table-cell.name {
-                            width: 35%;
-                        }
-
-                        .table-cell.ssn {
-                            width: 30%;
-                        }
-
-                        .table-cell.action {
-                            width: 25%;
-                        }
-
-                        .table-header {
-                            font-weight: bold;
-                        }
-
-                        .table-header:hover {
-                            background: none !important;
-                        }
-
-                    }
-
-                    @media (max-width: 991.8px) {
-                        .table-personal {
-                            display: block;
-                            padding: .5em 15%;
-                        }
-
-                        .table-cell {
-                            padding: .1em 0;
-                            text-align: center;
-                        }
-
-                        .table-cell > div {
-                            text-align: left;
-                        }
-
-                        .table-header {
-                            display: none;
-                        }
-
-                    }
-
-                    .table-personal {
-                        width: 100%;
-                        margin: auto;
-                    }
-
-                    .table-personal:hover {
-                        color: #212529;
-                        background-color: rgba(0, 0, 0, .075);
-                    }
-
-                    hr {
-                        display: block;
-                        position: relative;
-                        padding: 0;
-                        height: 0;
-                        margin: 0;
-                        width: 100%;
-                        max-height: 0;
-                        font-size: 1px;
-                        line-height: 0;
-                        clear: both;
-                        border: none;
-                        border-bottom: 0.5px solid rgba(170, 170, 170, 0.5);
-                        border-top: 0.5px solid rgba(170, 170, 170, 0.5);
-                    }
-                </style>
                 <div class="table-personal table-header">
                     <div class="table-cell avt"></div>
                     <div class="table-cell name">Name</div>

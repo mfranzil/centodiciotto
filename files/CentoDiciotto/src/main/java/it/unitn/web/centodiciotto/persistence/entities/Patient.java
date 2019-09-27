@@ -1,7 +1,5 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-
 import java.sql.Date;
 
 public class Patient extends User {
@@ -15,9 +13,9 @@ public class Patient extends User {
     private String generalPractitionerEmail;
     private Integer photoId;
 
-    public Patient(String email, String password, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
+    public Patient(String email, String hash, String salt, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
                    Character gender, String livingProvince, String generalPractitionerEmail) {
-        super(email, password);
+        super(email, hash, salt);
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;

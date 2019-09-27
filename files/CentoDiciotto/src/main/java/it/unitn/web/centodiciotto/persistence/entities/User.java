@@ -2,12 +2,21 @@ package it.unitn.web.centodiciotto.persistence.entities;
 
 public class User {
     protected String email;
-    protected String password;
+    protected String hash;
+    protected String salt;
 
-
-    public User(String email, String password){
+    public User(String email, String hash, String salt) {
         this.email = email;
-        this.password = password;
+        this.hash = hash;
+        this.salt = salt;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     public String getEmail() {
@@ -18,11 +27,13 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHash() {
+        return hash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
+
+
 }

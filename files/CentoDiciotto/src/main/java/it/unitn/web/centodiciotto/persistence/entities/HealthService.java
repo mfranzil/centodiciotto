@@ -3,8 +3,8 @@ package it.unitn.web.centodiciotto.persistence.entities;
 public class HealthService extends User{
         private String OperatingProvince;
 
-        public HealthService(String email, String password, String OperatingProvince) {
-            super(email, password);
+        public HealthService(String email, String hash, String salt, String OperatingProvince) {
+            super(email, hash, salt);
             this.OperatingProvince = OperatingProvince;
         }
 

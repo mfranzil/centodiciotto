@@ -187,7 +187,7 @@
             </a>
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">
                 Logout
-                <img src="${pageContext.request.contextPath}/img/logout_white.png" style="height: 20px;" alt="Logout">
+                <img src="${pageContext.request.contextPath}/img/logout_white.png" class="nav-icon" alt="Logout">
             </a>
         </div>
     </div>
@@ -207,7 +207,7 @@
         <div id="nav-log" class="nav-item">
             <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
                 Login
-                <img src="${pageContext.request.contextPath}/img/login_white.png" style="height: 20px;" alt="Login">
+                <img src="${pageContext.request.contextPath}/img/login_white.png" class="nav-icon" alt="Login">
             </a>
         </div>
     </div>

@@ -3,7 +3,6 @@ package it.unitn.web.centodiciotto.servlets;
 import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
-import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
@@ -12,6 +11,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Common;
+import it.unitn.web.utils.Crypto;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +21,6 @@ import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
 
-    private UserDAO userDAO;
     private GeneralPractitionerDAO practitionerDAO;
     private PhotoDAO photoDAO;
 
@@ -32,7 +31,6 @@ public class LoginServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            userDAO = daoFactory.getDAO(UserDAO.class);
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             photoDAO = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException ex) {
@@ -66,18 +64,19 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            User user = userDAO.getByEmailAndPassword(email, password, role);
+            User user = Crypto.authenticate(email, password, role);
             JSONObject jobj = new JSONObject();
 
             if (user == null) {
                 response.setStatus(400);
-
                 jobj.put("url", "");
             } else {
                 response.setStatus(200);
                 request.getSession().setAttribute("user", user);
 
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
+                    System.out.println(user.getEmail());
+                    System.out.println(((Patient) user).getGeneralPractitionerEmail());
                     GeneralPractitioner practitioner =
                             practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
                     Photo photo = photoDAO.getLastPhotoByEmail(user.getEmail());
@@ -91,7 +90,7 @@ public class LoginServlet extends HttpServlet {
                 jobj.put("url", response.encodeRedirectURL(contextPath + "restricted/user"));
             }
             response.getWriter().write(jobj.toString());
-        } catch (DAOException ex) {
+        } catch (RuntimeException | DAOException ex) {
             throw new ServletException("Impossible to retrieve the user.", ex);
         }
     }

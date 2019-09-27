@@ -84,7 +84,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new SpecializedDoctor(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"));
+                    res = new SpecializedDoctor(rs.getString("email"), "", "",rs.getString("first_name"), rs.getString("last_name"));
                     return res;
                 }
             }
@@ -117,7 +117,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new SpecializedDoctor(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"));
+                    tmp = new SpecializedDoctor(rs.getString("email"), "", "",rs.getString("first_name"), rs.getString("last_name"));
                     res.add(tmp);
                 }
                 return res;

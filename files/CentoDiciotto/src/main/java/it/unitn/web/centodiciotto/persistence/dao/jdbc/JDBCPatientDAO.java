@@ -18,6 +18,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             "gender, general_practitioner_email, living_province, photo_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM patient;";
+    final private String FINDBYEMAIL = "SELECT * FROM patient WHERE email = ?;";
     final private String DELETE = "DELETE FROM patient WHERE email = ?;";
     final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, general_practitioner_email, living_province, photo_id) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE email = ?;";
 
@@ -88,7 +89,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             int row = stm.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error deleting Patient by email: " + e.getMessage());
-        };
+        }
     }
 
     @Override
@@ -108,6 +109,30 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
 
     @Override
     public Patient getByPrimaryKey(String email) {
+        Patient res;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+            stm.setString(1, email);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    res = new Patient(
+                            rs.getString("email"),
+                            "",
+                            "",
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getDate("birth_date"),
+                            rs.getString("birth_place"),
+                            rs.getString("ssn"),
+                            rs.getString("gender").charAt(0),
+                            rs.getString("living_province"),
+                            rs.getString("general_practitioner_email"));
+                    return res;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting Patient by email: " + e.getMessage());
+        }
         return null;
     }
 
@@ -133,7 +158,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Patient(rs.getString("email"), "", rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("general_practitioner_email"), rs.getString("living_province"));
+                    tmp = new Patient(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("general_practitioner_email"), rs.getString("living_province"));
                     res.add(tmp);
                 }
                 return res;

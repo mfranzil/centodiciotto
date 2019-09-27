@@ -43,14 +43,14 @@ public class PhotoGalleryServlet extends HttpServlet {
         if (user != null) {
             if (user instanceof Patient) {
                 List<Photo> photos;
-                List<Pair<String, Integer>> photoPathList = new ArrayList<>(); // TODO: fix
+                List<Pair<String, Integer>> photoPathList = new ArrayList<>();
                 try {
                     photos = photoDAO.getByEmail(user.getEmail());
 
                     for (Photo photo : photos) {
                         String photoPath = Common.getPhotoPosition(getServletContext(),
                                 user.getEmail(), photo.getPhotoId());
-                        photoPathList.add(Pair.makePair(photoPath, photo.getPhotoId())); // TODO: fix
+                        photoPathList.add(Pair.makePair(photoPath, photo.getPhotoId()));
                     }
 
                     request.setAttribute("photos", photoPathList);
@@ -64,13 +64,8 @@ public class PhotoGalleryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        Integer photoId = request.getParameter("photoid"); // TODO: fix
+        Integer photoId = Integer.valueOf(request.getParameter("photoid"));
 
-        //Pair<Integer, String> primaryKey = Pair.makePair(Integer.parseInt(photoId), user.getEmail());
-
-        System.out.println(photoId);
-        //System.out.println(primaryKey.getFirst());
-        //System.out.println(primaryKey.getSecond());
         try {
             Photo chosenPhoto = photoDAO.getByPrimaryKey(photoId);
             chosenPhoto.setUploadDate(new Timestamp(System.currentTimeMillis()));
