@@ -97,15 +97,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ExamHistory</servlet-name>
-        <jsp-file>/jsp/patient/exam_history-p.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamHistory</servlet-name>
-        <url-pattern>/restricted/patient/exam_history</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>PhotoGallery</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PhotoGalleryServlet</servlet-class>
     </servlet>
@@ -121,6 +112,15 @@
     <servlet-mapping>
         <servlet-name>PrescriptionsServlet</servlet-name>
         <url-pattern>/restricted/patient/prescriptions</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExamHistoryServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamHistoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamHistoryServlet</servlet-name>
+        <url-pattern>/restricted/patient/exam_history</url-pattern>
     </servlet-mapping>
 
     <servlet>

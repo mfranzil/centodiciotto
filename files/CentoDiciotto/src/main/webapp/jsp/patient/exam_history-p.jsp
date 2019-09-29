@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,30 +28,22 @@
         </tr>
         </thead>
         <tbody>
+        <% List<Exam> exams_history = (List<Exam>) request.getAttribute("exams"); %>
+        <% for (Exam exam : exams_history) {%>
         <tr>
-            <th scope="row">Biopsy</th>
-            <td>23/07/2019</td>
-            <td>Not available</td>
+            <th scope="row"> <%= exam.getExamDescription() %></th>
+            <td> <%= exam.getExamDate() %></td>
+            <td> <% if(exam.getExamDone()){ %> Available</td>
+            <td>
+                <button type="button" class="btn btn-block btn-personal">See Report</button>
+            </td>
+            <% } else { %> Not Available</td>
             <td>
                 <button type="button" class="btn btn-block btn-personal" disabled>See Report</button>
             </td>
+            <%}%>
         </tr>
-        <tr>
-            <th scope="row">ECG</th>
-            <td>02/03/2018</td>
-            <td>Available</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">See Report</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">TAC</th>
-            <td>23/09/2017</td>
-            <td>Available</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">See Report</button>
-            </td>
-        </tr>
+        <% } %>
         </tbody>
     </table>
 </div>
