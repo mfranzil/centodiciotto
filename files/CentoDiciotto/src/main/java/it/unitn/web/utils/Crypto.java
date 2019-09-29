@@ -101,7 +101,7 @@ public class Crypto {
         try {
             User user = userDAO.getByPrimaryKey(email);
 
-            if (user != null && Crypto.isExpectedPassword(password, user.getSalt(), user.getHash())) {
+            if (user != null && isExpectedPassword(password, user.getSalt(), user.getHash())) {
                 switch (role) {
                     case "patient":
                         return patientDAO.getByPrimaryKey(email);
@@ -124,7 +124,7 @@ public class Crypto {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DAOException {
         try {
             configure(null);
         } catch (Exception ex) {

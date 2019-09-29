@@ -6,22 +6,37 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/popup.js"></script>
     <style>
-        .table-cell.avt {
-            width: 10%;
-        }
+        @media (min-width: 992px) {
+            /* Tabella principale */
+            .table-cell.avt {
+                width: 10%;
+            }
 
-        .table-cell.name {
-            width: 35%;
-        }
+            .table-cell.name {
+                width: 35%;
+            }
 
-        .table-cell.ssn {
-            width: 30%;
-        }
+            .table-cell.ssn {
+                width: 30%;
+            }
 
-        .table-cell.action {
-            width: 25%;
-        }
+            .table-cell.action {
+                width: 25%;
+            }
+            /* Tabella sotto */
+            .table-cell.date {
+                width: 25%;
+            }
 
+            .table-cell.medicine {
+                width: 50%;
+            }
+
+            .table-cell.deliver {
+                width: 25%;
+            }
+
+        }
     </style>
 </head>
 <body>
@@ -41,7 +56,8 @@
             <div class="col-md">
                 <form action="search_patient" method="POST">
                     <div class="form-label-group my-4 mx-4 ls-search">
-                        <input class="form-control mx-2" id="query" name="query" placeholder="Search..." required type="text">
+                        <input class="form-control mx-2" id="query" name="query" placeholder="Search..." required
+                               type="text">
                         <button id="message" class="btn btn-personal" type="submit">
                             <i class="fa fa-search"></i>
                         </button>
@@ -96,28 +112,29 @@
                                 </div>
                                 <div>
                                     <h4>Valid Prescriptions</h4>
-                                    <table class="table">
-                                        <tr>
-                                            <td>17/08/2019</td>
-                                            <td>Tachipirina</td>
-                                            <td><input
+                                    <div>
+                                        <div class="table-personal">
+                                            <div class="table-cell date">17/08/2019</div>
+                                            <div class="table-cell medicine">Tachipirina</div>
+                                            <div class="table-cell deliver"><input
                                                     onclick='document.getElementById("myButton1").value="Delivered"; this.disabled=true;'
                                                     type="button" class="btn btn-block btn-personal"
                                                     value="Mark as delivered" id="myButton1"
                                                     style="width:250px">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>17/08/2019</td>
-                                            <td>Oki</td>
-                                            <td>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="table-personal">
+                                            <div class="table-cell date">17/08/2019</div>
+                                            <div class="table-cell medicine">Oki</div>
+                                            <div class="table-cell deliver">
                                                 <input onclick='document.getElementById("myButton2").value="Delivered"; this.disabled=true;'
                                                        type="button" class="btn btn-block btn-personal"
                                                        value="Mark as delivered" id="myButton2"
                                                        style="width:250px">
-                                            </td>
-                                        </tr>
-                                    </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                             </div>

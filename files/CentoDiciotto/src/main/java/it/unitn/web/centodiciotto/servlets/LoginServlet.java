@@ -57,6 +57,7 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
+        String rememberMe = request.getParameter("remember-me");
 
         String contextPath = getServletContext().getContextPath();
         if (!contextPath.endsWith("/")) {
@@ -71,17 +72,27 @@ public class LoginServlet extends HttpServlet {
                 response.setStatus(400);
                 jobj.put("url", "");
             } else {
+                if (rememberMe != null && rememberMe.equals("on")) {
+                    request.getSession().setMaxInactiveInterval(2592000);
+                }
                 response.setStatus(200);
                 request.getSession().setAttribute("user", user);
 
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
-                    System.out.println(user.getEmail());
-                    System.out.println(((Patient) user).getGeneralPractitionerEmail());
                     GeneralPractitioner practitioner =
                             practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
                     Photo photo = photoDAO.getLastPhotoByEmail(user.getEmail());
 
-                    String photoPath = Common.getPhotoPosition(getServletContext(), user.getEmail(), photo.getPhotoId());
+                    Integer photoId;
+
+                    if (photo == null) {
+                        photoId = null;
+                    } else {
+                        photoId = photo.getPhotoId();
+                    }
+
+                    String photoPath =
+                            Common.getPhotoPosition(getServletContext(), user.getEmail(), photoId);
 
                     request.getSession().setAttribute("practitioner", practitioner);
                     request.getSession().setAttribute("photo_path", photoPath);

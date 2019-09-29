@@ -10,6 +10,10 @@ public class Common {
         String context = servletContext.getRealPath("/");
         String avatarFolder = File.separator + servletContext.getInitParameter("avatar-folder") + File.separator;
 
+        if (id == null) {
+            return avatarFolder + "default.png";
+        }
+
         String photoPath = avatarFolder + email + File.separator + id;
 
         if (new File(context + photoPath + ".jpg").exists()) {
