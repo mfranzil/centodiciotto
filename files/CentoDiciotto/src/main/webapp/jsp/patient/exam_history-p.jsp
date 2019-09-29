@@ -5,6 +5,27 @@
 <head>
     <title>Exam history - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/popup.js"></script>
+    <style>
+        @media (min-width: 992px) {
+            /* Tabella principale */
+            .table-cell.exam {
+                width: 40%;
+            }
+
+            .table-cell.date {
+                width: 20%;
+            }
+
+            .table-cell.report-state {
+                width: 15%;
+            }
+
+            .table-cell.action {
+                width: 25%;
+            }
+        }
+    </style>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -18,34 +39,41 @@
 </div>
 
 <div class="container">
-    <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
-        <thead>
-        <tr>
-            <th scope="col">Exam</th>
-            <th scope="col">Date</th>
-            <th scope="col">Report State</th>
-            <th scope="col">Report</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% List<Exam> exams_history = (List<Exam>) request.getAttribute("exams"); %>
-        <% for (Exam exam : exams_history) {%>
-        <tr>
-            <th scope="row"> <%= exam.getExamDescription() %></th>
-            <td> <%= exam.getExamDate() %></td>
-            <td> <% if(exam.getExamDone()){ %> Available</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">See Report</button>
-            </td>
-            <% } else { %> Not Available</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>See Report</button>
-            </td>
-            <%}%>
-        </tr>
-        <% } %>
-        </tbody>
-    </table>
+
+    <div class="table-personal table-header">
+        <div class="table-cell exam">Exam</div>
+        <div class="table-cell date">Date</div>
+        <div class="table-cell report-state">Report State</div>
+        <div class="table-cell action">Report</div>
+    </div>
+
+    <% List<Exam> exams_history = (List<Exam>) request.getAttribute("exams"); %>
+    <% for (Exam exam : exams_history) {%>
+    <div class="table-personal" id="table-select">
+        <div class="table-cell exam"><%= exam.getExamDescription() %></div>
+        <div class="table-cell date"><%= exam.getExamDate() %></div>
+        <div class="table-cell report-state">
+            <% if(exam.getExamDone()){ %> Available <% } else { %> Not available <% } %>
+        </div>
+        <div class="table-cell action">
+            <button type="button"
+                    <% if(!exam.getExamDone()){ %> disabled <% } %>
+                    class="btn btn-block btn-personal popup-opener">
+                See Report
+            </button>
+            <div class="popup-window">
+                <div class="popup animate-in">
+                    <div>
+                        <h4>Report</h4>
+                        <p><%= exam.getExamResult() %></p>
+                    </div>
+                    <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <% } %>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

@@ -119,8 +119,7 @@
                                             <div class="table-cell deliver"><input
                                                     onclick='document.getElementById("myButton1").value="Delivered"; this.disabled=true;'
                                                     type="button" class="btn btn-block btn-personal"
-                                                    value="Mark as delivered" id="myButton1"
-                                                    style="width:250px">
+                                                    value="Mark as delivered" id="myButton1">
                                             </div>
                                         </div>
                                         <hr>
@@ -130,8 +129,7 @@
                                             <div class="table-cell deliver">
                                                 <input onclick='document.getElementById("myButton2").value="Delivered"; this.disabled=true;'
                                                        type="button" class="btn btn-block btn-personal"
-                                                       value="Mark as delivered" id="myButton2"
-                                                       style="width:250px">
+                                                       value="Mark as delivered" id="myButton2">
                                             </div>
                                         </div>
                                     </div>
