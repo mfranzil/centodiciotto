@@ -14,12 +14,12 @@ import java.util.List;
 
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
-    final private String INSERT = "INSERT INTO exams (patient_id, doctor_id, exam_type, done, date, result ) values (?, ?, ?, ?, ?, ?);";
-    final private String FINDBYPATIENT = "SELECT * FROM exams WHERE patient_id = ?;";
-    final private String FINDBYID = "SELECT * FROM exams WHERE exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM exams;";
-    final private String DELETE = "DELETE FROM exams WHERE exam_id = ?;";
-    final private String UPDATE = "UPDATE exams SET (patient_id, doctor_id, exam_type, done, date, result ) =  (?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
+    final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date, result ) values (?, ?, ?, ?, ?, ?);";
+    final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?;";
+    final private String FINDBYID = "SELECT * FROM exam WHERE exam_id = ?;";
+    final private String SELECTALL = "SELECT * FROM exam;";
+    final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
+    final private String UPDATE = "UPDATE exam SET (patient_id, doctor_id, exam_type, done, date, result ) =  (?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
 
     /**
      * The base constructor for all the JDBC DAOs.
