@@ -5,6 +5,12 @@ public class User {
     protected String hash;
     protected String salt;
 
+    public User(String email){
+        this.email = email;
+        this.hash = "";
+        this.salt = "";
+    };
+
     public User(String email, String hash, String salt) {
         this.email = email;
         this.hash = hash;

@@ -3,11 +3,11 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 public class Photo {
-    private int photoId;
+    private Integer photoId;
     private String patientEmail;
     private Timestamp uploadDate;
 
-    public Photo(int photoId, String patientEmail, Timestamp uploadDate) {
+    public Photo(Integer photoId, String patientEmail, Timestamp uploadDate) {
         this.photoId = photoId;
         this.patientEmail = patientEmail;
         this.uploadDate = uploadDate;
@@ -18,7 +18,7 @@ public class Photo {
         this.uploadDate = uploadDate;
     }
 
-    public int getPhotoId() {
+    public Integer getPhotoId() {
         return photoId;
     }
 

@@ -1,6 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Patient extends User {
     private String firstName;
@@ -11,7 +12,20 @@ public class Patient extends User {
     private Character gender;
     private String livingProvince;
     private String generalPractitionerEmail;
-    private Integer photoId;
+    private List<Photo> photos;
+
+    public Patient(String email, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
+                   Character gender, String livingProvince, String generalPractitionerEmail) {
+        super(email);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.birthPlace = birthPlace;
+        this.ssn = ssn;
+        this.gender = gender;
+        this.livingProvince = livingProvince;
+        this.generalPractitionerEmail = generalPractitionerEmail;
+    }
 
     public Patient(String email, String hash, String salt, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
                    Character gender, String livingProvince, String generalPractitionerEmail) {
@@ -24,6 +38,20 @@ public class Patient extends User {
         this.gender = gender;
         this.livingProvince = livingProvince;
         this.generalPractitionerEmail = generalPractitionerEmail;
+    }
+
+    public Patient(String email, String hash, String salt, String firstName, String lastName, Date birthDate, String birthPlace, String ssn,
+                   Character gender, String livingProvince, String generalPractitionerEmail, List<Photo> photos) {
+        super(email, hash, salt);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.birthPlace = birthPlace;
+        this.ssn = ssn;
+        this.gender = gender;
+        this.livingProvince = livingProvince;
+        this.generalPractitionerEmail = generalPractitionerEmail;
+        this.photos = photos;
     }
 
     public String getFirstName() {
@@ -90,11 +118,7 @@ public class Patient extends User {
         this.generalPractitionerEmail = generalPractitionerEmail;
     }
 
-    public Integer getPhotoId() {
-        return photoId;
-    }
-
-    public void setPhotoId(Integer photoId) {
-        this.photoId = photoId;
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 }

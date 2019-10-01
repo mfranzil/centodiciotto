@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
                     GeneralPractitioner practitioner =
                             practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
-                    Photo photo = photoDAO.getLastPhotoByEmail(user.getEmail());
+                    Photo photo = photoDAO.getCurrentPhoto((Patient) user);
 
                     Integer photoId;
 

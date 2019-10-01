@@ -1,10 +1,12 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
+import javax.sound.midi.Soundbank;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +23,17 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     final private String SELECTALL = "SELECT * FROM photo;";
     final private String FINDBYEMAIL = "SELECT * FROM photo WHERE email = ? ORDER BY upload_date DESC, photo_id DESC;";
     //final private String SELECTMAX = "SELECT MAX(photoid) + 1 AS nextid FROM photo WHERE email = ?;";
+
+    final private String GET_CURRENT_PHOTO = "SELECT * " +
+            "FROM photo " +
+            "WHERE email = ? " +
+            "ORDER BY upload_date DESC " +
+            "LIMIT 1;";
+
+    final private String GET_ALL_PHOTOS = "SELECT * " +
+            "FROM photo " +
+            "WHERE email = ? " +
+            "ORDER BY upload_date DESC;";
 
     public JDBCPhotoDAO(Connection con) {
         super(con);
@@ -69,6 +82,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             System.err.println("Error deleting Photo: " + e.getMessage());
         }
     }
+
 
     public Photo mapRowToPhoto(ResultSet resultSet) throws SQLException {
         Photo photo = new Photo(
@@ -131,44 +145,59 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
         return null;
     }
 
+
+
     @Override
-    public List<Photo> getByEmail(String email) throws DAOException {
-        List<Photo> photos = new ArrayList<>();
-        Photo tmp;
+    public Photo getCurrentPhoto(Patient patient) {
+        Photo photo = null;
+        try {
+            String email = patient.getEmail();
+            PreparedStatement preparedStatement = CON.prepareStatement(GET_CURRENT_PHOTO);
+            preparedStatement.setString(1, email);
 
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
-            stm.setString(1, email);
+            ResultSet rs = preparedStatement.executeQuery();
 
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToPhoto(rs);
-                    photos.add(tmp);
-                }
-                return photos;
+            if (rs.next()) { // only one
+                photo = new Photo(
+                        rs.getInt("photo_id"),
+                        rs.getString("email"),
+                        rs.getTimestamp("upload_date"));
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Photos:" + e.getMessage());
+            System.err.println("Error retrieving current photo: " + e.getMessage());
+            photo = null;
         }
-        return null;
+        // Connection and Prepared Statement automatically closed
+
+
+        return photo;
     }
 
+
+
+
     @Override
-    public Photo getLastPhotoByEmail(String email) throws DAOException {
-        Photo photo;
+    public List<Photo> getAllPhotos(Patient patient) {
+        List<Photo> photos = new ArrayList<>();
+        try {
+            String email = patient.getEmail();
+            PreparedStatement preparedStatement = CON.prepareStatement(GET_ALL_PHOTOS);
+            preparedStatement.setString(1, email);
 
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
-            stm.setString(1, email);
+            ResultSet rs = preparedStatement.executeQuery();
 
-            try (ResultSet rs = stm.executeQuery()) {
-                if (rs.next()) {
-                    photo = mapRowToPhoto(rs);
-                    return photo;
-                }
+            while (rs.next()){
+                Photo photo = new Photo(
+                        rs.getInt("photo_id"),
+                        rs.getString("email"),
+                        rs.getTimestamp("upload_date"));
+                photos.add(photo);
             }
+
         } catch (SQLException e) {
-            System.err.println("Error getting Photo:" + e.getMessage());
+            System.err.println("Error retrieving all photos: " + e.getMessage());
         }
-        return null;
+        return photos;
     }
 
 

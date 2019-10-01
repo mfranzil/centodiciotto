@@ -44,10 +44,9 @@ public class PhotoGalleryServlet extends HttpServlet {
             if (user instanceof Patient) {
                 List<Photo> photos;
                 List<Pair<String, Integer>> photoPathList = new ArrayList<>();
-                try {
-                    photos = photoDAO.getByEmail(user.getEmail());
+                photos = photoDAO.getAllPhotos((Patient) user);
 
-                    for (Photo photo : photos) {
+                for (Photo photo : photos) {
                         String photoPath = Common.getPhotoPosition(getServletContext(),
                                 user.getEmail(), photo.getPhotoId());
                         photoPathList.add(Pair.makePair(photoPath, photo.getPhotoId()));
@@ -55,9 +54,7 @@ public class PhotoGalleryServlet extends HttpServlet {
 
                     request.setAttribute("photos", photoPathList);
                     request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
-                } catch (DAOException ex) {
-                    throw new ServletException("Cannot load page for photo gallery", ex);
-                }
+
             }
         }
     }
