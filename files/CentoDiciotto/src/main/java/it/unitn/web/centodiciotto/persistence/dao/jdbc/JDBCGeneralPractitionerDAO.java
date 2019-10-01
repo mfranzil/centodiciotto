@@ -2,6 +2,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
@@ -16,6 +17,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     final private String INSERT = "INSERT INTO general_practitioner (email, first_name, last_name, working_province) values (?, ?, ?, ?);";
     final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
+    final private String PATIENTSBYEMAIL = "select * FROM patient JOIN general_practitioner ON patient.general_practitioner_email=general_practitioner.email WHERE general_practitioner.email=?;";
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
     final private String SELECTALL = "SELECT * FROM general_practitioner;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE email = ?;";
@@ -152,6 +154,25 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             }
         } catch (SQLException e) {
             System.err.println("Error getting all GeneralPractitioners: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Patient> getPatientsByPractitionerId(String email) throws DAOException {
+        List<Patient> res = new ArrayList<>();
+        Patient tmp;
+        try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYEMAIL)) {
+            //1 corrisponde al primo punto di domanda nella query (il primo punto sara la mail)
+            stm.setString(1, email);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = new Patient(rs.getString(1), "", "", rs.getString(2), rs.getString(3), rs.getDate(4), rs.getString(5), rs.getString(6), rs.getString(7).charAt(0), rs.getString(8), rs.getString(9));
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting Patients by email: " + e.getMessage());
         }
         return null;
     }

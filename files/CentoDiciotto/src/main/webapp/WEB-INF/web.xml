@@ -144,7 +144,7 @@
     <!-- General practitioner -->
     <servlet>
         <servlet-name>PatientsPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/patients-gp.jsp</jsp-file>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.PatientsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PatientsPractitioner</servlet-name>
