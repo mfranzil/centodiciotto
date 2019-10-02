@@ -4,6 +4,25 @@
 <head>
     <title>Exam history - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <style>
+        @media (min-width: 992px) {
+            .table-cell.avt {
+                width: 10%;
+            }
+
+            .table-cell.name {
+                width: 35%;
+            }
+
+            .table-cell.ssn {
+                width: 30%;
+            }
+
+            .table-cell.action {
+                width: 25%;
+            }
+        }
+    </style>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -17,16 +36,14 @@
 </div>
 
 <div class="container">
-    <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
-        <thead>
-        <tr>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">Patient</th>
-            <th scope="col">Date</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
+
+    <div class="table-personal table-header">
+        <div class="table-cell avt"></div>
+        <div class="table-cell name">Name</div>
+        <div class="table-cell ssn">SSN</div>
+        <div class="table-cell action"></div>
+    </div>
+
         <tr>
             <td>
                 <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
@@ -38,19 +55,7 @@
                 <button type="button" class="btn btn-block btn-personal">Insert Report</button>
             </td>
         </tr>
-        <tr>
-            <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                     alt="">
-            </td>
-            <th scope="row">Anneliese De Franceschi</th>
-            <td>18/07/2019</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">Modify Report</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

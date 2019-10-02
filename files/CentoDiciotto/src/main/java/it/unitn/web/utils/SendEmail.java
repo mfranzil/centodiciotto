@@ -10,8 +10,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-public final class SendEmail {
-
+public class SendEmail {
     private static Session session;
 
     public static void configure() throws RuntimeException {

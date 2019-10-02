@@ -50,14 +50,15 @@
     <% List<Exam> exams_history = (List<Exam>) request.getAttribute("exams"); %>
     <% for (Exam exam : exams_history) {%>
     <div class="table-personal" id="table-select">
-        <div class="table-cell exam"><%= exam.getExamDescription() %></div>
-        <div class="table-cell date"><%= exam.getExamDate() %></div>
+        <div class="table-cell exam"><%= exam.getExamDescription() %>
+        </div>
+        <div class="table-cell date"><%= exam.getExamDate() %>
+        </div>
         <div class="table-cell report-state">
-            <% if(exam.getExamDone()){ %> Available <% } else { %> Not available <% } %>
+            <% if (exam.getExamDone()) { %> Available <% } else { %> Not available <% } %>
         </div>
         <div class="table-cell action">
-            <button type="button"
-                    <% if(!exam.getExamDone()){ %> disabled <% } %>
+            <button type="button" <% if (!exam.getExamDone()) { %> disabled <% } %>
                     class="btn btn-block btn-personal popup-opener">
                 See Report
             </button>
@@ -65,7 +66,8 @@
                 <div class="popup animate-in">
                     <div>
                         <h4>Report</h4>
-                        <p><%= exam.getExamResult() %></p>
+                        <p><%= exam.getExamResult() %>
+                        </p>
                     </div>
                     <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                 </div>

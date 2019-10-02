@@ -123,40 +123,4 @@ public class Crypto {
             throw new RuntimeException("Error in authentication method." + e.getMessage());
         }
     }
-
-    public static void main(String[] args) throws DAOException {
-        try {
-            configure(null);
-        } catch (Exception ex) {
-            System.out.println("lol");
-        }
-
-        /*
-        String[] pwd = {"gianfranco.boni",
-                "tolomeo.toscano",
-                "concetta.pisano",
-                "luigi.onio",
-                "ida.trentini",
-                "ulderico.genov",
-                "cataldo.colombo",
-                "umberto.marino",
-                "verdiana.mazzant",
-                "maria.pugliesi",
-                "elena.lombardi",
-                "isotta.siciliani",
-                "regolo.fallaci",
-                "agnese.robol",
-                "costantino.manfr",
-                "urania.pisani",
-                "rita.lombardo",
-                "sebastiano.pale",
-                "elda.romani",
-                "dionisia.monaldo"};
-
-        for (var password : pwd) {
-            var salt = getNextSalt();
-            var hash = hash(password, salt);
-            System.out.println("H: " + hash + ", S: " + salt);
-        }*/
-    }
 }

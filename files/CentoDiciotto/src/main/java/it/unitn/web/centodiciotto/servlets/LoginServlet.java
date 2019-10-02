@@ -2,16 +2,14 @@ package it.unitn.web.centodiciotto.servlets;
 
 import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Common;
 import it.unitn.web.utils.Crypto;
+import it.unitn.web.utils.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +20,6 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
 
     private GeneralPractitionerDAO practitionerDAO;
-    private PhotoDAO photoDAO;
 
     @Override
     public void init() throws ServletException {
@@ -32,7 +29,6 @@ public class LoginServlet extends HttpServlet {
         }
         try {
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
-            photoDAO = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
@@ -81,18 +77,8 @@ public class LoginServlet extends HttpServlet {
                 if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
                     GeneralPractitioner practitioner =
                             practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
-                    Photo photo = photoDAO.getCurrentPhoto((Patient) user);
 
-                    Integer photoId;
-
-                    if (photo == null) {
-                        photoId = null;
-                    } else {
-                        photoId = photo.getPhotoId();
-                    }
-
-                    String photoPath =
-                            Common.getPhotoPosition(getServletContext(), user.getEmail(), photoId);
+                    String photoPath = PhotoService.getLastPhoto((Patient) user);
 
                     request.getSession().setAttribute("practitioner", practitioner);
                     request.getSession().setAttribute("photo_path", photoPath);

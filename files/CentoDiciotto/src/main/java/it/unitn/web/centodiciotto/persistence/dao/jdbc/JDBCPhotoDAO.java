@@ -6,7 +6,6 @@ import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
-import javax.sound.midi.Soundbank;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -126,7 +125,6 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
 
-
     @Override
     public List<Photo> getAll() throws DAOException {
         List<Photo> photos = new ArrayList<>();
@@ -146,9 +144,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
 
-
     @Override
-    public Photo getCurrentPhoto(Patient patient) {
+    public Photo getCurrentPhoto(Patient patient) throws DAOException {
         Photo photo = null;
         try {
             String email = patient.getEmail();
@@ -174,10 +171,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
 
-
-
     @Override
-    public List<Photo> getAllPhotos(Patient patient) {
+    public List<Photo> getAllPhotos(Patient patient) throws DAOException {
         List<Photo> photos = new ArrayList<>();
         try {
             String email = patient.getEmail();
@@ -186,7 +181,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
             ResultSet rs = preparedStatement.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Photo photo = new Photo(
                         rs.getInt("photo_id"),
                         rs.getString("email"),

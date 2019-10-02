@@ -2,7 +2,7 @@ $("document").ready(function () {
     $('#new-password, #new-password-confirm').on('keyup', function () {
         let message = $('#password-change-button');
 
-        if ($('#new-password').val().length > 16 || $('#new-password-confirm').val().length > 16) {
+        if ($('#new-password').val().length > 64 || $('#new-password-confirm').val().length > 64) {
             message.html("Password is too long!").css('background-color', 'red').prop('disabled', true);
             return;
         }

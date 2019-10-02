@@ -2,9 +2,9 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
-import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -53,7 +53,6 @@ public class ExamHistoryServlet extends HttpServlet {
 
             }
         }
-        System.out.println("here");
         request.getRequestDispatcher("/jsp/patient/exam_history-p.jsp").forward(request, response);
 
     }
