@@ -124,6 +124,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>ExamPrescriptionServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionCreatorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamPrescriptionServlet</servlet-name>
+        <url-pattern>/restricted/patient/exams</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Tickets</servlet-name>
         <jsp-file>/jsp/patient/tickets-p.jsp</jsp-file>
     </servlet>
