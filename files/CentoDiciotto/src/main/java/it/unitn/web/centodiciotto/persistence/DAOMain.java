@@ -39,7 +39,7 @@ public class DAOMain {
             }
 
 
-        } catch (DAOFactoryException e) {
+        } catch (DAOFactoryException | DAOException e) {
             e.printStackTrace();
         }
     }

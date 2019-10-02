@@ -30,6 +30,7 @@ $("document").ready(function () {
         $("#autocomplete-2").select2({
             placeholder: "Choose a language",
             allowClear: true,
+            closeOnSelect: true,
             ajax: {
                 url: "http://localhost:8080/CentoDiciotto_war_exploded/restricted/patient/exams",
                 dataType: "json"

@@ -6,9 +6,7 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/search.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.3/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css">
 </head>
 <body>
@@ -25,7 +23,7 @@
 <div class="container">
     <div class="form-group">
         <label for="autocomplete-2">Tags:</label>
-        <select id="autocomplete-2" name="autocomplete-1" class="form-control select2-allow-clear" autofocus>
+        <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear" autofocus>
         </select>
         <small class="form-text text-muted">Click the input text or space to start to digit.</small>
     </div>

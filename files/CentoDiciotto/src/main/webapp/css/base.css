@@ -9,6 +9,10 @@
     --118-darkest: 0, 32, 48;
 }
 
+html {
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 4rem 0 0;
@@ -23,6 +27,7 @@ body {
     justify-content: center;
     max-width: 100%;
     overflow-x: hidden;
+    height: 100%;
 }
 
 /* Allineamenti delle tabelle generici, spaziature per mobile */
