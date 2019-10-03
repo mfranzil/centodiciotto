@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <table class="table table-hover" id="table-select">
+                <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">Exam</th>

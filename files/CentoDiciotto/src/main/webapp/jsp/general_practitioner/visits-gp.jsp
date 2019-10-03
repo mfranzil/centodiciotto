@@ -20,7 +20,7 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <table class="table table-hover" id="table-select">
+                <table class="table table-hover">
                     <thead>
                     <tr>
                         <th scope="col">&nbsp;</th>

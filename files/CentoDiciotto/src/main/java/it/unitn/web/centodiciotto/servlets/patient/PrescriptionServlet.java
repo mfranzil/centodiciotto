@@ -7,17 +7,18 @@ import it.unitn.web.centodiciotto.persistence.entities.Prescription;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.PDFCreator;
+import it.unitn.web.utils.Pair;
 import org.apache.pdfbox.pdmodel.PDDocument;
-
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-
-import it.unitn.web.utils.PDFCreator;
 
 public class PrescriptionServlet extends HttpServlet {
 
@@ -44,9 +45,21 @@ public class PrescriptionServlet extends HttpServlet {
 
         if (user != null) {
             if (user instanceof Patient) {
+                Calendar now = Calendar.getInstance();
+
                 List<Prescription> prescriptions =
                         prescriptionDAO.getByPatient(((Patient) user).getEmail());
-                request.setAttribute("prescriptions", prescriptions);
+                List<Pair<Prescription, Boolean>> prescription_list = new ArrayList<>();
+
+                for (Prescription prescription : prescriptions) {
+                    Calendar prescriptionDate = Calendar.getInstance();
+                    prescriptionDate.setTime(prescription.getPrescriptionDate());
+                    prescriptionDate.add(Calendar.MONTH, 1);
+
+                    Boolean available = prescriptionDate.getTime().after(now.getTime());
+                    prescription_list.add(Pair.makePair(prescription, available));
+                }
+                request.setAttribute("prescriptions", prescription_list);
 
             }
         }

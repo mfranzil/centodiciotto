@@ -7,6 +7,7 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Crypto;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -63,7 +64,7 @@ public class PasswordResetServlet extends HttpServlet {
 
         try {
             user = userDAO.getByPrimaryKey(email);
-            user.setHash(newPassword);
+            user.setHash(Crypto.hash(newPassword, user.getSalt()));
             userDAO.update(user);
             prDAO.delete(prDAO.getByPrimaryKey(email));
             response.setStatus(200);

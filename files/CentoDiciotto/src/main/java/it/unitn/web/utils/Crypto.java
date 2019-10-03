@@ -47,7 +47,7 @@ public class Crypto {
         }
     }
 
-    private static String hash(String password, String salt) {
+    public static String hash(String password, String salt) {
         char[] passwordChar = password.toCharArray();
         PBEKeySpec spec = new PBEKeySpec(passwordChar, salt.getBytes(), ITERATIONS, KEY_LENGTH);
         Arrays.fill(passwordChar, Character.MIN_VALUE);
