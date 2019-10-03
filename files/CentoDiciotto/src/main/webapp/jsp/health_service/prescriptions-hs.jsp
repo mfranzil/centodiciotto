@@ -21,6 +21,10 @@
             <div class="col-md">
                 <form action="search_patient" method="POST">
                     <div class="form-label-group my-4 mx-4 ls-search">
+                        <!--TO DO SIMONE BARRA DI RICERCA:
+                        Si dovrebbero cercare le ricette emesse, sia per nome di farmaco che per nome di
+                        paziente. Quindi, in questo caso, il risultato può non essere univoco.
+                         -->
                         <input class="form-control mx-2" id="query" name="query"
                                placeholder="Search..." required type="text">
                         <button id="message" class="btn btn-personal" type="submit">
