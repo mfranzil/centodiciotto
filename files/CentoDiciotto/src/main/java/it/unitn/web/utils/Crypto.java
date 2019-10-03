@@ -47,7 +47,7 @@ public class Crypto {
         }
     }
 
-    public static String hash(String password, String salt) {
+    private static String hash(String password, String salt) {
         char[] passwordChar = password.toCharArray();
         PBEKeySpec spec = new PBEKeySpec(passwordChar, salt.getBytes(), ITERATIONS, KEY_LENGTH);
         Arrays.fill(passwordChar, Character.MIN_VALUE);
@@ -88,7 +88,7 @@ public class Crypto {
     }
 
     public static User authenticate(String email, String password, String role) throws RuntimeException {
-        if (email == null || password == null) {
+        if (email == null || password == null || email.equals("") || password.equals("")) {
             throw new RuntimeException("Email or password are null.");
         }
 
@@ -119,6 +119,35 @@ public class Crypto {
             } else {
                 return null;
             }
+        } catch (DAOException e) {
+            throw new RuntimeException("Error in authentication method." + e.getMessage());
+        }
+    }
+
+    public static void changePassword(String email, String newPassword) throws RuntimeException {
+        if (email == null || newPassword == null || email.equals("") || newPassword.equals("")) {
+            throw new RuntimeException("Email or password are null.");
+        }
+
+        String newSalt = getNextSalt();
+        String newHash = hash(newPassword, newSalt);
+        User user = new User(email, newHash, newSalt);
+
+        try {
+            userDAO.update(user);
+        } catch (DAOException e) {
+            throw new RuntimeException("Error in Password " + e.getMessage());
+        }
+    }
+
+    public static boolean isCurrentPassword(String email, String password) throws RuntimeException {
+        if (email == null || password == null || email.equals("") || password.equals("")) {
+            throw new RuntimeException("Email or password are null.");
+        }
+
+        try {
+            User user = userDAO.getByPrimaryKey(email);
+            return isExpectedPassword(password, user.getSalt(), user.getHash());
         } catch (DAOException e) {
             throw new RuntimeException("Error in authentication method." + e.getMessage());
         }

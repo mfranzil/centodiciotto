@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface PhotoDAO extends DAO<Photo, Integer> {
 
-    void insert(Photo photo);
+    void insert(Photo photo) throws DAOException;
 
-    void update(Photo photo);
+    void update(Photo photo) throws DAOException;
 
-    void delete(Photo photo);
+    void delete(Photo photo) throws DAOException;
 
     Photo getCurrentPhoto(Patient patient) throws DAOException;
 

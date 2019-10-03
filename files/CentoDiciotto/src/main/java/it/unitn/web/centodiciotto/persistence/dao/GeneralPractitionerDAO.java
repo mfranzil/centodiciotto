@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface GeneralPractitionerDAO extends DAO<GeneralPractitioner, String> {
 
-    void insert(GeneralPractitioner generalPractitioner);
+    void insert(GeneralPractitioner generalPractitioner) throws DAOException;
 
-    void update(GeneralPractitioner generalPractitioner);
+    void update(GeneralPractitioner generalPractitioner) throws DAOException;
 
-    void delete(GeneralPractitioner generalPractitioner);
+    void delete(GeneralPractitioner generalPractitioner) throws DAOException;
 
-    List<GeneralPractitioner> getByProvince(String province_abbreviation);
+    List<GeneralPractitioner> getByProvince(String province_abbreviation) throws DAOException;
 
     List<Patient> getPatientsByPractitionerId(String email) throws DAOException;
     }

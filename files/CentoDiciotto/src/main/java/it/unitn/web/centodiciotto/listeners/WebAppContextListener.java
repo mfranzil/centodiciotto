@@ -16,7 +16,6 @@ public class WebAppContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        String ini_file = sce.getServletContext().getInitParameter("ini_file");
         try {
             JDBCDAOFactory.configure();
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();

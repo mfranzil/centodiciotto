@@ -9,7 +9,6 @@ package it.unitn.web.persistence.dao.exceptions;
 
 public class DAOException extends Exception {
 
-
     public DAOException() {
         super();
     }

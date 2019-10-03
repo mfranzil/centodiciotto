@@ -22,20 +22,12 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     final private String SELECTALL = "SELECT * FROM general_practitioner;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE email = ?;";
     final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) = (?, ?, ?) WHERE email = ?;";
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCGeneralPractitionerDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(GeneralPractitioner generalPractitioner) {
+    public void insert(GeneralPractitioner generalPractitioner) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, generalPractitioner.getEmail());
@@ -46,15 +38,15 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
 
-        } catch (SQLException ex) {
-            System.err.println("Error inserting User: " + ex.getMessage());
+        } catch (SQLException e) {
+            throw new DAOException("Error inserting User: ", e);
         }
         // Connection and Prepared Statement automatically closed
 
     }
 
     @Override
-    public void update(GeneralPractitioner generalPractitioner) {
+    public void update(GeneralPractitioner generalPractitioner) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, generalPractitioner.getFirstName());
@@ -66,23 +58,23 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating GeneralPractitioner: " + e.getMessage());
+            throw new DAOException("Error updating GeneralPractitioner: ", e);
         }
     }
 
     @Override
-    public void delete(GeneralPractitioner generalPractitioner) {
+    public void delete(GeneralPractitioner generalPractitioner) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, generalPractitioner.getEmail());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting GeneralPractitioner by email: " + e.getMessage());
+            throw new DAOException("Error deleting GeneralPractitioner by email: ", e);
         }
     }
 
     @Override
-    public GeneralPractitioner getByPrimaryKey(String email) {
+    public GeneralPractitioner getByPrimaryKey(String email) throws DAOException {
         GeneralPractitioner res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
@@ -100,14 +92,14 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting GeneralPractitioner by email: " + e.getMessage());
+            throw new DAOException("Error getting GeneralPractitioner by email: ", e);
         }
         return null;
     }
 
     @Override
-    public List<GeneralPractitioner> getByProvince(String province_abbreviation) {
-        List<GeneralPractitioner> res = new ArrayList<GeneralPractitioner>();
+    public List<GeneralPractitioner> getByProvince(String province_abbreviation) throws DAOException {
+        List<GeneralPractitioner> res = new ArrayList<>();
         GeneralPractitioner tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
             stm.setString(1, province_abbreviation);
@@ -120,9 +112,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting GeneralPractitioners by Province: " + e.getMessage());
+            throw new DAOException("Error getting GeneralPractitioners by Province: ", e);
         }
-        return null;
     }
 
     @Override
@@ -135,14 +126,14 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting GeneralPractitioners: " + e.getMessage());
+            throw new DAOException("Error counting GeneralPractitioners: ", e);
         }
         return res;
     }
 
     @Override
     public List<GeneralPractitioner> getAll() throws DAOException {
-        List<GeneralPractitioner> res = new ArrayList<GeneralPractitioner>();
+        List<GeneralPractitioner> res = new ArrayList<>();
         GeneralPractitioner tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -153,9 +144,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all GeneralPractitioners: " + e.getMessage());
+            throw new DAOException("Error getting all GeneralPractitioners: ", e);
         }
-        return null;
     }
 
     public List<Patient> getPatientsByPractitionerId(String email) throws DAOException {
@@ -172,9 +162,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Patients by email: " + e.getMessage());
+            throw new DAOException("Error getting Patients by email: ", e);
         }
-        return null;
     }
 }
 

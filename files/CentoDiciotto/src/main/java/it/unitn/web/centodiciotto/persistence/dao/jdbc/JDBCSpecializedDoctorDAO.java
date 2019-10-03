@@ -19,20 +19,12 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
     final private String DELETE = "DELETE FROM specialized_doctor WHERE email = ?;";
     final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?) WHERE email = ?;";
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCSpecializedDoctorDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(SpecializedDoctor specializedDoctor) {
+    public void insert(SpecializedDoctor specializedDoctor) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, specializedDoctor.getEmail());
@@ -43,14 +35,12 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting Specialized Doctor: " + e.getMessage());
+            throw new DAOException("Error inserting Specialized Doctor: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
     }
 
     @Override
-    public void update(SpecializedDoctor specializedDoctor) {
+    public void update(SpecializedDoctor specializedDoctor) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, specializedDoctor.getFirstName());
@@ -61,35 +51,35 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating SpecializedDoctor: " + e.getMessage());
+            throw new DAOException("Error updating SpecializedDoctor: ", e);
         }
     }
 
     @Override
-    public void delete(SpecializedDoctor specializedDoctor) {
+    public void delete(SpecializedDoctor specializedDoctor) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, specializedDoctor.getEmail());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting SpecializesDoctor by email: " + e.getMessage());
-        };
+            throw new DAOException("Error deleting SpecializesDoctor by email: ", e);
+        }
     }
 
     @Override
-    public SpecializedDoctor getByPrimaryKey(String email) {
+    public SpecializedDoctor getByPrimaryKey(String email) throws DAOException {
         SpecializedDoctor res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new SpecializedDoctor(rs.getString("email"), "", "",rs.getString("first_name"), rs.getString("last_name"));
+                    res = new SpecializedDoctor(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"));
                     return res;
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting SpecializedDoctor by email: " + e.getMessage());
+            throw new DAOException("Error getting SpecializedDoctor by email: ", e);
         }
         return null;
     }
@@ -104,7 +94,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting SpecializedDoctors: " + e.getMessage());
+            throw new DAOException("Error counting SpecializedDoctors: ", e);
         }
         return res;
     }
@@ -112,20 +102,19 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
     @Override
     public List<SpecializedDoctor> getAll() throws DAOException {
-        List<SpecializedDoctor> res = new ArrayList<SpecializedDoctor>();
+        List<SpecializedDoctor> res = new ArrayList<>();
         SpecializedDoctor tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new SpecializedDoctor(rs.getString("email"), "", "",rs.getString("first_name"), rs.getString("last_name"));
+                    tmp = new SpecializedDoctor(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"));
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all SpecializedDoctors: " + e.getMessage());
+            throw new DAOException("Error getting all SpecializedDoctors: ", e);
         }
-        return null;
     }
 }
 

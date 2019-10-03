@@ -1,10 +1,10 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Prescription;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.PDFCreator;
@@ -23,7 +23,6 @@ import java.util.List;
 public class PrescriptionServlet extends HttpServlet {
 
     private PrescriptionDAO prescriptionDAO;
-    private GeneralPractitionerDAO generalPractitionerDAO;
 
     @Override
     public void init() throws ServletException {
@@ -33,7 +32,6 @@ public class PrescriptionServlet extends HttpServlet {
         }
         try {
             prescriptionDAO = daoFactory.getDAO(PrescriptionDAO.class);
-            generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
 
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
@@ -47,19 +45,24 @@ public class PrescriptionServlet extends HttpServlet {
             if (user instanceof Patient) {
                 Calendar now = Calendar.getInstance();
 
-                List<Prescription> prescriptions =
-                        prescriptionDAO.getByPatient(((Patient) user).getEmail());
+                List<Prescription> prescriptions;
                 List<Pair<Prescription, Boolean>> prescription_list = new ArrayList<>();
 
-                for (Prescription prescription : prescriptions) {
-                    Calendar prescriptionDate = Calendar.getInstance();
-                    prescriptionDate.setTime(prescription.getPrescriptionDate());
-                    prescriptionDate.add(Calendar.MONTH, 1);
+                try {
+                    prescriptions = prescriptionDAO.getByPatient(user.getEmail());
 
-                    Boolean available = prescriptionDate.getTime().after(now.getTime());
-                    prescription_list.add(Pair.makePair(prescription, available));
+                    for (Prescription prescription : prescriptions) {
+                        Calendar prescriptionDate = Calendar.getInstance();
+                        prescriptionDate.setTime(prescription.getPrescriptionDate());
+                        prescriptionDate.add(Calendar.MONTH, 1);
+
+                        Boolean available = prescriptionDate.getTime().after(now.getTime());
+                        prescription_list.add(Pair.makePair(prescription, available));
+                    }
+                    request.setAttribute("prescriptions", prescription_list);
+                } catch (DAOException e) {
+                    throw new ServletException("Error in Prescription retrieval.", e);
                 }
-                request.setAttribute("prescriptions", prescription_list);
 
             }
         }

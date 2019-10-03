@@ -1,9 +1,8 @@
 package it.unitn.web.centodiciotto.servlets;
 
-import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Crypto;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,18 +13,11 @@ import java.io.IOException;
 
 public class PasswordChangeServlet extends HttpServlet {
 
-    private UserDAO userDAO;
-
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("Impossible to get dao factory for user storage system");
-        }
-        try {
-            userDAO = daoFactory.getDAO(UserDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
         }
     }
 
@@ -37,9 +29,8 @@ public class PasswordChangeServlet extends HttpServlet {
         String oldPassword = request.getParameter("old-password");
         String newPassword = request.getParameter("new-password");
 
-        if (user.getHash().equals(oldPassword)) {
-            user.setHash(newPassword);
-            userDAO.update(user);
+        if (Crypto.isCurrentPassword(user.getEmail(), oldPassword)) {
+            Crypto.changePassword(user.getEmail(), newPassword);
             response.setStatus(200);
         } else {
             response.setStatus(400);

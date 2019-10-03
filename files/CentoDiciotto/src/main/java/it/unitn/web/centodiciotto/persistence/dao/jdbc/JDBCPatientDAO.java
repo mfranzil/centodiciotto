@@ -2,9 +2,8 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -12,38 +11,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
 
+    final private String GETBYEMAIL = "SELECT * FROM patient WHERE email = ? LIMIT 1;";
     final private String INSERT = "INSERT INTO patient (email, first_name, last_name, birth_date, birth_place, ssn, " +
             "gender, general_practitioner_email, living_province) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-
     final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
-
     final private String SELECTALL = "SELECT * FROM patient;";
-
     final private String DELETE = "DELETE FROM patient WHERE email = ?;";
-
     final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, general_practitioner_email, living_province) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE email = ?;";
 
-    final String GET_BY_EMAIL = "SELECT * FROM patient WHERE email = ? LIMIT 1;";
-
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
-    public JDBCPatientDAO(Connection con) {
+    public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
+        //UserDAO userDAO = JDBCDAOFactory.getInstance().getDAO(UserDAO.class);
+        //FRIEND_DAOS.put(UserDAO.class, userDAO);
     }
 
     @Override
-    public void insert(Patient patient) {
+    public void insert(Patient patient) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, patient.getEmail());
@@ -60,14 +47,14 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting User: " + e.getMessage());
+            throw new DAOException("Error inserting User: ", e);
         }
         // Connection and Prepared Statement automatically closed
 
     }
 
     @Override
-    public void update(Patient patient) {
+    public void update(Patient patient) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, patient.getFirstName());
@@ -84,23 +71,23 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating Patient: " + e.getMessage());
+            throw new DAOException("Error updating Patient: ", e);
         }
     }
 
     @Override
-    public void delete(Patient patient) {
+    public void delete(Patient patient) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, patient.getEmail());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting Patient by email: " + e.getMessage());
+            throw new DAOException("Error deleting Patient by email: ", e);
         }
     }
 
     @Override
-    public void updatePractitioner(Patient patient) {
+    public void updatePractitioner(Patient patient) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATEPRACTITIONER);
             preparedStatement.setString(1, patient.getGeneralPractitionerEmail());
@@ -110,34 +97,25 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating user: " + e.getMessage());
+            throw new DAOException("Error updating user: ", e);
         }
     }
 
     @Override
-    public Patient getByPrimaryKey(String email) {
+    public Patient getByPrimaryKey(String email) throws DAOException {
         Patient patient = null;
         try {
-
-            //System.out.println("ok connection");
-
-            PreparedStatement preparedStatement = CON.prepareStatement(GET_BY_EMAIL);
+            PreparedStatement preparedStatement = CON.prepareStatement(GETBYEMAIL);
             preparedStatement.setString(1, email);
-
-            //System.out.println("ok statement");
-
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) patient = mapRowToPatient(resultSet);
-
-
+            while (resultSet.next()) {
+                patient = mapRowToPatient(resultSet);
+                //User user = getDAO(UserDAO.class).getByPrimaryKey(email);
+            }
         } catch (SQLException e) {
-            System.err.println("Error retrieving Patient: " + e.getMessage());
-            patient = null;
+            throw new DAOException("Error retrieving Patient: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
         return patient;
-
     }
 
     @Override
@@ -150,33 +128,31 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting Patients: " + e.getMessage());
+            throw new DAOException("Error counting Patients: ", e);
         }
         return res;
     }
 
     @Override
     public List<Patient> getAll() throws DAOException {
-        List<Patient> res = new ArrayList<Patient>();
+        List<Patient> res = new ArrayList<>();
         Patient tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToPatient(rs);
-                    //tmp = new Patient(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"), rs.getDate("birth_date"), rs.getString("birth_place"), rs.getString("ssn"), rs.getString("gender").charAt(0), rs.getString("general_practitioner_email"), rs.getString("living_province"));
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all Patients: " + e.getMessage());
+            throw new DAOException("Error getting all Patients: ", e);
         }
-        return null;
     }
 
     @Override
     public Patient mapRowToPatient(ResultSet resultSet) throws SQLException {
-        Patient patient = new Patient(
+        return new Patient(
                 resultSet.getString("email"),
                 resultSet.getString("first_name"),
                 resultSet.getString("last_name"),
@@ -186,7 +162,5 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
                 resultSet.getString("gender").charAt(0),
                 resultSet.getString("living_province"),
                 resultSet.getString("general_practitioner_email"));
-        return patient;
-
     }
 }
