@@ -26,6 +26,9 @@
             <div class="col-md">
                 <label>
                     <select class="form-control mb-2">
+                        <!--TO DO SIMONE BARRA DI RICERCA:
+                        Tutti gli esami esattamente come la ricerca del paziente
+                         -->
                         <option selected="selected">Select an exam</option>
                         <option>Agobiopsia ecoguidata transtracheale o transbronchiale di linfonodi ilo mediastinici
                         </option>

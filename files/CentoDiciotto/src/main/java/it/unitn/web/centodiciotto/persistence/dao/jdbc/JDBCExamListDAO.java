@@ -16,7 +16,7 @@ import java.util.List;
 
 public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamListDAO {
 
-    final private String INSERT = "INSERT INTO exams_list (exam_description) values (?;";
+    final private String INSERT = "INSERT INTO exams_list (exam_description) values (?);";
     final private String FINDBYID = "SELECT * FROM exams_list WHERE exam_id = ?;";
     final private String SELECTALL = "SELECT * FROM exams_list;";
     final private String DELETE = "DELETE FROM exams_list WHERE exam_id = ?;";

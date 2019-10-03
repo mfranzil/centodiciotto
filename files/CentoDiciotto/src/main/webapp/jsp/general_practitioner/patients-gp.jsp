@@ -24,6 +24,7 @@
         <div class="row">
             <div class="col-md">
                 <form action="search_patient" method="POST">
+                    <!--TO DO SIMONE BARRA DI RICERCA: tutti i pazienti di un medico -->
                     <div class="form-label-group my-4 mx-4 ls-search">
                         <input class="form-control mx-2" id="query" name="query"
                                placeholder="Search..." required type="text">

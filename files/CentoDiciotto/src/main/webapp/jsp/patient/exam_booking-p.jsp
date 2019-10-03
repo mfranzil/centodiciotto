@@ -21,8 +21,8 @@
 
 <div class="container">
     <div class="form-group">
-        <label for="autocomplete-2">Tags:</label>
-        <select id="autocomplete-2" name="autocomplete-2" class="form-control select2-allow-clear" autofocus>
+        <label for="exam-search">Tags:</label>
+        <select id="exam-search" name="exam-search" class="form-control select2-allow-clear" autofocus>
         </select>
         <small class="form-text text-muted">Click the input text or space to start to digit.</small>
     </div>
