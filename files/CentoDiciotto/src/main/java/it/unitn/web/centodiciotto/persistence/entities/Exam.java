@@ -10,9 +10,12 @@ public class Exam {
     private Boolean examDone;
     private Timestamp examDate;
     private String examResult;
+    private Integer healthServiceId;
+    private Integer ticket;
     private String examDescription;
 
-    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone, Timestamp ExamDate, String ExamResult) {
+    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone,
+                Timestamp ExamDate, String ExamResult, Integer healthServiceId, Integer ticket) {
         this.ExamID = ExamID;
         this.patientEmail = PatientEmail;
         this.doctorEmail = DoctorEmail;
@@ -20,6 +23,8 @@ public class Exam {
         this.examDone = ExamDone;
         this.examDate = ExamDate;
         this.examResult = ExamResult;
+        this.healthServiceId = healthServiceId;
+        this.ticket = ticket;
     }
 
     public Integer getExamID() {
@@ -76,6 +81,22 @@ public class Exam {
 
     public void setExamResult(String examResult) {
         this.examResult = examResult;
+    }
+
+    public Integer getHealthServiceId(){
+        return healthServiceId;
+    }
+
+    public void setHealthServiceId(Integer healthServiceId){
+        this.healthServiceId = healthServiceId;
+    }
+
+    public Integer getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Integer ticket) {
+        this.ticket = ticket;
     }
 
     public String getExamDescription() {
