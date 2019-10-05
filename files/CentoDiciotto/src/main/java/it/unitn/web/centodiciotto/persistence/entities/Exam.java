@@ -1,6 +1,8 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Exam {
     private Integer ExamID;
@@ -8,11 +10,11 @@ public class Exam {
     private String DoctorEmail;
     private Integer ExamType;
     private Boolean ExamDone;
-    private Date ExamDate;
+    private Timestamp ExamDate;
     private String ExamResult;
     private String ExamDescription;
 
-    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone, Date ExamDate, String ExamResult) {
+    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone, Timestamp ExamDate, String ExamResult) {
         this.ExamID = ExamID;
         this.PatientEmail = PatientEmail;
         this.DoctorEmail = DoctorEmail;
@@ -62,11 +64,11 @@ public class Exam {
         ExamDone = examDone;
     }
 
-    public Date getExamDate() {
+    public Timestamp getExamDate() {
         return ExamDate;
     }
 
-    public void setExamDate(Date examDate) {
+    public void setExamDate(Timestamp examDate) {
         ExamDate = examDate;
     }
 

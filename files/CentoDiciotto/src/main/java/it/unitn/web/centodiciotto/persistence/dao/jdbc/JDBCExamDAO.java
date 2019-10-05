@@ -32,7 +32,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             preparedStatement.setString(2, exam.getDoctorEmail());
             preparedStatement.setInt(3, exam.getExamType());
             preparedStatement.setBoolean(4, exam.getExamDone());
-            preparedStatement.setDate(5, exam.getExamDate());
+            preparedStatement.setTimestamp(5, exam.getExamDate());
             preparedStatement.setString(6, exam.getExamResult());
 
             int row = preparedStatement.executeUpdate();
@@ -51,7 +51,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             preparedStatement.setString(2, exam.getDoctorEmail());
             preparedStatement.setInt(3, exam.getExamType());
             preparedStatement.setBoolean(4, exam.getExamDone());
-            preparedStatement.setDate(5, exam.getExamDate());
+            preparedStatement.setTimestamp(5, exam.getExamDate());
             preparedStatement.setString(6, exam.getExamResult());
             preparedStatement.setInt(7, exam.getExamID());
 
@@ -82,7 +82,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new Exam(rs.getInt("exam_id"), rs.getString("patient_id"), rs.getString("doctor_id"), rs.getInt("exam_type"), rs.getBoolean("done"), rs.getDate("date"), rs.getString("result"));
+                    res = new Exam(rs.getInt("exam_id"), rs.getString("patient_id"), rs.getString("doctor_id"), rs.getInt("exam_type"), rs.getBoolean("done"), rs.getTimestamp("date"), rs.getString("result"));
                     return res;
                 }
             }
@@ -101,7 +101,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Exam(rs.getInt("exam_id"), rs.getString("patient_id"), rs.getString("doctor_id"), rs.getInt("exam_type"), rs.getBoolean("done"), rs.getDate("date"), rs.getString("result"));
+                    tmp = new Exam(rs.getInt("exam_id"), rs.getString("patient_id"), rs.getString("doctor_id"), rs.getInt("exam_type"), rs.getBoolean("done"), rs.getTimestamp("date"), rs.getString("result"));
                     res.add(tmp);
                 }
                 return res;
@@ -133,7 +133,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Exam(rs.getInt("exam_id"), rs.getString("patient_id"), rs.getString("doctor_id"), rs.getInt("exam_type"), rs.getBoolean("done"), rs.getDate("date"), rs.getString("result"));
+                    tmp = new Exam(rs.getInt("exam_id"), rs.getString("patient_id"), rs.getString("doctor_id"), rs.getInt("exam_type"), rs.getBoolean("done"), rs.getTimestamp("date"), rs.getString("result"));
                     res.add(tmp);
                 }
                 return res;
