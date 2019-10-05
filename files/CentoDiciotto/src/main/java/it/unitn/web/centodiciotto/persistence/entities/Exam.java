@@ -1,27 +1,25 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 
 public class Exam {
     private Integer ExamID;
-    private String PatientEmail;
-    private String DoctorEmail;
-    private Integer ExamType;
-    private Boolean ExamDone;
-    private Timestamp ExamDate;
-    private String ExamResult;
-    private String ExamDescription;
+    private String patientEmail;
+    private String doctorEmail;
+    private Integer examType;
+    private Boolean examDone;
+    private Timestamp examDate;
+    private String examResult;
+    private String examDescription;
 
     public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone, Timestamp ExamDate, String ExamResult) {
         this.ExamID = ExamID;
-        this.PatientEmail = PatientEmail;
-        this.DoctorEmail = DoctorEmail;
-        this.ExamType = ExamType;
-        this.ExamDone = ExamDone;
-        this.ExamDate = ExamDate;
-        this.ExamResult = ExamResult;
+        this.patientEmail = PatientEmail;
+        this.doctorEmail = DoctorEmail;
+        this.examType = ExamType;
+        this.examDone = ExamDone;
+        this.examDate = ExamDate;
+        this.examResult = ExamResult;
     }
 
     public Integer getExamID() {
@@ -33,59 +31,59 @@ public class Exam {
     }
 
     public String getPatientEmail() {
-        return PatientEmail;
+        return patientEmail;
     }
 
     public void setPatientEmail(String patientEmail) {
-        PatientEmail = patientEmail;
+        patientEmail = patientEmail;
     }
 
     public String getDoctorEmail() {
-        return DoctorEmail;
+        return doctorEmail;
     }
 
     public void setDoctorEmail(String doctorEmail) {
-        DoctorEmail = doctorEmail;
+        this.doctorEmail = doctorEmail;
     }
 
     public Integer getExamType() {
-        return ExamType;
+        return examType;
     }
 
     public void setExamType(Integer examType) {
-        ExamType = examType;
+        this.examType = examType;
     }
 
     public Boolean getExamDone() {
-        return ExamDone;
+        return examDone;
     }
 
     public void setExamDone(Boolean examDone) {
-        ExamDone = examDone;
+        this.examDone = examDone;
     }
 
     public Timestamp getExamDate() {
-        return ExamDate;
+        return examDate;
     }
 
     public void setExamDate(Timestamp examDate) {
-        ExamDate = examDate;
+        this.examDate = examDate;
     }
 
     public String getExamResult() {
-        return ExamResult;
+        return examResult;
     }
 
     public void setExamResult(String examResult) {
-        ExamResult = examResult;
+        this.examResult = examResult;
     }
 
     public String getExamDescription() {
-        return ExamDescription;
+        return examDescription;
     }
 
     public void setExamDescription(String examDescription) {
-        ExamDescription = examDescription;
+        this.examDescription = examDescription;
     }
 
 
