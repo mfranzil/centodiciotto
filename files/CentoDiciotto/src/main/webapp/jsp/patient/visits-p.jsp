@@ -41,7 +41,9 @@
         <% GeneralPractitioner practitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
         <h3><%= practitioner.getFirstName()%>  <%= practitioner.getLastName()%>
         </h3>
-        <button type="button" class="btn btn-block btn-personal">Book now</button>
+        <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book_visit" method="post">
+        <button id="booknow"  class="btn btn-block btn-personal" type="submit" >Book now</button>
+        </form>
     </div>
 </div>
 

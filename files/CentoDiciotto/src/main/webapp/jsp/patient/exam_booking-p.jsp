@@ -13,17 +13,8 @@
 
     <style>
         @media (min-width: 992px) {
-            /* Tabella principale */
-            .table-cell.specialist {
-                width: 20%;
-            }
-
-            .table-cell.specialization {
-                width: 15%;
-            }
-
             .table-cell.exam {
-                width: 40%;
+                width: 75%;
             }
 
             .table-cell.action {
@@ -57,8 +48,6 @@
     </div>
 
     <div class="table-personal table-header">
-        <div class="table-cell specialist">Specialist</div>
-        <div class="table-cell specialization">Specialization</div>
         <div class="table-cell exam">Exam</div>
         <div class="table-cell action"></div>
     </div>
@@ -73,8 +62,6 @@
             }
         } %>
     <div class="table-personal" id="table-select">
-        <div class="table-cell specialist">Mario Rossi</div>
-        <div class="table-cell specialization">Qualcosa</div>
         <div class="table-cell exam"><%= examList.getExamDescription() %>
         </div>
         <div class="table-cell action">
