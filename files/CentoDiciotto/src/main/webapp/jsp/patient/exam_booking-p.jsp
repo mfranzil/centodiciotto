@@ -85,7 +85,7 @@
             <div class="popup-window">
                 <div class="popup animate-in">
                     <div>
-                        <h4>Prenota presso un medic specialista</h4>
+                        <h4>Prenota presso un medico specialista</h4>
                         <p>Io
                         </p>
                     </div>
