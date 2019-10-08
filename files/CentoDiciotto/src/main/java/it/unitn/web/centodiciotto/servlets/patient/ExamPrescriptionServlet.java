@@ -48,7 +48,12 @@ public class ExamPrescriptionServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof Patient) {
-            List<ExamPrescription> exam_prescription = examPrescriptionDAO.getByPatient(((Patient) user).getEmail());
+            List<ExamPrescription> exam_prescription = null;
+            try {
+                exam_prescription = examPrescriptionDAO.getByPatient(((Patient) user).getEmail());
+            } catch (DAOException e) {
+                e.printStackTrace();
+            }
             request.setAttribute("exam_prescription", exam_prescription);
         }
 
