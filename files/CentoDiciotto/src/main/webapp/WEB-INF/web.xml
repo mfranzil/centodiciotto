@@ -89,11 +89,20 @@
 
     <servlet>
         <servlet-name>ExamBooking</servlet-name>
-        <jsp-file>/jsp/patient/exam_booking-p.jsp</jsp-file>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ExamBooking</servlet-name>
         <url-pattern>/restricted/patient/exam_booking</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ExamBookingServlet</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionCreatorServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamBookingServlet</servlet-name>
+        <url-pattern>/restricted/patient/exam_booking_servlet</url-pattern>
     </servlet-mapping>
 
     <servlet>

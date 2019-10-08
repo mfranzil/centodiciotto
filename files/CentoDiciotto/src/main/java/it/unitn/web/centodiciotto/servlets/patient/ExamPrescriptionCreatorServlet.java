@@ -63,8 +63,6 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
 
 
         String userInput = request.getParameter("term");
-        System.out.println("User: ");
-        System.out.println(userInput);
 
         List<Exam_> results = new ArrayList<>();
 
@@ -73,8 +71,7 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
         } else {
             List<Exam_> tmp_results = new ArrayList<>();
             ALL_INTERNAL_EXAMS.stream().filter((Exam_ exam_) -> (exam_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(_item -> {
-                        tmp_results.add(_item);
-                System.out.println(_item.text);});
+                        tmp_results.add(_item);});
             results = tmp_results;
         }
 
