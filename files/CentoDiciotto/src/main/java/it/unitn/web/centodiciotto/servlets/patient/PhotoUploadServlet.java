@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 
@@ -50,44 +51,49 @@ public class PhotoUploadServlet extends HttpServlet {
         String extension = request.getParameter("extension");
 
         Photo photo = new Photo(user.getEmail(), new Timestamp(System.currentTimeMillis()));
-        photoDAO.insert(photo);
-        String fileName = Integer.toString(photo.getPhotoId());
-
-        String path = getServletContext().getRealPath("/") + File.separator
-        + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getEmail();
-        Files.createDirectories(Paths.get(path));
-
-        JSONObject jobj = new JSONObject();
-
         try {
-            out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
-            filecontent = filePart.getInputStream();
+            photoDAO.insert(photo);
 
-            int read = 0;
-            final byte[] bytes = new byte[1024];
+            String fileName = Integer.toString(photo.getPhotoId());
 
-            while ((read = filecontent.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
+            String path = getServletContext().getRealPath("/") + File.separator
+            + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getEmail();
+            Files.createDirectories(Paths.get(path));
+
+            JSONObject jobj = new JSONObject();
+
+            try {
+                out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
+                filecontent = filePart.getInputStream();
+
+                int read = 0;
+                final byte[] bytes = new byte[1024];
+
+                while ((read = filecontent.read(bytes)) != -1) {
+                    out.write(bytes, 0, read);
+                }
+                System.out.println(fileName + " created at " + path);
+
+                request.getSession().setAttribute("photo_path", File.separator +
+                        getServletContext().getInitParameter("avatar-folder") + user.getEmail() +
+                        File.separator + fileName + "." + extension);
+
+                response.setStatus(200);
+                jobj.put("output", true);
+            } catch (FileNotFoundException ex) {
+                request.getServletContext().log("Problems during file upload.", ex);
+                response.setStatus(400);
+                jobj.put("output", false);
+            } finally {
+                if (out != null) {
+                    out.close();
+                }
+                if (filecontent != null) {
+                    filecontent.close();
+                }
             }
-            System.out.println(fileName + " created at " + path);
-
-            request.getSession().setAttribute("photo_path", File.separator +
-                    getServletContext().getInitParameter("avatar-folder") + user.getEmail() +
-                    File.separator + fileName + "." + extension);
-
-            response.setStatus(200);
-            jobj.put("output", true);
-        } catch (FileNotFoundException ex) {
-            request.getServletContext().log("Problems during file upload.", ex);
-            response.setStatus(400);
-            jobj.put("output", false);
-        } finally {
-            if (out != null) {
-                out.close();
-            }
-            if (filecontent != null) {
-                filecontent.close();
-            }
+        } catch (DAOException e) {
+            e.printStackTrace();
         }
     }
 }

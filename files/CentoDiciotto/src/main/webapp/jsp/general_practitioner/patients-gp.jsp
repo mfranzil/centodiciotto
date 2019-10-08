@@ -33,7 +33,7 @@
                         </button>
                     </div>
                 </form>
-                <table class="table table-hover" id="table-select">
+                <table class="table table-hover">
                     <!--<tr>
                         <th scope="col">&nbsp;</th>
                         <th scope="col">Patient</th>

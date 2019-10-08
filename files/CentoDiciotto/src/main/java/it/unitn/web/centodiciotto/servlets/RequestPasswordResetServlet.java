@@ -1,7 +1,6 @@
 package it.unitn.web.centodiciotto.servlets;
 
 import it.unitn.web.centodiciotto.persistence.dao.PasswordResetDAO;
-import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
@@ -13,13 +12,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
 public class RequestPasswordResetServlet extends HttpServlet {
 
-    private UserDAO userDAO;
     private PasswordResetDAO prDAO;
 
     @Override
@@ -29,7 +28,6 @@ public class RequestPasswordResetServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for user storage system");
         }
         try {
-            userDAO = daoFactory.getDAO(UserDAO.class);
             prDAO = daoFactory.getDAO(PasswordResetDAO.class);
         } catch (DAOFactoryException ex) {
             throw new ServletException("Impossible to get dao factory for user storage system", ex);
@@ -38,12 +36,12 @@ public class RequestPasswordResetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user;
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        String email = request.getParameter("email");
         PasswordReset pr;
 
         try {
-            String email = request.getParameter("email");
-            user = userDAO.getByPrimaryKey(email);
             if (user != null) {
                 Timestamp date = new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)); // 24 ore di durata
                 pr = new PasswordReset(email, Crypto.getNextBase64Token(), date);

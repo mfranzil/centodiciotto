@@ -1,25 +1,32 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Exam {
     private Integer ExamID;
-    private String PatientEmail;
-    private String DoctorEmail;
-    private Integer ExamType;
-    private Boolean ExamDone;
-    private Date ExamDate;
-    private String ExamResult;
-    private String ExamDescription;
+    private String patientEmail;
+    private String doctorEmail;
+    private Integer examType;
+    private Boolean examDone;
+    private Timestamp examDate;
+    private String examResult;
+    private Integer healthServiceId;
+    private Integer ticket;
+    private Integer examPrescriptionId;
+    private String examDescription;
 
-    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone, Date ExamDate, String ExamResult) {
+    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone,
+                Timestamp ExamDate, String ExamResult, Integer healthServiceId, Integer ticket, Integer examPrescriptionId) {
         this.ExamID = ExamID;
-        this.PatientEmail = PatientEmail;
-        this.DoctorEmail = DoctorEmail;
-        this.ExamType = ExamType;
-        this.ExamDone = ExamDone;
-        this.ExamDate = ExamDate;
-        this.ExamResult = ExamResult;
+        this.patientEmail = PatientEmail;
+        this.doctorEmail = DoctorEmail;
+        this.examType = ExamType;
+        this.examDone = ExamDone;
+        this.examDate = ExamDate;
+        this.examResult = ExamResult;
+        this.healthServiceId = healthServiceId;
+        this.ticket = ticket;
+        this.examPrescriptionId = examPrescriptionId;
     }
 
     public Integer getExamID() {
@@ -31,59 +38,83 @@ public class Exam {
     }
 
     public String getPatientEmail() {
-        return PatientEmail;
+        return patientEmail;
     }
 
     public void setPatientEmail(String patientEmail) {
-        PatientEmail = patientEmail;
+        patientEmail = patientEmail;
     }
 
     public String getDoctorEmail() {
-        return DoctorEmail;
+        return doctorEmail;
     }
 
     public void setDoctorEmail(String doctorEmail) {
-        DoctorEmail = doctorEmail;
+        this.doctorEmail = doctorEmail;
     }
 
     public Integer getExamType() {
-        return ExamType;
+        return examType;
     }
 
     public void setExamType(Integer examType) {
-        ExamType = examType;
+        this.examType = examType;
     }
 
     public Boolean getExamDone() {
-        return ExamDone;
+        return examDone;
     }
 
     public void setExamDone(Boolean examDone) {
-        ExamDone = examDone;
+        this.examDone = examDone;
     }
 
-    public Date getExamDate() {
-        return ExamDate;
+    public Timestamp getExamDate() {
+        return examDate;
     }
 
-    public void setExamDate(Date examDate) {
-        ExamDate = examDate;
+    public void setExamDate(Timestamp examDate) {
+        this.examDate = examDate;
     }
 
     public String getExamResult() {
-        return ExamResult;
+        return examResult;
     }
 
     public void setExamResult(String examResult) {
-        ExamResult = examResult;
+        this.examResult = examResult;
+    }
+
+    public Integer getHealthServiceId(){
+        return healthServiceId;
+    }
+
+    public void setHealthServiceId(Integer healthServiceId){
+        this.healthServiceId = healthServiceId;
+    }
+
+    public Integer getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Integer ticket) {
+        this.ticket = ticket;
+    }
+
+    public Integer getExamPrescriptionId() {
+        return examPrescriptionId;
+    }
+
+    public void setExamPrescriptionId(Integer examPrescriptionId) {
+        this.examPrescriptionId = examPrescriptionId;
     }
 
     public String getExamDescription() {
-        return ExamDescription;
+        return examDescription;
     }
 
     public void setExamDescription(String examDescription) {
-        ExamDescription = examDescription;
+        this.examDescription = examDescription;
     }
 
 

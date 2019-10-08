@@ -1,4 +1,5 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
+
 import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Prescription;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
@@ -22,20 +23,12 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     final private String FINDBYPRACTITIONER = "SELECT * FROM  prescription WHERE practitionerid = ?;";
     final private String FINDEXPIRED = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' < now();";
     final private String FINDVALID = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' >= now();";
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCPrescriptionDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(Prescription prescription) {
+    public void insert(Prescription prescription) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, prescription.getPrescriptionPractitioner());
@@ -47,14 +40,13 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting Prescription: " + e.getMessage());
+            throw new DAOException("Error inserting Prescription: ", e);
         }
-        // Connection and Prepared Statement automatically closed
 
     }
 
     @Override
-    public void update(Prescription prescription) {
+    public void update(Prescription prescription) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, prescription.getPrescriptionPractitioner());
@@ -66,23 +58,23 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating prescription: " + e.getMessage());
+            throw new DAOException("Error updating prescription: ", e);
         }
     }
 
     @Override
-    public void delete(Prescription prescription) {
+    public void delete(Prescription prescription) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setInt(1, prescription.getPrescriptionID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting Prescription by ID: " + e.getMessage());
-        };
+            throw new DAOException("Error deleting Prescription by ID: ", e);
+        }
     }
 
     @Override
-    public Prescription getByPrimaryKey(Integer prescriptionID) {
+    public Prescription getByPrimaryKey(Integer prescriptionID) throws DAOException {
         Prescription res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
             stm.setInt(1, prescriptionID);
@@ -94,14 +86,14 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting prescription by id: " + e.getMessage());
+            throw new DAOException("Error getting prescription by id: ", e);
         }
         return null;
     }
 
     @Override
-    public List<Prescription> getByPatient(String patientEmail) {
-        List<Prescription> res = new ArrayList<Prescription>();
+    public List<Prescription> getByPatient(String patientEmail) throws DAOException {
+        List<Prescription> res = new ArrayList<>();
         Prescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
             stm.setString(1, patientEmail);
@@ -114,13 +106,12 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Prescription by Patient: " + e.getMessage());
+            throw new DAOException("Error getting Prescription by Patient: ", e);
         }
-        return null;
     }
 
-    public List<Prescription> getByPractitioner(String practitionerEmail){
-        List<Prescription> res = new ArrayList<Prescription>();
+    public List<Prescription> getByPractitioner(String practitionerEmail) throws DAOException {
+        List<Prescription> res = new ArrayList<>();
         Prescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
             stm.setString(1, practitionerEmail);
@@ -133,13 +124,12 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Prescription by Practitioner: " + e.getMessage());
+            throw new DAOException("Error getting Prescription by Practitioner: ", e);
         }
-        return null;
     }
 
-    public List<Prescription> getExpired(){
-        List<Prescription> res = new ArrayList<Prescription>();
+    public List<Prescription> getExpired() throws DAOException {
+        List<Prescription> res = new ArrayList<>();
         Prescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDEXPIRED)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -150,13 +140,13 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting expired Prescriptions: " + e.getMessage());
+            throw new DAOException("Error getting expired Prescriptions: ", e);
         }
-        return null;
     }
 
-    public List<Prescription> getValid(){
-        List<Prescription> res = new ArrayList<Prescription>();
+    public List<Prescription> getValid() throws DAOException {
+        List<Prescription> res;
+        res = new ArrayList<>();
         Prescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDVALID)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -167,9 +157,8 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting valid Prescriptions: " + e.getMessage());
+            throw new DAOException("Error getting valid Prescriptions: ", e);
         }
-        return null;
     }
 
     @Override
@@ -182,14 +171,14 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting Prescriptions: " + e.getMessage());
+            throw new DAOException("Error counting Prescriptions: ", e);
         }
         return res;
     }
 
     @Override
     public List<Prescription> getAll() throws DAOException {
-        List<Prescription> res = new ArrayList<Prescription>();
+        List<Prescription> res = new ArrayList<>();
         Prescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -200,9 +189,8 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all Prescriptions: " + e.getMessage());
+            throw new DAOException("Error getting all Prescriptions: ", e);
         }
-        return null;
     }
 }
 

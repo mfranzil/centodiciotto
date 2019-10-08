@@ -21,19 +21,12 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     final private String DELETE = "DELETE FROM chemist WHERE email = ?;";
     final private String UPDATE = "UPDATE chemist SET (name, chemist_province) = (?, ?) WHERE email = ?;";
 
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCChemistDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(Chemist chemist) {
+    public void insert(Chemist chemist) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, chemist.getEmail());
@@ -44,14 +37,12 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting Chemist: " + e.getMessage());
+            throw new DAOException("Error inserting Chemist: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
     }
 
     @Override
-    public void update(Chemist chemist) {
+    public void update(Chemist chemist) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, chemist.getName());
@@ -62,58 +53,56 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating Chemist: " + e.getMessage());
+            throw new DAOException("Error updating Chemist: ", e);
         }
     }
 
     @Override
-    public void delete(Chemist chemist) {
+    public void delete(Chemist chemist) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, chemist.getEmail());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting Chemist by email: " + e.getMessage());
-        };
+            throw new DAOException("Error deleting Chemist by email: ", e);
+        }
     }
 
     @Override
-    public Chemist getByPrimaryKey(String email) {
+    public Chemist getByPrimaryKey(String email) throws DAOException {
         Chemist res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new Chemist(rs.getString("email"), "","", rs.getString("name"), rs.getString("chemist_province"));
+                    res = new Chemist(rs.getString("email"), "", "", rs.getString("name"), rs.getString("chemist_province"));
                     return res;
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Chemist by email: " + e.getMessage());
+            throw new DAOException("Error getting Chemist by email: ", e);
         }
         return null;
     }
 
     @Override
-    public List<Chemist> getByProvince(String province_abbreviation) {
-        List<Chemist> res = new ArrayList<Chemist>();
+    public List<Chemist> getByProvince(String province_abbreviation) throws DAOException {
+        List<Chemist> res = new ArrayList<>();
         Chemist tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
             stm.setString(1, province_abbreviation);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Chemist(rs.getString("email"), "", "",rs.getString("name"), rs.getString("chemist_province"));
+                    tmp = new Chemist(rs.getString("email"), "", "", rs.getString("name"), rs.getString("chemist_province"));
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Chemist by Province: " + e.getMessage());
+            throw new DAOException("Error getting Chemist by Province: ", e);
         }
-        return null;
-
     }
 
     @Override
@@ -126,27 +115,27 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting Chemists: " + e.getMessage());
+            throw new DAOException("Error counting Chemists: ", e);
         }
         return res;
     }
 
     @Override
     public List<Chemist> getAll() throws DAOException {
-        List<Chemist> res = new ArrayList<Chemist>();
+        List<Chemist> res;
+        res = new ArrayList<>();
         Chemist tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Chemist(rs.getString("email"), "","", rs.getString("name"), rs.getString("chemist_province"));
+                    tmp = new Chemist(rs.getString("email"), "", "", rs.getString("name"), rs.getString("chemist_province"));
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all Chemists: " + e.getMessage());
+            throw new DAOException("Error getting all Chemists: ", e);
         }
-        return null;
     }
 }
 

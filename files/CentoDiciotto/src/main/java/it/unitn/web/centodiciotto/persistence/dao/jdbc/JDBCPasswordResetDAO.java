@@ -26,7 +26,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     }
 
     @Override
-    public void insert(PasswordReset passwordReset) {
+    public void insert(PasswordReset passwordReset) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, passwordReset.getEmail());
@@ -37,12 +37,12 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting PasswordReset: " + e.getMessage());
+            throw new DAOException("Error inserting PasswordReset: ", e);
         }
     }
 
     @Override
-    public void update(PasswordReset passwordReset) {
+    public void update(PasswordReset passwordReset) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, passwordReset.getToken());
@@ -53,12 +53,12 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating PasswordReset: " + e.getMessage());
+            throw new DAOException("Error updating PasswordReset: ", e);
         }
     }
 
     @Override
-    public void delete(PasswordReset passwordReset) {
+    public void delete(PasswordReset passwordReset) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(DELETE);
             preparedStatement.setString(1, passwordReset.getEmail());
@@ -67,12 +67,12 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error deleting PasswordReset: " + e.getMessage());
+            throw new DAOException("Error deleting PasswordReset: ", e);
         }
     }
 
     @Override
-    public PasswordReset getByToken(String token) {
+    public PasswordReset getByToken(String token) throws DAOException {
         PasswordReset res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYTOKEN)) {
             stm.setString(1, token);
@@ -87,7 +87,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting PasswordReset by token: " + e.getMessage());
+            throw new DAOException("Error getting PasswordReset by token: ", e);
         }
         return null;
     }
@@ -102,7 +102,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting PasswordResets: " + e.getMessage());
+            throw new DAOException("Error counting PasswordResets: ", e);
         }
         return res;
     }
@@ -123,14 +123,14 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting PasswordReset by email: " + e.getMessage());
+            throw new DAOException("Error getting PasswordReset by email: ", e);
         }
         return null;
     }
 
     @Override
     public List<PasswordReset> getAll() throws DAOException {
-        List<PasswordReset> res = new ArrayList<PasswordReset>();
+        List<PasswordReset> res = new ArrayList<>();
         PasswordReset tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -143,8 +143,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all PasswordResets: " + e.getMessage());
+            throw new DAOException("Error getting all PasswordResets: ", e);
         }
-        return null;
     }
 }

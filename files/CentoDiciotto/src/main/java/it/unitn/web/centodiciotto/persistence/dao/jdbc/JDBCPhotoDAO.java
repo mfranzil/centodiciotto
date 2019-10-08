@@ -39,7 +39,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    public void insert(Photo photo) {
+    public void insert(Photo photo) throws DAOException {
 
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
@@ -52,12 +52,12 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             photo.setPhotoId(photoId);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting Photo: " + e.getMessage());
+            throw new DAOException("Error inserting Photo: ", e);
         }
     }
 
     @Override
-    public void update(Photo photo) {
+    public void update(Photo photo) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setTimestamp(1, photo.getUploadDate());
@@ -67,29 +67,28 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating Photo: " + e.getMessage());
+            throw new DAOException("Error updating Photo: ", e);
         }
     }
 
     @Override
-    public void delete(Photo photo) {
+    public void delete(Photo photo) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setInt(1, photo.getPhotoId());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting Photo: " + e.getMessage());
+            throw new DAOException("Error deleting Photo: ", e);
         }
     }
 
 
     public Photo mapRowToPhoto(ResultSet resultSet) throws SQLException {
-        Photo photo = new Photo(
+        return new Photo(
                 resultSet.getInt("photo_id"),
                 resultSet.getString("email"),
                 resultSet.getTimestamp("upload_date")
         );
-        return photo;
     }
 
     @Override
@@ -102,7 +101,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting Photos: " + e.getMessage());
+            throw new DAOException("Error counting Photos: ", e);
         }
         return res;
     }
@@ -119,7 +118,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Photo:" + e.getMessage());
+            throw new DAOException("Error getting Photo:", e);
         }
         return photo;
     }
@@ -138,9 +137,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
                 return photos;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all Photos: " + e.getMessage());
+            throw new DAOException("Error getting all Photos: ", e);
         }
-        return null;
     }
 
 
@@ -161,12 +159,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
                         rs.getTimestamp("upload_date"));
             }
         } catch (SQLException e) {
-            System.err.println("Error retrieving current photo: " + e.getMessage());
-            photo = null;
+            throw new DAOException("Error retrieving current photo: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
-
         return photo;
     }
 
@@ -190,10 +184,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             }
 
         } catch (SQLException e) {
-            System.err.println("Error retrieving all photos: " + e.getMessage());
+            throw new DAOException("Error retrieving all photos: ", e);
         }
         return photos;
     }
-
-
 }

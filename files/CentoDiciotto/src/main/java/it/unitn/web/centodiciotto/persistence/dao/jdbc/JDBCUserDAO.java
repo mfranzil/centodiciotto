@@ -25,7 +25,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     }
 
     @Override
-    public void insert(User user) {
+    public void insert(User user) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, user.getEmail());
@@ -36,12 +36,12 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting user: " + e.getMessage());
+            throw new DAOException("Error inserting user: ", e);
         }
     }
 
     @Override
-    public void update(User user) {
+    public void update(User user) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, user.getHash());
@@ -52,20 +52,21 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating user: " + e.getMessage());
+            throw new DAOException("Error updating user: ", e);
         }
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(User user) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, user.getEmail());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting User by email: " + e.getMessage());
+            throw new DAOException("Error deleting User by email: ", e);
         }
     }
+
     @Override
     public User getByPrimaryKey(String primaryKey) throws DAOException {
         User res;
@@ -82,7 +83,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting User by email: " + e.getMessage());
+            throw new DAOException("Error getting User by email: ", e);
         }
         return null;
     }
@@ -97,14 +98,14 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting Users: " + e.getMessage());
+            throw new DAOException("Error counting Users: ", e);
         }
         return res;
     }
 
     @Override
     public List<User> getAll() throws DAOException {
-        List<User> res = new ArrayList<User>();
+        List<User> res = new ArrayList<>();
         User tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -115,8 +116,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all Users: " + e.getMessage());
+            throw new DAOException("Error getting all Users: ", e);
         }
-        return null;
     }
 }

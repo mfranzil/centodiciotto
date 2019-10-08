@@ -1,8 +1,10 @@
 package it.unitn.web.centodiciotto.persistence;
 
+import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
@@ -23,6 +25,7 @@ public class DAOMain {
 
             PhotoDAO photoDAO = daoFactory.getDAO(PhotoDAO.class);
             PatientDAO patientDAO = daoFactory.getDAO(PatientDAO.class);
+            ExamDAO examDAO = daoFactory.getDAO(ExamDAO.class);
 
             String email =  "dionisia.monaldo@gmail.com";
             Patient patient = patientDAO.getByPrimaryKey(email);
@@ -37,6 +40,9 @@ public class DAOMain {
             for (Photo photo : photos){
                 System.out.println("- id: " + photo.getPhotoId());
             }
+
+            Exam exam = examDAO.getByPrimaryKey(1);
+            System.out.println(exam.getExamType());
 
 
         } catch (DAOFactoryException | DAOException e) {

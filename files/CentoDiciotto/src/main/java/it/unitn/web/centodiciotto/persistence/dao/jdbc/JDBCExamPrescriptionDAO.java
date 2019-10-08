@@ -20,20 +20,12 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     final private String SELECTALL = "SELECT * FROM exam_prescription;";
     final private String DELETE = "DELETE FROM exam_prescription WHERE exam_prescription_id = ?;";
     final private String UPDATE = "UPDATE exam_prescription SET (practitioner_id, patient_id, exam_type, booked) =  (?, ?, ?, ?) WHERE exam_prescription_id = ?;";
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCExamPrescriptionDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(ExamPrescription examPrescription) {
+    public void insert(ExamPrescription examPrescription) throws DAOException {
         try {
             //(patient_id, doctor_id, exam_type, done, date, result )
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
@@ -46,14 +38,14 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting ExamPrescription: " + e.getMessage());
+            throw new DAOException("Error inserting ExamPrescription: ", e);
         }
         // Connection and Prepared Statement automatically closed
 
     }
 
     @Override
-    public void update(ExamPrescription examPrescription) {
+    public void update(ExamPrescription examPrescription) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, examPrescription.getPractitionerEmail());
@@ -66,23 +58,23 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating ExamPrescription: " + e.getMessage());
+            throw new DAOException("Error updating ExamPrescription: ", e);
         }
     }
 
     @Override
-    public void delete(ExamPrescription examPrescription) {
+    public void delete(ExamPrescription examPrescription) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setInt(1, examPrescription.getPrescriptionID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting ExamPrescription by ID: " + e.getMessage());
-        };
+            throw new DAOException("Error deleting ExamPrescription by ID: ", e);
+        }
     }
 
     @Override
-    public ExamPrescription getByPrimaryKey(Integer ExamPrescriptionID) {
+    public ExamPrescription getByPrimaryKey(Integer ExamPrescriptionID) throws DAOException {
         ExamPrescription res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
             stm.setInt(1, ExamPrescriptionID);
@@ -94,14 +86,14 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting ExamPrescription by ID: " + e.getMessage());
+            throw new DAOException("Error getting ExamPrescription by ID: ", e);
         }
         return null;
     }
 
     @Override
-    public List<ExamPrescription> getByPatient(String PatientEmail){
-        List<ExamPrescription> res = new ArrayList<ExamPrescription>();
+    public List<ExamPrescription> getByPatient(String PatientEmail) throws DAOException {
+        List<ExamPrescription> res = new ArrayList<>();
         ExamPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
             stm.setString(1, PatientEmail);
@@ -114,10 +106,8 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting ExamPrescriptions by PatientID: " + e.getMessage());
+            throw new DAOException("Error getting ExamPrescriptions by PatientID: ", e);
         }
-        return null;
-
     }
 
     @Override
@@ -130,14 +120,14 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting ExamsPrescriptions: " + e.getMessage());
+            throw new DAOException("Error counting ExamsPrescriptions: ", e);
         }
         return res;
     }
 
     @Override
     public List<ExamPrescription> getAll() throws DAOException {
-        List<ExamPrescription> res = new ArrayList<ExamPrescription>();
+        List<ExamPrescription> res = new ArrayList<>();
         ExamPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -148,9 +138,8 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all ExamPrescriptions: " + e.getMessage());
+            throw new DAOException("Error getting all ExamPrescriptions: ", e);
         }
-        return null;
     }
 }
 

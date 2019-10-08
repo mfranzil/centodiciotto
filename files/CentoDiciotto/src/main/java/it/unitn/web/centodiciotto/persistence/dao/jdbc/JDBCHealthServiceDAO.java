@@ -19,20 +19,12 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String SELECTALL = "SELECT * FROM health_service;";
     final private String DELETE = "DELETE FROM health_service WHERE email = ?;";
     final private String UPDATE = "UPDATE health_service SET (operating_province) = (?) WHERE email = ?;";
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCHealthServiceDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(HealthService healthService) {
+    public void insert(HealthService healthService) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, healthService.getEmail());
@@ -42,14 +34,12 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting Health Service: " + e.getMessage());
+            throw new DAOException("Error inserting Health Service: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
     }
 
     @Override
-    public void update(HealthService healthService) {
+    public void update(HealthService healthService) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, healthService.getOperatingProvince());
@@ -59,36 +49,36 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating HealthService: " + e.getMessage());
+            throw new DAOException("Error updating HealthService: ", e);
         }
     }
 
     @Override
-    public void delete(HealthService healthService) {
+    public void delete(HealthService healthService) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setString(1, healthService.getEmail());
 
             ResultSet rs = stm.executeQuery();
-           int row = stm.executeUpdate();
+            int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting HealthService by email: " + e.getMessage());
-        };
+            throw new DAOException("Error deleting HealthService by email: ", e);
+        }
     }
 
     @Override
-    public HealthService getByPrimaryKey(String email) {
+    public HealthService getByPrimaryKey(String email) throws DAOException {
         HealthService res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new HealthService(rs.getString("email"), "","", rs.getString("operating_province"));
+                    res = new HealthService(rs.getString("email"), "", "", rs.getString("operating_province"));
                     return res;
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting Health Service by email: " + e.getMessage());
+            throw new DAOException("Error getting Health Service by email: ", e);
         }
         return null;
     }
@@ -103,27 +93,26 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting HealthServices: " + e.getMessage());
+            throw new DAOException("Error counting HealthServices: ", e);
         }
         return res;
     }
 
     @Override
     public List<HealthService> getAll() throws DAOException {
-        List<HealthService> res = new ArrayList<HealthService>();
+        List<HealthService> res = new ArrayList<>();
         HealthService tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new HealthService(rs.getString("email"), "","", rs.getString("operating_province"));
+                    tmp = new HealthService(rs.getString("email"), "", "", rs.getString("operating_province"));
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all HealthServices: " + e.getMessage());
+            throw new DAOException("Error getting all HealthServices: ", e);
         }
-        return null;
     }
 }
 

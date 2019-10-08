@@ -1,23 +1,24 @@
 package it.unitn.web.centodiciotto.persistence.dao;
 
-import it.unitn.web.persistence.dao.DAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.persistence.dao.DAO;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface PatientDAO extends DAO<Patient, String> {
 
-    public void insert(Patient patient);
+    void insert(Patient patient) throws DAOException;
 
-    public void update(Patient patient);
+    void update(Patient patient) throws DAOException;
 
-    public void delete(Patient patient);
+    void delete(Patient patient) throws DAOException;
 
-    public Patient getByPrimaryKey(String email);
+    Patient getByPrimaryKey(String email) throws DAOException;
 
-    public Patient mapRowToPatient(ResultSet resultSet) throws SQLException;
+    Patient mapRowToPatient(ResultSet resultSet) throws SQLException;
 
-    void updatePractitioner(Patient patient);
+    void updatePractitioner(Patient patient) throws DAOException;
 }
 

@@ -70,7 +70,7 @@
                     <div class="table-cell ssn">SSN</div>
                     <div class="table-cell action"></div>
                 </div>
-                <div class="table-personal" id="table-select">
+                <div class="table-personal">
                     <div class="table-cell avt">
                         <img class="avatar-small"
                              src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"

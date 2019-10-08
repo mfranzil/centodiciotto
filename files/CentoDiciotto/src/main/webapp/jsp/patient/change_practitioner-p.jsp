@@ -3,7 +3,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<% List<GeneralPractitioner> available_practitioners = (List<GeneralPractitioner>) request.getAttribute("available_practitioners"); %>
+<% List<GeneralPractitioner> available_practitioners = (List<GeneralPractitioner>) request.getAttribute("available_practitioners");
+    GeneralPractitioner mypractitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script>
         $("document").ready(function () {
-            $('#table-select tr').click(function () {
+            $('#table-select div').click(function () {
                 $(this).find('input[type=radio]').prop('checked', true);
                 $('#submit').removeAttr("disabled");
             });
@@ -32,9 +33,9 @@
                     cache: false,
                     data: form.serialize(),
                     success: function (data) {
-                        $("#current-practitioner").css("background-color", "");
+                        $("#current-practitioner").removeClass("chosen-practitioner");
                         $("#check").html("");
-                        pract.parent().html("✔").parent().css("background-color", "rgba(120,255,120,0.3)");
+                        pract.parent().html("✔").parent().addClass("chosen-practitioner");
                         $('#message').html("Your practitioner change request has been receieved. " +
                             "You will receive a confirmation email soon.");
                         $('#submit,#current-practitioner,#available').slideUp();
@@ -44,6 +45,22 @@
             });
         });
     </script>
+    <style>
+        @media (min-width: 992px) {
+            /* Tabella principale */
+            .table-cell.name {
+                width: 50%;
+            }
+
+            .table-cell.province {
+                width: 25%;
+            }
+
+            .table-cell.action {
+                width: 25%;
+            }
+        }
+    </style>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -64,18 +81,14 @@
                 <h3 class="my-4">
                     Your general practitioner
                 </h3>
-                <table id="current-practitioner" class="table" style="background-color: rgba(120,255,120,0.3)">
-                    <% GeneralPractitioner mypractitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
-                    <tr>
-                        <td><%= mypractitioner.getFirstName() %>
-                        </td>
-                        <td><%= mypractitioner.getLastName() %>
-                        </td>
-                        <td><%= mypractitioner.getWorkingProvince() %>
-                        </td>
-                        <td id="check">✔</td>
-                    </tr>
-                </table>
+                <div id="current-practitioner" class="table-personal chosen-practitioner">
+                    <div class="table-cell name"><%= mypractitioner.getFirstName() %>&nbsp;<%= mypractitioner.getLastName() %>
+                    </div>
+                    <div class="table-cell province"><%= mypractitioner.getWorkingProvince() %>
+                    </div>
+                    <div id="check" class="table-cell action">✔</div>
+                </div>
+
                 <h3 id="available" class="my-4">
                     Available practitioners
                 </h3>
@@ -90,24 +103,24 @@
                             I want to change my practitioner
                         </button>
                     </div>
-                    <table class="table table-hover" id="table-select">
+                    <div id="table-select">
                         <% for (GeneralPractitioner available_practitioner : available_practitioners) {
                             if (available_practitioner.getEmail().compareTo(mypractitioner.getEmail()) != 0) {%>
-                        <tr id="<%=available_practitioner.getEmail()%>">
-                            <td><%= available_practitioner.getFirstName() %>
-                            </td>
-                            <td><%= available_practitioner.getLastName() %>
-                            </td>
-                            <td><%= available_practitioner.getWorkingProvince() %>
-                            </td>
-                            <td>
+                        <div id="<%=available_practitioner.getEmail()%>" class="table-personal">
+                            <div class="table-cell name">
+                                <%= available_practitioner.getFirstName() %>&nbsp;<%= available_practitioner.getLastName() %>
+                            </div>
+                            <div class="table-cell province"><%= available_practitioner.getWorkingProvince() %>
+                            </div>
+                            <div class="table-cell action">
                                 <input type="radio" name="practitioner_email"
                                        value="<%=available_practitioner.getEmail()%>">
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
+                        <hr>
                         <% }
                         }%>
-                    </table>
+                    </div>
                 </form>
             </div>
         </div>

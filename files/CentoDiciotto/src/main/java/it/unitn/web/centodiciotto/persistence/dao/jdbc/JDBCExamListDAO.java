@@ -1,8 +1,6 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
-import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
-import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
@@ -21,22 +19,13 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     final private String SELECTALL = "SELECT * FROM exams_list;";
     final private String DELETE = "DELETE FROM exams_list WHERE exam_id = ?;";
     final private String UPDATE = "UPDATE exams_list SET (exam_description) =  (?) WHERE exam_id = ?;";
-
-    /**
-     * The base constructor for all the JDBC DAOs.
-     *
-     * @param con the internal {@code Connection}.
-     * @author Stefano Chirico
-     * @since 1.0.0.190406
-     */
     public JDBCExamListDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(ExamList exam_list) {
+    public void insert(ExamList exam_list) throws DAOException {
         try {
-            //(patient_id, doctor_id, exam_type, done, date, result )
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setInt(1, exam_list.getExamID());
 
@@ -44,14 +33,12 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error inserting exam_list: " + e.getMessage());
+            throw new DAOException("Error inserting exam_list: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
     }
 
     @Override
-    public void update(ExamList exam_list) {
+    public void update(ExamList exam_list) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, exam_list.getExamDescription());
@@ -61,23 +48,23 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            System.err.println("Error updating Exam_list: " + e.getMessage());
+            throw new DAOException("Error updating Exam_list: ", e);
         }
     }
 
     @Override
-    public void delete(ExamList exam_list) {
+    public void delete(ExamList exam_list) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setInt(1, exam_list.getExamID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error deleting Exam_list by ID: " + e.getMessage());
-        };
+            throw new DAOException("Error deleting Exam_list by ID: ", e);
+        }
     }
 
     @Override
-    public ExamList getByPrimaryKey(Integer ExamID) {
+    public ExamList getByPrimaryKey(Integer ExamID) throws DAOException {
         ExamList res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
             stm.setInt(1, ExamID);
@@ -89,7 +76,7 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error getting ExamList by ID: " + e.getMessage());
+            throw new DAOException("Error getting ExamList by ID: ", e);
         }
         return null;
     }
@@ -104,14 +91,14 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error counting Exams: " + e.getMessage());
+            throw new DAOException("Error counting Exams: ", e);
         }
         return res;
     }
 
     @Override
     public List<ExamList> getAll() throws DAOException {
-        List<ExamList> res = new ArrayList<ExamList>();
+        List<ExamList> res = new ArrayList<>();
         ExamList tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
@@ -122,9 +109,8 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
                 return res;
             }
         } catch (SQLException e) {
-            System.err.println("Error getting all ExamsList: " + e.getMessage());
+            throw new DAOException("Error getting all ExamsList: ", e);
         }
-        return null;
     }
 }
 

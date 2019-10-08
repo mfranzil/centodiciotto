@@ -2,14 +2,14 @@ package it.unitn.web.centodiciotto.persistence.entities;
 
 public class User {
     protected String email;
-    protected String hash;
-    protected String salt;
+    private String hash;
+    private String salt;
 
-    public User(String email){
+    public User(String email) {
         this.email = email;
         this.hash = "";
         this.salt = "";
-    };
+    }
 
     public User(String email, String hash, String salt) {
         this.email = email;
@@ -19,10 +19,6 @@ public class User {
 
     public String getSalt() {
         return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
     }
 
     public String getEmail() {
@@ -36,10 +32,4 @@ public class User {
     public String getHash() {
         return hash;
     }
-
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
-
 }

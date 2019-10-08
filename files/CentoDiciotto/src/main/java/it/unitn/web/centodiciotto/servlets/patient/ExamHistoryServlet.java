@@ -40,14 +40,19 @@ public class ExamHistoryServlet extends HttpServlet {
 
         if (user != null) {
             if (user instanceof Patient) {
-                List<Exam> exams_history = examDAO.getByPatient(((Patient) user).getEmail());
-                // Since Exam description is in another table, here I join everything together
-                for (Exam exam : exams_history) {
-                    try {
-                        exam.setExamDescription(examListDAO.getByPrimaryKey(exam.getExamType()).getExamDescription());
-                    } catch (DAOException e) {
-                        e.printStackTrace();
+                List<Exam> exams_history = null;
+                try {
+                    exams_history = examDAO.getByPatient(((Patient) user).getEmail());
+                    // Since Exam description is in another table, here I join everything together
+                    for (Exam exam : exams_history) {
+                        try {
+                            exam.setExamDescription(examListDAO.getByPrimaryKey(exam.getExamType()).getExamDescription());
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
                     }
+                } catch (DAOException e) {
+                    e.printStackTrace();
                 }
                 request.setAttribute("exams", exams_history);
 
