@@ -138,8 +138,8 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Integer> implemen
     public PendingVisit mapRowToExam(ResultSet rs) throws SQLException {
         PendingVisit pendingVisit = new PendingVisit(
                 rs.getInt("pending_visit_id"),
-                rs.getString("practitioner_id"),
-                rs.getString("patient_id"));
+                rs.getString("patient_id"),
+                rs.getString("practitioner_id"));
         return pendingVisit;
     }
 }

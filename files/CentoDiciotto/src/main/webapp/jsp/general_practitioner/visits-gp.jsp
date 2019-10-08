@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -5,6 +6,25 @@
     <title>Visits - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/popup.js"></script>
+    <style>
+        @media (min-width: 992px) {
+            .table-cell.image {
+                width: 10%;
+            }
+
+            .table-cell.patient {
+                width: 30%;
+            }
+
+            .table-cell.ssn {
+                width: 30%;
+            }
+
+            .table-cell.action {
+                width: 30%;
+            }
+        }
+    </style>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -20,23 +40,23 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th scope="col">&nbsp;</th>
-                        <th scope="col">Patient</th>
-                        <th scope="col">SSN</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
+                <div class="table-personal table-header">
+                    <div class="table-cell image">&nbsp;</div>
+                    <div class="table-cell patient">Patient</div>
+                    <div class="table-cell ssn">SSN</div>
+                    <div class="table-cell action">Report</div>
+                </div>
+                <% List<Patient> patients = (List<Patient>) request.getAttribute("pending_patients");
+                    for (Patient patient : patients) {%>
+                <div class="table-personal">
+                    <!--<div class="table-cell image"><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
-                        </td>
-                        <th scope="row">Matteo Franzil</th>
-                        <td>FRNMTT98E20I452H</td>
-                        <td>
+                    </div>!-->
+                    <div class="table-cell patient"><%= patient.getFirstName()%> <%= patient.getLastName()%>
+                    </div>
+                    <div class="table-cell ssn"><%= patient.getSsn()%>
+                    </div>
+                    <div class="table-cell action">
                             <button class="btn btn-block btn-personal popup-opener">
                                 Choose date and time
                             </button>
@@ -50,22 +70,9 @@
                                         Cancel</button>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                                 alt="">
-                        </td>
-                        <th scope="row">Alessia Marcolini</th>
-                        <td>MRCLSS98C65L781O</td>
-                        <td>
-                            <button class="btn btn-block btn-personal popup-opener">
-                                Choose date and time
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                    </div>
+                </div>
+                <% } %>
             </div>
         </div>
     </div>

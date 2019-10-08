@@ -199,7 +199,7 @@
 
     <servlet>
         <servlet-name>VisitsPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/visits-gp.jsp</jsp-file>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitRequestServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>VisitsCalendarPractitioner</servlet-name>
