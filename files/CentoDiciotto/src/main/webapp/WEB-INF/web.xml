@@ -152,7 +152,7 @@
 
     <servlet>
         <servlet-name>Visits</servlet-name>
-        <jsp-file>/jsp/patient/visits-p.jsp</jsp-file>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.VisitServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Visits</servlet-name>

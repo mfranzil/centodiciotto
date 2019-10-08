@@ -1,9 +1,11 @@
+<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Book your visit - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/popup.js"></script>
     <style>
         @media (min-width: 992px) {
             .table-cell.practitioner {
@@ -30,13 +32,15 @@
 <div class="jumbotron mt-4">
     <h1>Book a visit!</h1>
     <p class="lead mt-4 mx-4">
-        Here you can book a visit to your practitioner.
+        Here you can book a visit to your practitioner:
     </p>
 </div>
 
 <div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
-        <h4>Gino Perna</h4>
+        <% GeneralPractitioner practitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
+        <h3><%= practitioner.getFirstName()%>  <%= practitioner.getLastName()%>
+        </h3>
         <button type="button" class="btn btn-block btn-personal">Book now</button>
     </div>
 </div>
@@ -59,24 +63,34 @@
                     <div class="table-cell report-state">Report State</div>
                     <div class="table-cell action">Report</div>
                 </div>
+                <% List<Visit> visits = (List<Visit>) request.getAttribute("visits");
+                    for (Visit visit : visits) {%>
                 <div class="table-personal">
-                    <div class="table-cell practitioner">Gino Perna</div>
-                    <div class="table-cell date">23/07/2019</div>
-                    <div class="table-cell report-state">Not available</div>
+                    <div class="table-cell practitioner"><%= practitioner.getFirstName()%>  <%= practitioner.getLastName()%>
+                    </div>
+                    <div class="table-cell date"><%= visit.getVisitDate()%>
+                    </div>
+                    <div class="table-cell report-state"><% if (visit.getReportAvailable()) { %>Available <%} else {%>
+                        Not Available <%}%></div>
                     <div class="table-cell action">
-                        <button type="button" class="btn btn-block btn-personal" disabled>See Report</button>
+                        <button type="button"
+                                class="btn btn-block btn-personal popup-opener" <% if (!visit.getReportAvailable()) { %>
+                                disabled <%}%> >See Report
+                        </button>
+                        <div class="popup-window">
+                            <div class="popup animate-in">
+                                <div>
+                                    <h5>Visit report:</h5>
+                                    <br><br>
+                                    <p><%= visit.getReport()%>
+                                    </p>
+                                </div>
+                                <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <hr>
-                <div class="table-personal">
-                    <div class="table-cell practitioner">Luigi Verdi</div>
-                    <div class="table-cell date">02/03/2018</div>
-                    <div class="table-cell report-state">Available</div>
-                    <div class="table-cell action">
-                        <button type="button" class="btn btn-block btn-personal">See Report</button>
-                    </div>
-                </div>
-                <hr>
+                <% } %>
             </div>
         </div>
     </div>
