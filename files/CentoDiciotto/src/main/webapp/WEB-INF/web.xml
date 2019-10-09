@@ -190,7 +190,7 @@
 
     <servlet>
         <servlet-name>VisitsHistoryPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/visit_history-gp.jsp</jsp-file>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitHistoryServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>VisitsHistoryPractitioner</servlet-name>

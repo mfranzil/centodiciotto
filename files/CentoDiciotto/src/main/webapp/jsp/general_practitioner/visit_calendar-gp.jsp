@@ -83,5 +83,6 @@
         </div>
             <%}%>
 </div>
+<!-- TODO: check why footer is wrong !-->
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>
