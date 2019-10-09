@@ -14,12 +14,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 public class VisitRequestServlet extends HttpServlet {
     private PendingVisitDAO pendingVisitDAO;
     private PatientDAO patientDAO;
+    private VisitDAO visitDAO;
 
     @Override
     public void init() throws ServletException {
@@ -30,6 +38,7 @@ public class VisitRequestServlet extends HttpServlet {
         try {
             pendingVisitDAO = daoFactory.getDAO(PendingVisitDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
+            visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
             e.printStackTrace();
         }
@@ -41,7 +50,7 @@ public class VisitRequestServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = ((GeneralPractitioner) user).getEmail();
+            String practitioner_email = user.getEmail();
             try {
                 List<Patient> pendingPatients = new ArrayList<>();
 
@@ -61,6 +70,25 @@ public class VisitRequestServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        User user = (User) request.getSession().getAttribute("user");
+        String practitioner_email = user.getEmail();
+        String patient_email = request.getParameter("patient_email");
+        String visit_timestamp = request.getParameter("visit_date");
+
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+        try {
+            Date date = formatter.parse(visit_timestamp);
+
+            Visit insert_visit = new Visit(null, patient_email, practitioner_email, new Timestamp(date.getTime()), false, null);
+
+            visitDAO.insert(insert_visit);
+            pendingVisitDAO.delete(new PendingVisit(patient_email, practitioner_email));
+
+        } catch (ParseException | DAOException e) {
+            e.printStackTrace();
+        }
+
         doGet(request, response);
     }
 }

@@ -5,10 +5,7 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +27,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, visit.getPractitionerEmail());
             preparedStatement.setString(2, visit.getPatientEmail());
-            preparedStatement.setDate(3, visit.getVisitDate());
+            preparedStatement.setTimestamp(3, visit.getVisitDate());
             preparedStatement.setBoolean(4, visit.getReportAvailable());
             preparedStatement.setString(5, visit.getReport());
 
@@ -48,7 +45,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, visit.getPractitionerEmail());
             preparedStatement.setString(2, visit.getPatientEmail());
-            preparedStatement.setDate(3, visit.getVisitDate());
+            preparedStatement.setTimestamp(3, visit.getVisitDate());
             preparedStatement.setBoolean(4, visit.getReportAvailable());
             preparedStatement.setString(5, visit.getReport());
             preparedStatement.setInt(6, visit.getVisitID());
@@ -146,7 +143,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
                 rs.getInt("visit_id"),
                 rs.getString("practitioner_id"),
                 rs.getString("patient_id"),
-                rs.getDate("visit_date"),
+                rs.getTimestamp("visit_date"),
                 rs.getBoolean("report_available"),
                 rs.getString("report"));
         return visit;

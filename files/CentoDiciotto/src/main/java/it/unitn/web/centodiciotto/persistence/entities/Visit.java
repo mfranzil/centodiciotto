@@ -1,16 +1,16 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Visit {
     private Integer visitID;
     private String patientEmail;
     private String practitionerEmail;
-    private Date visitDate;
+    private Timestamp visitDate;
     private Boolean reportAvailable;
     private String report;
 
-    public Visit(Integer visitID, String patientEmail, String practitionerEmail, Date visitDate, Boolean reportAvailable, String report) {
+    public Visit(Integer visitID, String patientEmail, String practitionerEmail, Timestamp visitDate, Boolean reportAvailable, String report) {
         this.visitID = visitID;
         this.patientEmail = patientEmail;
         this.practitionerEmail = practitionerEmail;
@@ -43,11 +43,11 @@ public class Visit {
         this.practitionerEmail = practitionerEmail;
     }
 
-    public Date getVisitDate() {
+    public Timestamp getVisitDate() {
         return visitDate;
     }
 
-    public void setVisitDate(Date visitDate) {
+    public void setVisitDate(Timestamp visitDate) {
         this.visitDate = visitDate;
     }
 
