@@ -38,11 +38,14 @@
 
 <div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
-        <% GeneralPractitioner practitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
+        <% GeneralPractitioner practitioner = (GeneralPractitioner) session.getAttribute("practitioner");
+            Boolean already_booked = (Boolean) request.getAttribute("already_booked"); %>
         <h3><%= practitioner.getFirstName()%>  <%= practitioner.getLastName()%>
         </h3>
         <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book_visit" method="post">
-        <button id="booknow"  class="btn btn-block btn-personal" type="submit" >Book now</button>
+            <button id="booknow" class="btn btn-block btn-personal" type="submit" <% if (already_booked) {%> disabled>
+                Already booked<% } else { %>>Book Now<%}%>
+            </button>
         </form>
     </div>
 </div>

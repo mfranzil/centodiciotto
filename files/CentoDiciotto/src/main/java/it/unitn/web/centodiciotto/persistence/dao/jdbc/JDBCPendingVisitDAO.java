@@ -4,6 +4,7 @@ import it.unitn.web.centodiciotto.persistence.dao.PendingVisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.PendingVisit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
+import it.unitn.web.utils.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,14 +13,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Integer> implements PendingVisitDAO {
+public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, String>> implements PendingVisitDAO {
 
     final private String INSERT = "INSERT INTO pending_visit (practitioner_id, patient_id) values (?, ?);";
     final private String FINDBYPRACTITIONER = "SELECT * FROM pending_visit WHERE practitioner_id = ?;";
-    final private String FINDBYID = "SELECT * FROM pending_visit WHERE pending_visit_id = ?;";
+    final private String FINDBYID = "SELECT * FROM pending_visit WHERE patient_id = ? AND practitioner_id = ?;";
     final private String SELECTALL = "SELECT * FROM pending_visit;";
-    final private String DELETE = "DELETE FROM pending_visit WHERE pending_visit_id = ?;";
-    final private String UPDATE = "UPDATE pending_visit SET (practitioner_id, patient_id)  =  (?, ?) WHERE pending_visit_id = ?;";
+    final private String DELETE = "DELETE FROM pending_visit WHERE patient_id = ?;";
+    final private String UPDATE = "UPDATE pending_visit SET (practitioner_id)  =  (?) WHERE patient_id = ?;";
     public JDBCPendingVisitDAO(Connection con) {
         super(con);
     }
@@ -45,7 +46,6 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Integer> implemen
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, pendingVisit.getPractitionerEmail());
             preparedStatement.setString(2, pendingVisit.getPatientEmail());
-            preparedStatement.setInt(3, pendingVisit.getPendingVisitID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -58,7 +58,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Integer> implemen
     @Override
     public void delete(PendingVisit pendingVisit) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, pendingVisit.getPendingVisitID());
+            stm.setString(1, pendingVisit.getPatientEmail());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -67,10 +67,11 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Integer> implemen
     }
 
     @Override
-    public PendingVisit getByPrimaryKey(Integer VisitID) throws DAOException {
+    public PendingVisit getByPrimaryKey(Pair<String, String> key) throws DAOException {
         PendingVisit res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
-            stm.setInt(1, VisitID);
+            stm.setString(1, key.getFirst());
+            stm.setString(2, key.getSecond());
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -137,7 +138,6 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Integer> implemen
 
     public PendingVisit mapRowToExam(ResultSet rs) throws SQLException {
         PendingVisit pendingVisit = new PendingVisit(
-                rs.getInt("pending_visit_id"),
                 rs.getString("patient_id"),
                 rs.getString("practitioner_id"));
         return pendingVisit;

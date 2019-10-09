@@ -1,22 +1,12 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class PendingVisit {
-    private Integer pendingVisitID;
     private String patientEmail;
     private String practitionerEmail;
 
-    public PendingVisit(Integer pendingVisitID, String patientEmail, String practitionerEmail) {
-        this.pendingVisitID = pendingVisitID;
+    public PendingVisit(String patientEmail, String practitionerEmail) {
         this.patientEmail = patientEmail;
         this.practitionerEmail = practitionerEmail;
-    }
-
-    public Integer getPendingVisitID() {
-        return pendingVisitID;
-    }
-
-    public void setPendingVisitID(Integer pendingVisitID) {
-        this.pendingVisitID = pendingVisitID;
     }
 
     public String getPatientEmail() {

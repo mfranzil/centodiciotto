@@ -1,12 +1,12 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PendingVisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -38,16 +38,22 @@ public class VisitServlet extends HttpServlet {
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
+        GeneralPractitioner practitioner = (GeneralPractitioner) request.getSession().getAttribute("practitioner");
         if (user instanceof Patient) {
             List<Visit> visits = null;
-            GeneralPractitioner practitioner = null;
+            Boolean already_booked = false;
             try {
                 visits = visitDAO.getByPatient(((Patient) user).getEmail());
+
+                Pair<String, String> key = new Pair<>(((Patient) user).getEmail(), practitioner.getEmail());
+                already_booked = (pendingVisitDAO.getByPrimaryKey(key) != null);
+
+                request.setAttribute("visits", visits);
+                request.setAttribute("already_booked", already_booked);
                 //TODO cosa succede se ho un practitioner e lo cambio? gli appuntamenti rimangono?
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-            request.setAttribute("visits", visits);
         }
         request.getRequestDispatcher("/jsp/patient/visits-p.jsp").forward(request, response);
     }
@@ -61,7 +67,7 @@ public class VisitServlet extends HttpServlet {
             String patient_email = ((Patient) user).getEmail();
             String practitioner_email = ((GeneralPractitioner) practitioner).getEmail();
 
-            PendingVisit new_visit = new PendingVisit(null, patient_email, practitioner_email);
+            PendingVisit new_visit = new PendingVisit( patient_email, practitioner_email);
 
             try {
                 pendingVisitDAO.insert(new_visit);
