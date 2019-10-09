@@ -180,8 +180,8 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>VisitsCalendarPractitioner</servlet-name>
-        <jsp-file>/jsp/general_practitioner/visit_calendar-gp.jsp</jsp-file>
+        <servlet-name>VisitsPractitioner</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitRequestServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>VisitsPractitioner</servlet-name>
@@ -198,8 +198,8 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>VisitsPractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitRequestServlet</servlet-class>
+        <servlet-name>VisitsCalendarPractitioner</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitCalendarServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>VisitsCalendarPractitioner</servlet-name>

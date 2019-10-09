@@ -10,7 +10,7 @@ public class Visit {
     private Boolean reportAvailable;
     private String report;
 
-    public Visit(Integer visitID, String patientEmail, String practitionerEmail, Timestamp visitDate, Boolean reportAvailable, String report) {
+    public Visit(Integer visitID, String practitionerEmail, String patientEmail, Timestamp visitDate, Boolean reportAvailable, String report) {
         this.visitID = visitID;
         this.patientEmail = patientEmail;
         this.practitionerEmail = practitionerEmail;

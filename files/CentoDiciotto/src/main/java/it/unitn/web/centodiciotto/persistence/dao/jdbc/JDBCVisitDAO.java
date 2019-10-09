@@ -13,6 +13,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
 
     final private String INSERT = "INSERT INTO visit (practitioner_id, patient_id, visit_date, report_available, report) values (?, ?, ?, ?, ?);";
     final private String FINDBYPATIENT = "SELECT * FROM visit WHERE patient_id = ?;";
+    final private String FINDBYPRACTITIONER = "SELECT * FROM visit WHERE practitioner_id = ?;";
     final private String FINDBYID = "SELECT * FROM visit WHERE visit_id = ?;";
     final private String SELECTALL = "SELECT * FROM visit;";
     final private String DELETE = "DELETE FROM visit WHERE visit_id = ?;";
@@ -103,6 +104,25 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting Visit by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public List<Visit> getByPractitioner(String PractitionerEmail) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
+            stm.setString(1, PractitionerEmail);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToExam(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Visit by PractitionerID: ", e);
         }
     }
 

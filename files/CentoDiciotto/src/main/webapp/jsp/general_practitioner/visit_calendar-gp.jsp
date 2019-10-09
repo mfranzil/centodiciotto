@@ -1,9 +1,40 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List" %>
+<%@ page import="it.unitn.web.utils.Pair" %>
+<%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Exam history - CentoDiciotto</title>
+    <!-- TODO change Exam history to proper title for all jsp pages !-->
+    <title>Visit calendar - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+
+    <style>
+        @media (min-width: 992px) {
+            .table-cell.image {
+                width: 10%;
+            }
+
+            .table-cell.patient {
+                width: 30%;
+            }
+
+            .table-cell.date {
+                width: 15%;
+            }
+
+            .table-cell.time {
+                width: 15%;
+            }
+
+            .table-cell.action {
+                width: 30%;
+            }
+        }
+    </style>
+
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -18,54 +49,39 @@
 
 <div class="container">
     <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
-        <thead>
-        <tr>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">Patient</th>
-            <th scope="col">Date</th>
-            <th scope="col">Time</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                     alt="">
-            </td>
-            <th scope="row">Alberto Montresor</th>
-            <td>23/07/2019</td>
-            <td>15:00</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">Mark as completed</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                     alt="">
-            </td>
-            <th scope="row">Renato Lo Cigno</th>
-            <td>20/07/2019</td>
-            <td>17:20</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>Completed</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                     alt="">
-            </td>
-            <th scope="row">Anneliese De Franceschi</th>
-            <td>18/07/2019</td>
-            <td>09:30</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal" disabled>Completed</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <div class="table-personal table-header">
+            <div class="table-cell image">&nbsp;</div>
+            <div class="table-cell patient">Patient</div>
+            <div class="table-cell date">Date</div>
+            <div class="table-cell time">Time</div>
+            <div class="table-cell action"></div>
+        </div>
+
+            <% List<Pair<Patient, Visit>> patient_visits = (List<Pair<Patient, Visit>>) request.getAttribute("patient_visits");
+            for (Pair<Patient, Visit> tmp : patient_visits) {
+                Date visit_date = new Date(tmp.getSecond().getVisitDate().getTime()); %>
+        <div class="table-personal">
+            <div class="table-cell image"><img class="avatar-small"
+                                               src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
+                                               alt="">
+            </div>
+            <div class="table-cell patient"><%= tmp.getFirst().getFirstName()%> <%= tmp.getFirst().getLastName()%>
+            </div>
+            <div class="table-cell date">
+                <c:set var="visit_date1" value="<%= visit_date %>"/>
+                <fmt:formatDate type="date" dateStyle="long" value="${visit_date1}"/>
+            </div>
+            <div class="table-cell time"><fmt:formatDate pattern = "HH:mm"  value="${visit_date1}"/>
+            </div>
+            <div class="table-cell action">
+                <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
+                      id="mark_completed" method="POST">
+                    <input type="hidden" value="<%= tmp.getSecond().getVisitID()%>" name="visit_id">
+                    <button type="submit" class="btn btn-block btn-personal " >Mark as completed</button>
+                </form>
+            </div>
+        </div>
+            <%}%>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>
