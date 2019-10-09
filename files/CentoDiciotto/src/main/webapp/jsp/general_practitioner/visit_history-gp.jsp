@@ -84,7 +84,11 @@
                 <div class="popup animate-in">
                     <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history"
                           id="set_visit" method="POST">
-                        <h6> Please enter the report in the form below, then click on submit to set it. </h6>
+                        <h5><strong>Please enter the report in the form below, then click on submit to set it.</strong> </h5>
+                        <% if (!insert) {%>
+                        <h7><strong> Old report:</strong></h7>
+                        <p> <%=tmp.getSecond().getReport()%></p>
+                        <%}%>
                         <input type="hidden" value="<%= tmp.getSecond().getVisitID()%>" name="visit_id">
                         <textarea name="report_text" placeholder="Click here to start typing"></textarea>
                         <button class="btn btn-lg btn-block btn-personal" type="submit">

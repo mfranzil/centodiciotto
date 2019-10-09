@@ -20,6 +20,7 @@
             .table-cell.action {
                 width: 25%;
             }
+
         }
     </style>
 </head>
@@ -39,10 +40,13 @@
         <form action="${pageContext.request.contextPath}/restricted/patient/exam_booking" id="exam_booking"
               method="GET">
             <select id="exam-search" name="exam-search" class="form-control select2-allow-clear" autofocus
-                    style="width: 95%">
+                    style="width: 75%">
             </select>
             <button id="message" class="btn btn-personal" type="submit">
                 <i class="fa fa-search"></i>
+            </button>
+            <button id="my_filter" class="btn btn-personal" type="button">
+                Available Exams
             </button>
         </form>
     </div>

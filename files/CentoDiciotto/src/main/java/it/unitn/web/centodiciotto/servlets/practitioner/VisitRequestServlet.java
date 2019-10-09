@@ -80,7 +80,7 @@ public class VisitRequestServlet extends HttpServlet {
         try {
             Date date = formatter.parse(visit_timestamp);
 
-            Visit insert_visit = new Visit(null, patient_email, practitioner_email, new Timestamp(date.getTime()), false, null);
+            Visit insert_visit = new Visit(null, practitioner_email, patient_email, new Timestamp(date.getTime()), false, null);
 
             visitDAO.insert(insert_visit);
             pendingVisitDAO.delete(new PendingVisit(patient_email, practitioner_email));
