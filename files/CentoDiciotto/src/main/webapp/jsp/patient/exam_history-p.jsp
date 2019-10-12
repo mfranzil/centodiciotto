@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +38,6 @@
 </div>
 
 <div class="container">
-
     <div class="body-content">
         <div class="row">
             <div class="col-md">
@@ -49,36 +47,30 @@
                     <div class="table-cell report-state">Report State</div>
                     <div class="table-cell action">Report</div>
                 </div>
-
-                <% List<Exam> exams_history = (List<Exam>) request.getAttribute("exams"); %>
-                <% for (Exam exam : exams_history) {%>
-                <div class="table-personal">
-                    <div class="table-cell exam"><%= exam.getExamDescription() %>
-                    </div>
-                    <div class="table-cell date"><%= exam.getExamDate() %>
-                    </div>
-                    <div class="table-cell report-state">
-                        <% if (exam.getExamDone()) { %> Available <% } else { %> Not available <% } %>
-                    </div>
-                    <div class="table-cell action">
-                        <button type="button" <% if (!exam.getExamDone()) { %> disabled <% } %>
-                                class="btn btn-block btn-personal popup-opener">
-                            See Report
-                        </button>
-                        <div class="popup-window">
-                            <div class="popup animate-in">
-                                <div>
-                                    <h4>Report</h4>
-                                    <p><%= exam.getExamResult() %>
-                                    </p>
+                <c:forEach items="${requestScope.exams}" var="exam">
+                    <div class="table-personal">
+                        <div class="table-cell exam">${exam.examDescription}</div>
+                        <div class="table-cell date">${exam.examDate}</div>
+                        <div class="table-cell report-state">${exam.examDone ? "Available" : "Not available"}</div>
+                        <div class="table-cell action">
+                            <button type="button" ${exam.examDone ? "disabled" : ""}
+                                    class="btn btn-block btn-personal popup-opener">
+                                See Report
+                            </button>
+                            <div class="popup-window">
+                                <div class="popup animate-in">
+                                    <div>
+                                        <h4>Report</h4>
+                                        <br>
+                                        <p>${exam.examResult}</p>
+                                    </div>
+                                    <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                                 </div>
-                                <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <hr>
-                <% } %>
+                    <hr>
+                </c:forEach>
             </div>
         </div>
     </div>

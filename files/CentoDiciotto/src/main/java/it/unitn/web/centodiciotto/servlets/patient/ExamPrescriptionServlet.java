@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,29 +41,28 @@ public class ExamPrescriptionServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof Patient) {
             List<ExamPrescription> exam_prescription = null;
             try {
-                exam_prescription = examPrescriptionDAO.getByPatient(((Patient) user).getEmail());
+                exam_prescription = examPrescriptionDAO.getByPatient(user.getEmail());
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-            request.setAttribute("exam_prescription", exam_prescription);
+            request.setAttribute("exam_prescriptions", exam_prescription);
         }
 
         List<ExamList> examLists = new ArrayList<>();
-        if(request.getParameter("exam-search") == null){
+        if (request.getParameter("exam-search") == null) {
             try {
                 examLists = examListDAO.getAll();
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             try {
                 ExamList examList = examListDAO.getByPrimaryKey(Integer.parseInt(request.getParameter("exam-search")));
                 examLists.add(examList);
@@ -74,7 +71,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("exam_list", examLists);
+        request.setAttribute("exam_lists", examLists);
         request.getRequestDispatcher("/jsp/patient/exam_booking-p.jsp").forward(request, response);
     }
 

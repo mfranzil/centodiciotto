@@ -11,7 +11,7 @@
 <div class="jumbotron mt-4">
     <h1>Prescriptions</h1>
     <p class="lead mt-4 mx-4">
-        In this section you can see all the prescription provided.
+        In this section you can see all the prescriptions provided.
     </p>
 </div>
 
@@ -21,7 +21,7 @@
             <div class="col-md">
                 <form action="search_patient" method="POST">
                     <div class="form-label-group my-4 mx-4 ls-search">
-                        <!--TO DO SIMONE BARRA DI RICERCA:
+                        <!--TODO SIMONE BARRA DI RICERCA:
                         Si dovrebbero cercare le ricette emesse, sia per nome di farmaco che per nome di
                         paziente. Quindi, in questo caso, il risultato può non essere univoco.
                          -->

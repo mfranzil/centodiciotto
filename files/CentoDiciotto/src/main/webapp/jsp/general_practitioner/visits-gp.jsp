@@ -1,4 +1,3 @@
-<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,41 +43,43 @@
                     <div class="table-cell image">&nbsp;</div>
                     <div class="table-cell patient">Patient</div>
                     <div class="table-cell ssn">SSN</div>
-                    <div class="table-cell action">Report</div>
+                    <div class="table-cell action">%nbsp;</div>
                 </div>
-                <% List<Patient> patients = (List<Patient>) request.getAttribute("pending_patients");
-                    for (Patient patient : patients) {%>
-                <div class="table-personal">
-                    <div class="table-cell image"><img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
+                <c:forEach items="${requestScope.pending_patients}" var="patient">
+                    <div class="table-personal">
+                        <div class="table-cell image">
+                            <img class="avatar-small"
+                                 src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
                                  alt="">
-                    </div>
-                    <div class="table-cell patient"><%= patient.getFirstName()%> <%= patient.getLastName()%>
-                    </div>
-                    <div class="table-cell ssn"><%= patient.getSsn()%>
-                    </div>
-                    <div class="table-cell action">
-                        <button class="btn btn-block btn-personal popup-opener">
-                            Choose date and time
-                        </button>
-                        <div class="popup-window">
-                            <div class="popup animate-in">
-                                <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visits"
-                                      id="set_visit" method="POST">
-                                    Insert a date and time for the appointment, then confirm.
-                                    <input class="form-control my-4" type="datetime-local" name="visit_date">
-                                    <input type="hidden" value="<%= patient.getEmail()%>" name="patient_email">
-                                    <button class="btn btn-lg btn-block btn-personal" type="submit">
-                                        Confirm the appointment
-                                    </button>
-                                    <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
-                                        Cancel
-                                    </button>
-                                </form>
+                        </div>
+                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}
+                        </div>
+                        <div class="table-cell ssn">${patient.ssn}
+                        </div>
+                        <div class="table-cell action">
+                            <button class="btn btn-block btn-personal popup-opener">
+                                Choose date and time
+                            </button>
+                            <div class="popup-window">
+                                <div class="popup animate-in">
+                                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visits"
+                                          id="set_visit" method="POST">
+                                        Insert a date and time for the appointment, then confirm.
+                                        <input class="form-control my-4" type="datetime-local" name="visit_date">
+                                        <input type="hidden" value="${patient.email}" name="patient_email">
+                                        <button class="btn btn-lg btn-block btn-personal" type="submit">
+                                            Confirm the appointment
+                                        </button>
+                                        <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <% } %>
+                    <hr>
+                </c:forEach>
             </div>
         </div>
     </div>

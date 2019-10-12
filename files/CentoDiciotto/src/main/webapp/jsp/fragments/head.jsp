@@ -13,3 +13,4 @@
 <script src="${pageContext.request.contextPath}/vendor/bootstrap.min.js"></script>
 <!-- CSS e JS personali -->
 <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css">
+<script src="${pageContext.request.contextPath}/js/nav.js"></script>

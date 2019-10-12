@@ -161,16 +161,6 @@
 
     <!-- General practitioner -->
     <servlet>
-        <servlet-name>PatientsPractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.PatientsServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PatientsPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/patients</url-pattern>
-    </servlet-mapping>
-
-
-    <servlet>
         <servlet-name>PrescriptionsPractitioner</servlet-name>
         <jsp-file>/jsp/general_practitioner/prescriptions-gp.jsp</jsp-file>
     </servlet>
@@ -235,32 +225,14 @@
         <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/patients-sd.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>MyPatientsSpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
-    </servlet-mapping>
-
     <!-- Health Service -->
-    <servlet>
-        <servlet-name>PatientsHealthService</servlet-name>
-        <jsp-file>/jsp/health_service/patients-hs.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PrescriptionsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/prescriptions</url-pattern>
-    </servlet-mapping>
-
     <servlet>
         <servlet-name>PrescriptionsHealthService</servlet-name>
         <jsp-file>/jsp/health_service/prescriptions-hs.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>PatientsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/patients</url-pattern>
+        <servlet-name>PrescriptionsHealthService</servlet-name>
+        <url-pattern>/restricted/health_service/prescriptions</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -281,6 +253,26 @@
         <servlet-name>PrescriptionsChemist</servlet-name>
         <url-pattern>/restricted/chemist/prescriptions</url-pattern>
     </servlet-mapping>
+
+    <!-- Servlet tra più ruoli -->
+
+    <servlet>
+        <servlet-name>PatientsList</servlet-name>
+        <servlet-class>it.unitn.web.centodiciotto.servlets.shared.PatientsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientsList</servlet-name>
+        <url-pattern>/restricted/general_practitioner/patients</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PatientsList</servlet-name>
+        <url-pattern>/restricted/health_service/patients</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PatientsList</servlet-name>
+        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
+    </servlet-mapping>
+
 
     <!-- Servlet senza JSP (POST-only) -->
     <servlet>

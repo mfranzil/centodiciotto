@@ -1,8 +1,6 @@
+<%--suppress ELValidationInJSP --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.List" %>
-<%@ page import="it.unitn.web.utils.Pair" %>
-<%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,30 +54,33 @@
         <div class="table-cell action"></div>
     </div>
 
-    <% List<Pair<Patient, Visit>> patient_visits = (List<Pair<Patient, Visit>>) request.getAttribute("patient_visits");
-        for (Pair<Patient, Visit> tmp : patient_visits) { %>
-    <c:set var="visit_date" value="<%= new Date(tmp.getSecond().getVisitDate().getTime()) %>" />
-    <div class="table-personal">
-        <div class="table-cell image"><img class="avatar-small"
-                                           src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                                           alt="">
+    <c:forEach items="${requestScope.patient_visits}" var="pair">
+        <c:set var="patient" value="${pair.first}"/>
+        <c:set var="visit" value="${pair.second}"/>
+        <jsp:useBean id="visit_date" class="java.util.Date"/>
+        <jsp:setProperty name="visit_date" property="time" value="${visit.visitDate.time}"/>
+
+        <div class="table-personal">
+            <div class="table-cell image">
+                <img class="avatar-small"
+                     src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png" alt="">
+            </div>
+            <div class="table-cell patient">${patient.firstName} ${patient.lastName}
+            </div>
+            <div class="table-cell date">
+                <fmt:formatDate type="date" dateStyle="long" value="${visit_date}"/>
+            </div>
+            <div class="table-cell time"><fmt:formatDate pattern="HH:mm" value="${visit_date}"/>
+            </div>
+            <div class="table-cell action">
+                <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
+                      id="mark_completed" method="POST">
+                    <input type="hidden" value="${visit.visitID}" name="visit_id">
+                    <button type="submit" class="btn btn-block btn-personal ">Mark as completed</button>
+                </form>
+            </div>
         </div>
-        <div class="table-cell patient"><%= tmp.getFirst().getFirstName()%> <%= tmp.getFirst().getLastName()%>
-        </div>
-        <div class="table-cell date">
-            <fmt:formatDate type="date" dateStyle="long" value="${visit_date}"/>
-        </div>
-        <div class="table-cell time"><fmt:formatDate pattern="HH:mm" value="${visit_date}"/>
-        </div>
-        <div class="table-cell action">
-            <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
-                  id="mark_completed" method="POST">
-                <input type="hidden" value="<%= tmp.getSecond().getVisitID()%>" name="visit_id">
-                <button type="submit" class="btn btn-block btn-personal ">Mark as completed</button>
-            </form>
-        </div>
-    </div>
-    <%}%>
+    </c:forEach>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

@@ -1,10 +1,4 @@
-<%@ page import="it.unitn.web.utils.Pair" %>
-<%@ page import="java.util.List" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%
-    @SuppressWarnings("unchecked")
-    List<Pair<String, Integer>> photos = (List<Pair<String, Integer>>) request.getAttribute("photos");
-%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,31 +18,30 @@
     </p>
 </div>
 <div class="container flex-wrap">
-    <% for (Pair<String, Integer> item : photos) {
-        String photo = item.getFirst();
-        Integer id = item.getSecond(); %>
-    <figure class="col-md">
-        <img alt="picture" class="avatar img-fluid popup-opener" src="${pageContext.request.contextPath}/<%= photo %>">
-        <div class="popup-window">
-            <div class="popup animate-in">
-                <form action="${pageContext.request.contextPath}/restricted/patient/photo_gallery"
-                      class="photo-changer" method="POST">
-                    <div id="message" class="mb-2 center-100">
-                        Do you want to swap your profile photo with this?
-                    </div>
-                    <img class="avatar mb-2" src="${pageContext.request.contextPath}/<%= photo %>" alt="<%= photo %>">
-                    <label>
-                        <input type="text" hidden name="photoid" value="<%= id %>">
-                    </label>
-                    <button class="btn btn-lg btn-block btn-personal mb-2" type="submit" id="submit">Change photo
-                    </button>
-                </form>
-                <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
+    <c:forEach items="${requestScope.photos}" var="pair">
+        <c:set var="photo" value="${pair.first}"/>
+        <c:set var="id" value="${pair.second}"/>
+        <figure class="col-md">
+            <img alt="picture" class="avatar img-fluid popup-opener" src="${pageContext.request.contextPath}/${photo}">
+            <div class="popup-window">
+                <div class="popup animate-in">
+                    <form action="${pageContext.request.contextPath}/restricted/patient/photo_gallery"
+                          class="photo-changer" method="POST">
+                        <div id="message" class="mb-2 center-100">
+                            Do you want to swap your profile photo with this?
+                        </div>
+                        <img class="avatar mb-2" src="${pageContext.request.contextPath}/${photo}" alt="${photo}">
+                        <label>
+                            <input type="text" hidden name="photoid" value="${id}">
+                        </label>
+                        <button class="btn btn-lg btn-block btn-personal mb-2" type="submit" id="submit">Change photo
+                        </button>
+                    </form>
+                    <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
+                </div>
             </div>
-        </div>
-    </figure>
-    <%}%>
-
+        </figure>
+    </c:forEach>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

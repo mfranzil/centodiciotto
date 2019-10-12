@@ -13,11 +13,11 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="jumbotron">
     <h2 class="my-4">
-        Welcome, <%= displayName %>.
+        Welcome, <c:out value="${sessionScope.displayName}"/>.
     </h2>
-    <% if (role.equals("patient")) { %>
-    <img class="avatar" src="${pageContext.request.contextPath}/<%= photo_path %>" alt="">
-    <% } %>
+    <c:if test="${sessionScope.role eq 'patient'}">
+        <img class="avatar" src="${pageContext.request.contextPath}/${sessionScope.photoPath}" alt="">
+    </c:if>
     <p class="lead mt-4 mx-4">
         To get started, use the navigation bar on top.
     </p>
@@ -31,139 +31,109 @@
                     My information
                 </h3>
                 <!-- TODO change table to div !-->
-                <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
-                    <% switch (role) {
-                        case "patient": { %>
-                    <tr>
-                        <th>Name</th>
-                        <td><%= ((Patient) user).getFirstName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Surname</th>
-                        <td><%= ((Patient) user).getLastName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>E-mail</th>
-                        <td><%= ((Patient) user).getEmail() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>SSN</th>
-                        <td><%= ((Patient) user).getSsn() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Birthplace</th>
-                        <td><%= ((Patient) user).getBirthPlace() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Birthdate</th>
-                        <c:set var="birthdate" value="<%=((Patient)user).getBirthDate()%>"/>
-                        <td><fmt:formatDate type="date" dateStyle="long" value="${birthdate}"/></td>
-                    </tr>
-                    <tr>
-                        <th>Current province</th>
-                        <td><%= ((Patient) user).getLivingProvince() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Gender</th>
-                        <td><%= ((Patient) user).getGender() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Practitioner</th>
-                        <td><%= patient_practitioner.getFirstName() %>  <%= patient_practitioner.getLastName() %>
-                        </td>
-                    </tr>
-                    <% }
-                    ;
-                    break;
-                        case "general_practitioner": { %>
-                    <tr>
-                        <th>Name</th>
-                        <td><%= ((GeneralPractitioner) user).getFirstName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Surname</th>
-                        <td><%= ((GeneralPractitioner) user).getLastName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>E-mail</th>
-                        <td><%= ((GeneralPractitioner) user).getEmail() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Working province</th>
-                        <td><%= ((GeneralPractitioner) user).getWorkingProvince() %>
-                        </td>
-                    </tr>
-                    <% }
-                    ;
-                    break;
-                        case "specialized_doctor": { %>
-                    <tr>
-                        <th>Name</th>
-                        <td><%= ((SpecializedDoctor) user).getFirstName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Surname</th>
-                        <td><%= ((SpecializedDoctor) user).getLastName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>E-mail</th>
-                        <td><%= ((SpecializedDoctor) user).getEmail() %>
-                        </td>
-                    </tr>
-                    <% }
-                    ;
-                    break;
-                        case "chemist": { %>
-                    <tr>
-                        <th>Name</th>
-                        <td><%= ((Chemist) user).getName() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Province</th>
-                        <td><%= ((Chemist) user).getChemistProvince() %>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>E-mail</th>
-                        <td><%= ((Chemist) user).getEmail() %>
-                        </td>
-                    </tr>
-                    <% }
-                    ;
-                    break;
-                        case "health_service": { %>
-                    <tr>
-                        <th>Operating Province</th>
-                        <td><%= ((HealthService) user).getOperatingProvince() %>
-                        </td>
-                    </tr>
-                    <% }
-                    ;
-                    break;
-                        default: { %>
-                    <tr>
-                        <th>Error</th>
-                        <td>Not supported yet
-                        </td>
-                    </tr>
-                    <tr>
+                <table class="table table-unresponsive" style="margin: auto; overflow-wrap: break-word">
+                    <c:choose>
+                        <c:when test="${sessionScope.role eq 'patient'}">
+                            <tr>
+                                <th>Name</th>
+                                <td>${sessionScope.user.firstName}</td>
+                            </tr>
+                            <tr>
+                                <th>Surname</th>
+                                <td>${sessionScope.user.lastName} </td>
+                            </tr>
+                            <tr>
+                                <th>E-mail</th>
+                                <td>${sessionScope.user.email} </td>
+                            </tr>
+                            <tr>
+                                <th>SSN</th>
+                                <td>${sessionScope.user.ssn} </td>
+                            </tr>
+                            <tr>
+                                <th>Birthplace</th>
+                                <td>${sessionScope.user.birthPlace} </td>
+                            </tr>
+                            <tr>
+                                <th>Birthdate</th>
+                                <td><fmt:formatDate type="date" dateStyle="long"
+                                                    value="${sessionScope.user.birthDate}"/></td>
+                            </tr>
+                            <tr>
+                                <th>Current province</th>
+                                <td>${sessionScope.user.livingProvince}</td>
+                            </tr>
+                            <tr>
+                                <th>Gender</th>
+                                <td>${sessionScope.user.gender}</td>
+                            </tr>
+                            <tr>
+                                <th>Practitioner</th>
+                                <td>${sessionScope.practitioner.firstName} ${sessionScope.practitioner.lastName}</td>
+                            </tr>
+                        </c:when>
+                        <c:when test="${sessionScope.role eq 'general_practitioner'}">
+                            <tr>
+                                <th>Name</th>
+                                <td>${sessionScope.user.firstName}</td>
+                            </tr>
+                            <tr>
+                                <th>Surname</th>
+                                <td>${sessionScope.user.lastName}</td>
+                            </tr>
+                            <tr>
+                                <th>E-mail</th>
+                                <td>${sessionScope.user.email}</td>
+                            </tr>
+                            <tr>
+                                <th>Working province</th>
+                                <td>${sessionScope.user.workingProvince}</td>
+                            </tr>
+                        </c:when>
+                        <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                            <tr>
+                                <th>Name</th>
+                                <td>${sessionScope.user.firstName}</td>
+                            </tr>
+                            <tr>
+                                <th>Surname</th>
+                                <td>${sessionScope.user.lastName}</td>
+                            </tr>
+                            <tr>
+                                <th>E-mail</th>
+                                <td>${sessionScope.user.email}</td>
+                            </tr>
 
-                            <% };
-                    break;
-                    } %>
+                        </c:when>
+                        <c:when test="${sessionScope.role eq 'health_service'}">
+
+                            <tr>
+                                <th>Operating Province</th>
+                                <td>${sessionScope.user.operatingProvince}
+                                </td>
+                            </tr>
+                        </c:when>
+                        <c:when test="${sessionScope.role eq 'chemist'}">
+                            <tr>
+                                <th>Name</th>
+                                <td>${sessionScope.user.name} </td>
+                            </tr>
+                            <tr>
+                                <th>Province</th>
+                                <td>${sessionScope.user.chemistProvince} </td>
+                            </tr>
+                            <tr>
+                                <th>E-mail</th>
+                                <td>${sessionScope.user.email} </td>
+                            </tr>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <th>Error</th>
+                                <td>Not supported yet</td>
+                            </tr>
+                        </c:otherwise>
+                    </c:choose>
                 </table>
             </div>
             <div class="col-md-6">
@@ -187,7 +157,7 @@
                         Change password
                     </button>
                 </form>
-                <% if (role.equals("patient")) { %>
+                <c:if test="${sessionScope.role eq 'patient'}">
                 <h3 class="my-4">
                     Change your profile picture
                 </h3>
@@ -211,7 +181,7 @@
                         </button>
                     </form>
                 </div>
-                <% } %>
+                </c:if>
             </div>
         </div>
     </div>

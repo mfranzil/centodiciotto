@@ -13,10 +13,12 @@ public class AuthenticationFilter implements Filter {
     private FilterConfig filterConfig = null;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+
         ServletContext servletContext = request.getServletContext();
-        HttpSession session = ((HttpServletRequest) request).getSession(false);
+        HttpSession session = request.getSession(false);
         User user = null;
 
         String contextPath = servletContext.getContextPath();
@@ -25,14 +27,14 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (session == null) {
-            ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
+            response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
         } else {
             user = (User) session.getAttribute("user");
             if (user == null) {
-                ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath + "login"));
+                response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
             } else {
                 boolean allowed = true;
-                String requestedUrl = ((HttpServletRequest) request).getRequestURL().toString();
+                String requestedUrl = request.getRequestURL().toString();
 
                 if (!(user instanceof Patient) && requestedUrl.contains("/restricted/patient")) {
                     allowed = false;
@@ -47,20 +49,12 @@ public class AuthenticationFilter implements Filter {
                 }
 
                 if (!allowed) {
-                    ((HttpServletResponse) response).sendRedirect(((HttpServletResponse) response).encodeRedirectURL(contextPath));
+                    response.sendRedirect(response.encodeRedirectURL(contextPath));
                 } else {
                     chain.doFilter(request, response);
                 }
             }
         }
-    }
-
-    public FilterConfig getFilterConfig() {
-        return (this.filterConfig);
-    }
-
-    public void setFilterConfig(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
     }
 
     @Override

@@ -22,11 +22,13 @@
         <div class="row">
             <div class="col-md-6">
                 <h2>What happened?</h2>
-                <p class="lead">A 404 error status implies no resource corresponding to this address is present on the web server.</p>
+                <p class="lead">A 404 error status implies no resource corresponding to this address is present on the
+                                web server.</p>
             </div>
             <div class="col-md-6">
                 <h2>What can I do?</h2>
-                <p class="lead">Make sure the address was typed correctly, go back or head to the Home Page. If you came here from another page, please contact us immediately.</p>
+                <p class="lead">Make sure the address was typed correctly, go back or head to the Home Page. If you came
+                                here from another page, please contact us immediately.</p>
             </div>
         </div>
     </div>

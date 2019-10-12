@@ -3,16 +3,14 @@
 <html lang="en">
 <head>
     <title>CentoDiciotto - Home</title>
-    <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet">
-    <!-- Plugin CSS e JS, presi dal template -->
     <link href="${pageContext.request.contextPath}/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+    <%@ include file="/jsp/fragments/head.jsp" %>
 </head>
 <body id="page-top" style="padding-top: 0"> <!-- COZZA CON LA NAVBAR! Non toccare a meno che non sistemiate la nav -->
 <%@ include file="/jsp/fragments/nav.jsp" %>
-                                            <!-- Masthead -->
 <header class="masthead">
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
@@ -30,8 +28,6 @@
         </div>
     </div>
 </header>
-
-                                            <!-- About Section -->
 <section class="page-section bg-118-medium-dark" id="about">
     <div class="container">
         <div class="row justify-content-center mx-4">
@@ -46,8 +42,6 @@
         </div>
     </div>
 </section>
-
-                                            <!-- Portfolio Section -->
 <section id="portfolio">
     <div class="container-fluid p-0">
         <div class="row no-gutters">
@@ -132,23 +126,23 @@
         </div>
     </div>
 </section>
-
-                                            <!-- Call to Action Section -->
 <section class="page-section bg-118-medium-dark text-white">
     <div class="container text-center">
-        <% if (request.getSession(false) != null && session.getAttribute("user") != null) { %>
-        <h2 class="mb-4 mx-4">Visit your profile now.</h2>
-        <div style="width: 50%; margin: auto">
-            <a class="btn btn-light btn-block" href="${pageContext.request.contextPath}/restricted/user">Go to my profile</a>
-        </div>
-        <% } else { %>
-        <h2 class="mb-4 mx-4">Already a member? Get started now.</h2>
-        <div style="width: 50%; margin: auto">
-            <a class="btn btn-light btn-block" href="${pageContext.request.contextPath}/login">Login</a>
-        </div>
-        <% }%>
+        <c:if test="${!empty sessionScope.user}">
+            <h2 class="mb-4 mx-4">Visit your profile now.</h2>
+            <div style="width: 50%; margin: auto">
+                <a class="btn btn-light btn-block" href="${pageContext.request.contextPath}/restricted/user">Go to my profile</a>
+            </div>
+        </c:if>
+        <c:if test="${empty sessionScope.user}">
+            <h2 class="mb-4 mx-4">Already a member? Get started now.</h2>
+            <div style="width: 50%; margin: auto">
+                <a class="btn btn-light btn-block" href="${pageContext.request.contextPath}/login">Login</a>
+            </div>
+        </c:if>
     </div>
 </section>
 <%@ include file="/jsp/fragments/foot.jsp" %>
+
 </body>
 </html>

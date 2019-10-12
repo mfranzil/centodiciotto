@@ -1,10 +1,6 @@
-<%@ page import="java.util.List" %>
+<%--suppress ELValidationInJSP --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<% List<GeneralPractitioner> available_practitioners = (List<GeneralPractitioner>) request.getAttribute("available_practitioners");
-    GeneralPractitioner mypractitioner = (GeneralPractitioner) session.getAttribute("practitioner"); %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +28,7 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function (data) {
+                    success: function () {
                         $("#current-practitioner").removeClass("chosen-practitioner");
                         $("#check").html("");
                         pract.parent().html("✔").parent().addClass("chosen-practitioner");
@@ -81,11 +77,11 @@
                 <h3 class="my-4">
                     Your general practitioner
                 </h3>
+
+                <c:set var="practitioner" value="${sessionScope.practitioner}"/>
                 <div id="current-practitioner" class="table-personal chosen-practitioner">
-                    <div class="table-cell name"><%= mypractitioner.getFirstName() %>&nbsp;<%= mypractitioner.getLastName() %>
-                    </div>
-                    <div class="table-cell province"><%= mypractitioner.getWorkingProvince() %>
-                    </div>
+                    <div class="table-cell name">${practitioner.firstName} ${practitioner.lastName}</div>
+                    <div class="table-cell province">${practitioner.workingProvince}</div>
                     <div id="check" class="table-cell action">✔</div>
                 </div>
 
@@ -104,22 +100,21 @@
                         </button>
                     </div>
                     <div id="table-select">
-                        <% for (GeneralPractitioner available_practitioner : available_practitioners) {
-                            if (available_practitioner.getEmail().compareTo(mypractitioner.getEmail()) != 0) {%>
-                        <div id="<%=available_practitioner.getEmail()%>" class="table-personal">
-                            <div class="table-cell name">
-                                <%= available_practitioner.getFirstName() %>&nbsp;<%= available_practitioner.getLastName() %>
-                            </div>
-                            <div class="table-cell province"><%= available_practitioner.getWorkingProvince() %>
-                            </div>
-                            <div class="table-cell action">
-                                <input type="radio" name="practitioner_email"
-                                       value="<%=available_practitioner.getEmail()%>">
-                            </div>
-                        </div>
-                        <hr>
-                        <% }
-                        }%>
+                        <c:forEach items="${requestScope.available_practitioners}" var="available_practitioner">
+                            <c:if test="${available_practitioner.email != practitioner.email}">
+                                <div id="${available_practitioner.email}" class="table-personal">
+                                    <div class="table-cell name">
+                                            ${available_practitioner.firstName} ${available_practitioner.lastName}
+                                    </div>
+                                    <div class="table-cell province">${available_practitioner.workingProvince}
+                                    </div>
+                                    <div class="table-cell action">
+                                        <input type="radio" name="practitioner_email" value="${available_practitioner.email}">
+                                    </div>
+                                </div>
+                                <hr>
+                            </c:if>
+                        </c:forEach>
                     </div>
                 </form>
             </div>

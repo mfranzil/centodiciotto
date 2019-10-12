@@ -2,9 +2,7 @@ package it.unitn.web.centodiciotto.servlets;
 
 import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -71,18 +69,32 @@ public class LoginServlet extends HttpServlet {
                 if (rememberMe != null && rememberMe.equals("on")) {
                     request.getSession().setMaxInactiveInterval(2592000);
                 }
+
                 response.setStatus(200);
-                request.getSession().setAttribute("user", user);
 
-                if (user instanceof Patient) { // Inserisco il medico del paziente nelle variabili
-                    GeneralPractitioner practitioner =
-                            practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                String displayName = "default";
+                String photoPath = "/img/avatars/default.png";
+                GeneralPractitioner practitioner = null;
 
-                    String photoPath = PhotoService.getLastPhoto((Patient) user);
-
-                    request.getSession().setAttribute("practitioner", practitioner);
-                    request.getSession().setAttribute("photo_path", photoPath);
+                if (user instanceof Patient) {
+                    practitioner =  practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                    photoPath  = PhotoService.getLastPhoto((Patient) user);
+                    displayName = ((Patient) user).getFirstName();
+                } else if (user instanceof GeneralPractitioner) {
+                    displayName = ((GeneralPractitioner) user).getFirstName();
+                } else if (user instanceof SpecializedDoctor) {
+                    displayName = ((SpecializedDoctor) user).getFirstName();
+                } else if (user instanceof Chemist) {
+                    displayName = ((Chemist) user).getName();
+                } else if (user instanceof HealthService) {
+                    displayName = ((HealthService) user).getOperatingProvince() + " Health Service";
                 }
+
+                request.getSession().setAttribute("user", user);
+                request.getSession().setAttribute("practitioner", practitioner);
+                request.getSession().setAttribute("photoPath", photoPath);
+                request.getSession().setAttribute("role", role);
+                request.getSession().setAttribute("displayName", displayName);
 
                 jobj.put("url", response.encodeRedirectURL(contextPath + "restricted/user"));
             }

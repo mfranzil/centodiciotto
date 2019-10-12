@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true" %>
 
-<%
-    String email = (String) request.getAttribute("email");
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +14,7 @@
                 let form = $(this);
                 let url = form.attr('action');
 
-                if ($("#email").val() !== "<%= email %>") {
+                if ($("#email").val() !== "${requestScope.email}") {
                     alert("Email non corrispondente alla richiesta.");
                     return;
                 }

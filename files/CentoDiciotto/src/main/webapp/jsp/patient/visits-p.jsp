@@ -1,4 +1,4 @@
-<%@ page import="java.util.List" %>
+<%--suppress ELValidationInJSP --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,13 +38,13 @@
 
 <div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
-        <% GeneralPractitioner practitioner = (GeneralPractitioner) session.getAttribute("practitioner");
-            Boolean already_booked = (Boolean) request.getAttribute("already_booked"); %>
-        <h3><%= practitioner.getFirstName()%>  <%= practitioner.getLastName()%>
-        </h3>
+
+        <c:set var="practitioner" value="${sessionScope.practitioner}"/>
+        <c:set var="already_booked" value="${requestScope.already_booked}"/>
+        <h3>${practitioner.firstName} ${practitioner.lastName}</h3>
         <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book_visit" method="post">
-            <button id="booknow" class="btn btn-block btn-personal" type="submit" <% if (already_booked) {%> disabled>
-                Already booked<% } else { %>>Book Now<%}%>
+            <button id="booknow" class="btn btn-block btn-personal" type="submit"
+            ${already_booked ? "disabled" : ""}> ${already_booked ? "Already booked" : "Book now"}
             </button>
         </form>
     </div>
@@ -68,34 +68,31 @@
                     <div class="table-cell report-state">Report State</div>
                     <div class="table-cell action">Report</div>
                 </div>
-                <% List<Visit> visits = (List<Visit>) request.getAttribute("visits");
-                    for (Visit visit : visits) {%>
-                <div class="table-personal">
-                    <div class="table-cell practitioner"><%= practitioner.getFirstName()%>  <%= practitioner.getLastName()%>
-                    </div>
-                    <div class="table-cell date"><%= visit.getVisitDate()%>
-                    </div>
-                    <div class="table-cell report-state"><% if (visit.getReportAvailable()) { %>Available <%} else {%>
-                        Not Available <%}%></div>
-                    <div class="table-cell action">
-                        <button type="button"
-                                class="btn btn-block btn-personal popup-opener" <% if (!visit.getReportAvailable()) { %>
-                                disabled <%}%> >See Report
-                        </button>
-                        <div class="popup-window">
-                            <div class="popup animate-in">
-                                <div>
-                                    <h5>Visit report:</h5>
-                                    <br><br>
-                                    <p><%= visit.getReport()%>
-                                    </p>
+                <c:forEach items="${requestScope.visits}" var="visit">
+                    <!-- TODO: MODIFICARE IL NOME/COGNOME DEL MEDICO -->
+                    <div class="table-personal">
+                        <div class="table-cell practitioner">${practitioner.firstName} ${practitioner.lastName}
+                        </div>
+                        <div class="table-cell date">${visit.date}
+                        </div>
+                        <div class="table-cell report-state">${visit.reportAvailable ? "Available" : "Not available"}</div>
+                        <div class="table-cell action">
+                            <button type="button" class="btn btn-block btn-personal popup-opener"
+                                ${visit.reportAvailable ? "disabled" : ""} >See Report
+                            </button>
+                            <div class="popup-window">
+                                <div class="popup animate-in">
+                                    <div>
+                                        <h5>Visit report:</h5>
+                                        <br>
+                                        <p>${visit.report}</p>
+                                    </div>
+                                    <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                                 </div>
-                                <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                             </div>
                         </div>
                     </div>
-                </div>
-                <% } %>
+                </c:forEach>
             </div>
         </div>
     </div>

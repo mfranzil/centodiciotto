@@ -28,6 +28,7 @@
         </thead>
         <tbody>
         <tr>
+        <tr>
             <td>Mario Rossi</td>
             <td>ECG</td>
             <td>23/07/2019</td>

@@ -56,7 +56,7 @@
             <div class="col-md">
                 <form action="search_patient" method="POST">
                     <div class="form-label-group my-4 mx-4 ls-search">
-                        <!--TO DO SIMONE BARRA DI RICERCA: tutti i pazienti -->
+                        <!--TODO SIMONE BARRA DI RICERCA: tutti i pazienti -->
                         <input class="form-control mx-2" id="query" name="query" placeholder="Search..." required
                                type="text">
                         <button id="message" class="btn btn-personal" type="submit">
@@ -86,7 +86,7 @@
                             <div class="popup animate-in">
                                 <div>
                                     <h4>Patient data</h4>
-                                    <table class="table">
+                                    <table class="table table-unresponsive">
                                         <tr>
                                             <th>Name</th>
                                             <td>Matteo</td>

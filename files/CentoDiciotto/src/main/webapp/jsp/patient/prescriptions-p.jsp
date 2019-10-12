@@ -1,9 +1,5 @@
-<%@ page import="it.unitn.web.utils.Pair" %>
-<%@ page import="java.util.List" %>
+<%--suppress ELValidationInJSP --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-
-<% List<Pair<Prescription, Boolean>> prescriptions = (List<Pair<Prescription, Boolean>>) request.getAttribute("prescriptions"); %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +27,6 @@
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
-
 <div class="jumbotron mt-4">
     <h1>Prescriptions</h1>
     <p class="lead mt-4 mx-4">
@@ -50,44 +45,40 @@
                     <div class="table-cell action">Report</div>
                 </div>
 
-                <% for (Pair<Prescription, Boolean> pair : prescriptions) {
-                    Prescription prescription = pair.getFirst();
-                    Boolean available = pair.getSecond();
-                %>
-                <div class="table-personal">
-                    <div class="table-cell doctor"><%=prescription.getPractitionerFirstName()%>&nbsp;<%=prescription.getPractitionerLastName()%>
+                <c:forEach items="${requestScope.prescriptions}" var="pair">
+                    <c:set var="prescription" value="${pair.first}"/>
+                    <c:set var="available" value="${pair.second}"/>
+                    <div class="table-personal">
+                        <div class="table-cell doctor">${prescription.practitionerFirstName}&nbsp;${prescription.practitionerLastName}
+                        </div>
+                        <div class="table-cell date">${prescription.prescriptionDate}
+                        </div>
+                        <div class="table-cell report-state">${available ? "Available" : "Not available"}</div>
+                        <div class="table-cell action">
+                            <c:if test="${available}">
+                                <form target="_blank"
+                                      action="${pageContext.request.contextPath}/restricted/patient/prescriptions"
+                                      id="pdf"
+                                      method="POST">
+                                    <input type="hidden" name="practitioner_id"
+                                           value="${prescription.prescriptionPractitioner}"/>
+                                    <input type="hidden" name="patient_ssn" value="${sessionScope.user.ssn}"/>
+                                    <input type="hidden" name="prescription_date"
+                                           value="${prescription.prescriptionDate}"/>
+                                    <input type="hidden" name="prescription_id"
+                                           value="${prescription.prescriptionID}"/>
+                                    <input type="hidden" name="prescription_description"
+                                           value="${prescription.drugDescription}"/>
+                                    <button type="submit" class="btn btn-block btn-personal">Download</button>
+                                </form>
+                            </c:if>
+                            <c:if test="${!available}">
+                                <button type="button" class="btn btn-block btn-personal disabled">Download</button>
+                            </c:if>
+                        </div>
                     </div>
-                    <div class="table-cell date"><%=prescription.getPrescriptionDate()%>
-                    </div>
-                    <div class="table-cell report-state">
-                        <% if (available) {%>
-                        Available
-                        <% } else { %>
-                        Not available <% } %>
-                    </div>
-                    <div class="table-cell action">
-                        <% if (available) {%>
-                        <form target="_blank"
-                              action="${pageContext.request.contextPath}/restricted/patient/prescriptions" id="pdf"
-                              method="POST">
-                            <input type="hidden" name="practitioner_id"
-                                   value="<%= prescription.getPrescriptionPractitioner() %>"/>
-                            <input type="hidden" name="patient_ssn" value="<%= ((Patient) user).getSsn() %>"/>
-                            <input type="hidden" name="prescription_date"
-                                   value="<%= prescription.getPrescriptionDate() %>"/>
-                            <input type="hidden" name="prescription_id"
-                                   value="<%= prescription.getPrescriptionID() %>"/>
-                            <input type="hidden" name="prescription_description"
-                                   value="<%= prescription.getDrugDescription() %>"/>
-                            <button type="submit" class="btn btn-block btn-personal">Download</button>
-                        </form>
-                        <% } else { %>
-                        <button type="button" class="btn btn-block btn-personal disabled">Download</button>
-                        <% } %>
-                    </div>
-                </div>
-                <hr>
-                <% } %>
+                    <hr>
+                </c:forEach>
             </div>
         </div>
     </div>

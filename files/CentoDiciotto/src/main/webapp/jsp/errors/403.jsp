@@ -21,11 +21,13 @@
         <div class="row">
             <div class="col-md-6">
                 <h2>What happened?</h2>
-                <p class="lead">A 403 error status implies the server understood the request, but refused to authorize it.</p>
+                <p class="lead">A 403 error status implies the server understood the request, but refused to authorize
+                                it.</p>
             </div>
             <div class="col-md-6">
                 <h2>What can I do?</h2>
-                <p class="lead">Make sure the address was typed correctly, go back or head to the Home Page. If you came here from another page, please contact us immediately.</p>
+                <p class="lead">Make sure the address was typed correctly, go back or head to the Home Page. If you came
+                                here from another page, please contact us immediately.</p>
             </div>
         </div>
     </div>

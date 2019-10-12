@@ -1,36 +1,7 @@
-<%@ page import="it.unitn.web.centodiciotto.persistence.entities.*" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%
-    String role = "default";
-    User user = null;
-    String displayName = "default";
-    String photo_path = "/img/avatars/default.png";
-    GeneralPractitioner patient_practitioner = null;
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="logged_in" value="${!empty sessionScope.user}"/>
 
-    boolean isLoggedIn = request.getSession(false) != null && session.getAttribute("user") != null;
-    if (isLoggedIn) {
-        user = (User) session.getAttribute("user");
-        if (user instanceof Patient) {
-            role = "patient";
-            displayName = ((Patient) user).getFirstName();
-            patient_practitioner = (GeneralPractitioner) session.getAttribute("practitioner");
-            photo_path = (String) session.getAttribute("photo_path");
-        } else if (user instanceof GeneralPractitioner) {
-            role = "general_practitioner";
-            displayName = ((GeneralPractitioner) user).getFirstName();
-        } else if (user instanceof SpecializedDoctor) {
-            role = "specialized_doctor";
-            displayName = ((SpecializedDoctor) user).getFirstName();
-        } else if (user instanceof Chemist) {
-            role = "chemist";
-            displayName = ((Chemist) user).getName();
-        } else if (user instanceof HealthService) {
-            role = "health_service";
-            displayName = ((HealthService) user).getOperatingProvince() + " Health Service";
-        }
-    }
-%>
-<script src="${pageContext.request.contextPath}/js/nav.js"></script>
 <nav class="navbar fixed-top navbar-dark navbar-expand-lg bg-light justify-content-between nav-personal">
     <button id="nav-logo-container" type="button"
             class="navbar-brand white navbar-toggler navbar-button-personal"
@@ -46,170 +17,165 @@
     <div id="log-menu-open">
     </div>
 
-    <% if (isLoggedIn) { %>
-    <div class="collapse navbar-collapse nav-item" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
-                    Home
-                </a>
-            </li>
-            <% switch (role) {
-                case "patient": {
-            %>
-            <li class="nav-item dropdown">
-                <a class="nav-link nav-link-personal dropdown-toggle"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Exams
-                </a>
-                <div class="dropdown-menu nav-personal">
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/patient/exam_history">Exam History</a>
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/patient/exam_booking">Book your Exam</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/patient/visits">Visits</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/patient/prescriptions">
-                    Prescriptions
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/patient/tickets">
-                    Tickets
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/patient/change_practitioner">
-                    Unhappy with your practitioner?
-                </a>
-            </li>
-            <% }
-            ;
-            break;
-                case "general_practitioner": { %>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/general_practitioner/patients">
-                    My patients
-                </a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link nav-link-personal dropdown-toggle"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Visits and Request
-                </a>
-                <div class="dropdown-menu nav-personal">
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">Requests</a>
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar">Calendar</a>
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history">History</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/general_practitioner/prescriptions">
-                    Prescriptions
-                </a>
-            </li>
-            <% }
-            ;
-            break;
-                case "specialized_doctor": { %>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal"
-                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/patients">
-                    My patients
-                </a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link nav-link-personal dropdown-toggle"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Exams
-                </a>
-                <div class="dropdown-menu nav-personal">
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_request">Requests</a>
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_calendar">Calendar</a>
-                    <a class="dropdown-item nav-link-personal"
-                       href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_history">History</a>
-                </div>
-            </li>
-            <%      };
-            break;
-                case "health_service": { %>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/patients">
-                    Patients
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/prescriptions">
-                    Prescriptions
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/health_service/recalls">
-                    Recall
-                </a>
-            </li>
-            <%      };
-            break;
-                case "chemist": { %>
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/chemist/prescriptions">
-                    Prescriptions
-                </a>
-            </li>
-            <% }
-            ;
-            break;
-                default:
-                    break;
-            } %>
-        </ul>
-    </div>
-    <div id="log-menu-closed">
-        <%--suppress XmlDuplicatedId --%>
-        <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
-            <a class="nav-link nav-link-personal " href="${pageContext.request.contextPath}/restricted/user">
-                Hi <%= displayName %>!
-            </a>
-            <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/restricted/logout_handler">
-                Logout
-                <img src="${pageContext.request.contextPath}/img/logout_white.png" class="nav-icon" alt="Logout">
-            </a>
+    <c:if test="${logged_in}">
+        <div class="collapse navbar-collapse nav-item" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
+                        Home
+                    </a>
+                </li>
+                <c:choose>
+                    <c:when test="${sessionScope.role eq 'patient'}">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-link-personal dropdown-toggle"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Exams
+                            </a>
+                            <div class="dropdown-menu nav-personal">
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/patient/exam_history">Exam History</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/patient/exam_booking">Book your Exam</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/patient/visits">Visits</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/patient/prescriptions">
+                                Prescriptions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/patient/tickets">
+                                Tickets
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/patient/change_practitioner">
+                                Unhappy with your practitioner?
+                            </a>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'general_practitioner'}">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/general_practitioner/patients">
+                                My patients
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-link-personal dropdown-toggle"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Visits and Request
+                            </a>
+                            <div class="dropdown-menu nav-personal">
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">Requests</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar">Calendar</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history">History</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/general_practitioner/prescriptions">
+                                Prescriptions
+                            </a>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/specialized_doctor/patients">
+                                My patients
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-link-personal dropdown-toggle"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Exams
+                            </a>
+                            <div class="dropdown-menu nav-personal">
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_request">Requests</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_calendar">Calendar</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_history">History</a>
+                            </div>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'health_service'}">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/health_service/patients">
+                                Patients
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/health_service/prescriptions">
+                                Prescriptions
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/health_service/recalls">
+                                Recall
+                            </a>
+                        </li>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'chemist'}">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/chemist/prescriptions">
+                                Prescriptions
+                            </a>
+                        </li>
+                    </c:when>
+                </c:choose>
+            </ul>
         </div>
-    </div>
-    <% } else { %>
-    <div class="collapse navbar-collapse nav-item" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
-                    Home
+        <div id="log-menu-closed">
+                <%--suppress XmlDuplicatedId --%>
+            <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
+                <a class="nav-link nav-link-personal " href="${pageContext.request.contextPath}/restricted/user">
+                    Hi <c:out value="${sessionScope.displayName}"/>!
                 </a>
-            </li>
-        </ul>
-    </div>
+                <a class="nav-link nav-link-personal"
+                   href="${pageContext.request.contextPath}/restricted/logout_handler">
+                    Logout
+                    <img src="${pageContext.request.contextPath}/img/logout_white.png" class="nav-icon" alt="Logout">
+                </a>
+            </div>
+        </div>
+    </c:if>
+    <c:if test="${!logged_in}">
+        <div class="collapse navbar-collapse nav-item" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/">
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </div>
 
-    <div id="log-menu-closed">
-        <%--suppress XmlDuplicatedId --%>
-        <div id="nav-log" class="nav-item">
-            <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
-                Login
-                <img src="${pageContext.request.contextPath}/img/login_white.png" class="nav-icon" alt="Login">
-            </a>
+        <div id="log-menu-closed">
+                <%--suppress XmlDuplicatedId --%>
+            <div id="nav-log" class="nav-item">
+                <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
+                    Login
+                    <img src="${pageContext.request.contextPath}/img/login_white.png" class="nav-icon" alt="Login">
+                </a>
+            </div>
         </div>
-    </div>
-    <% } %>
+    </c:if>
 </nav>

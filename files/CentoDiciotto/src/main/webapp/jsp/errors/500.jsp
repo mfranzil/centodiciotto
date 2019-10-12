@@ -5,21 +5,22 @@
     <title>500 Internal Server Error - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script type="text/javascript">
-        function loadDomain() {
-            var display = document.getElementById("display-domain");
-            display.innerHTML = document.domain;
-        }
+        $("document").ready(function () {
+            $("#display-domain").html = document.domain;
+            $("#reload").click(function () {
+                document.location.reload();
+            });
+        });
     </script>
 </head>
-<body onload="loadDomain();">
+<body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
         <h1>500: Internal Server Error</h1>
         <p class="lead">The web server is returning an internal error for <em><span id="display-domain"></span></em>.
         </p>
-        <a href="javascript:document.location.reload(true);" class="btn btn-default btn-lg text-center"><span
-                class="green">Try This Page Again</span></a>
+        <a id="reload" class="btn btn-default btn-lg text-center"><span class="green">Try This Page Again</span></a>
     </div>
 </div>
 <div class="container">
@@ -29,15 +30,9 @@
                 <h2>What happened?</h2>
                 <p class="lead">A 500 error status implies there is a problem with the web server's software causing it
                                 to malfunction.</p>
-                <%
-                    if (exception != null && exception.getCause() != null) {
-                %>
-                <p class="exception">
-                    <%=exception.getCause()%>
-                </p>
-                <%
-                    }
-                %>
+                <c:if test="${!empty pageContext.exception and !empty pageContext.exception.cause}">
+                    <p class="exception">${pageContext.exception.cause}</p>
+                </c:if>
             </div>
             <div class="col-md-6">
                 <h2>What can I do?</h2>

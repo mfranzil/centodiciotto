@@ -1,8 +1,6 @@
+<%--suppress ELValidationInJSP --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="it.unitn.web.utils.Pair" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,57 +50,68 @@
 
 <div class="container">
 
-    <div class="table-personal table-header">
-        <div class="table-cell avt"></div>
-        <div class="table-cell name">Name</div>
-        <div class="table-cell ssn">SSN</div>
-        <div class="table-cell date">Date</div>
-        <div class="table-cell action"></div>
-    </div>
-    <% List<Pair<Patient, Visit>> patient_visits_report = (List<Pair<Patient, Visit>>) request.getAttribute("patient_visits_report");
-        for (Pair<Patient, Visit> tmp : patient_visits_report) {
-            Date visit_date = new Date(tmp.getSecond().getVisitDate().getTime());
-            Boolean insert = (tmp.getSecond().getReport() == null); %>
-    <div class="table-personal">
-        <div class="table-cell avt"><img class="avatar-small"
-                                         src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                                         alt="">
-        </div>
-        <div class="table-cell name"><%= tmp.getFirst().getFirstName()%> <%= tmp.getFirst().getLastName()%>
-        </div>
-        <div class="table-cell ssn"><%= tmp.getFirst().getSsn()%>
-        </div>
-        <div class="table-cell date">
-            <c:set var="visit_date1" value="<%= visit_date %>"/>
-            <fmt:formatDate type="date" dateStyle="long" value="${visit_date1}"/>
-        </div>
-        <div class="table-cell action">
-            <button type="submit" class="btn btn-block btn-personal popup-opener"><% if (insert) {%>Insert<%} else {%>Edit<%}%>
-                Report
-            </button>
-            <div class="popup-window">
-                <div class="popup animate-in">
-                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history"
-                          id="set_visit" method="POST">
-                        <h5><strong>Please enter the report in the form below, then click on submit to set it.</strong> </h5>
-                        <% if (!insert) {%>
-                        <h7><strong> Old report:</strong></h7>
-                        <p> <%=tmp.getSecond().getReport()%></p>
-                        <%}%>
-                        <input type="hidden" value="<%= tmp.getSecond().getVisitID()%>" name="visit_id">
-                        <textarea name="report_text" placeholder="Click here to start typing"></textarea>
-                        <button class="btn btn-lg btn-block btn-personal" type="submit">
-                            Submit report
-                        </button>
-                        <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
-                            Cancel
-                        </button>
-                    </form>
+    <div class="body-content">
+        <div class="row">
+            <div class="col-md">
+                <div class="table-personal table-header">
+                    <div class="table-cell avt"></div>
+                    <div class="table-cell name">Name</div>
+                    <div class="table-cell ssn">SSN</div>
+                    <div class="table-cell date">Date</div>
+                    <div class="table-cell action"></div>
                 </div>
+
+                <c:forEach items="${requestScope.patient_visits_report}" var="pair">
+                    <c:set var="patient" value="${pair.first}"/>
+                    <c:set var="visit" value="${pair.second}"/>
+                    <c:set var="insert" value="${empty visit.report}"/>
+                    <jsp:useBean id="visit_date" class="java.util.Date"/>
+                    <jsp:setProperty name="visit_date" property="time" value="${visit.visitDate.time}"/>
+
+                    <div class="table-personal">
+                        <div class="table-cell avt"><img class="avatar-small"
+                                                         src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
+                                                         alt="">
+                        </div>
+                        <div class="table-cell name">${patient.firstName} ${patient.lastName}
+                        </div>
+                        <div class="table-cell ssn">${patient.ssn}
+                        </div>
+                        <div class="table-cell date">
+                            <fmt:formatDate type="date" dateStyle="long" value="${visit_date}"/>
+                        </div>
+                        <div class="table-cell action">
+                            <button type="submit"
+                                    class="btn btn-block btn-personal popup-opener">${insert ? "Insert" : "Edit"} Report
+                            </button>
+                            <div class="popup-window">
+                                <div class="popup animate-in">
+                                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history"
+                                          id="set_visit" method="POST">
+                                        <h5><strong>Please enter the report in the form below, then click on submit to
+                                                    set it.</strong></h5>
+                                        <c:if test="${!insert}">
+                                            <h7><strong> Old report:</strong></h7>
+                                            <p>${visit.report}</p>
+                                        </c:if>
+                                        <input type="hidden" value="${visit.visitID}" name="visit_id">
+                                        <textarea name="report_text"
+                                                  placeholder="Click here to start typing"></textarea>
+                                        <button class="btn btn-lg btn-block btn-personal" type="submit">
+                                            Submit report
+                                        </button>
+                                        <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
             </div>
         </div>
     </div>
-    <%}%>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>
