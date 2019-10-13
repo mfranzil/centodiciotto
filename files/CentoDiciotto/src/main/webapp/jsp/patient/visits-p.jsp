@@ -73,7 +73,7 @@
                     <div class="table-personal">
                         <div class="table-cell practitioner">${practitioner.firstName} ${practitioner.lastName}
                         </div>
-                        <div class="table-cell date">${visit.date}
+                        <div class="table-cell date">${visit.visitDate}
                         </div>
                         <div class="table-cell report-state">${visit.reportAvailable ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
