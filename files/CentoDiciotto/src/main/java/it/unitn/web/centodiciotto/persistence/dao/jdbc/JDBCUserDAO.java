@@ -76,6 +76,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
                     res = mapRowToEntity(rs);
+                    return res;
                 }
             }
         } catch (SQLException e) {

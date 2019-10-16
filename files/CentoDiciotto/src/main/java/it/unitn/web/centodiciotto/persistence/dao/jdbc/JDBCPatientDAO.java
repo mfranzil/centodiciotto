@@ -23,9 +23,11 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
     final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, practitioner_id, living_province) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
-    final private String PATIENTSBYEMAIL = "select general_practitioner.practitioner_id, general_practitioner.first_name, " +
-            "general_practitioner.last_name, general_practitioner.working_province FROM patient JOIN general_practitioner ON " +
-            "patient.practitioner_id = general_practitioner.id WHERE general_practitioner.id = ?;";
+    final private String PATIENTSBYEMAIL = "select P.patient_id, P.first_name, P.last_name," +
+            " P.birth_date, P.birth_place, P.ssn, P.gender," +
+            " P.practitioner_id, P.living_province FROM patient P" +
+            " INNER JOIN general_practitioner GP ON P.practitioner_id = GP.practitioner_id" +
+            " WHERE GP.practitioner_id = ?;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -172,14 +174,14 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         try {
             Patient patient = new Patient();
 
-            patient.setID(resultSet.getString("email"));
+            patient.setID(resultSet.getString("patient_id"));
             patient.setFirstName(resultSet.getString("first_name"));
             patient.setLastName(resultSet.getString("last_name"));
             patient.setBirthDate(resultSet.getDate("birth_date"));
             patient.setBirthPlace(resultSet.getString("birth_place"));
             patient.setSsn(resultSet.getString("ssn"));
             patient.setGender(resultSet.getString("gender").charAt(0));
-            patient.setPractitionerID(resultSet.getString("general_practitioner_email"));
+            patient.setPractitionerID(resultSet.getString("practitioner_id"));
             patient.setLivingProvince(resultSet.getString("living_province"));
 
             return patient;

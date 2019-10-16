@@ -8,12 +8,14 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExamHistoryServlet extends HttpServlet {
@@ -40,13 +42,15 @@ public class ExamHistoryServlet extends HttpServlet {
 
         if (user != null) {
             if (user instanceof Patient) {
-                List<Exam> exams_history = null;
+                // TODO Inizio codice da modificare con i beans
+                List<Pair<Exam, String>> to_be_sent = new ArrayList<>();
                 try {
-                    exams_history = examDAO.getByPatient(((Patient) user).getID());
+                    List<Exam> exams_history = examDAO.getByPatient(((Patient) user).getID());
                     // Since Exam description is in another table, here I join everything together
                     for (Exam exam : exams_history) {
                         try {
-                            exam.setExamDescription(examListDAO.getByPrimaryKey(exam.getType()).getDescription());
+                            to_be_sent.add(Pair.makePair(exam,
+                                    examListDAO.getByPrimaryKey(exam.getType()).getDescription()));
                         } catch (DAOException e) {
                             e.printStackTrace();
                         }
@@ -54,8 +58,8 @@ public class ExamHistoryServlet extends HttpServlet {
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-                request.setAttribute("exams", exams_history);
-
+                request.setAttribute("exams", to_be_sent);
+                // Fine codice da modificare
             }
         }
         request.getRequestDispatcher("/jsp/patient/exam_history-p.jsp").forward(request, response);

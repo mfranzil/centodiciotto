@@ -1,3 +1,4 @@
+<%--suppress ELValidationInJSP --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,9 +48,11 @@
                     <div class="table-cell report-state">Report State</div>
                     <div class="table-cell action">Report</div>
                 </div>
-                <c:forEach items="${requestScope.exams}" var="exam">
+                <c:forEach items="${requestScope.exams}" var="pair">
+                    <c:set var="exam" value="${pair.first}"/>
+                    <c:set var="description" value="${pair.second}"/>
                     <div class="table-personal">
-                        <div class="table-cell exam">${exam.examDescription}</div>
+                        <div class="table-cell exam">${description}</div>
                         <div class="table-cell date">${exam.examDate}</div>
                         <div class="table-cell report-state">${exam.examDone ? "Available" : "Not available"}</div>
                         <div class="table-cell action">

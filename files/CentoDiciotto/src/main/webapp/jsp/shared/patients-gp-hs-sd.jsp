@@ -72,12 +72,16 @@
 
                 <c:forEach items="${requestScope.list}" var="list_item">
                     <c:set var="patient" value="${list_item[0]}"/>
-                    <c:set var="visit" value="${list_item[1]}"/>
-                    <c:set var="exams" value="${list_item[2]}"/>
+                    <c:set var="province" value="${list_item[1]}"/>
+                    <c:set var="patient_pr" value="${list_item[2]}"/>
+                    <c:set var="photo" value="${list_item[3]}"/>
+                    <c:set var="visit" value="${list_item[4]}"/>
+                    <c:set var="visit_pr" value="${list_item[5]}"/>
+                    <c:set var="exams" value="${list_item[6]}"/>
 
                     <div class="table-personal" id="table-select">
                         <div class="table-cell avt"><img class="avatar-small"
-                                                         src="${pageContext.request.contextPath}${patient.currentPhotoPath}"
+                                                         src="${pageContext.request.contextPath}${photo}"
                                                          alt="Profile photo"></div>
                         <div class="table-cell name">${patient.firstName} ${patient.lastName}</div>
                         <div class="table-cell ssn">${patient.ssn}</div>
@@ -116,50 +120,44 @@
                                             </tr>
                                             <tr>
                                                 <th>Practitioner</th>
-                                                <td>${patient.practitionerFirstName} ${patient.practitionerLastName}</td>
+                                                <td>${patient_pr}</td>
                                             </tr>
                                         </table>
                                     </div>
                                     <c:if test="${!empty visit}">
-                                    <div>
-                                        <h4>Last visit</h4>
-                                        <table class="table table-unresponsive">
-                                            <tr>
-                                                <th>Date</th>
-                                                <td>${visit.visitDate}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Practitioner</th>
-                                                <td>${visit.practitionerFirstName} ${visit.practitionerLastName}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Report</th>
-                                                <td>${visit.reportAvailable ? visit.report : " - "}</td>
-                                            </tr><!--
-                                            <tr>
-                                                <th>Prescripted drugs</th>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Prescripted exams</th>
-                                                <td>-</td>
-                                            </tr>-->
-                                        </table>
-                                    </div>
+                                        <div>
+                                            <h4>Last visit</h4>
+                                            <table class="table table-unresponsive">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <td>${visit.visitDate}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Practitioner</th>
+                                                    <td>${visit_pr}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Report</th>
+                                                    <td>${visit.reportAvailable ? visit.report : " - "}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </c:if>
                                     <c:if test="${!empty exams}">
-                                    <div>
-                                        <h4>Last exams</h4>
-                                        <table class="table table-unresponsive">
-                                            <c:forEach items="${exams}" var="exam">
-                                            <tr>
-                                                <td>${exam.examDate}</td>
-                                                <td>${exam.examDescription}</td>
-                                                <td>${exam.examResult}</td>
-                                            </tr>
-                                            </c:forEach>
-                                        </table>
-                                    </div>
+                                        <div>
+                                            <h4>Last exams</h4>
+                                            <table class="table table-unresponsive">
+                                                <c:forEach items="${exams}" var="pair">
+                                                    <c:set var="exam" value="${pair.first}"/>
+                                                    <c:set var="description" value="${pair.second}"/>
+                                                    <tr>
+                                                        <td>${exam.examDate}</td>
+                                                        <td>${description}</td>
+                                                        <td>${exam.examResult}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </table>
+                                        </div>
                                     </c:if>
                                     <div>
                                         <h4>Last prescriptions</h4>

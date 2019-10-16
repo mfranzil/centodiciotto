@@ -85,7 +85,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             Photo photo = new Photo();
 
             photo.setID(resultSet.getInt("photo_id"));
-            photo.setPatientID(resultSet.getString("email"));
+            photo.setPatientID(resultSet.getString("patient_id"));
             photo.setUploadDate(resultSet.getTimestamp("upload_date"));
 
             return photo;

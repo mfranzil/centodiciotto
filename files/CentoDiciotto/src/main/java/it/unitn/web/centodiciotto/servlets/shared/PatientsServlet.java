@@ -1,12 +1,12 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
-import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.UserService;
-import it.unitn.web.utils.VEPService;
+import it.unitn.web.utils.Pair;
+import it.unitn.web.utils.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -56,17 +56,37 @@ public class PatientsServlet extends HttpServlet {
                 for (Patient patient : available_patients) {
                     List<Object> listItem = new ArrayList<>();
 
-                    UserService.powerUpPatient(patient);
-                    listItem.add(patient);
+                    // TODO Inizio codice temporaneo da sostituire con beans
+                    try {
+                        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
+                        var province = daoFactory.getDAO(ProvinceDAO.class).getByAbbreviation(patient.getLivingProvince());
+                        var generalPractitioner = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(patient.getPractitionerID());
+                        var visit = daoFactory.getDAO(VisitDAO.class).getLastVisitByPatient(patient);
+                        var visitPr = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(visit.getPractitionerID());
+                        var exams = daoFactory.getDAO(ExamDAO.class).getByPatient(patient.getID());
+                        ExamListDAO exd = daoFactory.getDAO(ExamListDAO.class);
 
-                    Visit visit = VEPService.getLastDoneVisit(patient);
-                    listItem.add(visit);
+                        List<Pair<Exam, String>> examList = new ArrayList<>();
 
-                    List<Exam> examList = VEPService.getLastDoneExams(patient);
-                    listItem.add(examList);
+                        for (Exam exam : exams) {
+                            examList.add(Pair.makePair(exam, exd.getByPrimaryKey(exam.getType()).getDescription()));
+                        }
 
-                    list.add(listItem);
+                        listItem.add(patient);
+                        listItem.add(province.getName() + " (" + province.getAbbreviation() + ")");
+                        listItem.add(generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName());
+                        listItem.add(PhotoService.getLastPhoto(patient));
+                        listItem.add(visit);
+                        listItem.add(visitPr.getFirstName() + " " + visitPr.getLastName());
+                        listItem.add(examList);
+
+                        list.add(listItem);
+                    } catch (DAOFactoryException e) {
+                        e.printStackTrace();
+                    }
+                    // Fine codice da modificare
                 }
+
             } catch (DAOException ex) {
                 throw new ServletException("Impossible to retrieve the patient.", ex);
             }

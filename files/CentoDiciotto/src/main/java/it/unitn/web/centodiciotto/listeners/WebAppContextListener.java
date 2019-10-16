@@ -22,8 +22,6 @@ public class WebAppContextListener implements ServletContextListener {
             Crypto.configure(daoFactory);
 
             PhotoService.configure(daoFactory, sce.getServletContext());
-            VEPService.configure(daoFactory, sce.getServletContext());
-            UserService.configure(daoFactory, sce.getServletContext());
 
             sce.getServletContext().setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException ex) {
