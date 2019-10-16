@@ -46,7 +46,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
                 Timestamp date = new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)); // 24 ore di durata
                 pr = new PasswordReset();
 
-                pr.setEmail(email);
+                pr.setUserID(email);
                 pr.setToken(Crypto.getNextBase64Token());
                 pr.setExpiringDate(date);
 
@@ -71,7 +71,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
                                 "Yours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - reset your password";
 
-                request.setAttribute("recipient", pr.getEmail());
+                request.setAttribute("recipient", pr.getUserID());
                 request.setAttribute("message", message);
                 request.setAttribute("subject", subject);
 

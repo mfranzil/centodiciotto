@@ -30,8 +30,8 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
     public void insert(PendingVisit pendingVisit) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, pendingVisit.getPractitionerEmail());
-            preparedStatement.setString(2, pendingVisit.getPatientEmail());
+            preparedStatement.setString(1, pendingVisit.getPractitionerID());
+            preparedStatement.setString(2, pendingVisit.getPatientID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -45,8 +45,8 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
     public void update(PendingVisit pendingVisit) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, pendingVisit.getPractitionerEmail());
-            preparedStatement.setString(2, pendingVisit.getPatientEmail());
+            preparedStatement.setString(1, pendingVisit.getPractitionerID());
+            preparedStatement.setString(2, pendingVisit.getPatientID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -59,7 +59,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
     @Override
     public void delete(PendingVisit pendingVisit) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, pendingVisit.getPatientEmail());
+            stm.setString(1, pendingVisit.getPatientID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -142,8 +142,8 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
         try {
             PendingVisit pendingVisit = new PendingVisit();
 
-            pendingVisit.setPatientEmail(rs.getString("patient_id"));
-            pendingVisit.setPractitionerEmail(rs.getString("practitioner_id"));
+            pendingVisit.setPatientID(rs.getString("patient_id"));
+            pendingVisit.setPractitionerID(rs.getString("practitioner_id"));
 
             return pendingVisit;
         } catch (SQLException e) {

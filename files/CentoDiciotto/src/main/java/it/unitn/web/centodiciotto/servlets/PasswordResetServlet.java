@@ -45,7 +45,7 @@ public class PasswordResetServlet extends HttpServlet {
         try {
             pr = prDAO.getByToken(token);
             if (pr != null && pr.getExpiringDate().after(new Timestamp(System.currentTimeMillis()))) {
-                request.setAttribute("email", pr.getEmail());
+                request.setAttribute("email", pr.getUserID());
                 request.getRequestDispatcher("/jsp/password_reset.jsp").forward(request, response);
             } else {
                 response.sendRedirect(response.encodeRedirectURL(contextPath));

@@ -29,13 +29,13 @@ public class DAOMain {
             System.out.println("email: " + patient.getID());
 
             Photo p = photoDAO.getCurrentPhoto(patient);
-            System.out.println("Current photo ID: " + p.getPhotoId());
+            System.out.println("Current photo ID: " + p.getID());
 
             List<Photo> photos = photoDAO.getAllPhotos(patient);
 
             System.out.println("All photos");
             for (Photo photo : photos){
-                System.out.println("- id: " + photo.getPhotoId());
+                System.out.println("- id: " + photo.getID());
             }
 
             Exam exam = examDAO.getByPrimaryKey(1);

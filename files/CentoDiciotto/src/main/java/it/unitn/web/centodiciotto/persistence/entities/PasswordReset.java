@@ -3,16 +3,16 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 public class PasswordReset {
-    private String email;
+    private String userID;
     private String token;
     private Timestamp expiringDate;
 
-    public String getEmail() {
-        return email;
+    public String getUserID() {
+        return userID;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getToken() {

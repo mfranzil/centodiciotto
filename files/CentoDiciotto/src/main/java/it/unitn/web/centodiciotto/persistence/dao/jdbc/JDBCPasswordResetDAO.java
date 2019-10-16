@@ -14,10 +14,10 @@ import java.util.List;
 
 public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> implements PasswordResetDAO {
 
-    final private String INSERT = "INSERT INTO password_reset (email, token, expiring_date) values (?, ?, ?);";
-    final private String UPDATE = "UPDATE password_reset SET token = ?, expiring_date = ? WHERE email = ?;";
-    final private String DELETE = "DELETE from password_reset WHERE email = ?;";
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM password_reset WHERE email = ?;";
+    final private String INSERT = "INSERT INTO password_reset (user_id, token, expiring_date) values (?, ?, ?);";
+    final private String UPDATE = "UPDATE password_reset SET token = ?, expiring_date = ? WHERE user_id = ?;";
+    final private String DELETE = "DELETE from password_reset WHERE user_id = ?;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM password_reset WHERE user_id = ?;";
     final private String FINDBYTOKEN = "SELECT * FROM password_reset WHERE token = ?;";
     final private String SELECTALL = "SELECT * FROM password_reset;";
 
@@ -30,7 +30,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
         try {
             PasswordReset passwordReset = new PasswordReset();
             
-            passwordReset.setEmail(resultSet.getString("email"));
+            passwordReset.setUserID(resultSet.getString("user_id"));
             passwordReset.setToken(resultSet.getString("token"));
             passwordReset.setExpiringDate(resultSet.getTimestamp("expiring_date"));
 
@@ -44,7 +44,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     public void insert(PasswordReset passwordReset) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, passwordReset.getEmail());
+            preparedStatement.setString(1, passwordReset.getUserID());
             preparedStatement.setString(2, passwordReset.getToken());
             preparedStatement.setTimestamp(3, passwordReset.getExpiringDate());
 
@@ -62,7 +62,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, passwordReset.getToken());
             preparedStatement.setTimestamp(2, passwordReset.getExpiringDate());
-            preparedStatement.setString(3, passwordReset.getEmail());
+            preparedStatement.setString(3, passwordReset.getUserID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -76,7 +76,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     public void delete(PasswordReset passwordReset) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(DELETE);
-            preparedStatement.setString(1, passwordReset.getEmail());
+            preparedStatement.setString(1, passwordReset.getUserID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -132,7 +132,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting PasswordReset by email: ", e);
+            throw new DAOException("Error getting PasswordReset by user_id: ", e);
         }
         return null;
     }

@@ -3,42 +3,42 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Date;
 
 public class Prescription {
-    private Integer prescriptionID;
-    private String prescriptionPractitioner;
-    private String prescriptionPatient;
-    private Date prescriptionDate;
+    private Integer ID;
+    private String practitionerID;
+    private String patientID;
+    private Date date;
     private String drugDescription;
 
-    public int getPrescriptionID() {
-        return this.prescriptionID;
+    public int getID() {
+        return this.ID;
     }
 
-    public void setPrescriptionID(Integer prescriptionID) {
-        this.prescriptionID = prescriptionID;
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
-    public String getPrescriptionPractitioner() {
-        return this.prescriptionPractitioner;
+    public String getPractitionerID() {
+        return this.practitionerID;
     }
 
-    public void setPrescriptionPractitioner(String prescriptionPractitioner) {
-        this.prescriptionPractitioner = prescriptionPractitioner;
+    public void setPractitionerID(String practitionerID) {
+        this.practitionerID = practitionerID;
     }
 
-    public String getPrescriptionPatient() {
-        return this.prescriptionPatient;
+    public String getPatientID() {
+        return this.patientID;
     }
 
-    public void setPrescriptionPatient(String prescriptionPatient) {
-        this.prescriptionPatient = prescriptionPatient;
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
     }
 
-    public Date getPrescriptionDate() {
-        return this.prescriptionDate;
+    public Date getDate() {
+        return this.date;
     }
 
-    public void setPrescriptionDate(Date prescriptionDate) {
-        this.prescriptionDate = prescriptionDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getDrugDescription() {

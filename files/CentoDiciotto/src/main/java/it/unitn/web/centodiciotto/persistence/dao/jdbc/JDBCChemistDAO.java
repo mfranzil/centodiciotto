@@ -31,7 +31,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
             preparedStatement.setString(1, chemist.getID());
             preparedStatement.setString(2, chemist.getName());
-            preparedStatement.setString(3, chemist.getChemistProvince());
+            preparedStatement.setString(3, chemist.getProvince());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -46,7 +46,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, chemist.getName());
-            preparedStatement.setString(2, chemist.getChemistProvince());
+            preparedStatement.setString(2, chemist.getProvince());
             preparedStatement.setString(3, chemist.getID());
 
             int row = preparedStatement.executeUpdate();
@@ -145,7 +145,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
             chemist.setID(resultSet.getString("chemist_id"));
             chemist.setName(resultSet.getString("name"));
-            chemist.setChemistProvince(resultSet.getString("chemist_province"));
+            chemist.setProvince(resultSet.getString("chemist_province"));
 
             return chemist;
         } catch (SQLException e) {

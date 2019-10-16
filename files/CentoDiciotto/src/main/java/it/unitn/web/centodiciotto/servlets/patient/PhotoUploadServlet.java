@@ -51,13 +51,13 @@ public class PhotoUploadServlet extends HttpServlet {
         String extension = request.getParameter("extension");
 
         Photo photo = new Photo();
-        photo.setPatientEmail(user.getID());
+        photo.setPatientID(user.getID());
         photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
 
         try {
             photoDAO.insert(photo);
 
-            String fileName = Integer.toString(photo.getPhotoId());
+            String fileName = Integer.toString(photo.getID());
 
             String path = getServletContext().getRealPath("/") + File.separator
             + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getID();

@@ -14,11 +14,11 @@ import java.util.List;
 
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
-    final private String INSERT = "INSERT INTO user_ (email, hash, salt) values (?, ?, ?);";
-    final private String UPDATE = "UPDATE user_ SET hash = ? AND salt = ? WHERE email = ?;";
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE email = ?;";
+    final private String INSERT = "INSERT INTO user_ (user_id, hash, salt) values (?, ?, ?);";
+    final private String UPDATE = "UPDATE user_ SET hash = ? AND salt = ? WHERE user_id = ?;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE user_id = ?;";
     final private String SELECTALL = "SELECT * FROM user_;";
-    final private String DELETE = "DELETE FROM user_ WHERE email = ?;";
+    final private String DELETE = "DELETE FROM user_ WHERE user_id = ?;";
 
     public JDBCUserDAO(Connection con) {
         super(con);
@@ -63,7 +63,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error deleting User by email: ", e);
+            throw new DAOException("Error deleting User by user_id: ", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting User by email: ", e);
+            throw new DAOException("Error getting User by user_id: ", e);
         }
         return null;
     }
@@ -121,7 +121,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         try {
             User user = new User();
 
-            user.setID(resultSet.getString("email"));
+            user.setID(resultSet.getString("user_id"));
             user.setHash(resultSet.getString("hash"));
             user.setSalt(resultSet.getString("salt"));
 

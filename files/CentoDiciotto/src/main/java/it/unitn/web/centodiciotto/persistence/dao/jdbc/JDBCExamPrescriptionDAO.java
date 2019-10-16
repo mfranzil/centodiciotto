@@ -29,11 +29,11 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
         try {
             ExamPrescription examPrescription = new ExamPrescription();
 
-            examPrescription.setPrescriptionID(resultSet.getInt("exam_prescription_id"));
-            examPrescription.setPractitionerEmail(resultSet.getString("practitioner_id"));
-            examPrescription.setPatientEmail(resultSet.getString("patient_id"));
+            examPrescription.setID(resultSet.getInt("exam_prescription_id"));
+            examPrescription.setPractitionerID(resultSet.getString("practitioner_id"));
+            examPrescription.setPatientID(resultSet.getString("patient_id"));
             examPrescription.setExamType(resultSet.getInt("exam_type"));
-            examPrescription.setExamBooked(resultSet.getBoolean("booked"));
+            examPrescription.setBooked(resultSet.getBoolean("booked"));
 
             return examPrescription;
         } catch (SQLException e) {
@@ -46,10 +46,10 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
         try {
             //(patient_id, doctor_id, exam_type, done, date, result )
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, examPrescription.getPractitionerEmail());
-            preparedStatement.setString(2, examPrescription.getPatientEmail());
+            preparedStatement.setString(1, examPrescription.getPractitionerID());
+            preparedStatement.setString(2, examPrescription.getPatientID());
             preparedStatement.setInt(3, examPrescription.getExamType());
-            preparedStatement.setBoolean(4, examPrescription.getExamBooked());
+            preparedStatement.setBoolean(4, examPrescription.getBooked());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -65,11 +65,11 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     public void update(ExamPrescription examPrescription) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, examPrescription.getPractitionerEmail());
-            preparedStatement.setString(2, examPrescription.getPatientEmail());
+            preparedStatement.setString(1, examPrescription.getPractitionerID());
+            preparedStatement.setString(2, examPrescription.getPatientID());
             preparedStatement.setInt(3, examPrescription.getExamType());
-            preparedStatement.setBoolean(4, examPrescription.getExamBooked());
-            preparedStatement.setInt(5, examPrescription.getPrescriptionID());
+            preparedStatement.setBoolean(4, examPrescription.getBooked());
+            preparedStatement.setInt(5, examPrescription.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -82,7 +82,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     @Override
     public void delete(ExamPrescription examPrescription) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, examPrescription.getPrescriptionID());
+            stm.setInt(1, examPrescription.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {

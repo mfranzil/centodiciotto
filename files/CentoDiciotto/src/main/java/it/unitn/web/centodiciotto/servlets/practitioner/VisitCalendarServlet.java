@@ -54,7 +54,7 @@ public class VisitCalendarServlet extends HttpServlet {
 
                 for (Visit visit : visits) {
                     if (!visit.getReportAvailable()) {
-                        patient_visits.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientEmail()), visit));
+                        patient_visits.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
                     }
                 }
                 request.setAttribute("patient_visits", patient_visits);

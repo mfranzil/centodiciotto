@@ -14,11 +14,11 @@ import java.util.List;
 
 public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String> implements SpecializedDoctorDAO {
 
-    final private String INSERT = "INSERT INTO specialized_doctor (email, first_name, last_name) values (?, ?, ?);";
-    final private String FINDBYID = "SELECT * FROM specialized_doctor WHERE email = ?;";
+    final private String INSERT = "INSERT INTO specialized_doctor (doctor_id, first_name, last_name) values (?, ?, ?);";
+    final private String FINDBYID = "SELECT * FROM specialized_doctor WHERE doctor_id = ?;";
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
-    final private String DELETE = "DELETE FROM specialized_doctor WHERE email = ?;";
-    final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?) WHERE email = ?;";
+    final private String DELETE = "DELETE FROM specialized_doctor WHERE doctor_id = ?;";
+    final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?) WHERE doctor_id = ?;";
 
     public JDBCSpecializedDoctorDAO(Connection con) {
         super(con);
@@ -63,15 +63,15 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error deleting SpecializesDoctor by email: ", e);
+            throw new DAOException("Error deleting SpecializesDoctor by doctor_id: ", e);
         }
     }
 
     @Override
-    public SpecializedDoctor getByPrimaryKey(String email) throws DAOException {
+    public SpecializedDoctor getByPrimaryKey(String doctor_id) throws DAOException {
         SpecializedDoctor res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
-            stm.setString(1, email);
+            stm.setString(1, doctor_id);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -80,7 +80,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting SpecializedDoctor by email: ", e);
+            throw new DAOException("Error getting SpecializedDoctor by doctor_id: ", e);
         }
         return null;
     }
@@ -123,7 +123,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
         try {
             SpecializedDoctor specializedDoctor = new SpecializedDoctor();
 
-            specializedDoctor.setID(resultSet.getString("email"));
+            specializedDoctor.setID(resultSet.getString("doctor_id"));
             specializedDoctor.setFirstName(resultSet.getString("first_name"));
             specializedDoctor.setLastName(resultSet.getString("last_name"));
 

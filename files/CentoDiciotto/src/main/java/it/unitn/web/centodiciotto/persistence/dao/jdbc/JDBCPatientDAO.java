@@ -15,17 +15,17 @@ import java.util.List;
 
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
 
-    final private String GETBYEMAIL = "SELECT * FROM patient WHERE email = ? LIMIT 1;";
-    final private String INSERT = "INSERT INTO patient (email, first_name, last_name, birth_date, birth_place, ssn, " +
-            "gender, general_practitioner_email, living_province) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    final private String UPDATEPRACTITIONER = "UPDATE patient SET general_practitioner_email = ? WHERE email = ?;";
+    final private String GETBYEMAIL = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
+    final private String INSERT = "INSERT INTO patient (patient_id, first_name, last_name, birth_date, birth_place, ssn, " +
+            "gender, practitioner_id, living_province) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    final private String UPDATEPRACTITIONER = "UPDATE patient SET practitioner_id = ? WHERE patient_id = ?;";
     final private String SELECTALL = "SELECT * FROM patient;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
-    final private String DELETE = "DELETE FROM patient WHERE email = ?;";
-    final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, general_practitioner_email, living_province) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE email = ?;";
-    final private String PATIENTSBYEMAIL = "select general_practitioner.email, general_practitioner.first_name, " +
+    final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
+    final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, practitioner_id, living_province) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
+    final private String PATIENTSBYEMAIL = "select general_practitioner.practitioner_id, general_practitioner.first_name, " +
             "general_practitioner.last_name, general_practitioner.working_province FROM patient JOIN general_practitioner ON " +
-            "patient.general_practitioner_email = general_practitioner.email WHERE general_practitioner.email = ?;";
+            "patient.practitioner_id = general_practitioner.id WHERE general_practitioner.id = ?;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -42,7 +42,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             preparedStatement.setString(5, patient.getBirthPlace());
             preparedStatement.setString(6, patient.getSsn());
             preparedStatement.setString(7, String.valueOf(patient.getGender()));
-            preparedStatement.setString(8, patient.getGeneralPractitionerEmail());
+            preparedStatement.setString(8, patient.getPractitionerID());
             preparedStatement.setString(9, patient.getLivingProvince());
 
             int row = preparedStatement.executeUpdate();
@@ -65,7 +65,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             preparedStatement.setString(4, patient.getBirthPlace());
             preparedStatement.setString(5, patient.getSsn());
             preparedStatement.setString(6, String.valueOf(patient.getGender()));
-            preparedStatement.setString(7, patient.getGeneralPractitionerEmail());
+            preparedStatement.setString(7, patient.getPractitionerID());
             preparedStatement.setString(8, patient.getLivingProvince());
             preparedStatement.setString(10, patient.getID());
 
@@ -92,7 +92,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     public void updatePractitioner(Patient patient) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATEPRACTITIONER);
-            preparedStatement.setString(1, patient.getGeneralPractitionerEmail());
+            preparedStatement.setString(1, patient.getPractitionerID());
             preparedStatement.setString(2, patient.getID());
 
             int row = preparedStatement.executeUpdate();
@@ -179,7 +179,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             patient.setBirthPlace(resultSet.getString("birth_place"));
             patient.setSsn(resultSet.getString("ssn"));
             patient.setGender(resultSet.getString("gender").charAt(0));
-            patient.setGeneralPractitionerEmail(resultSet.getString("general_practitioner_email"));
+            patient.setPractitionerID(resultSet.getString("general_practitioner_email"));
             patient.setLivingProvince(resultSet.getString("living_province"));
 
             return patient;

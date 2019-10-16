@@ -2,7 +2,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 
 public class Chemist extends User {
     private String name;
-    private String chemistProvince;
+    private String province;
 
     public String getName() {
         return this.name;
@@ -12,12 +12,12 @@ public class Chemist extends User {
         this.name = Name;
     }
 
-    public String getChemistProvince() {
-        return chemistProvince;
+    public String getProvince() {
+        return province;
     }
 
-    public void setChemistProvince(String chemistProvince) {
-        this.chemistProvince = chemistProvince;
+    public void setProvince(String province) {
+        this.province = province;
     }
 
 }

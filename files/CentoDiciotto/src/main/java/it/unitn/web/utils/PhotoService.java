@@ -86,8 +86,8 @@ public class PhotoService {
         }
 
         for (Photo photo : photos) {
-            System.out.println(photo.getPatientEmail() + " - " + photo.getPhotoId());
-            photo_paths.add(Pair.makePair(getPhotoPath(photo), photo.getPhotoId()));
+            System.out.println(photo.getPatientID() + " - " + photo.getID());
+            photo_paths.add(Pair.makePair(getPhotoPath(photo), photo.getID()));
         }
 
         return photo_paths;
@@ -100,11 +100,11 @@ public class PhotoService {
         if (photo == null) {
             return avatarFolder + "default.png";
         } else {
-            id = photo.getPhotoId();
+            id = photo.getID();
         }
 
         String context = sc.getRealPath("/");
-        String email = photo.getPatientEmail();
+        String email = photo.getPatientID();
         String photoPath = avatarFolder + email + File.separator + id;
 
         if (new File(context + photoPath + ".jpg").exists()) {

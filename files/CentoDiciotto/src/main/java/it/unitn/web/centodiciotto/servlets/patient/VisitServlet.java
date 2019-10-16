@@ -68,8 +68,8 @@ public class VisitServlet extends HttpServlet {
             String practitionerEmail = practitioner.getID();
 
             PendingVisit pendingVisit = new PendingVisit();
-            pendingVisit.setPatientEmail(patientEmail);
-            pendingVisit.setPractitionerEmail(practitionerEmail);
+            pendingVisit.setPatientID(patientEmail);
+            pendingVisit.setPractitionerID(practitionerEmail);
 
             try {
                 pendingVisitDAO.insert(pendingVisit);

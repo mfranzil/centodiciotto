@@ -54,7 +54,7 @@ public class VisitRequestServlet extends HttpServlet {
                 List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitioner_email);
 
                 for( PendingVisit pendingVisit : pendingVisits){
-                    pendingPatients.add(patientDAO.getByPrimaryKey(pendingVisit.getPatientEmail()));
+                    pendingPatients.add(patientDAO.getByPrimaryKey(pendingVisit.getPatientID()));
                 }
 
                 request.setAttribute("pending_patients", pendingPatients);
@@ -78,16 +78,16 @@ public class VisitRequestServlet extends HttpServlet {
             Date date = formatter.parse(visit_timestamp);
 
             Visit insertVisit = new Visit();
-            insertVisit.setPractitionerEmail(practitioner_email);
-            insertVisit.setPatientEmail(patient_email);
-            insertVisit.setVisitDate(new Timestamp(date.getTime()));
+            insertVisit.setPractitionerID(practitioner_email);
+            insertVisit.setPatientID(patient_email);
+            insertVisit.setDate(new Timestamp(date.getTime()));
             insertVisit.setReportAvailable(false);
 
             visitDAO.insert(insertVisit);
 
             PendingVisit toBeDeleted = new PendingVisit();
-            toBeDeleted.setPatientEmail(patient_email);
-            toBeDeleted.setPractitionerEmail(practitioner_email);
+            toBeDeleted.setPatientID(patient_email);
+            toBeDeleted.setPractitionerID(practitioner_email);
 
             pendingVisitDAO.delete(toBeDeleted);
 

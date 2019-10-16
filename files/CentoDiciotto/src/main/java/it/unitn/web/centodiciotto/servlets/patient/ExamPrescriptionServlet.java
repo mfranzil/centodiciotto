@@ -92,7 +92,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
                 ExamList exam = examListDAO.getByPrimaryKey(selected_exam);
 
                 for(ExamPrescription examPrescription : examPrescriptions){
-                    if(examPrescription.getExamType().equals(selected_exam) && !examPrescription.getExamBooked()){
+                    if(examPrescription.getExamType().equals(selected_exam) && !examPrescription.getBooked()){
                         bookable = true;
                     }
                 }

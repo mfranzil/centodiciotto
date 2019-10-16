@@ -53,7 +53,7 @@ public class PrescriptionServlet extends HttpServlet {
 
                     for (Prescription prescription : prescriptions) {
                         Calendar prescriptionDate = Calendar.getInstance();
-                        prescriptionDate.setTime(prescription.getPrescriptionDate());
+                        prescriptionDate.setTime(prescription.getDate());
                         prescriptionDate.add(Calendar.MONTH, 1);
 
                         Boolean available = prescriptionDate.getTime().after(now.getTime());

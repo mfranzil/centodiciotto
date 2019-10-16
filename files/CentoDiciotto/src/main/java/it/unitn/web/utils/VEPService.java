@@ -52,7 +52,7 @@ public class VEPService {
                 return null;
             }
 
-            GeneralPractitioner visitPr = practitionerDAO.getByPrimaryKey(visit.getPractitionerEmail());
+            GeneralPractitioner visitPr = practitionerDAO.getByPrimaryKey(visit.getPractitionerID());
             visit.setPractitionerFirstName(visitPr.getFirstName());
             visit.setPractitionerLastName(visitPr.getLastName());
         } catch (DAOException e) {

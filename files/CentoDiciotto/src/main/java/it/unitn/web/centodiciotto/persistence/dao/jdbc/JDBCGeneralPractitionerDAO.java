@@ -14,13 +14,13 @@ import java.util.List;
 
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
 
-    final private String INSERT = "INSERT INTO general_practitioner (email, first_name, last_name, working_province)" +
+    final private String INSERT = "INSERT INTO general_practitioner (practitioner_id, first_name, last_name, working_province)" +
             " values (?, ?, ?, ?);";
-    final private String FINDBYID = "SELECT * FROM general_practitioner WHERE email = ?;";
+    final private String FINDBYID = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
     final private String SELECTALL = "SELECT * FROM general_practitioner;";
-    final private String DELETE = "DELETE FROM general_practitioner WHERE email = ?;";
-    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) = (?, ?, ?) WHERE email = ?;";
+    final private String DELETE = "DELETE FROM general_practitioner WHERE practitioner_id = ?;";
+    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) = (?, ?, ?) WHERE practitioner_id = ?;";
 
     public JDBCGeneralPractitionerDAO(Connection con) {
         super(con);
@@ -70,15 +70,15 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error deleting GeneralPractitioner by email: ", e);
+            throw new DAOException("Error deleting GeneralPractitioner by practitioner_id: ", e);
         }
     }
 
     @Override
-    public GeneralPractitioner getByPrimaryKey(String email) throws DAOException {
+    public GeneralPractitioner getByPrimaryKey(String practitioner_id) throws DAOException {
         GeneralPractitioner res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
-            stm.setString(1, email);
+            stm.setString(1, practitioner_id);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -87,7 +87,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting GeneralPractitioner by email: ", e);
+            throw new DAOException("Error getting GeneralPractitioner by practitioner_id: ", e);
         }
         return null;
     }
@@ -148,7 +148,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try {
             GeneralPractitioner generalPractitioner = new GeneralPractitioner();
 
-            generalPractitioner.setID(resultSet.getString("email"));
+            generalPractitioner.setID(resultSet.getString("practitioner_id"));
             generalPractitioner.setFirstName(resultSet.getString("first_name"));
             generalPractitioner.setLastName(resultSet.getString("last_name"));
             generalPractitioner.setWorkingProvince(resultSet.getString("working_province"));

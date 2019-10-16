@@ -10,7 +10,7 @@ public class Patient extends User {
     private String ssn;
     private Character gender;
     private String livingProvince;
-    private String generalPractitionerEmail;
+    private String practitionerID;
 
     public String getFirstName() {
         return firstName;
@@ -68,11 +68,11 @@ public class Patient extends User {
         this.livingProvince = livingProvince;
     }
 
-    public String getGeneralPractitionerEmail() {
-        return generalPractitionerEmail;
+    public String getPractitionerID() {
+        return practitionerID;
     }
 
-    public void setGeneralPractitionerEmail(String generalPractitionerEmail) {
-        this.generalPractitionerEmail = generalPractitionerEmail;
+    public void setPractitionerID(String practitionerID) {
+        this.practitionerID = practitionerID;
     }
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements ProvinceDAO {
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM province WHERE id_province = ?;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM province WHERE province_id = ?;";
     final private String SELECTALL = "SELECT * FROM province;";
     private final String GETBYABBREVIATION = "SELECT * FROM province WHERE province_abbreviation = ?;";
 
@@ -109,10 +109,10 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
         try {
             Province province = new Province();
 
-            province.setProvinceID(rs.getInt("id_province"));
-            province.setProvinceName(rs.getString("province_name"));
-            province.setProvinceAbbreviation(rs.getString("province_abbreviation"));
-            province.setProvinceRegion(rs.getString("province_region"));
+            province.setID(rs.getInt("province_id"));
+            province.setName(rs.getString("province_name"));
+            province.setAbbreviation(rs.getString("province_abbreviation"));
+            province.setRegion(rs.getString("province_region"));
 
             return province;
         } catch (SQLException e) {

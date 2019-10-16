@@ -1,40 +1,40 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class Province {
-    private Integer provinceID;
-    private String provinceName;
-    private String provinceAbbreviation;
-    private String provinceRegion;
+    private Integer ID;
+    private String name;
+    private String abbreviation;
+    private String region;
 
-    public Integer getProvinceID() {
-        return provinceID;
+    public Integer getID() {
+        return ID;
     }
 
-    public void setProvinceID(Integer provinceID) {
-        this.provinceID = provinceID;
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
-    public String getProvinceName() {
-        return provinceName;
+    public String getName() {
+        return name;
     }
 
-    public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getProvinceAbbreviation() {
-        return provinceAbbreviation;
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
-    public void setProvinceAbbreviation(String provinceAbbreviation) {
-        this.provinceAbbreviation = provinceAbbreviation;
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
-    public String getProvinceRegion() {
-        return provinceRegion;
+    public String getRegion() {
+        return region;
     }
 
-    public void setProvinceRegion(String provinceRegion) {
-        this.provinceRegion = provinceRegion;
+    public void setRegion(String region) {
+        this.region = region;
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
 
 public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implements PrescriptionDAO {
 
-    final private String INSERT = "INSERT INTO prescription (practitionerid, patientid, emission_date, description) values (?, ?, ?, ?);";
-    final private String FINDBYID = "SELECT * FROM prescription WHERE prescriptionid = ?;";
+    final private String INSERT = "INSERT INTO prescription (practitioner_id, patient_id, emission_date, description) values (?, ?, ?, ?);";
+    final private String FINDBYID = "SELECT * FROM prescription WHERE prescription_id = ?;";
     final private String SELECTALL = "SELECT * FROM prescription;";
-    final private String DELETE = "DELETE FROM prescription WHERE prescriptionid = ?;";
-    final private String UPDATE = "UPDATE prescription SET (practitionerid, patientid, emission_date, description) = (?, ?, ?, ?) WHERE prescriptionid = ?;";
-    final private String FINDBYPATIENT = "SELECT * FROM  prescription JOIN general_practitioner ON practitionerid = email  WHERE patientid = ?;";
-    final private String FINDBYPRACTITIONER = "SELECT * FROM  prescription WHERE practitionerid = ?;";
+    final private String DELETE = "DELETE FROM prescription WHERE prescription_id = ?;";
+    final private String UPDATE = "UPDATE prescription SET (practitioner_id, patient_id, emission_date, description) = (?, ?, ?, ?) WHERE prescription_id = ?;";
+    final private String FINDBYPATIENT = "SELECT * FROM  prescription JOIN general_practitioner ON practitioner_id = email  WHERE patient_id = ?;";
+    final private String FINDBYPRACTITIONER = "SELECT * FROM  prescription WHERE practitioner_id = ?;";
     final private String FINDEXPIRED = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' < now();";
     final private String FINDVALID = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' >= now();";
 
@@ -33,9 +33,9 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     public void insert(Prescription prescription) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, prescription.getPrescriptionPractitioner());
-            preparedStatement.setString(2, prescription.getPrescriptionPatient());
-            preparedStatement.setDate(3, prescription.getPrescriptionDate());
+            preparedStatement.setString(1, prescription.getPractitionerID());
+            preparedStatement.setString(2, prescription.getPatientID());
+            preparedStatement.setDate(3, prescription.getDate());
             preparedStatement.setString(4, prescription.getDrugDescription());
 
             int row = preparedStatement.executeUpdate();
@@ -51,9 +51,9 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     public void update(Prescription prescription) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, prescription.getPrescriptionPractitioner());
-            preparedStatement.setString(2, prescription.getPrescriptionPatient());
-            preparedStatement.setDate(3, prescription.getPrescriptionDate());
+            preparedStatement.setString(1, prescription.getPractitionerID());
+            preparedStatement.setString(2, prescription.getPatientID());
+            preparedStatement.setDate(3, prescription.getDate());
             preparedStatement.setString(4, prescription.getDrugDescription());
 
             int row = preparedStatement.executeUpdate();
@@ -67,7 +67,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     @Override
     public void delete(Prescription prescription) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, prescription.getPrescriptionID());
+            stm.setInt(1, prescription.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -76,10 +76,10 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     }
 
     @Override
-    public Prescription getByPrimaryKey(Integer prescriptionID) throws DAOException {
+    public Prescription getByPrimaryKey(Integer prescription_id) throws DAOException {
         Prescription res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
-            stm.setInt(1, prescriptionID);
+            stm.setInt(1, prescription_id);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -201,10 +201,10 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
             Prescription prescription = new Prescription();
 
             prescription.setDrugDescription(resultSet.getString("description"));
-            prescription.setPrescriptionDate(resultSet.getDate("emission_date"));
-            prescription.setPrescriptionID(resultSet.getInt("prescriptionid"));
-            prescription.setPrescriptionPatient(resultSet.getString("patientid"));
-            prescription.setPrescriptionPractitioner(resultSet.getString("practitionerid"));
+            prescription.setDate(resultSet.getDate("emission_date"));
+            prescription.setID(resultSet.getInt("prescription_id"));
+            prescription.setPatientID(resultSet.getString("patient_id"));
+            prescription.setPractitionerID(resultSet.getString("practitioner_id"));
 
             return prescription;
         } catch (SQLException e) {

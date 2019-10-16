@@ -14,11 +14,11 @@ import java.util.List;
 
 public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> implements HealthServiceDAO {
 
-    final private String INSERT = "INSERT INTO health_service (email, operating_province) values (?, ?);";
-    final private String FINDBYID = "SELECT * FROM health_service WHERE email = ?;";
+    final private String INSERT = "INSERT INTO health_service (health_service_id, operating_province) values (?, ?);";
+    final private String FINDBYID = "SELECT * FROM health_service WHERE health_service_id = ?;";
     final private String SELECTALL = "SELECT * FROM health_service;";
-    final private String DELETE = "DELETE FROM health_service WHERE email = ?;";
-    final private String UPDATE = "UPDATE health_service SET (operating_province) = (?) WHERE email = ?;";
+    final private String DELETE = "DELETE FROM health_service WHERE health_service_id = ?;";
+    final private String UPDATE = "UPDATE health_service SET (operating_province) = (?) WHERE health_service_id = ?;";
 
     public JDBCHealthServiceDAO(Connection con) {
         super(con);
@@ -121,7 +121,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             HealthService healthService = new HealthService();
 
-            healthService.setID(resultSet.getString("email"));
+            healthService.setID(resultSet.getString("health_service_id"));
             healthService.setOperatingProvince(resultSet.getString("operating_province"));
 
             return healthService;

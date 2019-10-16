@@ -41,14 +41,15 @@ public class UserService {
         }
 
         try {
+            // TODO change back to working
             Province province = provinceDAO.getByAbbreviation(patient.getLivingProvince());
-            patient.setProvinceFullName(province.getProvinceName() + " (" + province.getProvinceAbbreviation() + ")");
+            //patient.setProvinceFullName(province.getProvinceName() + " (" + province.getProvinceAbbreviation() + ")");
 
-            GeneralPractitioner generalPractitioner = practitionerDAO.getByPrimaryKey(patient.getGeneralPractitionerEmail());
-            patient.setPractitionerFirstName(generalPractitioner.getFirstName());
-            patient.setPractitionerLastName(generalPractitioner.getLastName());
+            GeneralPractitioner generalPractitioner = practitionerDAO.getByPrimaryKey(patient.getPractitionerID());
+            //patient.setPractitionerFirstName(generalPractitioner.getFirstName());
+            //patient.setPractitionerLastName(generalPractitioner.getLastName());
 
-            patient.setCurrentPhotoPath(PhotoService.getLastPhoto(patient));
+            //patient.setCurrentPhotoPath(PhotoService.getLastPhoto(patient));
         } catch (DAOException e) {
             throw new RuntimeException("Cannot contact DAO.", e);
         }

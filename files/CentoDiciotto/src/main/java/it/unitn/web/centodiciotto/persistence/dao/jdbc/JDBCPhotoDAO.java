@@ -15,7 +15,7 @@ import java.util.List;
 
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
-    final private String INSERT = "INSERT INTO photo (email, upload_date) values (?, ?) RETURNING photo_id;";
+    final private String INSERT = "INSERT INTO photo (patient_id, upload_date) values (?, ?) RETURNING photo_id;";
     final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
     final private String DELETE = "DELETE from photo WHERE photo_id = ?";
     final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photo_id = ?;";
@@ -23,13 +23,13 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
     final private String GET_CURRENT_PHOTO = "SELECT * " +
             "FROM photo " +
-            "WHERE email = ? " +
+            "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC " +
             "LIMIT 1;";
 
     final private String GET_ALL_PHOTOS = "SELECT * " +
             "FROM photo " +
-            "WHERE email = ? " +
+            "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC;";
 
     public JDBCPhotoDAO(Connection con) {
@@ -40,13 +40,13 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public void insert(Photo photo) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, photo.getPatientEmail());
+            preparedStatement.setString(1, photo.getPatientID());
             preparedStatement.setTimestamp(2, photo.getUploadDate());
 
             int photoId = preparedStatement.executeUpdate();
             //System.out.println("Rows affected: " + row);
 
-            photo.setPhotoId(photoId);
+            photo.setID(photoId);
 
         } catch (SQLException e) {
             throw new DAOException("Error inserting Photo: ", e);
@@ -58,7 +58,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setTimestamp(1, photo.getUploadDate());
-            preparedStatement.setInt(2, photo.getPhotoId());
+            preparedStatement.setInt(2, photo.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -71,7 +71,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     @Override
     public void delete(Photo photo) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, photo.getPhotoId());
+            stm.setInt(1, photo.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -84,8 +84,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
         try {
             Photo photo = new Photo();
 
-            photo.setPhotoId(resultSet.getInt("photo_id"));
-            photo.setPatientEmail(resultSet.getString("email"));
+            photo.setID(resultSet.getInt("photo_id"));
+            photo.setPatientID(resultSet.getString("email"));
             photo.setUploadDate(resultSet.getTimestamp("upload_date"));
 
             return photo;

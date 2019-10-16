@@ -77,7 +77,7 @@ public class LoginServlet extends HttpServlet {
                 GeneralPractitioner practitioner = null;
 
                 if (user instanceof Patient) {
-                    practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                    practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
                     photoPath = PhotoService.getLastPhoto((Patient) user);
                     displayName = ((Patient) user).getFirstName();
                 } else if (user instanceof GeneralPractitioner) {

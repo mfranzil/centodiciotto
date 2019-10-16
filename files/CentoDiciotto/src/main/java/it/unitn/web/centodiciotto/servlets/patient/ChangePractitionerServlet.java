@@ -45,10 +45,10 @@ public class ChangePractitionerServlet extends HttpServlet {
             try {
                 String newPractEmail = request.getParameter("practitioner_email");
 
-                GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
                 GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractEmail);
 
-                ((Patient) user).setGeneralPractitionerEmail(newPractEmail);
+                ((Patient) user).setPractitionerID(newPractEmail);
                 request.getSession().setAttribute("practitioner", newPract);
                 patientDAO.updatePractitioner((Patient) user);
 

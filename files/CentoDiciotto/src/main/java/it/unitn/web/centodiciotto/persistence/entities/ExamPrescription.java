@@ -1,42 +1,42 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class ExamPrescription {
-    private Integer prescriptionID;
-    private String patientEmail;
-    private String practitionerEmail;
-    private Boolean examBooked;
+    private Integer ID;
+    private String patientID;
+    private String practitionerID;
+    private Boolean booked;
     private Integer examType;
 
-    public Integer getPrescriptionID() {
-        return prescriptionID;
+    public Integer getID() {
+        return ID;
     }
 
-    public void setPrescriptionID(Integer prescriptionID) {
-        this.prescriptionID = prescriptionID;
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
-    public String getPatientEmail() {
-        return patientEmail;
+    public String getPatientID() {
+        return patientID;
     }
 
-    public void setPatientEmail(String patientEmail) {
-        this.patientEmail = patientEmail;
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
     }
 
-    public String getPractitionerEmail() {
-        return practitionerEmail;
+    public String getPractitionerID() {
+        return practitionerID;
     }
 
-    public void setPractitionerEmail(String practitionerEmail) {
-        this.practitionerEmail = practitionerEmail;
+    public void setPractitionerID(String practitionerID) {
+        this.practitionerID = practitionerID;
     }
 
-    public Boolean getExamBooked() {
-        return examBooked;
+    public Boolean getBooked() {
+        return booked;
     }
 
-    public void setExamBooked(Boolean examBooked) {
-        this.examBooked = examBooked;
+    public void setBooked(Boolean booked) {
+        this.booked = booked;
     }
 
     public Integer getExamType() {

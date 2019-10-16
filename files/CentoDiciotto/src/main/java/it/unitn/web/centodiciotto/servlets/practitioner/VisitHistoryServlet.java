@@ -54,7 +54,7 @@ public class VisitHistoryServlet extends HttpServlet {
 
                 for (Visit visit : visits) {
                     if(visit.getReportAvailable()) {
-                        patient_visits_report.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientEmail()), visit));
+                        patient_visits_report.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
                     }
                 }
                 request.setAttribute("patient_visits_report", patient_visits_report);

@@ -3,43 +3,43 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 public class Visit {
-    private Integer visitID;
-    private String patientEmail;
-    private String practitionerEmail;
-    private Timestamp visitDate;
+    private Integer ID;
+    private String patientID;
+    private String practitionerID;
+    private Timestamp date;
     private Boolean reportAvailable;
     private String report;
 
     public Integer getVisitID() {
-        return visitID;
+        return ID;
     }
 
     public void setVisitID(Integer visitID) {
-        this.visitID = visitID;
+        this.ID = visitID;
     }
 
-    public String getPatientEmail() {
-        return patientEmail;
+    public String getPatientID() {
+        return patientID;
     }
 
-    public void setPatientEmail(String patientEmail) {
-        this.patientEmail = patientEmail;
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
     }
 
-    public String getPractitionerEmail() {
-        return practitionerEmail;
+    public String getPractitionerID() {
+        return practitionerID;
     }
 
-    public void setPractitionerEmail(String practitionerEmail) {
-        this.practitionerEmail = practitionerEmail;
+    public void setPractitionerID(String practitionerID) {
+        this.practitionerID = practitionerID;
     }
 
-    public Timestamp getVisitDate() {
-        return visitDate;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public void setVisitDate(Timestamp visitDate) {
-        this.visitDate = visitDate;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
     public Boolean getReportAvailable() {

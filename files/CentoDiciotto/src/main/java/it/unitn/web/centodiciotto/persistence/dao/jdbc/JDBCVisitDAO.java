@@ -33,9 +33,9 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     public void insert(Visit visit) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, visit.getPractitionerEmail());
-            preparedStatement.setString(2, visit.getPatientEmail());
-            preparedStatement.setTimestamp(3, visit.getVisitDate());
+            preparedStatement.setString(1, visit.getPractitionerID());
+            preparedStatement.setString(2, visit.getPatientID());
+            preparedStatement.setTimestamp(3, visit.getDate());
             preparedStatement.setBoolean(4, visit.getReportAvailable());
             preparedStatement.setString(5, visit.getReport());
 
@@ -51,9 +51,9 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     public void update(Visit visit) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, visit.getPractitionerEmail());
-            preparedStatement.setString(2, visit.getPatientEmail());
-            preparedStatement.setTimestamp(3, visit.getVisitDate());
+            preparedStatement.setString(1, visit.getPractitionerID());
+            preparedStatement.setString(2, visit.getPatientID());
+            preparedStatement.setTimestamp(3, visit.getDate());
             preparedStatement.setBoolean(4, visit.getReportAvailable());
             preparedStatement.setString(5, visit.getReport());
             preparedStatement.setInt(6, visit.getVisitID());
@@ -190,9 +190,9 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             Visit visit = new Visit();
 
             visit.setVisitID(rs.getInt("visit_id"));
-            visit.setPractitionerEmail(rs.getString("practitioner_id"));
-            visit.setPatientEmail(rs.getString("patient_id"));
-            visit.setVisitDate(rs.getTimestamp("visit_date"));
+            visit.setPractitionerID(rs.getString("practitioner_id"));
+            visit.setPatientID(rs.getString("patient_id"));
+            visit.setDate(rs.getTimestamp("visit_date"));
             visit.setReportAvailable(rs.getBoolean("report_available"));
             visit.setReport(rs.getString("report"));
 
