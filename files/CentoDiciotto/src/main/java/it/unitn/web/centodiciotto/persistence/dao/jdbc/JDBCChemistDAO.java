@@ -14,12 +14,12 @@ import java.util.List;
 
 public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistDAO {
 
-    final private String INSERT = "INSERT INTO chemist (email, name, chemist_province) values (?, ?, ?);";
-    final private String FINDBYEMAIL = "SELECT * FROM chemist WHERE email = ?;";
+    final private String INSERT = "INSERT INTO chemist (chemist_id, name, chemist_province) values (?, ?, ?);";
+    final private String FINDBYID = "SELECT * FROM chemist WHERE chemist_id = ?;";
     final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
     final private String SELECTALL = "SELECT * FROM chemist;";
-    final private String DELETE = "DELETE FROM chemist WHERE email = ?;";
-    final private String UPDATE = "UPDATE chemist SET (name, chemist_province) = (?, ?) WHERE email = ?;";
+    final private String DELETE = "DELETE FROM chemist WHERE chemist_id = ?;";
+    final private String UPDATE = "UPDATE chemist SET (name, chemist_province) = (?, ?) WHERE chemist_id = ?;";
 
     public JDBCChemistDAO(Connection con) {
         super(con);
@@ -29,7 +29,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     public void insert(Chemist chemist) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, chemist.getUserID());
+            preparedStatement.setString(1, chemist.getID());
             preparedStatement.setString(2, chemist.getName());
             preparedStatement.setString(3, chemist.getChemistProvince());
 
@@ -47,7 +47,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, chemist.getName());
             preparedStatement.setString(2, chemist.getChemistProvince());
-            preparedStatement.setString(3, chemist.getUserID());
+            preparedStatement.setString(3, chemist.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -60,19 +60,19 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     @Override
     public void delete(Chemist chemist) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, chemist.getUserID());
+            stm.setString(1, chemist.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
-            throw new DAOException("Error deleting Chemist by email: ", e);
+            throw new DAOException("Error deleting Chemist by chemist_id: ", e);
         }
     }
 
     @Override
-    public Chemist getByPrimaryKey(String email) throws DAOException {
+    public Chemist getByPrimaryKey(String chemist_id) throws DAOException {
         Chemist res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
-            stm.setString(1, email);
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
+            stm.setString(1, chemist_id);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -81,7 +81,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting Chemist by email: ", e);
+            throw new DAOException("Error getting Chemist by chemist_id: ", e);
         }
         return null;
     }
@@ -143,7 +143,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try {
             Chemist chemist = new Chemist();
 
-            chemist.setUserID(resultSet.getString("chemist_id"));
+            chemist.setID(resultSet.getString("chemist_id"));
             chemist.setName(resultSet.getString("name"));
             chemist.setChemistProvince(resultSet.getString("chemist_province"));
 

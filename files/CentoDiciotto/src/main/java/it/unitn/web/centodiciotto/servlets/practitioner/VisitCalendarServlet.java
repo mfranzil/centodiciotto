@@ -45,7 +45,7 @@ public class VisitCalendarServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getUserID();
+            String practitioner_email = user.getID();
 
             try {
                 List<Pair<Patient, Visit>> patient_visits = new ArrayList<>();

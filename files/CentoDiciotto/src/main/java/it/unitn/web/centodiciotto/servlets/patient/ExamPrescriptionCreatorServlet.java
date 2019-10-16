@@ -1,27 +1,20 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import netscape.javascript.JSObject;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 
 public class ExamPrescriptionCreatorServlet extends HttpServlet {
     /*
@@ -48,7 +41,7 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
             e.printStackTrace();
         }
         for (ExamList exam: ALL_EXAMS) {
-            ALL_INTERNAL_EXAMS.add(new Exam_(exam.getExamID(), exam.getExamDescription()));
+            ALL_INTERNAL_EXAMS.add(new Exam_(exam.getID(), exam.getDescription()));
         }
     }
 

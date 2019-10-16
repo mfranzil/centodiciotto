@@ -14,7 +14,7 @@ import java.util.List;
 
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
-    final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date, result, health_service_id, ticket, exam_prescription_id values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date, result, health_service_id, ticket, exam_prescription_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?";
     final private String FINDBYPATIENTLASTYEAR = "SELECT * FROM exam WHERE patient_id = ?";
     final private String FINDBYID = "SELECT * FROM exam WHERE exam_id = ?;";
@@ -29,15 +29,15 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     public void insert(Exam exam) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, exam.getPatientEmail());
-            preparedStatement.setString(2, exam.getDoctorEmail());
-            preparedStatement.setInt(3, exam.getExamType());
-            preparedStatement.setBoolean(4, exam.getExamDone());
-            preparedStatement.setTimestamp(5, exam.getExamDate());
-            preparedStatement.setString(6, exam.getExamResult());
-            preparedStatement.setInt(7, exam.getHealthServiceId());
+            preparedStatement.setString(1, exam.getPatientID());
+            preparedStatement.setString(2, exam.getDoctorID());
+            preparedStatement.setInt(3, exam.getType());
+            preparedStatement.setBoolean(4, exam.getDone());
+            preparedStatement.setTimestamp(5, exam.getDate());
+            preparedStatement.setString(6, exam.getResult());
+            preparedStatement.setInt(7, exam.getHealthServiceID());
             preparedStatement.setInt(8, exam.getTicket());
-            preparedStatement.setInt(9, exam.getExamPrescriptionId());
+            preparedStatement.setInt(9, exam.getExamPrescriptionID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -51,16 +51,16 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     public void update(Exam exam) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, exam.getPatientEmail());
-            preparedStatement.setString(2, exam.getDoctorEmail());
-            preparedStatement.setInt(3, exam.getExamType());
-            preparedStatement.setBoolean(4, exam.getExamDone());
-            preparedStatement.setTimestamp(5, exam.getExamDate());
-            preparedStatement.setString(6, exam.getExamResult());
-            preparedStatement.setInt(7, exam.getExamID());
-            preparedStatement.setInt(7, exam.getHealthServiceId());
+            preparedStatement.setString(1, exam.getPatientID());
+            preparedStatement.setString(2, exam.getDoctorID());
+            preparedStatement.setInt(3, exam.getType());
+            preparedStatement.setBoolean(4, exam.getDone());
+            preparedStatement.setTimestamp(5, exam.getDate());
+            preparedStatement.setString(6, exam.getResult());
+            preparedStatement.setInt(7, exam.getID());
+            preparedStatement.setInt(7, exam.getHealthServiceID());
             preparedStatement.setInt(8, exam.getTicket());
-            preparedStatement.setInt(9, exam.getExamPrescriptionId());
+            preparedStatement.setInt(9, exam.getExamPrescriptionID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -73,7 +73,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     @Override
     public void delete(Exam exam) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, exam.getExamID());
+            stm.setInt(1, exam.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -155,16 +155,16 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         try {
             Exam exam = new Exam();
 
-            exam.setExamID(rs.getInt("exam_id"));
-            exam.setPatientEmail(rs.getString("patient_id"));
-            exam.setDoctorEmail(rs.getString("doctor_id"));
-            exam.setExamType(rs.getInt("exam_type"));
-            exam.setExamDone(rs.getBoolean("done"));
-            exam.setExamDate(rs.getTimestamp("date"));
-            exam.setExamResult(rs.getString("result"));
-            exam.setHealthServiceId(rs.getInt("health_service_id"));
+            exam.setID(rs.getInt("exam_id"));
+            exam.setPatientID(rs.getString("patient_id"));
+            exam.setDoctorID(rs.getString("doctor_id"));
+            exam.setType(rs.getInt("exam_type"));
+            exam.setDone(rs.getBoolean("done"));
+            exam.setDate(rs.getTimestamp("date"));
+            exam.setResult(rs.getString("result"));
+            exam.setHealthServiceID(rs.getInt("health_service_id"));
             exam.setTicket(rs.getInt("ticket"));
-            exam.setExamPrescriptionId(rs.getInt("exam_prescription_id"));
+            exam.setExamPrescriptionID(rs.getInt("exam_prescription_id"));
 
             return exam;
         } catch (SQLException e) {

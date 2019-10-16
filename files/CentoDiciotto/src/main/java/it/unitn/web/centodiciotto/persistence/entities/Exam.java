@@ -3,79 +3,79 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 public class Exam {
-    private Integer ExamID;
-    private String patientEmail;
-    private String doctorEmail;
-    private Integer examType;
-    private Boolean examDone;
-    private Timestamp examDate;
-    private String examResult;
-    private Integer healthServiceId;
+    private Integer ID;
+    private String patientID;
+    private String doctorID;
+    private Integer type;
+    private Boolean done;
+    private Timestamp date;
+    private String result;
+    private Integer healthServiceID;
     private Integer ticket;
-    private Integer examPrescriptionId;
+    private Integer examPrescriptionID;
 
-    public Integer getExamID() {
-        return ExamID;
+    public Integer getID() {
+        return ID;
     }
 
-    public void setExamID(Integer examID) {
-        ExamID = examID;
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
-    public String getPatientEmail() {
-        return patientEmail;
+    public String getPatientID() {
+        return patientID;
     }
 
-    public void setPatientEmail(String patientEmail) {
-        patientEmail = patientEmail;
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
     }
 
-    public String getDoctorEmail() {
-        return doctorEmail;
+    public String getDoctorID() {
+        return doctorID;
     }
 
-    public void setDoctorEmail(String doctorEmail) {
-        this.doctorEmail = doctorEmail;
+    public void setDoctorID(String doctorID) {
+        this.doctorID = doctorID;
     }
 
-    public Integer getExamType() {
-        return examType;
+    public Integer getType() {
+        return type;
     }
 
-    public void setExamType(Integer examType) {
-        this.examType = examType;
+    public void setType(Integer type) {
+        this.type = type;
     }
 
-    public Boolean getExamDone() {
-        return examDone;
+    public Boolean getDone() {
+        return done;
     }
 
-    public void setExamDone(Boolean examDone) {
-        this.examDone = examDone;
+    public void setDone(Boolean done) {
+        this.done = done;
     }
 
-    public Timestamp getExamDate() {
-        return examDate;
+    public Timestamp getDate() {
+        return date;
     }
 
-    public void setExamDate(Timestamp examDate) {
-        this.examDate = examDate;
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
-    public String getExamResult() {
-        return examResult;
+    public String getResult() {
+        return result;
     }
 
-    public void setExamResult(String examResult) {
-        this.examResult = examResult;
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public Integer getHealthServiceId() {
-        return healthServiceId;
+    public Integer getHealthServiceID() {
+        return healthServiceID;
     }
 
-    public void setHealthServiceId(Integer healthServiceId) {
-        this.healthServiceId = healthServiceId;
+    public void setHealthServiceID(Integer healthServiceID) {
+        this.healthServiceID = healthServiceID;
     }
 
     public Integer getTicket() {
@@ -86,11 +86,11 @@ public class Exam {
         this.ticket = ticket;
     }
 
-    public Integer getExamPrescriptionId() {
-        return examPrescriptionId;
+    public Integer getExamPrescriptionID() {
+        return examPrescriptionID;
     }
 
-    public void setExamPrescriptionId(Integer examPrescriptionId) {
-        this.examPrescriptionId = examPrescriptionId;
+    public void setExamPrescriptionID(Integer examPrescriptionID) {
+        this.examPrescriptionID = examPrescriptionID;
     }
 }

@@ -43,7 +43,7 @@ public class PatientsServlet extends HttpServlet {
 
             try {
                 if (user instanceof GeneralPractitioner) {
-                    available_patients = patientDAO.getPatientsByPractitionerId(user.getUserID());
+                    available_patients = patientDAO.getPatientsByPractitionerId(user.getID());
                 } else if (user instanceof SpecializedDoctor) {
                     available_patients = patientDAO.getAll();
                 } else if (user instanceof HealthService) {

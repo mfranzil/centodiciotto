@@ -15,7 +15,7 @@ import java.util.List;
 public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> implements HealthServiceDAO {
 
     final private String INSERT = "INSERT INTO health_service (email, operating_province) values (?, ?);";
-    final private String FINDBYEMAIL = "SELECT * FROM health_service WHERE email = ?;";
+    final private String FINDBYID = "SELECT * FROM health_service WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM health_service;";
     final private String DELETE = "DELETE FROM health_service WHERE email = ?;";
     final private String UPDATE = "UPDATE health_service SET (operating_province) = (?) WHERE email = ?;";
@@ -28,7 +28,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     public void insert(HealthService healthService) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, healthService.getUserID());
+            preparedStatement.setString(1, healthService.getID());
             preparedStatement.setString(2, healthService.getOperatingProvince());
 
             int row = preparedStatement.executeUpdate();
@@ -44,7 +44,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, healthService.getOperatingProvince());
-            preparedStatement.setString(2, healthService.getUserID());
+            preparedStatement.setString(2, healthService.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -57,7 +57,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     @Override
     public void delete(HealthService healthService) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, healthService.getUserID());
+            stm.setString(1, healthService.getID());
 
             ResultSet rs = stm.executeQuery();
             int row = stm.executeUpdate();
@@ -69,7 +69,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     @Override
     public HealthService getByPrimaryKey(String email) throws DAOException {
         HealthService res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -121,7 +121,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             HealthService healthService = new HealthService();
 
-            healthService.setUserID(resultSet.getString("email"));
+            healthService.setID(resultSet.getString("email"));
             healthService.setOperatingProvince(resultSet.getString("operating_province"));
 
             return healthService;

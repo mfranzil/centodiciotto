@@ -137,7 +137,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     public Visit getLastVisitByPatient(Patient patient) throws DAOException {
         Visit visit = null;
         try {
-            String email = patient.getUserID();
+            String email = patient.getID();
             PreparedStatement preparedStatement = CON.prepareStatement(GETLASTPATIENTVISIT);
             preparedStatement.setString(1, email);
 

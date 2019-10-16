@@ -50,7 +50,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
         if (user instanceof Patient) {
             List<ExamPrescription> exam_prescription = null;
             try {
-                exam_prescription = examPrescriptionDAO.getByPatient(user.getUserID());
+                exam_prescription = examPrescriptionDAO.getByPatient(user.getID());
             } catch (DAOException e) {
                 e.printStackTrace();
             }
@@ -87,7 +87,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
             try {
                 Boolean bookable = false;
                 List<Exam_> results = new ArrayList<>();
-                List<ExamPrescription> examPrescriptions = examPrescriptionDAO.getByPatient(user.getUserID());
+                List<ExamPrescription> examPrescriptions = examPrescriptionDAO.getByPatient(user.getID());
 
                 ExamList exam = examListDAO.getByPrimaryKey(selected_exam);
 
@@ -96,7 +96,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
                         bookable = true;
                     }
                 }
-                results.add(new Exam_(exam.getExamID(), exam.getExamDescription(), bookable));
+                results.add(new Exam_(exam.getID(), exam.getDescription(), bookable));
 
                 Gson gson = new Gson();
                 response.setContentType("application/json");

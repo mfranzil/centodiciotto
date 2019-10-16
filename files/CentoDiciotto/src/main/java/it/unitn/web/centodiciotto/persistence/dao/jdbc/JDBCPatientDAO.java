@@ -35,7 +35,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     public void insert(Patient patient) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, patient.getUserID());
+            preparedStatement.setString(1, patient.getID());
             preparedStatement.setString(2, patient.getFirstName());
             preparedStatement.setString(3, patient.getLastName());
             preparedStatement.setDate(4, patient.getBirthDate());
@@ -67,7 +67,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             preparedStatement.setString(6, String.valueOf(patient.getGender()));
             preparedStatement.setString(7, patient.getGeneralPractitionerEmail());
             preparedStatement.setString(8, patient.getLivingProvince());
-            preparedStatement.setString(10, patient.getUserID());
+            preparedStatement.setString(10, patient.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -80,7 +80,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     @Override
     public void delete(Patient patient) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, patient.getUserID());
+            stm.setString(1, patient.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -93,7 +93,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATEPRACTITIONER);
             preparedStatement.setString(1, patient.getGeneralPractitionerEmail());
-            preparedStatement.setString(2, patient.getUserID());
+            preparedStatement.setString(2, patient.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -172,7 +172,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         try {
             Patient patient = new Patient();
 
-            patient.setUserID(resultSet.getString("email"));
+            patient.setID(resultSet.getString("email"));
             patient.setFirstName(resultSet.getString("first_name"));
             patient.setLastName(resultSet.getString("last_name"));
             patient.setBirthDate(resultSet.getDate("birth_date"));

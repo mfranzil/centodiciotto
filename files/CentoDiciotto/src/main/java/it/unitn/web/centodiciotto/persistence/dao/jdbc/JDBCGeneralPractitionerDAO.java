@@ -16,7 +16,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     final private String INSERT = "INSERT INTO general_practitioner (email, first_name, last_name, working_province)" +
             " values (?, ?, ?, ?);";
-    final private String FINDBYEMAIL = "SELECT * FROM general_practitioner WHERE email = ?;";
+    final private String FINDBYID = "SELECT * FROM general_practitioner WHERE email = ?;";
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
     final private String SELECTALL = "SELECT * FROM general_practitioner;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE email = ?;";
@@ -31,7 +31,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     public void insert(GeneralPractitioner generalPractitioner) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, generalPractitioner.getUserID());
+            preparedStatement.setString(1, generalPractitioner.getID());
             preparedStatement.setString(2, generalPractitioner.getFirstName());
             preparedStatement.setString(3, generalPractitioner.getLastName());
             preparedStatement.setString(4, generalPractitioner.getWorkingProvince());
@@ -53,7 +53,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             preparedStatement.setString(1, generalPractitioner.getFirstName());
             preparedStatement.setString(2, generalPractitioner.getLastName());
             preparedStatement.setString(3, generalPractitioner.getWorkingProvince());
-            preparedStatement.setString(4, generalPractitioner.getUserID());
+            preparedStatement.setString(4, generalPractitioner.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -66,7 +66,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     @Override
     public void delete(GeneralPractitioner generalPractitioner) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, generalPractitioner.getUserID());
+            stm.setString(1, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -77,7 +77,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     @Override
     public GeneralPractitioner getByPrimaryKey(String email) throws DAOException {
         GeneralPractitioner res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -148,7 +148,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try {
             GeneralPractitioner generalPractitioner = new GeneralPractitioner();
 
-            generalPractitioner.setUserID(resultSet.getString("email"));
+            generalPractitioner.setID(resultSet.getString("email"));
             generalPractitioner.setFirstName(resultSet.getString("first_name"));
             generalPractitioner.setLastName(resultSet.getString("last_name"));
             generalPractitioner.setWorkingProvince(resultSet.getString("working_province"));

@@ -69,11 +69,11 @@ public class VEPService {
         }
 
         try {
-            exams = examDAO.getByPatient(patient.getUserID());
+            exams = examDAO.getByPatient(patient.getID());
             exams = exams.subList(0, Math.min(MAX_EXAMS + 1, exams.size()));
 
             for (Exam exam : exams) {
-                exam.setExamDescription(examListDAO.getByPrimaryKey(exam.getExamType()).getExamDescription());
+                exam.setExamDescription(examListDAO.getByPrimaryKey(exam.getType()).getDescription());
             }
         } catch (DAOException e) {
             throw new RuntimeException("Error contacting the DAO for exam retrieval", e);

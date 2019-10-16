@@ -148,7 +148,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public Photo getCurrentPhoto(Patient patient) throws DAOException {
         Photo photo = null;
         try {
-            String email = patient.getUserID();
+            String email = patient.getID();
             PreparedStatement preparedStatement = CON.prepareStatement(GET_CURRENT_PHOTO);
             preparedStatement.setString(1, email);
 
@@ -168,7 +168,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public List<Photo> getAllPhotos(Patient patient) throws DAOException {
         List<Photo> photos = new ArrayList<>();
         try {
-            String email = patient.getUserID();
+            String email = patient.getID();
             PreparedStatement preparedStatement = CON.prepareStatement(GET_ALL_PHOTOS);
             preparedStatement.setString(1, email);
 

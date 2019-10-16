@@ -133,7 +133,7 @@ public class Crypto {
         String newHash = hash(newPassword, newSalt);
 
         User user = new User();
-        user.setUserID(email);
+        user.setID(email);
         user.setHash(newHash);
         user.setSalt(newSalt);
 

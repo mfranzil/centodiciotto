@@ -15,7 +15,7 @@ import java.util.List;
 public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String> implements SpecializedDoctorDAO {
 
     final private String INSERT = "INSERT INTO specialized_doctor (email, first_name, last_name) values (?, ?, ?);";
-    final private String FINDBYEMAIL = "SELECT * FROM specialized_doctor WHERE email = ?;";
+    final private String FINDBYID = "SELECT * FROM specialized_doctor WHERE email = ?;";
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
     final private String DELETE = "DELETE FROM specialized_doctor WHERE email = ?;";
     final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?) WHERE email = ?;";
@@ -28,7 +28,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     public void insert(SpecializedDoctor specializedDoctor) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, specializedDoctor.getUserID());
+            preparedStatement.setString(1, specializedDoctor.getID());
             preparedStatement.setString(2, specializedDoctor.getFirstName());
             preparedStatement.setString(3, specializedDoctor.getLastName());
 
@@ -46,7 +46,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, specializedDoctor.getFirstName());
             preparedStatement.setString(2, specializedDoctor.getLastName());
-            preparedStatement.setString(3, specializedDoctor.getUserID());
+            preparedStatement.setString(3, specializedDoctor.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -59,7 +59,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     @Override
     public void delete(SpecializedDoctor specializedDoctor) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, specializedDoctor.getUserID());
+            stm.setString(1, specializedDoctor.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -70,7 +70,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     @Override
     public SpecializedDoctor getByPrimaryKey(String email) throws DAOException {
         SpecializedDoctor res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEMAIL)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
             stm.setString(1, email);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -123,7 +123,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
         try {
             SpecializedDoctor specializedDoctor = new SpecializedDoctor();
 
-            specializedDoctor.setUserID(resultSet.getString("email"));
+            specializedDoctor.setID(resultSet.getString("email"));
             specializedDoctor.setFirstName(resultSet.getString("first_name"));
             specializedDoctor.setLastName(resultSet.getString("last_name"));
 

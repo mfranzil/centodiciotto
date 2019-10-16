@@ -28,7 +28,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     public void insert(User user) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, user.getUserID());
+            preparedStatement.setString(1, user.getID());
             preparedStatement.setString(2, user.getHash());
             preparedStatement.setString(3, user.getSalt());
 
@@ -46,7 +46,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, user.getHash());
             preparedStatement.setString(2, user.getSalt());
-            preparedStatement.setString(3, user.getUserID());
+            preparedStatement.setString(3, user.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -59,7 +59,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     @Override
     public void delete(User user) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, user.getUserID());
+            stm.setString(1, user.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -121,7 +121,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         try {
             User user = new User();
 
-            user.setUserID(resultSet.getString("email"));
+            user.setID(resultSet.getString("email"));
             user.setHash(resultSet.getString("hash"));
             user.setSalt(resultSet.getString("salt"));
 

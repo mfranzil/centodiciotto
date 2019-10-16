@@ -26,7 +26,7 @@ public class DAOMain {
 
             String email =  "dionisia.monaldo@gmail.com";
             Patient patient = patientDAO.getByPrimaryKey(email);
-            System.out.println("email: " + patient.getUserID());
+            System.out.println("email: " + patient.getID());
 
             Photo p = photoDAO.getCurrentPhoto(patient);
             System.out.println("Current photo ID: " + p.getPhotoId());
@@ -39,7 +39,7 @@ public class DAOMain {
             }
 
             Exam exam = examDAO.getByPrimaryKey(1);
-            System.out.println(exam.getExamType());
+            System.out.println(exam.getType());
 
 
         } catch (DAOFactoryException | DAOException e) {

@@ -43,9 +43,9 @@ public class VisitServlet extends HttpServlet {
             List<Visit> visits = null;
             Boolean already_booked = false;
             try {
-                visits = visitDAO.getByPatient(((Patient) user).getUserID());
+                visits = visitDAO.getByPatient(((Patient) user).getID());
 
-                Pair<String, String> key = new Pair<>(((Patient) user).getUserID(), practitioner.getUserID());
+                Pair<String, String> key = new Pair<>(((Patient) user).getID(), practitioner.getID());
                 already_booked = (pendingVisitDAO.getByPrimaryKey(key) != null);
 
                 request.setAttribute("visits", visits);
@@ -64,8 +64,8 @@ public class VisitServlet extends HttpServlet {
         User user = (User) request.getSession(false).getAttribute("user");
         GeneralPractitioner practitioner = (GeneralPractitioner) request.getSession(false).getAttribute("practitioner");
         if (user instanceof Patient) {
-            String patientEmail = user.getUserID();
-            String practitionerEmail = practitioner.getUserID();
+            String patientEmail = user.getID();
+            String practitionerEmail = practitioner.getID();
 
             PendingVisit pendingVisit = new PendingVisit();
             pendingVisit.setPatientEmail(patientEmail);

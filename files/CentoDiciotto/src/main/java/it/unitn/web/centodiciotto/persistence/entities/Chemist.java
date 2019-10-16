@@ -19,5 +19,6 @@ public class Chemist extends User {
     public void setChemistProvince(String chemistProvince) {
         this.chemistProvince = chemistProvince;
     }
+
 }
 

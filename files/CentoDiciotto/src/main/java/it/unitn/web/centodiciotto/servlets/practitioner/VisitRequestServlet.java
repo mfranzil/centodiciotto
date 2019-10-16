@@ -47,7 +47,7 @@ public class VisitRequestServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getUserID();
+            String practitioner_email = user.getID();
             try {
                 List<Patient> pendingPatients = new ArrayList<>();
 
@@ -69,7 +69,7 @@ public class VisitRequestServlet extends HttpServlet {
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
-        String practitioner_email = user.getUserID();
+        String practitioner_email = user.getID();
         String patient_email = request.getParameter("patient_email");
         String visit_timestamp = request.getParameter("visit_date");
 

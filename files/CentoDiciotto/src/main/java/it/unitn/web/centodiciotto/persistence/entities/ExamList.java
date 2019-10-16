@@ -1,22 +1,22 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class ExamList {
-    private Integer examID;
-    private String examDescription;
+    private Integer ID;
+    private String description;
 
-    public Integer getExamID() {
-        return examID;
+    public Integer getID() {
+        return ID;
     }
 
-    public void setExamID(Integer examID) {
-        this.examID = examID;
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
-    public String getExamDescription() {
-        return examDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setExamDescription(String examDescription) {
-        this.examDescription = examDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

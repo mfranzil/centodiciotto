@@ -25,24 +25,10 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     }
 
     @Override
-    protected ExamList mapRowToEntity(ResultSet resultSet) throws DAOException {
-        try {
-            ExamList examList = new ExamList();
-
-            examList.setExamDescription(resultSet.getString("exam_description"));
-            examList.setExamID(resultSet.getInt("exam_id"));
-
-            return examList;
-        } catch (SQLException e) {
-            throw new DAOException("Error mapping row to Patient: ", e);
-        }
-    }
-
-    @Override
     public void insert(ExamList exam_list) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setInt(1, exam_list.getExamID());
+            preparedStatement.setInt(1, exam_list.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -56,8 +42,8 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     public void update(ExamList exam_list) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, exam_list.getExamDescription());
-            preparedStatement.setInt(2, exam_list.getExamID());
+            preparedStatement.setString(1, exam_list.getDescription());
+            preparedStatement.setInt(2, exam_list.getID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -70,7 +56,7 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     @Override
     public void delete(ExamList exam_list) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, exam_list.getExamID());
+            stm.setInt(1, exam_list.getID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -125,6 +111,20 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting all ExamsList: ", e);
+        }
+    }
+
+    @Override
+    protected ExamList mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            ExamList examList = new ExamList();
+
+            examList.setDescription(resultSet.getString("exam_description"));
+            examList.setID(resultSet.getInt("exam_id"));
+
+            return examList;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
         }
     }
 }

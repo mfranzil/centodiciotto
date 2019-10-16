@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class User {
-    protected String userID;
+    private String ID;
     private String hash;
     private String salt;
 
@@ -13,12 +13,16 @@ public class User {
         this.salt = salt;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getID() {
+        return ID;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getEmail() {
+        return ID;
     }
 
     public String getHash() {
