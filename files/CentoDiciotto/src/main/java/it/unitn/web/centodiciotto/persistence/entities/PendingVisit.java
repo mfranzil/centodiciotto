@@ -4,11 +4,6 @@ public class PendingVisit {
     private String patientEmail;
     private String practitionerEmail;
 
-    public PendingVisit(String patientEmail, String practitionerEmail) {
-        this.patientEmail = patientEmail;
-        this.practitionerEmail = practitionerEmail;
-    }
-
     public String getPatientEmail() {
         return patientEmail;
     }

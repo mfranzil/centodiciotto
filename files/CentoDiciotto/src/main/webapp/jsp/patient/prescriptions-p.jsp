@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Exam history - CentoDiciotto</title>
+    <title>Prescriptions - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <style>
         @media (min-width: 992px) {

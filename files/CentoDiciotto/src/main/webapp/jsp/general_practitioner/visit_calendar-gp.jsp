@@ -80,6 +80,7 @@
                 </form>
             </div>
         </div>
+        <hr>
     </c:forEach>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>

@@ -7,21 +7,18 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
 
 public class VisitRequestServlet extends HttpServlet {
@@ -50,7 +47,7 @@ public class VisitRequestServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getEmail();
+            String practitioner_email = user.getUserID();
             try {
                 List<Patient> pendingPatients = new ArrayList<>();
 
@@ -72,7 +69,7 @@ public class VisitRequestServlet extends HttpServlet {
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
-        String practitioner_email = user.getEmail();
+        String practitioner_email = user.getUserID();
         String patient_email = request.getParameter("patient_email");
         String visit_timestamp = request.getParameter("visit_date");
 
@@ -80,10 +77,19 @@ public class VisitRequestServlet extends HttpServlet {
         try {
             Date date = formatter.parse(visit_timestamp);
 
-            Visit insert_visit = new Visit(null, practitioner_email, patient_email, new Timestamp(date.getTime()), false, null);
+            Visit insertVisit = new Visit();
+            insertVisit.setPractitionerEmail(practitioner_email);
+            insertVisit.setPatientEmail(patient_email);
+            insertVisit.setVisitDate(new Timestamp(date.getTime()));
+            insertVisit.setReportAvailable(false);
 
-            visitDAO.insert(insert_visit);
-            pendingVisitDAO.delete(new PendingVisit(patient_email, practitioner_email));
+            visitDAO.insert(insertVisit);
+
+            PendingVisit toBeDeleted = new PendingVisit();
+            toBeDeleted.setPatientEmail(patient_email);
+            toBeDeleted.setPractitionerEmail(practitioner_email);
+
+            pendingVisitDAO.delete(toBeDeleted);
 
         } catch (ParseException | DAOException e) {
             e.printStackTrace();

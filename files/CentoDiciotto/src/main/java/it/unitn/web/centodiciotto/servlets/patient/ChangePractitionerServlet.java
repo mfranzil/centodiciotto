@@ -52,7 +52,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 request.getSession().setAttribute("practitioner", newPract);
                 patientDAO.updatePractitioner((Patient) user);
 
-                String recipient = oldPract.getEmail();
+                String recipient = oldPract.getUserID();
                 String message = "Dear " + oldPract.getFirstName() + " " + oldPract.getLastName() + ",\n\n" +
                         "one of your patients just asked for a change of practitioner " +
                         "and will be no longer on your patient list.\n" +
@@ -64,7 +64,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 // Avviso il vecchio practitioner
                 SendEmail.send(recipient, message, subject);
 
-                recipient = newPract.getEmail();
+                recipient = newPract.getUserID();
                 message = "Dear " + newPract.getFirstName() + " " + newPract.getLastName() + ",\n\n" +
                         "we are glad to tell you that you have a new patient on your patient list.\n" +
                         "Here are the patient details:\n\n" +
@@ -75,7 +75,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 // Avviso il nuovo practitioner
                 SendEmail.send(recipient, message, subject);
 
-                recipient = user.getEmail();
+                recipient = user.getUserID();
                 message = "Dear " + ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + ",\n\n" +
                         "we inform you that your general practitioner has been successfully changed.\n" +
                         "Here are the practitioner details:\n\n" +

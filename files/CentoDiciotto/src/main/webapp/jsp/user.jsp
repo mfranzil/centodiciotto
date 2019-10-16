@@ -30,7 +30,6 @@
                 <h3 class="my-4">
                     My information
                 </h3>
-                <!-- TODO change table to div !-->
                 <table class="table table-unresponsive" style="margin: auto; overflow-wrap: break-word">
                     <c:choose>
                         <c:when test="${sessionScope.role eq 'patient'}">

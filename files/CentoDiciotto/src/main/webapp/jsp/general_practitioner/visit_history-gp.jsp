@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Exam history - CentoDiciotto</title>
+    <title>Visit history - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/popup.js"></script>
     <style>
@@ -28,11 +28,6 @@
 
             .table-cell.action {
                 width: 25%;
-            }
-
-            textarea {
-                width: 550px;
-                height: 150px;
             }
         }
     </style>
@@ -108,6 +103,7 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
                 </c:forEach>
             </div>
         </div>

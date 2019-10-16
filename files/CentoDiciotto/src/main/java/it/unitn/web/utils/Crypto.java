@@ -131,7 +131,11 @@ public class Crypto {
 
         String newSalt = getNextSalt();
         String newHash = hash(newPassword, newSalt);
-        User user = new User(email, newHash, newSalt);
+
+        User user = new User();
+        user.setUserID(email);
+        user.setHash(newHash);
+        user.setSalt(newSalt);
 
         try {
             userDAO.update(user);

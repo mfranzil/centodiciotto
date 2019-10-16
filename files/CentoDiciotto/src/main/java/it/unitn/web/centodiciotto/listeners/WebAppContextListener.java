@@ -4,9 +4,7 @@ package it.unitn.web.centodiciotto.listeners;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
-import it.unitn.web.utils.Crypto;
-import it.unitn.web.utils.PhotoService;
-import it.unitn.web.utils.SendEmail;
+import it.unitn.web.utils.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -22,7 +20,10 @@ public class WebAppContextListener implements ServletContextListener {
 
             SendEmail.configure();
             Crypto.configure(daoFactory);
+
             PhotoService.configure(daoFactory, sce.getServletContext());
+            VEPService.configure(daoFactory, sce.getServletContext());
+            UserService.configure(daoFactory, sce.getServletContext());
 
             sce.getServletContext().setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException ex) {

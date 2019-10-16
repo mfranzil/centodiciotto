@@ -49,7 +49,7 @@ public class PrescriptionServlet extends HttpServlet {
                 List<Pair<Prescription, Boolean>> prescription_list = new ArrayList<>();
 
                 try {
-                    prescriptions = prescriptionDAO.getByPatient(user.getEmail());
+                    prescriptions = prescriptionDAO.getByPatient(user.getUserID());
 
                     for (Prescription prescription : prescriptions) {
                         Calendar prescriptionDate = Calendar.getInstance();

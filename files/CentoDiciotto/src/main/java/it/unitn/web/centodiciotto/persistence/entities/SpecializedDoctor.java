@@ -4,12 +4,6 @@ public class SpecializedDoctor extends User {
     private String firstName;
     private String lastName;
 
-    public SpecializedDoctor(String email, String hash, String salt, String firstName, String lastName) {
-        super(email, hash, salt);
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
     public String getFirstName() {
         return firstName;
     }

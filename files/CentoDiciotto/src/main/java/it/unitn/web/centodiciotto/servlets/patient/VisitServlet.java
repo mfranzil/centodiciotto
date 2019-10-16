@@ -34,7 +34,7 @@ public class VisitServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
@@ -43,9 +43,9 @@ public class VisitServlet extends HttpServlet {
             List<Visit> visits = null;
             Boolean already_booked = false;
             try {
-                visits = visitDAO.getByPatient(((Patient) user).getEmail());
+                visits = visitDAO.getByPatient(((Patient) user).getUserID());
 
-                Pair<String, String> key = new Pair<>(((Patient) user).getEmail(), practitioner.getEmail());
+                Pair<String, String> key = new Pair<>(((Patient) user).getUserID(), practitioner.getUserID());
                 already_booked = (pendingVisitDAO.getByPrimaryKey(key) != null);
 
                 request.setAttribute("visits", visits);
@@ -63,14 +63,16 @@ public class VisitServlet extends HttpServlet {
 
         User user = (User) request.getSession(false).getAttribute("user");
         GeneralPractitioner practitioner = (GeneralPractitioner) request.getSession(false).getAttribute("practitioner");
-        if(user instanceof Patient){
-            String patient_email = ((Patient) user).getEmail();
-            String practitioner_email = ((GeneralPractitioner) practitioner).getEmail();
+        if (user instanceof Patient) {
+            String patientEmail = user.getUserID();
+            String practitionerEmail = practitioner.getUserID();
 
-            PendingVisit new_visit = new PendingVisit( patient_email, practitioner_email);
+            PendingVisit pendingVisit = new PendingVisit();
+            pendingVisit.setPatientEmail(patientEmail);
+            pendingVisit.setPractitionerEmail(practitionerEmail);
 
             try {
-                pendingVisitDAO.insert(new_visit);
+                pendingVisitDAO.insert(pendingVisit);
             } catch (DAOException e) {
                 e.printStackTrace();
             }

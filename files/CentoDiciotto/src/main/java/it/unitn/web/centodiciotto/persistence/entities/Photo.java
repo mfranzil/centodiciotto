@@ -7,17 +7,6 @@ public class Photo {
     private String patientEmail;
     private Timestamp uploadDate;
 
-    public Photo(Integer photoId, String patientEmail, Timestamp uploadDate) {
-        this.photoId = photoId;
-        this.patientEmail = patientEmail;
-        this.uploadDate = uploadDate;
-    }
-
-    public Photo(String patientEmail, Timestamp uploadDate) {
-        this.patientEmail = patientEmail;
-        this.uploadDate = uploadDate;
-    }
-
     public Integer getPhotoId() {
         return photoId;
     }

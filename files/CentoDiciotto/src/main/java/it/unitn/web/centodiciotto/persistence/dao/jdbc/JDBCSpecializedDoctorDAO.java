@@ -19,6 +19,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
     final private String DELETE = "DELETE FROM specialized_doctor WHERE email = ?;";
     final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?) WHERE email = ?;";
+
     public JDBCSpecializedDoctorDAO(Connection con) {
         super(con);
     }
@@ -27,7 +28,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     public void insert(SpecializedDoctor specializedDoctor) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, specializedDoctor.getEmail());
+            preparedStatement.setString(1, specializedDoctor.getUserID());
             preparedStatement.setString(2, specializedDoctor.getFirstName());
             preparedStatement.setString(3, specializedDoctor.getLastName());
 
@@ -45,7 +46,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, specializedDoctor.getFirstName());
             preparedStatement.setString(2, specializedDoctor.getLastName());
-            preparedStatement.setString(3, specializedDoctor.getEmail());
+            preparedStatement.setString(3, specializedDoctor.getUserID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -58,7 +59,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     @Override
     public void delete(SpecializedDoctor specializedDoctor) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, specializedDoctor.getEmail());
+            stm.setString(1, specializedDoctor.getUserID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -74,7 +75,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new SpecializedDoctor(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -107,7 +108,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new SpecializedDoctor(rs.getString("email"), "", "", rs.getString("first_name"), rs.getString("last_name"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -116,5 +117,21 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             throw new DAOException("Error getting all SpecializedDoctors: ", e);
         }
     }
+
+    @Override
+    protected SpecializedDoctor mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            SpecializedDoctor specializedDoctor = new SpecializedDoctor();
+
+            specializedDoctor.setUserID(resultSet.getString("email"));
+            specializedDoctor.setFirstName(resultSet.getString("first_name"));
+            specializedDoctor.setLastName(resultSet.getString("last_name"));
+
+            return specializedDoctor;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
+        }
+    }
+
 }
 

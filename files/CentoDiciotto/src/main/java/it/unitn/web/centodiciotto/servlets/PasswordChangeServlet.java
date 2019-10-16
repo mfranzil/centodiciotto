@@ -29,8 +29,8 @@ public class PasswordChangeServlet extends HttpServlet {
         String oldPassword = request.getParameter("old-password");
         String newPassword = request.getParameter("new-password");
 
-        if (Crypto.isCurrentPassword(user.getEmail(), oldPassword)) {
-            Crypto.changePassword(user.getEmail(), newPassword);
+        if (Crypto.isCurrentPassword(user.getUserID(), oldPassword)) {
+            Crypto.changePassword(user.getUserID(), newPassword);
             response.setStatus(200);
         } else {
             response.setStatus(400);

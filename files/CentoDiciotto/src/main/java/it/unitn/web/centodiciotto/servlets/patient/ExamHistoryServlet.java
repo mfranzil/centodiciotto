@@ -42,7 +42,7 @@ public class ExamHistoryServlet extends HttpServlet {
             if (user instanceof Patient) {
                 List<Exam> exams_history = null;
                 try {
-                    exams_history = examDAO.getByPatient(((Patient) user).getEmail());
+                    exams_history = examDAO.getByPatient(((Patient) user).getUserID());
                     // Since Exam description is in another table, here I join everything together
                     for (Exam exam : exams_history) {
                         try {

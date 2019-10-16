@@ -73,12 +73,12 @@ public class LoginServlet extends HttpServlet {
                 response.setStatus(200);
 
                 String displayName = "default";
-                String photoPath = "/img/avatars/default.png";
+                String photoPath = null;
                 GeneralPractitioner practitioner = null;
 
                 if (user instanceof Patient) {
-                    practitioner =  practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
-                    photoPath  = PhotoService.getLastPhoto((Patient) user);
+                    practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getGeneralPractitionerEmail());
+                    photoPath = PhotoService.getLastPhoto((Patient) user);
                     displayName = ((Patient) user).getFirstName();
                 } else if (user instanceof GeneralPractitioner) {
                     displayName = ((GeneralPractitioner) user).getFirstName();

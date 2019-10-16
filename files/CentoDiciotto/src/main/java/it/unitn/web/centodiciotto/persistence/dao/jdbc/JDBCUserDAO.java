@@ -28,7 +28,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     public void insert(User user) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(1, user.getUserID());
             preparedStatement.setString(2, user.getHash());
             preparedStatement.setString(3, user.getSalt());
 
@@ -46,7 +46,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, user.getHash());
             preparedStatement.setString(2, user.getSalt());
-            preparedStatement.setString(3, user.getEmail());
+            preparedStatement.setString(3, user.getUserID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -59,7 +59,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     @Override
     public void delete(User user) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, user.getEmail());
+            stm.setString(1, user.getUserID());
 
             int row = stm.executeUpdate();
         } catch (SQLException e) {
@@ -75,11 +75,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new User(
-                            rs.getString("email"),
-                            rs.getString("hash"),
-                            rs.getString("salt"));
-                    return res;
+                    res = mapRowToEntity(rs);
                 }
             }
         } catch (SQLException e) {
@@ -110,7 +106,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new User(rs.getString("email"), rs.getString("hash"), rs.getString("salt"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -119,4 +115,20 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             throw new DAOException("Error getting all Users: ", e);
         }
     }
+
+    @Override
+    protected User mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            User user = new User();
+
+            user.setUserID(resultSet.getString("email"));
+            user.setHash(resultSet.getString("hash"));
+            user.setSalt(resultSet.getString("salt"));
+
+            return user;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
+        }
+    }
+
 }

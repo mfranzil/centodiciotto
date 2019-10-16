@@ -8,12 +8,6 @@ import java.util.List;
 
 public interface PrescriptionDAO extends DAO<Prescription, Integer> {
 
-    void insert(Prescription prescription) throws DAOException;
-
-    void update(Prescription prescription) throws DAOException;
-
-    void delete(Prescription prescription) throws DAOException;
-
     List<Prescription> getByPatient(String patientEmail) throws DAOException;
 
     List<Prescription> getByPractitioner(String practitionerEmail) throws DAOException;

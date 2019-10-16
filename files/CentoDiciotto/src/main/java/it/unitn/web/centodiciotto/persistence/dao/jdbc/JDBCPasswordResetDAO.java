@@ -26,6 +26,21 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     }
 
     @Override
+    protected PasswordReset mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            PasswordReset passwordReset = new PasswordReset();
+            
+            passwordReset.setEmail(resultSet.getString("email"));
+            passwordReset.setToken(resultSet.getString("token"));
+            passwordReset.setExpiringDate(resultSet.getTimestamp("expiring_date"));
+
+            return passwordReset;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
+        }
+    }
+
+    @Override
     public void insert(PasswordReset passwordReset) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
@@ -79,10 +94,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new PasswordReset(
-                            rs.getString("email"),
-                            rs.getString("token"),
-                            rs.getTimestamp("expiring_date"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -115,10 +127,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new PasswordReset(
-                            rs.getString("email"),
-                            rs.getString("token"),
-                            rs.getTimestamp("expiring_date"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -135,9 +144,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new PasswordReset(rs.getString("email"),
-                            rs.getString("token"),
-                            rs.getTimestamp("expiring_date"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;

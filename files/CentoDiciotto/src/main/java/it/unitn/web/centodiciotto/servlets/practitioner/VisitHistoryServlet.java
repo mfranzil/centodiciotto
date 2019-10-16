@@ -45,7 +45,7 @@ public class VisitHistoryServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getEmail();
+            String practitioner_email = user.getUserID();
 
             try {
                 List<Pair<Patient, Visit>> patient_visits_report = new ArrayList<>();

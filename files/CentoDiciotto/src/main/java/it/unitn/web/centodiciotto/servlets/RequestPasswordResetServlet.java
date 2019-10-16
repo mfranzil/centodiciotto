@@ -44,7 +44,11 @@ public class RequestPasswordResetServlet extends HttpServlet {
         try {
             if (user != null) {
                 Timestamp date = new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)); // 24 ore di durata
-                pr = new PasswordReset(email, Crypto.getNextBase64Token(), date);
+                pr = new PasswordReset();
+
+                pr.setEmail(email);
+                pr.setToken(Crypto.getNextBase64Token());
+                pr.setExpiringDate(date);
 
                 if (prDAO.getByPrimaryKey(email) == null) {
                     prDAO.insert(pr);

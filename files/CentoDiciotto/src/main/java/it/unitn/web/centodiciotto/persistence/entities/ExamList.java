@@ -1,30 +1,22 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.sql.Date;
-
 public class ExamList {
-    private Integer ExamID;
-    private String ExamDescription;
+    private Integer examID;
+    private String examDescription;
 
     public Integer getExamID() {
-        return ExamID;
+        return examID;
     }
 
     public void setExamID(Integer examID) {
-        ExamID = examID;
+        this.examID = examID;
     }
 
     public String getExamDescription() {
-        return ExamDescription;
+        return examDescription;
     }
 
     public void setExamDescription(String examDescription) {
-        ExamDescription = examDescription;
+        this.examDescription = examDescription;
     }
-
-    public ExamList(Integer ExamID, String ExamDescription) {
-        this.ExamID = ExamID;
-        this.ExamDescription = ExamDescription;
-    }
-
 }

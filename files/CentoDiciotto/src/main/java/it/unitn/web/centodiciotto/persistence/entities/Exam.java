@@ -13,21 +13,6 @@ public class Exam {
     private Integer healthServiceId;
     private Integer ticket;
     private Integer examPrescriptionId;
-    private String examDescription;
-
-    public Exam(Integer ExamID, String PatientEmail, String DoctorEmail, Integer ExamType, Boolean ExamDone,
-                Timestamp ExamDate, String ExamResult, Integer healthServiceId, Integer ticket, Integer examPrescriptionId) {
-        this.ExamID = ExamID;
-        this.patientEmail = PatientEmail;
-        this.doctorEmail = DoctorEmail;
-        this.examType = ExamType;
-        this.examDone = ExamDone;
-        this.examDate = ExamDate;
-        this.examResult = ExamResult;
-        this.healthServiceId = healthServiceId;
-        this.ticket = ticket;
-        this.examPrescriptionId = examPrescriptionId;
-    }
 
     public Integer getExamID() {
         return ExamID;
@@ -85,11 +70,11 @@ public class Exam {
         this.examResult = examResult;
     }
 
-    public Integer getHealthServiceId(){
+    public Integer getHealthServiceId() {
         return healthServiceId;
     }
 
-    public void setHealthServiceId(Integer healthServiceId){
+    public void setHealthServiceId(Integer healthServiceId) {
         this.healthServiceId = healthServiceId;
     }
 
@@ -108,14 +93,4 @@ public class Exam {
     public void setExamPrescriptionId(Integer examPrescriptionId) {
         this.examPrescriptionId = examPrescriptionId;
     }
-
-    public String getExamDescription() {
-        return examDescription;
-    }
-
-    public void setExamDescription(String examDescription) {
-        this.examDescription = examDescription;
-    }
-
-
 }

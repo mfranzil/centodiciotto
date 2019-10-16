@@ -10,15 +10,6 @@ public class Visit {
     private Boolean reportAvailable;
     private String report;
 
-    public Visit(Integer visitID, String practitionerEmail, String patientEmail, Timestamp visitDate, Boolean reportAvailable, String report) {
-        this.visitID = visitID;
-        this.patientEmail = patientEmail;
-        this.practitionerEmail = practitionerEmail;
-        this.visitDate = visitDate;
-        this.reportAvailable = reportAvailable;
-        this.report = report;
-    }
-
     public Integer getVisitID() {
         return visitID;
     }
@@ -66,5 +57,4 @@ public class Visit {
     public void setReport(String report) {
         this.report = report;
     }
-
 }

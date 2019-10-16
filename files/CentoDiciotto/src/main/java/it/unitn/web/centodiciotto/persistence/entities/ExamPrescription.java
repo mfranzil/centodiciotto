@@ -1,58 +1,49 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class ExamPrescription {
+    private Integer prescriptionID;
+    private String patientEmail;
+    private String practitionerEmail;
+    private Boolean examBooked;
+    private Integer examType;
+
     public Integer getPrescriptionID() {
-        return PrescriptionID;
+        return prescriptionID;
     }
 
     public void setPrescriptionID(Integer prescriptionID) {
-        PrescriptionID = prescriptionID;
+        this.prescriptionID = prescriptionID;
     }
 
     public String getPatientEmail() {
-        return PatientEmail;
+        return patientEmail;
     }
 
     public void setPatientEmail(String patientEmail) {
-        PatientEmail = patientEmail;
+        this.patientEmail = patientEmail;
     }
 
     public String getPractitionerEmail() {
-        return PractitionerEmail;
+        return practitionerEmail;
     }
 
     public void setPractitionerEmail(String practitionerEmail) {
-        PractitionerEmail = practitionerEmail;
+        this.practitionerEmail = practitionerEmail;
     }
 
     public Boolean getExamBooked() {
-        return ExamBooked;
+        return examBooked;
     }
 
     public void setExamBooked(Boolean examBooked) {
-        ExamBooked = examBooked;
+        this.examBooked = examBooked;
     }
 
     public Integer getExamType() {
-        return ExamType;
+        return examType;
     }
 
     public void setExamType(Integer examType) {
-        ExamType = examType;
+        this.examType = examType;
     }
-
-    private Integer PrescriptionID;
-    private String PatientEmail;
-    private String PractitionerEmail;
-    private Boolean ExamBooked;
-    private Integer ExamType;
-
-    public ExamPrescription(Integer PrescriptionID, String PatientEmail, String PractitionerEmail, Integer ExamType, Boolean examBooked) {
-        this.PrescriptionID = PrescriptionID;
-        this.PatientEmail = PatientEmail;
-        this.PractitionerEmail = PractitionerEmail;
-        this.ExamBooked = examBooked;
-        this.ExamType = ExamType;
-    }
-
 }

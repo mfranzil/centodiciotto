@@ -8,12 +8,6 @@ import java.util.List;
 
 public interface ExamDAO extends DAO<Exam, Integer> {
 
-    void insert(Exam exam) throws DAOException;
-
-    void update(Exam exam) throws DAOException;
-
-    void delete(Exam exam) throws DAOException;
-
     List<Exam> getByPatient(String PatientEmail) throws DAOException;
 
 }

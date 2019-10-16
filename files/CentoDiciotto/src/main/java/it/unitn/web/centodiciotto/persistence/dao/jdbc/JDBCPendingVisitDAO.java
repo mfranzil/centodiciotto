@@ -21,6 +21,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
     final private String SELECTALL = "SELECT * FROM pending_visit;";
     final private String DELETE = "DELETE FROM pending_visit WHERE patient_id = ?;";
     final private String UPDATE = "UPDATE pending_visit SET (practitioner_id)  =  (?) WHERE patient_id = ?;";
+
     public JDBCPendingVisitDAO(Connection con) {
         super(con);
     }
@@ -75,7 +76,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = mapRowToExam(rs);
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -94,7 +95,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -126,7 +127,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -136,11 +137,18 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
         }
     }
 
-    public PendingVisit mapRowToExam(ResultSet rs) throws SQLException {
-        PendingVisit pendingVisit = new PendingVisit(
-                rs.getString("patient_id"),
-                rs.getString("practitioner_id"));
-        return pendingVisit;
+    @Override
+    protected PendingVisit mapRowToEntity(ResultSet rs) throws DAOException {
+        try {
+            PendingVisit pendingVisit = new PendingVisit();
+
+            pendingVisit.setPatientEmail(rs.getString("patient_id"));
+            pendingVisit.setPractitionerEmail(rs.getString("practitioner_id"));
+
+            return pendingVisit;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Pending Visit: ", e);
+        }
     }
 }
 

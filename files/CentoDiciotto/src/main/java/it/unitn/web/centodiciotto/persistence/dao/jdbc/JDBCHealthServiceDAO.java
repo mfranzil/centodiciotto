@@ -19,6 +19,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String SELECTALL = "SELECT * FROM health_service;";
     final private String DELETE = "DELETE FROM health_service WHERE email = ?;";
     final private String UPDATE = "UPDATE health_service SET (operating_province) = (?) WHERE email = ?;";
+
     public JDBCHealthServiceDAO(Connection con) {
         super(con);
     }
@@ -27,7 +28,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     public void insert(HealthService healthService) throws DAOException {
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, healthService.getEmail());
+            preparedStatement.setString(1, healthService.getUserID());
             preparedStatement.setString(2, healthService.getOperatingProvince());
 
             int row = preparedStatement.executeUpdate();
@@ -43,7 +44,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
             preparedStatement.setString(1, healthService.getOperatingProvince());
-            preparedStatement.setString(2, healthService.getEmail());
+            preparedStatement.setString(2, healthService.getUserID());
 
             int row = preparedStatement.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -56,7 +57,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     @Override
     public void delete(HealthService healthService) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setString(1, healthService.getEmail());
+            stm.setString(1, healthService.getUserID());
 
             ResultSet rs = stm.executeQuery();
             int row = stm.executeUpdate();
@@ -73,7 +74,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new HealthService(rs.getString("email"), "", "", rs.getString("operating_province"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -105,13 +106,27 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new HealthService(rs.getString("email"), "", "", rs.getString("operating_province"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting all HealthServices: ", e);
+        }
+    }
+
+    @Override
+    protected HealthService mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            HealthService healthService = new HealthService();
+
+            healthService.setUserID(resultSet.getString("email"));
+            healthService.setOperatingProvince(resultSet.getString("operating_province"));
+
+            return healthService;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
         }
     }
 }

@@ -19,8 +19,23 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     final private String SELECTALL = "SELECT * FROM exams_list;";
     final private String DELETE = "DELETE FROM exams_list WHERE exam_id = ?;";
     final private String UPDATE = "UPDATE exams_list SET (exam_description) =  (?) WHERE exam_id = ?;";
+
     public JDBCExamListDAO(Connection con) {
         super(con);
+    }
+
+    @Override
+    protected ExamList mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            ExamList examList = new ExamList();
+
+            examList.setExamDescription(resultSet.getString("exam_description"));
+            examList.setExamID(resultSet.getInt("exam_id"));
+
+            return examList;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
+        }
     }
 
     @Override
@@ -71,7 +86,7 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new ExamList(rs.getInt("exam_id"), rs.getString("exam_description"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -103,7 +118,7 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new ExamList(rs.getInt("exam_id"), rs.getString("exam_description"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;

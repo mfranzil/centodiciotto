@@ -1,3 +1,4 @@
+<%--suppress ELValidationInJSP --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -69,12 +70,15 @@
                     <div class="table-cell action">&nbsp;</div>
                 </div>
 
-                <!-- TODO: Bisogna mettere immagini del profilo e tutto -->
-                <c:forEach items="${requestScope.available_patients}" var="patient">
+                <c:forEach items="${requestScope.list}" var="list_item">
+                    <c:set var="patient" value="${list_item[0]}"/>
+                    <c:set var="visit" value="${list_item[1]}"/>
+                    <c:set var="exams" value="${list_item[2]}"/>
+
                     <div class="table-personal" id="table-select">
                         <div class="table-cell avt"><img class="avatar-small"
-                                                         src="${pageContext.request.contextPath}/img/avatars/default.png"
-                                                         alt=""></div>
+                                                         src="${pageContext.request.contextPath}${patient.currentPhotoPath}"
+                                                         alt="Profile photo"></div>
                         <div class="table-cell name">${patient.firstName} ${patient.lastName}</div>
                         <div class="table-cell ssn">${patient.ssn}</div>
                         <div class="table-cell action">
@@ -106,42 +110,59 @@
                                                 <th>Gender</th>
                                                 <td>${patient.gender}</td>
                                             </tr>
+                                            <tr>
+                                                <th>Province</th>
+                                                <td>${patient.provinceFullName}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Practitioner</th>
+                                                <td>${patient.practitionerFirstName} ${patient.practitionerLastName}</td>
+                                            </tr>
                                         </table>
                                     </div>
+                                    <c:if test="${!empty visit}">
                                     <div>
-                                        <h4>Last appointment</h4>
+                                        <h4>Last visit</h4>
                                         <table class="table table-unresponsive">
                                             <tr>
                                                 <th>Date</th>
-                                                <td>17/08/2019</td>
+                                                <td>${visit.visitDate}</td>
                                             </tr>
+                                            <tr>
+                                                <th>Practitioner</th>
+                                                <td>${visit.practitionerFirstName} ${visit.practitionerLastName}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Report</th>
+                                                <td>${visit.reportAvailable ? visit.report : " - "}</td>
+                                            </tr><!--
                                             <tr>
                                                 <th>Prescripted drugs</th>
                                                 <td>-</td>
                                             </tr>
                                             <tr>
                                                 <th>Prescripted exams</th>
-                                                <td>Something</td>
-                                            </tr>
+                                                <td>-</td>
+                                            </tr>-->
                                         </table>
                                     </div>
+                                    </c:if>
+                                    <c:if test="${!empty exams}">
                                     <div>
-                                        <h4>Past exams</h4>
+                                        <h4>Last exams</h4>
                                         <table class="table table-unresponsive">
+                                            <c:forEach items="${exams}" var="exam">
                                             <tr>
-                                                <td>17/08/2019</td>
-                                                <td>Something</td>
-                                                <td>I don't know</td>
+                                                <td>${exam.examDate}</td>
+                                                <td>${exam.examDescription}</td>
+                                                <td>${exam.examResult}</td>
                                             </tr>
-                                            <tr>
-                                                <td>11/08/2019</td>
-                                                <td>Something else</td>
-                                                <td>Assured death in 21 days</td>
-                                            </tr>
+                                            </c:forEach>
                                         </table>
                                     </div>
+                                    </c:if>
                                     <div>
-                                        <h4>Past drug prescriptions</h4>
+                                        <h4>Last prescriptions</h4>
                                         <table class="table table-unresponsive">
                                             <tr>
                                                 <td>17/08/2019</td>
@@ -157,7 +178,6 @@
                     </div>
                     <hr>
                 </c:forEach>
-
             </div>
         </div>
     </div>

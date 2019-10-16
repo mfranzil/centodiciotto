@@ -50,14 +50,17 @@ public class PhotoUploadServlet extends HttpServlet {
         Part filePart = request.getPart("avatar-select");
         String extension = request.getParameter("extension");
 
-        Photo photo = new Photo(user.getEmail(), new Timestamp(System.currentTimeMillis()));
+        Photo photo = new Photo();
+        photo.setPatientEmail(user.getUserID());
+        photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
+
         try {
             photoDAO.insert(photo);
 
             String fileName = Integer.toString(photo.getPhotoId());
 
             String path = getServletContext().getRealPath("/") + File.separator
-            + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getEmail();
+            + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getUserID();
             Files.createDirectories(Paths.get(path));
 
             JSONObject jobj = new JSONObject();
@@ -75,7 +78,7 @@ public class PhotoUploadServlet extends HttpServlet {
                 System.out.println(fileName + " created at " + path);
 
                 request.getSession().setAttribute("photo_path", File.separator +
-                        getServletContext().getInitParameter("avatar-folder") + user.getEmail() +
+                        getServletContext().getInitParameter("avatar-folder") + user.getUserID() +
                         File.separator + fileName + "." + extension);
 
                 response.setStatus(200);

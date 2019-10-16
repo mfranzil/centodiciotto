@@ -255,7 +255,6 @@
     </servlet-mapping>
 
     <!-- Servlet tra più ruoli -->
-
     <servlet>
         <servlet-name>PatientsList</servlet-name>
         <servlet-class>it.unitn.web.centodiciotto.servlets.shared.PatientsServlet</servlet-class>
@@ -272,7 +271,6 @@
         <servlet-name>PatientsList</servlet-name>
         <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
     </servlet-mapping>
-
 
     <!-- Servlet senza JSP (POST-only) -->
     <servlet>
@@ -328,6 +326,10 @@
     <error-page>
         <error-code>404</error-code>
         <location>/jsp/errors/404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>405</error-code>
+        <location>/jsp/errors/405.jsp</location>
     </error-page>
 
     <!-- Blocco l'accesso diretto alle jsp -->

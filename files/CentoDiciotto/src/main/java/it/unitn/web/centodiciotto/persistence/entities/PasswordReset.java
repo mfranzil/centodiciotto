@@ -7,12 +7,6 @@ public class PasswordReset {
     private String token;
     private Timestamp expiringDate;
 
-    public PasswordReset(String email, String token, Timestamp expiringDate) {
-        this.email = email;
-        this.token = token;
-        this.expiringDate = expiringDate;
-    }
-
     public String getEmail() {
         return email;
     }

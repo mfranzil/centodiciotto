@@ -3,17 +3,14 @@ package it.unitn.web.centodiciotto.persistence;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
-import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
-import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -29,7 +26,7 @@ public class DAOMain {
 
             String email =  "dionisia.monaldo@gmail.com";
             Patient patient = patientDAO.getByPrimaryKey(email);
-            System.out.println("email: " + patient.getEmail());
+            System.out.println("email: " + patient.getUserID());
 
             Photo p = photoDAO.getCurrentPhoto(patient);
             System.out.println("Current photo ID: " + p.getPhotoId());

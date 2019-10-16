@@ -1,11 +1,15 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +22,9 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     final private String SELECTALL = "SELECT * FROM visit;";
     final private String DELETE = "DELETE FROM visit WHERE visit_id = ?;";
     final private String UPDATE = "UPDATE visit SET (practitioner_id, patient_id, visit_date, report_available, report)  =  (?, ?, ?, ?, ?) WHERE visit_id = ?;";
+    final private String GETLASTPATIENTVISIT = "SELECT * from visit where patient_id = " +
+            "? and visit_date <= localtimestamp order by visit_date desc limit 1";
+
     public JDBCVisitDAO(Connection con) {
         super(con);
     }
@@ -71,14 +78,14 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public Visit getByPrimaryKey(Integer VisitID) throws DAOException {
+    public Visit getByPrimaryKey(Integer visitID) throws DAOException {
         Visit res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
-            stm.setInt(1, VisitID);
+            stm.setInt(1, visitID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = mapRowToExam(rs);
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -97,7 +104,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -108,15 +115,15 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public List<Visit> getByPractitioner(String PractitionerEmail) throws DAOException {
+    public List<Visit> getByPractitioner(String practitionerEmail) throws DAOException {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
-            stm.setString(1, PractitionerEmail);
+            stm.setString(1, practitionerEmail);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -124,6 +131,25 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
         } catch (SQLException e) {
             throw new DAOException("Error getting Visit by PractitionerID: ", e);
         }
+    }
+
+    @Override
+    public Visit getLastVisitByPatient(Patient patient) throws DAOException {
+        Visit visit = null;
+        try {
+            String email = patient.getUserID();
+            PreparedStatement preparedStatement = CON.prepareStatement(GETLASTPATIENTVISIT);
+            preparedStatement.setString(1, email);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) { // only one
+                visit = mapRowToEntity(rs);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error retrieving current visit: ", e);
+        }
+        return visit;
     }
 
     @Override
@@ -148,7 +174,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -158,15 +184,23 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
         }
     }
 
-    public Visit mapRowToExam(ResultSet rs) throws SQLException {
-        Visit visit = new Visit(
-                rs.getInt("visit_id"),
-                rs.getString("practitioner_id"),
-                rs.getString("patient_id"),
-                rs.getTimestamp("visit_date"),
-                rs.getBoolean("report_available"),
-                rs.getString("report"));
-        return visit;
+    @Override
+    protected Visit mapRowToEntity(ResultSet rs) throws DAOException {
+        try {
+            Visit visit = new Visit();
+
+            visit.setVisitID(rs.getInt("visit_id"));
+            visit.setPractitionerEmail(rs.getString("practitioner_id"));
+            visit.setPatientEmail(rs.getString("patient_id"));
+            visit.setVisitDate(rs.getTimestamp("visit_date"));
+            visit.setReportAvailable(rs.getBoolean("report_available"));
+            visit.setReport(rs.getString("report"));
+
+            return visit;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Visit: ", e);
+        }
     }
+
 }
 

@@ -53,7 +53,7 @@
                         <div class="table-cell date">${exam.examDate}</div>
                         <div class="table-cell report-state">${exam.examDone ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
-                            <button type="button" ${exam.examDone ? "disabled" : ""}
+                            <button type="button" ${exam.examDone ? "" : "disabled"}
                                     class="btn btn-block btn-personal popup-opener">
                                 See Report
                             </button>

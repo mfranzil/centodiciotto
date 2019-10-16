@@ -25,6 +25,23 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     }
 
     @Override
+    protected ExamPrescription mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            ExamPrescription examPrescription = new ExamPrescription();
+
+            examPrescription.setPrescriptionID(resultSet.getInt("exam_prescription_id"));
+            examPrescription.setPractitionerEmail(resultSet.getString("practitioner_id"));
+            examPrescription.setPatientEmail(resultSet.getString("patient_id"));
+            examPrescription.setExamType(resultSet.getInt("exam_type"));
+            examPrescription.setExamBooked(resultSet.getBoolean("booked"));
+
+            return examPrescription;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
+        }
+    }
+
+    @Override
     public void insert(ExamPrescription examPrescription) throws DAOException {
         try {
             //(patient_id, doctor_id, exam_type, done, date, result )
@@ -81,7 +98,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new ExamPrescription(rs.getInt("exam_prescription_id"), rs.getString("practitioner_id"), rs.getString("patient_id"), rs.getInt("exam_type"), rs.getBoolean("booked"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -100,7 +117,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new ExamPrescription(rs.getInt("exam_prescription_id"), rs.getString("practitioner_id"), rs.getString("patient_id"), rs.getInt("exam_type"), rs.getBoolean("booked"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -132,7 +149,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new ExamPrescription(rs.getInt("exam_prescription_id"), rs.getString("practitioner_id"), rs.getString("patient_id"), rs.getInt("exam_type"), rs.getBoolean("booked"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;

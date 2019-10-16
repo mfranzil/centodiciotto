@@ -2,7 +2,6 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
-import it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionCreatorServlet;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
@@ -16,7 +15,8 @@ import java.util.List;
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
     final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date, result, health_service_id, ticket, exam_prescription_id values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?;";
+    final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?";
+    final private String FINDBYPATIENTLASTYEAR = "SELECT * FROM exam WHERE patient_id = ?";
     final private String FINDBYID = "SELECT * FROM exam WHERE exam_id = ?;";
     final private String SELECTALL = "SELECT * FROM exam;";
     final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
@@ -89,7 +89,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = mapRowToExam(rs);
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -108,7 +108,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -140,7 +140,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = mapRowToExam(rs);
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -150,19 +150,26 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public Exam mapRowToExam(ResultSet rs) throws SQLException {
-        Exam exam = new Exam(
-                rs.getInt("exam_id"),
-                rs.getString("patient_id"),
-                rs.getString("doctor_id"),
-                rs.getInt("exam_type"),
-                rs.getBoolean("done"),
-                rs.getTimestamp("date"),
-                rs.getString("result"),
-                rs.getInt("health_service_id"),
-                rs.getInt("ticket"),
-                rs.getInt("exam_prescription_id"));
-        return exam;
+    @Override
+    protected Exam mapRowToEntity(ResultSet rs) throws DAOException {
+        try {
+            Exam exam = new Exam();
+
+            exam.setExamID(rs.getInt("exam_id"));
+            exam.setPatientEmail(rs.getString("patient_id"));
+            exam.setDoctorEmail(rs.getString("doctor_id"));
+            exam.setExamType(rs.getInt("exam_type"));
+            exam.setExamDone(rs.getBoolean("done"));
+            exam.setExamDate(rs.getTimestamp("date"));
+            exam.setExamResult(rs.getString("result"));
+            exam.setHealthServiceId(rs.getInt("health_service_id"));
+            exam.setTicket(rs.getInt("ticket"));
+            exam.setExamPrescriptionId(rs.getInt("exam_prescription_id"));
+
+            return exam;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
+        }
     }
 }
 

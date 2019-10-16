@@ -23,9 +23,11 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     final private String FINDBYPRACTITIONER = "SELECT * FROM  prescription WHERE practitionerid = ?;";
     final private String FINDEXPIRED = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' < now();";
     final private String FINDVALID = "SELECT * FROM  prescription WHERE emission_date + interval '1 month' >= now();";
+
     public JDBCPrescriptionDAO(Connection con) {
         super(con);
     }
+
 
     @Override
     public void insert(Prescription prescription) throws DAOException {
@@ -81,7 +83,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"));
+                    res = mapRowToEntity(rs);
                     return res;
                 }
             }
@@ -100,7 +102,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"), rs.getString("first_name"), rs.getString("last_name"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -118,7 +120,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -134,7 +136,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
         try (PreparedStatement stm = CON.prepareStatement(FINDEXPIRED)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -151,7 +153,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
         try (PreparedStatement stm = CON.prepareStatement(FINDVALID)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
@@ -183,13 +185,30 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
-                    tmp = new Prescription(rs.getInt("prescriptionid"), rs.getString("practitionerid"), rs.getString("patientid"), rs.getDate("emission_date"), rs.getString("description"));
+                    tmp = mapRowToEntity(rs);
                     res.add(tmp);
                 }
                 return res;
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting all Prescriptions: ", e);
+        }
+    }
+
+    @Override
+    protected Prescription mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            Prescription prescription = new Prescription();
+
+            prescription.setDrugDescription(resultSet.getString("description"));
+            prescription.setPrescriptionDate(resultSet.getDate("emission_date"));
+            prescription.setPrescriptionID(resultSet.getInt("prescriptionid"));
+            prescription.setPrescriptionPatient(resultSet.getString("patientid"));
+            prescription.setPrescriptionPractitioner(resultSet.getString("practitionerid"));
+
+            return prescription;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Patient: ", e);
         }
     }
 }
