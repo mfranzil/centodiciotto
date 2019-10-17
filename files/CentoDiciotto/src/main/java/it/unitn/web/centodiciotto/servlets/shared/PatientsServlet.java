@@ -62,14 +62,21 @@ public class PatientsServlet extends HttpServlet {
                         var province = daoFactory.getDAO(ProvinceDAO.class).getByAbbreviation(patient.getLivingProvince());
                         var generalPractitioner = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(patient.getPractitionerID());
                         var visit = daoFactory.getDAO(VisitDAO.class).getLastVisitByPatient(patient);
-                        var visitPr = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(visit.getPractitionerID());
+                        String visitPrString = "";
+
+                        if (visit != null) {
+                           GeneralPractitioner visitPr = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(visit.getPractitionerID());
+                            visitPrString = visitPr.getFirstName() + " " + visitPr.getLastName();
+                        }
+
                         var exams = daoFactory.getDAO(ExamDAO.class).getByPatient(patient.getID());
                         ExamListDAO exd = daoFactory.getDAO(ExamListDAO.class);
-
                         List<Pair<Exam, String>> examList = new ArrayList<>();
 
-                        for (Exam exam : exams) {
-                            examList.add(Pair.makePair(exam, exd.getByPrimaryKey(exam.getType()).getDescription()));
+                        if (exams != null && exams.size() > 0) {
+                            for (Exam exam : exams) {
+                                examList.add(Pair.makePair(exam, exd.getByPrimaryKey(exam.getType()).getDescription()));
+                            }
                         }
 
                         listItem.add(patient);
@@ -77,7 +84,7 @@ public class PatientsServlet extends HttpServlet {
                         listItem.add(generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName());
                         listItem.add(PhotoService.getLastPhoto(patient));
                         listItem.add(visit);
-                        listItem.add(visitPr.getFirstName() + " " + visitPr.getLastName());
+                        listItem.add(visitPrString);
                         listItem.add(examList);
 
                         list.add(listItem);

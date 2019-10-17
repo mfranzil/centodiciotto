@@ -116,7 +116,7 @@
                                             </tr>
                                             <tr>
                                                 <th>Province</th>
-                                                <td>${patient.provinceFullName}</td>
+                                                <td>${province}</td>
                                             </tr>
                                             <tr>
                                                 <th>Practitioner</th>
@@ -130,7 +130,7 @@
                                             <table class="table table-unresponsive">
                                                 <tr>
                                                     <th>Date</th>
-                                                    <td>${visit.visitDate}</td>
+                                                    <td>${visit.date}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Practitioner</th>
@@ -151,9 +151,9 @@
                                                     <c:set var="exam" value="${pair.first}"/>
                                                     <c:set var="description" value="${pair.second}"/>
                                                     <tr>
-                                                        <td>${exam.examDate}</td>
+                                                        <td>${exam.date}</td>
                                                         <td>${description}</td>
-                                                        <td>${exam.examResult}</td>
+                                                        <td>${exam.result}</td>
                                                     </tr>
                                                 </c:forEach>
                                             </table>
