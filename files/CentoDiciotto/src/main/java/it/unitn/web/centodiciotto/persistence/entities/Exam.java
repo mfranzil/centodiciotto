@@ -13,6 +13,7 @@ public class Exam {
     private Integer healthServiceID;
     private Integer ticket;
     private Integer examPrescriptionID;
+    private boolean ticketPaid;
 
     public Integer getID() {
         return ID;
@@ -92,5 +93,13 @@ public class Exam {
 
     public void setExamPrescriptionID(Integer examPrescriptionID) {
         this.examPrescriptionID = examPrescriptionID;
+    }
+
+    public boolean isTicketPaid() {
+        return ticketPaid;
+    }
+
+    public void setTicketPaid(boolean ticketPaid) {
+        this.ticketPaid = ticketPaid;
     }
 }
