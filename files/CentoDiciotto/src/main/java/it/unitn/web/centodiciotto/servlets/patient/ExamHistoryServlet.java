@@ -11,6 +11,7 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebServlet("/restricted/patient/exam_history")
 public class ExamHistoryServlet extends HttpServlet {
 
     private ExamDAO examDAO;
@@ -45,7 +47,7 @@ public class ExamHistoryServlet extends HttpServlet {
                 // TODO Inizio codice da modificare con i beans
                 List<Pair<Exam, String>> to_be_sent = new ArrayList<>();
                 try {
-                    List<Exam> exams_history = examDAO.getByPatient(((Patient) user).getID());
+                    List<Exam> exams_history = examDAO.getByPatient(user.getID());
                     // Since Exam description is in another table, here I join everything together
                     for (Exam exam : exams_history) {
                         try {

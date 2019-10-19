@@ -75,7 +75,7 @@
             <div class="table-cell action">
                 <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
                       id="mark_completed" method="POST">
-                    <input type="hidden" value="${visit.visitID}" name="visit_id">
+                    <input type="hidden" value="${visit.ID}" name="visit_id">
                     <button type="submit" class="btn btn-block btn-personal ">Mark as completed</button>
                 </form>
             </div>

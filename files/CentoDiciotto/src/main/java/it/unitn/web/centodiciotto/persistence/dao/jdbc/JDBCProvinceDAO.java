@@ -12,9 +12,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements ProvinceDAO {
+
     final private String FINDBYPRIMARYKEY = "SELECT * FROM province WHERE province_id = ?;";
     final private String SELECTALL = "SELECT * FROM province;";
+    final private String COUNT = "SELECT COUNT(*) FROM province;";
+
     private final String GETBYABBREVIATION = "SELECT * FROM province WHERE province_abbreviation = ?;";
 
     public JDBCProvinceDAO(Connection con) {
@@ -37,37 +41,20 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
     }
 
     @Override
-    public Province getByAbbreviation(String provinceAbbreviation) throws DAOException {
-        Province res;
-        try (PreparedStatement stm = CON.prepareStatement(GETBYABBREVIATION)) {
-            stm.setString(1, provinceAbbreviation);
+    public Province getByPrimaryKey(Integer primaryKey) throws DAOException {
+        Province province = null;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+            stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    res = mapRowToEntity(rs);
-                    return res;
-                }
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Error getting Province by ID: ", e);
-        }
-        return null;
-    }
-
-    @Override
-    public Long getCount() throws DAOException {
-        Long res = 0L;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    res++;
+                    province = mapRowToEntity(rs);
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error counting Provinces: ", e);
+            throw new DAOException("Error getting Province:", e);
         }
-        return res;
+        return province;
     }
 
     @Override
@@ -88,20 +75,36 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
     }
 
     @Override
-    public Province getByPrimaryKey(Integer primaryKey) throws DAOException {
-        Province province = null;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setInt(1, primaryKey);
-
+    public Long getCount() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    province = mapRowToEntity(rs);
+                    return Integer.toUnsignedLong(rs.getInt("count"));
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting Province:", e);
+            throw new DAOException("Error counting Provinces: ", e);
         }
-        return province;
+        return -1L;
+    }
+
+    @Override
+    public Province getByAbbreviation(String provinceAbbreviation) throws DAOException {
+        Province res;
+        try (PreparedStatement stm = CON.prepareStatement(GETBYABBREVIATION)) {
+            stm.setString(1, provinceAbbreviation);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    res = mapRowToEntity(rs);
+                    return res;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Province by primary key: ", e);
+        }
+        return null;
     }
 
     @Override

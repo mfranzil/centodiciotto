@@ -41,7 +41,7 @@ public class VisitHistoryServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
@@ -53,7 +53,7 @@ public class VisitHistoryServlet extends HttpServlet {
                 List<Visit> visits = visitDAO.getByPractitioner(practitioner_email);
 
                 for (Visit visit : visits) {
-                    if(visit.getReportAvailable()) {
+                    if (visit.getReportAvailable()) {
                         patient_visits_report.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
                     }
                 }
@@ -63,7 +63,7 @@ public class VisitHistoryServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-            request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

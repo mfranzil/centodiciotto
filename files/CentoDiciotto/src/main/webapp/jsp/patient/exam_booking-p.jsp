@@ -33,19 +33,16 @@
 </div>
 
 <div class="container">
-    <div class="form-group">
-        <!--<form action="${pageContext.request.contextPath}/restricted/patient/exam_booking" id="exam_booking"
-              method="POST">!-->
-        <select id="exam-search" name="exam-search" class="form-control select2-allow-clear" autofocus
-                style="width: 75%">
+    <div class="form-group" style="display: flex; width: 100%; margin: auto">
+        <select id="exam-search" name="exam-search" class="select2-allow-clear form-control mr-1"
+                style="margin: 1em" autofocus>
         </select>
         <button id="message" class="btn btn-personal" type="submit">
             <i class="fa fa-search"></i>
         </button>
-        <button id="my_filter" class="btn btn-personal" type="button">
+        <button id="my_filter" class="btn btn-personal ml-1" type="button">
             Available Exams
         </button>
-        <!--</form>-->
     </div>
 
     <div class="table-personal table-header">
@@ -58,14 +55,14 @@
         <c:forEach items="${requestScope.exam_lists}" var="exam_list">
             <c:set var="active" value="${false}"/>
             <c:forEach items="${requestScope.exam_prescriptions}" var="exam_prescription">
-                <c:if test="${exam_prescription.examType eq exam_list.examID and !exam_prescription.examBooked}">
+                <c:if test="${exam_prescription.examType eq exam_list.ID and !exam_prescription.booked}">
                     <c:set var="active" value="${true}"/>
                 </c:if>
             </c:forEach>
             <div class="table-personal" id="table-select">
-                <div class="table-cell exam">${exam_list.examDescription} </div>
+                <div class="table-cell exam">${exam_list.description} </div>
                 <div class="table-cell action">
-                    <button type="button" ${active ? "": "disabled" } class="btn btn-block btn-personal popup-opener">
+                    <button type="button" ${active ? "" : "disabled" } class="btn btn-block btn-personal popup-opener">
                         Book Now
                     </button>
                     <div class="popup-window">

@@ -89,7 +89,7 @@
                                             <h7><strong> Old report:</strong></h7>
                                             <p>${visit.report}</p>
                                         </c:if>
-                                        <input type="hidden" value="${visit.visitID}" name="visit_id">
+                                        <input type="hidden" value="${visit.ID}" name="visit_id">
                                         <textarea name="report_text"
                                                   placeholder="Click here to start typing"></textarea>
                                         <button class="btn btn-lg btn-block btn-personal" type="submit">

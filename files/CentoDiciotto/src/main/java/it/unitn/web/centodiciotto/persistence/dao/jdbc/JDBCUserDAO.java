@@ -12,13 +12,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (user_id, hash, salt) values (?, ?, ?);";
     final private String UPDATE = "UPDATE user_ SET hash = ? AND salt = ? WHERE user_id = ?;";
+    final private String DELETE = "DELETE FROM user_ WHERE user_id = ?;";
+
     final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE user_id = ?;";
     final private String SELECTALL = "SELECT * FROM user_;";
-    final private String DELETE = "DELETE FROM user_ WHERE user_id = ?;";
+    final private String COUNT = "SELECT COUNT(*) FROM user_;";
 
     public JDBCUserDAO(Connection con) {
         super(con);
@@ -27,32 +30,32 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     @Override
     public void insert(User user) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, user.getID());
-            preparedStatement.setString(2, user.getHash());
-            preparedStatement.setString(3, user.getSalt());
+            PreparedStatement stm = CON.prepareStatement(INSERT);
+            stm.setString(1, user.getID());
+            stm.setString(2, user.getHash());
+            stm.setString(3, user.getSalt());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            throw new DAOException("Error inserting user: ", e);
+            throw new DAOException("Error inserting User: ", e);
         }
     }
 
     @Override
     public void update(User user) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, user.getHash());
-            preparedStatement.setString(2, user.getSalt());
-            preparedStatement.setString(3, user.getID());
+            PreparedStatement stm = CON.prepareStatement(UPDATE);
+            stm.setString(1, user.getHash());
+            stm.setString(2, user.getSalt());
+            stm.setString(3, user.getID());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            throw new DAOException("Error updating user: ", e);
+            throw new DAOException("Error updating User: ", e);
         }
     }
 
@@ -62,8 +65,9 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(1, user.getID());
 
             int row = stm.executeUpdate();
+            System.out.println("Rows affected: " + row);
         } catch (SQLException e) {
-            throw new DAOException("Error deleting User by user_id: ", e);
+            throw new DAOException("Error deleting User: ", e);
         }
     }
 
@@ -80,24 +84,9 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting User by user_id: ", e);
+            throw new DAOException("Error getting User by primary key: ", e);
         }
         return null;
-    }
-
-    @Override
-    public Long getCount() throws DAOException {
-        Long res = 0L;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    res++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error counting Users: ", e);
-        }
-        return res;
     }
 
     @Override
@@ -118,6 +107,20 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     }
 
     @Override
+    public Long getCount() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting Users: ", e);
+        }
+        return -1L;
+    }
+
+    @Override
     protected User mapRowToEntity(ResultSet resultSet) throws DAOException {
         try {
             User user = new User();
@@ -128,7 +131,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
             return user;
         } catch (SQLException e) {
-            throw new DAOException("Error mapping row to Patient: ", e);
+            throw new DAOException("Error mapping row to User: ", e);
         }
     }
 

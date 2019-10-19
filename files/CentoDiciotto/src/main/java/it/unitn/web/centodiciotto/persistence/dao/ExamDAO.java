@@ -10,4 +10,6 @@ public interface ExamDAO extends DAO<Exam, Integer> {
 
     List<Exam> getByPatient(String PatientEmail) throws DAOException;
 
+    List<Exam> getByPatientLastYear(String PatientEmail) throws DAOException;
+
 }

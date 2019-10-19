@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ChemistDAO extends DAO<Chemist, String> {
 
-    List<Chemist> getByProvince(String province_abbreviation) throws DAOException;
+    List<Chemist> getByProvince(String provinceAbbreviation) throws DAOException;
 }

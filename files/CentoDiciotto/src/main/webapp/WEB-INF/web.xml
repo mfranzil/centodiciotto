@@ -31,7 +31,6 @@
         <listener-class>it.unitn.web.centodiciotto.listeners.WebAppContextListener</listener-class>
     </listener>
 
-    <!-- Mapping nome - jsp/servlet -->
     <servlet>
         <servlet-name>Cookies</servlet-name>
         <jsp-file>/jsp/cookies.jsp</jsp-file>
@@ -39,24 +38,6 @@
     <servlet-mapping>
         <servlet-name>Cookies</servlet-name>
         <url-pattern>/cookies</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>Login</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.LoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Login</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>PasswordResetServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordResetServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PasswordResetServlet</servlet-name>
-        <url-pattern>/password_reset</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -69,77 +50,15 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>UserPage</servlet-name>
+        <servlet-name>User</servlet-name>
         <jsp-file>/jsp/user.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>UserPage</servlet-name>
+        <servlet-name>User</servlet-name>
         <url-pattern>/restricted/user</url-pattern>
     </servlet-mapping>
 
     <!-- Patient -->
-    <servlet>
-        <servlet-name>ChangePractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ChangePractitionerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ChangePractitioner</servlet-name>
-        <url-pattern>/restricted/patient/change_practitioner</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ExamBooking</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamBooking</servlet-name>
-        <url-pattern>/restricted/patient/exam_booking</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ExamBookingServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionCreatorServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamBookingServlet</servlet-name>
-        <url-pattern>/restricted/patient/exam_booking_servlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>PhotoGallery</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PhotoGalleryServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PhotoGallery</servlet-name>
-        <url-pattern>/restricted/patient/photo_gallery</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>PrescriptionsServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PrescriptionServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PrescriptionsServlet</servlet-name>
-        <url-pattern>/restricted/patient/prescriptions</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ExamHistoryServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamHistoryServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamHistoryServlet</servlet-name>
-        <url-pattern>/restricted/patient/exam_history</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ExamPrescriptionServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.ExamPrescriptionCreatorServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamPrescriptionServlet</servlet-name>
-        <url-pattern>/restricted/patient/exams</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>Tickets</servlet-name>
@@ -148,15 +67,6 @@
     <servlet-mapping>
         <servlet-name>Tickets</servlet-name>
         <url-pattern>/restricted/patient/tickets</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>Visits</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.VisitServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Visits</servlet-name>
-        <url-pattern>/restricted/patient/visits</url-pattern>
     </servlet-mapping>
 
     <!-- General practitioner -->

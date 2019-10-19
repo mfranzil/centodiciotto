@@ -13,20 +13,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
-    final private String INSERT = "INSERT INTO photo (patient_id, upload_date) values (?, ?) RETURNING photo_id;";
+    final private String INSERT = "INSERT INTO photo (patient_id, upload_date) values (?, ?) " +
+            "RETURNING photo_id;";
     final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
     final private String DELETE = "DELETE from photo WHERE photo_id = ?";
+
     final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photo_id = ?;";
     final private String SELECTALL = "SELECT * FROM photo;";
+    final private String COUNT = "SELECT COUNT(*) FROM photo;";
 
-    final private String GET_CURRENT_PHOTO = "SELECT * " +
+    final private String GETCURRENTPHOTO = "SELECT * " +
             "FROM photo " +
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC " +
             "LIMIT 1;";
-
     final private String GET_ALL_PHOTOS = "SELECT * " +
             "FROM photo " +
             "WHERE patient_id = ? " +
@@ -39,14 +42,14 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     @Override
     public void insert(Photo photo) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, photo.getPatientID());
-            preparedStatement.setTimestamp(2, photo.getUploadDate());
+            PreparedStatement stm = CON.prepareStatement(INSERT);
+            stm.setString(1, photo.getPatientID());
+            stm.setTimestamp(2, photo.getUploadDate());
 
-            int photoId = preparedStatement.executeUpdate();
-            //System.out.println("Rows affected: " + row);
+            int photoID = stm.executeUpdate();
 
-            photo.setID(photoId);
+            photo.setID(photoID);
+            System.out.println("Row affected returned: " + photoID);
 
         } catch (SQLException e) {
             throw new DAOException("Error inserting Photo: ", e);
@@ -56,11 +59,11 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     @Override
     public void update(Photo photo) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setTimestamp(1, photo.getUploadDate());
-            preparedStatement.setInt(2, photo.getID());
+            PreparedStatement stm = CON.prepareStatement(UPDATE);
+            stm.setTimestamp(1, photo.getUploadDate());
+            stm.setInt(2, photo.getID());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
@@ -74,39 +77,10 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             stm.setInt(1, photo.getID());
 
             int row = stm.executeUpdate();
+            System.out.println("Rows affected: " + row);
         } catch (SQLException e) {
             throw new DAOException("Error deleting Photo: ", e);
         }
-    }
-
-    @Override
-    protected Photo mapRowToEntity(ResultSet resultSet) throws DAOException {
-        try {
-            Photo photo = new Photo();
-
-            photo.setID(resultSet.getInt("photo_id"));
-            photo.setPatientID(resultSet.getString("patient_id"));
-            photo.setUploadDate(resultSet.getTimestamp("upload_date"));
-
-            return photo;
-        } catch (SQLException e) {
-            throw new DAOException("Error mapping row to Photo:", e);
-        }
-    }
-
-    @Override
-    public Long getCount() throws DAOException {
-        Long res = 0L;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    res++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error counting Photos: ", e);
-        }
-        return res;
     }
 
     @Override
@@ -143,45 +117,71 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
         }
     }
 
+    @Override
+    public Long getCount() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting Photos: ", e);
+        }
+        return -1L;
+    }
 
     @Override
     public Photo getCurrentPhoto(Patient patient) throws DAOException {
         Photo photo = null;
         try {
             String email = patient.getID();
-            PreparedStatement preparedStatement = CON.prepareStatement(GET_CURRENT_PHOTO);
-            preparedStatement.setString(1, email);
+            PreparedStatement stm = CON.prepareStatement(GETCURRENTPHOTO);
+            stm.setString(1, email);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = stm.executeQuery();
 
-            if (rs.next()) { // only one
+            if (rs.next()) {
                 photo = mapRowToEntity(rs);
             }
         } catch (SQLException e) {
-            throw new DAOException("Error retrieving current photo: ", e);
+            throw new DAOException("Error getting current Photo: ", e);
         }
         return photo;
     }
-
 
     @Override
     public List<Photo> getAllPhotos(Patient patient) throws DAOException {
         List<Photo> photos = new ArrayList<>();
         try {
             String email = patient.getID();
-            PreparedStatement preparedStatement = CON.prepareStatement(GET_ALL_PHOTOS);
-            preparedStatement.setString(1, email);
+            PreparedStatement stm = CON.prepareStatement(GET_ALL_PHOTOS);
+            stm.setString(1, email);
 
-            ResultSet rs = preparedStatement.executeQuery();
+            ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
                 Photo photo = mapRowToEntity(rs);
                 photos.add(photo);
             }
-
         } catch (SQLException e) {
-            throw new DAOException("Error retrieving all photos: ", e);
+            throw new DAOException("Error getting all Photos: ", e);
         }
         return photos;
+    }
+
+    @Override
+    protected Photo mapRowToEntity(ResultSet resultSet) throws DAOException {
+        try {
+            Photo photo = new Photo();
+
+            photo.setID(resultSet.getInt("photo_id"));
+            photo.setPatientID(resultSet.getString("patient_id"));
+            photo.setUploadDate(resultSet.getTimestamp("upload_date"));
+
+            return photo;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to Photo:", e);
+        }
     }
 }

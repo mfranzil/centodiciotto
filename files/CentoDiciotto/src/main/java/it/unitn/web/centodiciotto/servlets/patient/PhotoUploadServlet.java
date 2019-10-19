@@ -60,7 +60,7 @@ public class PhotoUploadServlet extends HttpServlet {
             String fileName = Integer.toString(photo.getID());
 
             String path = getServletContext().getRealPath("/") + File.separator
-            + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getID();
+                    + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getID();
             Files.createDirectories(Paths.get(path));
 
             JSONObject jobj = new JSONObject();

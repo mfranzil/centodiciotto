@@ -7,22 +7,25 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+// TODO Ne siamo proprio sicuri?
+@WebServlet(urlPatterns = {"/restricted/patient/exam_booking_servlet", "/restricted/patient/exams"})
 public class ExamPrescriptionCreatorServlet extends HttpServlet {
+    private static final List<Exam_> ALL_INTERNAL_EXAMS = new ArrayList<>();
+    private static List<ExamList> ALL_EXAMS = new ArrayList<>();
     /*
     It's still testing time, please do not pay attention
      */
     private ExamListDAO examListDAO;
-    private static List<ExamList> ALL_EXAMS = new ArrayList<>();
-    private static final  List<Exam_> ALL_INTERNAL_EXAMS= new ArrayList<>();
 
     @Override
     public void init() throws ServletException {
@@ -40,13 +43,13 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
         } catch (DAOException e) {
             e.printStackTrace();
         }
-        for (ExamList exam: ALL_EXAMS) {
+        for (ExamList exam : ALL_EXAMS) {
             ALL_INTERNAL_EXAMS.add(new Exam_(exam.getID(), exam.getDescription()));
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
@@ -64,7 +67,8 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
         } else {
             List<Exam_> tmp_results = new ArrayList<>();
             ALL_INTERNAL_EXAMS.stream().filter((Exam_ exam_) -> (exam_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(_item -> {
-                        tmp_results.add(_item);});
+                tmp_results.add(_item);
+            });
             results = tmp_results;
         }
 

@@ -66,7 +66,7 @@
                                     <input type="hidden" name="prescription_date"
                                            value="${prescription.prescriptionDate}"/>
                                     <input type="hidden" name="prescription_id"
-                                           value="${prescription.prescriptionID}"/>
+                                           value="${prescription.D}"/>
                                     <input type="hidden" name="prescription_description"
                                            value="${prescription.drugDescription}"/>
                                     <button type="submit" class="btn btn-block btn-personal">Download</button>

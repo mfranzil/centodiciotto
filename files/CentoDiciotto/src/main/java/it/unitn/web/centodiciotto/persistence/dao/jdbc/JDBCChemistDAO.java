@@ -12,14 +12,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistDAO {
 
     final private String INSERT = "INSERT INTO chemist (chemist_id, name, chemist_province) values (?, ?, ?);";
-    final private String FINDBYID = "SELECT * FROM chemist WHERE chemist_id = ?;";
-    final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
-    final private String SELECTALL = "SELECT * FROM chemist;";
-    final private String DELETE = "DELETE FROM chemist WHERE chemist_id = ?;";
     final private String UPDATE = "UPDATE chemist SET (name, chemist_province) = (?, ?) WHERE chemist_id = ?;";
+    final private String DELETE = "DELETE FROM chemist WHERE chemist_id = ?;";
+
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM chemist WHERE chemist_id = ?;";
+    final private String SELECTALL = "SELECT * FROM chemist;";
+    final private String COUNT = "SELECT COUNT(*) FROM chemist;";
+
+    final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
 
     public JDBCChemistDAO(Connection con) {
         super(con);
@@ -28,12 +32,12 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     @Override
     public void insert(Chemist chemist) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, chemist.getID());
-            preparedStatement.setString(2, chemist.getName());
-            preparedStatement.setString(3, chemist.getProvince());
+            PreparedStatement stm = CON.prepareStatement(INSERT);
+            stm.setString(1, chemist.getID());
+            stm.setString(2, chemist.getName());
+            stm.setString(3, chemist.getProvince());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
@@ -44,12 +48,12 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     @Override
     public void update(Chemist chemist) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, chemist.getName());
-            preparedStatement.setString(2, chemist.getProvince());
-            preparedStatement.setString(3, chemist.getID());
+            PreparedStatement stm = CON.prepareStatement(UPDATE);
+            stm.setString(1, chemist.getName());
+            stm.setString(2, chemist.getProvince());
+            stm.setString(3, chemist.getID());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
@@ -63,15 +67,16 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             stm.setString(1, chemist.getID());
 
             int row = stm.executeUpdate();
+            System.out.println("Rows affected: " + row);
         } catch (SQLException e) {
-            throw new DAOException("Error deleting Chemist by chemist_id: ", e);
+            throw new DAOException("Error deleting Chemist: ", e);
         }
     }
 
     @Override
     public Chemist getByPrimaryKey(String chemist_id) throws DAOException {
         Chemist res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
             stm.setString(1, chemist_id);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -81,9 +86,40 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting Chemist by chemist_id: ", e);
+            throw new DAOException("Error getting Chemist by primary key: ", e);
         }
         return null;
+    }
+
+    @Override
+    public List<Chemist> getAll() throws DAOException {
+        List<Chemist> res = new ArrayList<>();
+        Chemist tmp;
+        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting all Chemists: ", e);
+        }
+    }
+
+    @Override
+    public Long getCount() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting Chemists: ", e);
+        }
+        return -1L;
     }
 
     @Override
@@ -106,39 +142,6 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     }
 
     @Override
-    public Long getCount() throws DAOException {
-        Long res = 0L;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    res++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error counting Chemists: ", e);
-        }
-        return res;
-    }
-
-    @Override
-    public List<Chemist> getAll() throws DAOException {
-        List<Chemist> res;
-        res = new ArrayList<>();
-        Chemist tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting all Chemists: ", e);
-        }
-    }
-
-    @Override
     protected Chemist mapRowToEntity(ResultSet resultSet) throws DAOException {
         try {
             Chemist chemist = new Chemist();
@@ -149,7 +152,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
             return chemist;
         } catch (SQLException e) {
-            throw new DAOException("Error mapping row to Patient: ", e);
+            throw new DAOException("Error mapping row to Chemist: ", e);
         }
     }
 }

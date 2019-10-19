@@ -12,50 +12,52 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
 
-    final private String INSERT = "INSERT INTO general_practitioner (practitioner_id, first_name, last_name, working_province)" +
-            " values (?, ?, ?, ?);";
-    final private String FINDBYID = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
-    final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
-    final private String SELECTALL = "SELECT * FROM general_practitioner;";
+    final private String INSERT = "INSERT INTO general_practitioner " +
+            "(practitioner_id, first_name, last_name, working_province) values (?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) =" +
+            " (?, ?, ?) WHERE practitioner_id = ?;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE practitioner_id = ?;";
-    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) = (?, ?, ?) WHERE practitioner_id = ?;";
+
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
+    final private String SELECTALL = "SELECT * FROM general_practitioner;";
+    final private String COUNT = "SELECT COUNT(*) FROM general_practitioner;";
+
+    final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
 
     public JDBCGeneralPractitionerDAO(Connection con) {
         super(con);
     }
 
-
     @Override
     public void insert(GeneralPractitioner generalPractitioner) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setString(1, generalPractitioner.getID());
-            preparedStatement.setString(2, generalPractitioner.getFirstName());
-            preparedStatement.setString(3, generalPractitioner.getLastName());
-            preparedStatement.setString(4, generalPractitioner.getWorkingProvince());
+            PreparedStatement stm = CON.prepareStatement(INSERT);
+            stm.setString(1, generalPractitioner.getID());
+            stm.setString(2, generalPractitioner.getFirstName());
+            stm.setString(3, generalPractitioner.getLastName());
+            stm.setString(4, generalPractitioner.getWorkingProvince());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
-            throw new DAOException("Error inserting User: ", e);
+            throw new DAOException("Error inserting GeneralPractitioner: ", e);
         }
-        // Connection and Prepared Statement automatically closed
-
     }
 
     @Override
     public void update(GeneralPractitioner generalPractitioner) throws DAOException {
         try {
-            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, generalPractitioner.getFirstName());
-            preparedStatement.setString(2, generalPractitioner.getLastName());
-            preparedStatement.setString(3, generalPractitioner.getWorkingProvince());
-            preparedStatement.setString(4, generalPractitioner.getID());
+            PreparedStatement stm = CON.prepareStatement(UPDATE);
+            stm.setString(1, generalPractitioner.getFirstName());
+            stm.setString(2, generalPractitioner.getLastName());
+            stm.setString(3, generalPractitioner.getWorkingProvince());
+            stm.setString(4, generalPractitioner.getID());
 
-            int row = preparedStatement.executeUpdate();
+            int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
 
         } catch (SQLException e) {
@@ -69,15 +71,16 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(1, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
+            System.out.println("Rows affected: " + row);
         } catch (SQLException e) {
-            throw new DAOException("Error deleting GeneralPractitioner by practitioner_id: ", e);
+            throw new DAOException("Error deleting GeneralPractitioner: ", e);
         }
     }
 
     @Override
     public GeneralPractitioner getByPrimaryKey(String practitioner_id) throws DAOException {
         GeneralPractitioner res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
             stm.setString(1, practitioner_id);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -87,43 +90,9 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting GeneralPractitioner by practitioner_id: ", e);
+            throw new DAOException("Error getting GeneralPractitioner by primary key: ", e);
         }
         return null;
-    }
-
-    @Override
-    public List<GeneralPractitioner> getByProvince(String province_abbreviation) throws DAOException {
-        List<GeneralPractitioner> res = new ArrayList<>();
-        GeneralPractitioner tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
-            stm.setString(1, province_abbreviation);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting GeneralPractitioners by Province: ", e);
-        }
-    }
-
-    @Override
-    public Long getCount() throws DAOException {
-        Long res = 0L;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    res++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error counting GeneralPractitioners: ", e);
-        }
-        return res;
     }
 
     @Override
@@ -144,6 +113,39 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     }
 
     @Override
+    public Long getCount() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting GeneralPractitioners: ", e);
+        }
+        return -1L;
+    }
+
+    @Override
+    public List<GeneralPractitioner> getByProvince(String provinceAbbreviation) throws DAOException {
+        List<GeneralPractitioner> res = new ArrayList<>();
+        GeneralPractitioner tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
+            stm.setString(1, provinceAbbreviation);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting GeneralPractitioners by Province: ", e);
+        }
+    }
+
+    @Override
     protected GeneralPractitioner mapRowToEntity(ResultSet resultSet) throws DAOException {
         try {
             GeneralPractitioner generalPractitioner = new GeneralPractitioner();
@@ -152,10 +154,10 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             generalPractitioner.setFirstName(resultSet.getString("first_name"));
             generalPractitioner.setLastName(resultSet.getString("last_name"));
             generalPractitioner.setWorkingProvince(resultSet.getString("working_province"));
-            
+
             return generalPractitioner;
         } catch (SQLException e) {
-            throw new DAOException("Error mapping row to Patient: ", e);
+            throw new DAOException("Error mapping row to GeneralPractitioner: ", e);
         }
     }
 }

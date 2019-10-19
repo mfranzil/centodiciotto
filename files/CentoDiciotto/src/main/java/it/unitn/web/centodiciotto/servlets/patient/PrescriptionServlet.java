@@ -12,6 +12,7 @@ import it.unitn.web.utils.Pair;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@WebServlet("/restricted/patient/prescriptions")
 public class PrescriptionServlet extends HttpServlet {
 
     private PrescriptionDAO prescriptionDAO;

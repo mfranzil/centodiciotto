@@ -12,62 +12,36 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamListDAO {
 
-    final private String INSERT = "INSERT INTO exams_list (exam_description) values (?);";
-    final private String FINDBYID = "SELECT * FROM exams_list WHERE exam_id = ?;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM exams_list WHERE exam_id = ?;";
     final private String SELECTALL = "SELECT * FROM exams_list;";
-    final private String DELETE = "DELETE FROM exams_list WHERE exam_id = ?;";
-    final private String UPDATE = "UPDATE exams_list SET (exam_description) =  (?) WHERE exam_id = ?;";
+    final private String COUNT = "SELECT COUNT(*) FROM exam;";
 
     public JDBCExamListDAO(Connection con) {
         super(con);
     }
 
     @Override
-    public void insert(ExamList exam_list) throws DAOException {
-        try {
-            PreparedStatement preparedStatement = CON.prepareStatement(INSERT);
-            preparedStatement.setInt(1, exam_list.getID());
-
-            int row = preparedStatement.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
-        } catch (SQLException e) {
-            throw new DAOException("Error inserting exam_list: ", e);
-        }
+    public void insert(ExamList examList) throws DAOException {
+        throw new DAOException("The ExamList table is read-only.");
     }
 
     @Override
-    public void update(ExamList exam_list) throws DAOException {
-        try {
-            PreparedStatement preparedStatement = CON.prepareStatement(UPDATE);
-            preparedStatement.setString(1, exam_list.getDescription());
-            preparedStatement.setInt(2, exam_list.getID());
-
-            int row = preparedStatement.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
-        } catch (SQLException e) {
-            throw new DAOException("Error updating Exam_list: ", e);
-        }
+    public void update(ExamList examList) throws DAOException {
+        throw new DAOException("The ExamList table is read-only.");
     }
 
     @Override
-    public void delete(ExamList exam_list) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, exam_list.getID());
-
-            int row = stm.executeUpdate();
-        } catch (SQLException e) {
-            throw new DAOException("Error deleting Exam_list by ID: ", e);
-        }
+    public void delete(ExamList examList) throws DAOException {
+        throw new DAOException("The ExamList table is read-only.");
     }
 
     @Override
     public ExamList getByPrimaryKey(Integer ExamID) throws DAOException {
         ExamList res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYID)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
             stm.setInt(1, ExamID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -77,24 +51,9 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting ExamList by ID: ", e);
+            throw new DAOException("Error getting ExamList by primary key: ", e);
         }
         return null;
-    }
-
-    @Override
-    public Long getCount() throws DAOException {
-        Long res = 0L;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    res++;
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error counting Exams: ", e);
-        }
-        return res;
     }
 
     @Override
@@ -110,8 +69,22 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
                 return res;
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting all ExamsList: ", e);
+            throw new DAOException("Error getting all ExamsLists: ", e);
         }
+    }
+
+    @Override
+    public Long getCount() throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting ExamLists: ", e);
+        }
+        return -1L;
     }
 
     @Override
@@ -124,7 +97,7 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
 
             return examList;
         } catch (SQLException e) {
-            throw new DAOException("Error mapping row to Patient: ", e);
+            throw new DAOException("Error mapping row to ExamList: ", e);
         }
     }
 }

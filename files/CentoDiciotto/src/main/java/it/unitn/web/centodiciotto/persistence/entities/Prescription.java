@@ -7,7 +7,7 @@ public class Prescription {
     private String practitionerID;
     private String patientID;
     private Date date;
-    private String drugDescription;
+    private String description;
 
     public int getID() {
         return this.ID;
@@ -41,11 +41,11 @@ public class Prescription {
         this.date = date;
     }
 
-    public String getDrugDescription() {
-        return this.drugDescription;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setDrugDescription(String drugDescription) {
-        this.drugDescription = drugDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

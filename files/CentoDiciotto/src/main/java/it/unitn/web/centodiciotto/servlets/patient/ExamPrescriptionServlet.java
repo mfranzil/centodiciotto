@@ -12,6 +12,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebServlet("/restricted/patient/exam_booking")
 public class ExamPrescriptionServlet extends HttpServlet {
     /*
     It's still testing time, please do not pay attention
@@ -45,8 +47,8 @@ public class ExamPrescriptionServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         User user = (User) request.getSession().getAttribute("user");
+
         if (user instanceof Patient) {
             List<ExamPrescription> exam_prescription = null;
             try {
@@ -83,7 +85,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
         Integer selected_exam = Integer.valueOf(request.getParameter("selected_exam"));
         User user = (User) request.getSession().getAttribute("user");
 
-        if(user instanceof Patient) {
+        if (user instanceof Patient) {
             try {
                 Boolean bookable = false;
                 List<Exam_> results = new ArrayList<>();
@@ -91,8 +93,8 @@ public class ExamPrescriptionServlet extends HttpServlet {
 
                 ExamList exam = examListDAO.getByPrimaryKey(selected_exam);
 
-                for(ExamPrescription examPrescription : examPrescriptions){
-                    if(examPrescription.getExamType().equals(selected_exam) && !examPrescription.getBooked()){
+                for (ExamPrescription examPrescription : examPrescriptions) {
+                    if (examPrescription.getExamType().equals(selected_exam) && !examPrescription.getBooked()) {
                         bookable = true;
                     }
                 }

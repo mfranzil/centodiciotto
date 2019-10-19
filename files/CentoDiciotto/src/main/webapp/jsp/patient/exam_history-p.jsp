@@ -53,10 +53,10 @@
                     <c:set var="description" value="${pair.second}"/>
                     <div class="table-personal">
                         <div class="table-cell exam">${description}</div>
-                        <div class="table-cell date">${exam.examDate}</div>
-                        <div class="table-cell report-state">${exam.examDone ? "Available" : "Not available"}</div>
+                        <div class="table-cell date">${exam.date}</div>
+                        <div class="table-cell report-state">${exam.done ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
-                            <button type="button" ${exam.examDone ? "" : "disabled"}
+                            <button type="button" ${exam.done ? "" : "disabled"}
                                     class="btn btn-block btn-personal popup-opener">
                                 See Report
                             </button>
@@ -65,7 +65,7 @@
                                     <div>
                                         <h4>Report</h4>
                                         <br>
-                                        <p>${exam.examResult}</p>
+                                        <p>${exam.result}</p>
                                     </div>
                                     <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                                 </div>

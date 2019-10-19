@@ -9,12 +9,14 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@WebServlet("/restricted/patient/visits")
 public class VisitServlet extends HttpServlet {
     private VisitDAO visitDAO;
     private PendingVisitDAO pendingVisitDAO;
@@ -41,11 +43,11 @@ public class VisitServlet extends HttpServlet {
         GeneralPractitioner practitioner = (GeneralPractitioner) request.getSession().getAttribute("practitioner");
         if (user instanceof Patient) {
             List<Visit> visits = null;
-            Boolean already_booked = false;
+            boolean already_booked = false;
             try {
-                visits = visitDAO.getByPatient(((Patient) user).getID());
+                visits = visitDAO.getByPatient(user.getID());
 
-                Pair<String, String> key = new Pair<>(((Patient) user).getID(), practitioner.getID());
+                Pair<String, String> key = new Pair<>(user.getID(), practitioner.getID());
                 already_booked = (pendingVisitDAO.getByPrimaryKey(key) != null);
 
                 request.setAttribute("visits", visits);

@@ -1,12 +1,5 @@
 package it.unitn.web.utils;
 
-import net.glxn.qrgen.QRCode;
-import net.glxn.qrgen.image.ImageType;
-
-import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 /*
 public class QRCodeCreator {
     public static FileOutputStream createPrescription(){

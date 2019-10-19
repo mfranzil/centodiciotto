@@ -65,7 +65,7 @@ public class PatientsServlet extends HttpServlet {
                         String visitPrString = "";
 
                         if (visit != null) {
-                           GeneralPractitioner visitPr = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(visit.getPractitionerID());
+                            GeneralPractitioner visitPr = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(visit.getPractitionerID());
                             visitPrString = visitPr.getFirstName() + " " + visitPr.getLastName();
                         }
 

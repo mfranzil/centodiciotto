@@ -15,7 +15,7 @@ import java.util.List;
 
 
 public class DAOMain {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             JDBCDAOFactory.configure();
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -24,7 +24,7 @@ public class DAOMain {
             PatientDAO patientDAO = daoFactory.getDAO(PatientDAO.class);
             ExamDAO examDAO = daoFactory.getDAO(ExamDAO.class);
 
-            String email =  "dionisia.monaldo@gmail.com";
+            String email = "dionisia.monaldo@gmail.com";
             Patient patient = patientDAO.getByPrimaryKey(email);
             System.out.println("email: " + patient.getID());
 
@@ -34,7 +34,7 @@ public class DAOMain {
             List<Photo> photos = photoDAO.getAllPhotos(patient);
 
             System.out.println("All photos");
-            for (Photo photo : photos){
+            for (Photo photo : photos) {
                 System.out.println("- id: " + photo.getID());
             }
 

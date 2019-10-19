@@ -42,7 +42,7 @@ public class VisitRequestServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
@@ -53,7 +53,7 @@ public class VisitRequestServlet extends HttpServlet {
 
                 List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitioner_email);
 
-                for( PendingVisit pendingVisit : pendingVisits){
+                for (PendingVisit pendingVisit : pendingVisits) {
                     pendingPatients.add(patientDAO.getByPrimaryKey(pendingVisit.getPatientID()));
                 }
 
