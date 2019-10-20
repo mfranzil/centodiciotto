@@ -69,22 +69,27 @@
                     <div class="table-cell ssn">SSN</div>
                     <div class="table-cell action">&nbsp;</div>
                 </div>
+                <!-- TODO fix here !-->
 
-                <c:forEach items="${requestScope.list}" var="list_item">
-                    <c:set var="patient" value="${list_item[0]}"/>
-                    <c:set var="province" value="${list_item[1]}"/>
-                    <c:set var="patient_pr" value="${list_item[2]}"/>
-                    <c:set var="photo" value="${list_item[3]}"/>
-                    <c:set var="visit" value="${list_item[4]}"/>
-                    <c:set var="visit_pr" value="${list_item[5]}"/>
-                    <c:set var="exams" value="${list_item[6]}"/>
+                <jsp:useBean id="generalPractitionerDAO"
+                             class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean">
+                    <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                                     value="${sessionScope.user.ID}"/>
+                    <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                </jsp:useBean>
+
+                <c:forEach items="${generalPractitionerDAO.patientsList}" var="current_patient">
+                    <jsp:useBean id="patientDaoBean" class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
+                        <jsp:setProperty name="patientDaoBean" property="patientID" value="${current_patient}"/>
+                        <jsp:setProperty name="patientDaoBean" property="DAOFactory" value=""/>
+                    </jsp:useBean>
 
                     <div class="table-personal" id="table-select">
                         <div class="table-cell avt"><img class="avatar-small"
-                                                         src="${pageContext.request.contextPath}${photo}"
+                                                         src="${pageContext.request.contextPath}${patientDaoBean.getPhotoPath(current_patient)}"
                                                          alt="Profile photo"></div>
-                        <div class="table-cell name">${patient.firstName} ${patient.lastName}</div>
-                        <div class="table-cell ssn">${patient.ssn}</div>
+                        <div class="table-cell name">${current_patient.firstName} ${current_patient.lastName}</div>
+                        <div class="table-cell ssn">${current_patient.ssn}</div>
                         <div class="table-cell action">
                             <button type="button" class="btn btn-block btn-personal popup-opener">
                                 Patient data
@@ -93,52 +98,24 @@
                                 <div class="popup animate-in">
                                     <div>
                                         <h4>Patient data</h4>
-                                        <table class="table table-unresponsive">
-                                            <tr>
-                                                <th>Name</th>
-                                                <td>${patient.firstName}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Surname</th>
-                                                <td>${patient.lastName}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>SSN</th>
-                                                <td>${patient.ssn}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Birthdate</th>
-                                                <td>${patient.birthDate}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Gender</th>
-                                                <td>${patient.gender}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Province</th>
-                                                <td>${province}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Practitioner</th>
-                                                <td>${patient_pr}</td>
-                                            </tr>
-                                        </table>
+
                                     </div>
-                                    <c:if test="${!empty visit}">
+                                    <c:if test="${!empty patientDaoBean.getLastVisit(current_patient)}">
                                         <div>
                                             <h4>Last visit</h4>
                                             <table class="table table-unresponsive">
                                                 <tr>
                                                     <th>Date</th>
-                                                    <td>${visit.date}</td>
+                                                    <td>${patientDaoBean.getLastVisit(current_patient).date}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Practitioner</th>
-                                                    <td>${visit_pr}</td>
+                                                    <td>${generalPractitionerDAO.getFirstName(generalPractitionerDAO.getGeneralPractitionerByID(patientDaoBean.getLastVisit(current_patient).practitionerID))}
+                                                            ${generalPractitionerDAO.getLastName(generalPractitionerDAO.getGeneralPractitionerByID(patientDaoBean.getLastVisit(current_patient).practitionerID))}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Report</th>
-                                                    <td>${visit.reportAvailable ? visit.report : " - "}</td>
+                                                    <td>${patientDaoBean.getLastVisit(current_patient).reportAvailable ? patientDaoBean.getLastVisit(current_patient).report : " - "}</td>
                                                 </tr>
                                             </table>
                                         </div>

@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class User {
-    private String ID;
+    protected String ID;
     private String hash;
     private String salt;
 

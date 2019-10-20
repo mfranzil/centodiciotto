@@ -25,11 +25,14 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
     final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, practitioner_id, living_province) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
 
-    final private String PATIENTSBYEMAIL = "select P.patient_id, P.first_name, P.last_name," +
+    // WHY?
+    /* final private String PATIENTSBYEMAIL = "select P.patient_id, P.first_name, P.last_name," +
             " P.birth_date, P.birth_place, P.ssn, P.gender," +
             " P.practitioner_id, P.living_province FROM patient P" +
             " INNER JOIN general_practitioner GP ON P.practitioner_id = GP.practitioner_id" +
             " WHERE GP.practitioner_id = ?;";
+    */
+    final private String PATIENTSBYEMAIL = "SELECT * FROM patient WHERE practitioner_id = ?";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
