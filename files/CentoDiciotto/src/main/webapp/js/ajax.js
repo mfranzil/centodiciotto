@@ -17,23 +17,23 @@ $("document").ready(function () {
                         console.log(item_1.id);
                         console.log(item_1.text);
                         console.log(item_1.valid);
-                        divs += ' <div class="table-personal" id="table-select">\n' +
-                            '                <div class="table-cell exam">' + item_1.text + ' </div>\n' +
-                            '                <div class="table-cell action">\n' +
-                            '                    <button type="button" ' + (item_1.valid ? '' : 'disabled') + ' class="btn btn-block btn-personal popup-opener">\n' +
-                            '                        Book Now\n' +
-                            '                    </button>\n' +
-                            '                    <div class="popup-window">\n' +
-                            '                        <div class="popup animate-in">\n' +
-                            '                            <div>\n' +
-                            '                                <h4>Prenota presso un medico specialista</h4>\n' +
-                            '                                <p>Io </p>\n' +
-                            '                            </div>\n' +
-                            '                            <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>\n' +
-                            '                        </div>\n' +
-                            '                    </div>\n' +
-                            '                </div>\n' +
-                            '            </div>';
+                        divs += ` <div class="table-personal" id="table-select">
+                                            <div class="table-cell exam"> ${item_1.text}</div>
+                                            <div class="table-cell action">
+                                                <button type="button" ${(item_1.valid ? "" : "disabled")} class="btn btn-block btn-personal popup-opener">
+                                                    Book Now
+                                                </button>
+                                                <div class="popup-window">
+                                                    <div class="popup animate-in">
+                                                        <div>
+                                                            <h4>Prenota presso un medico specialista</h4>
+                                                            <p>Io </p>
+                                                        </div>
+                                                        <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>`;
                     });
                 });
                 table.append(divs);
