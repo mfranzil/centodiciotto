@@ -9,6 +9,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@WebServlet("/restricted/general_practitioner/visits")
 public class VisitRequestServlet extends HttpServlet {
     private PendingVisitDAO pendingVisitDAO;
     private PatientDAO patientDAO;

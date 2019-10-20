@@ -13,6 +13,7 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebServlet("/restricted/general_practitioner/visit_calendar")
 public class VisitCalendarServlet extends HttpServlet {
     private PendingVisitDAO pendingVisitDAO;
     private PatientDAO patientDAO;

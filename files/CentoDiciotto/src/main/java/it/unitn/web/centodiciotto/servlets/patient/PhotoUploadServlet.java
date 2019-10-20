@@ -20,9 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 
-@WebServlet("/upload")
+@WebServlet("/restricted/photo_upload_handler")
 @MultipartConfig
-
 public class PhotoUploadServlet extends HttpServlet {
 
     private PhotoDAO photoDAO;

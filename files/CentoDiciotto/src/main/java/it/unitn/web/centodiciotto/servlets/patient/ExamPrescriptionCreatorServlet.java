@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO Ne siamo proprio sicuri?
-@WebServlet(urlPatterns = {"/restricted/patient/exam_booking_servlet", "/restricted/patient/exams"})
+@WebServlet("/restricted/patient/exams")
 public class ExamPrescriptionCreatorServlet extends HttpServlet {
     private static final List<Exam_> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();

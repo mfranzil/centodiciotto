@@ -49,9 +49,9 @@
                     <c:set var="prescription" value="${pair.first}"/>
                     <c:set var="available" value="${pair.second}"/>
                     <div class="table-personal">
-                        <div class="table-cell doctor">${prescription.practitionerFirstName}&nbsp;${prescription.practitionerLastName}
+                        <div class="table-cell doctor">{prescription.firstName}&nbsp;{prescription.lastName}
                         </div>
-                        <div class="table-cell date">${prescription.prescriptionDate}
+                        <div class="table-cell date">${prescription.date}
                         </div>
                         <div class="table-cell report-state">${available ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
@@ -61,14 +61,14 @@
                                       id="pdf"
                                       method="POST">
                                     <input type="hidden" name="practitioner_id"
-                                           value="${prescription.prescriptionPractitioner}"/>
+                                           value="${prescription.practitioner}"/>
                                     <input type="hidden" name="patient_ssn" value="${sessionScope.user.ssn}"/>
                                     <input type="hidden" name="prescription_date"
-                                           value="${prescription.prescriptionDate}"/>
+                                           value="${prescription.date}"/>
                                     <input type="hidden" name="prescription_id"
-                                           value="${prescription.D}"/>
+                                           value="${prescription.ID}"/>
                                     <input type="hidden" name="prescription_description"
-                                           value="${prescription.drugDescription}"/>
+                                           value="${prescription.description}"/>
                                     <button type="submit" class="btn btn-block btn-personal">Download</button>
                                 </form>
                             </c:if>

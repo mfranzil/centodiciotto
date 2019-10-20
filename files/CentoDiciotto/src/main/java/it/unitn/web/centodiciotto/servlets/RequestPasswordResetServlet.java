@@ -9,6 +9,7 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Crypto;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
+@WebServlet("/request_password_reset")
 public class RequestPasswordResetServlet extends HttpServlet {
 
     private PasswordResetDAO prDAO;

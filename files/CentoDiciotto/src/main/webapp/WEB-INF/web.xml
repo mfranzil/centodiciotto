@@ -50,11 +50,11 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>User</servlet-name>
-        <jsp-file>/jsp/user.jsp</jsp-file>
+        <servlet-name>UserServlet</servlet-name>
+        <jsp-file>/jsp/shared/user.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>User</servlet-name>
+        <servlet-name>UserServlet</servlet-name>
         <url-pattern>/restricted/user</url-pattern>
     </servlet-mapping>
 
@@ -78,34 +78,6 @@
         <servlet-name>PrescriptionsPractitioner</servlet-name>
         <url-pattern>/restricted/general_practitioner/prescriptions</url-pattern>
     </servlet-mapping>
-
-    <servlet>
-        <servlet-name>VisitsPractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitRequestServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>VisitsPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/visits</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>VisitsHistoryPractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitHistoryServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>VisitsHistoryPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/visit_history</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>VisitsCalendarPractitioner</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.practitioner.VisitCalendarServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>VisitsCalendarPractitioner</servlet-name>
-        <url-pattern>/restricted/general_practitioner/visit_calendar</url-pattern>
-    </servlet-mapping>
-
 
     <!-- Specialized doctor -->
     <servlet>
@@ -164,60 +136,6 @@
         <url-pattern>/restricted/chemist/prescriptions</url-pattern>
     </servlet-mapping>
 
-    <!-- Servlet tra più ruoli -->
-    <servlet>
-        <servlet-name>PatientsList</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.shared.PatientsServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PatientsList</servlet-name>
-        <url-pattern>/restricted/general_practitioner/patients</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PatientsList</servlet-name>
-        <url-pattern>/restricted/health_service/patients</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PatientsList</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/patients</url-pattern>
-    </servlet-mapping>
-
-    <!-- Servlet senza JSP (POST-only) -->
-    <servlet>
-        <servlet-name>RequestPasswordResetServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.RequestPasswordResetServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RequestPasswordResetServlet</servlet-name>
-        <url-pattern>/request_password_reset</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>PhotoUploadServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.patient.PhotoUploadServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PhotoUploadServlet</servlet-name>
-        <url-pattern>/restricted/photo_upload_handler</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>PasswordChangeServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.PasswordChangeServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PasswordChangeServlet</servlet-name>
-        <url-pattern>/restricted/password_change_handler</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>LogoutServlet</servlet-name>
-        <servlet-class>it.unitn.web.centodiciotto.servlets.LogoutServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/restricted/logout_handler</url-pattern>
-    </servlet-mapping>
 
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
