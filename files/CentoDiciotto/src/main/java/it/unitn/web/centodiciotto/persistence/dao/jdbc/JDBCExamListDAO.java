@@ -15,9 +15,9 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamListDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM exams_list WHERE exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM exams_list;";
-    final private String COUNT = "SELECT COUNT(*) FROM exam;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM exam_list WHERE exam_id = ?;";
+    final private String SELECTALL = "SELECT * FROM exam_list;";
+    final private String COUNT = "SELECT COUNT(*) FROM exam_list;";
 
     public JDBCExamListDAO(Connection con) {
         super(con);
