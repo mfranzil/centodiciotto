@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.UserDAO;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     final private String SELECTALL = "SELECT * FROM user_;";
     final private String COUNT = "SELECT COUNT(*) FROM user_;";
 
-    public JDBCUserDAO(Connection con) {
+    public JDBCUserDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -121,13 +122,13 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     }
 
     @Override
-    protected User mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected User mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             User user = new User();
 
-            user.setID(resultSet.getString("user_id"));
-            user.setHash(resultSet.getString("hash"));
-            user.setSalt(resultSet.getString("salt"));
+            user.setID(rs.getString("user_id"));
+            user.setHash(rs.getString("hash"));
+            user.setSalt(rs.getString("salt"));
 
             return user;
         } catch (SQLException e) {

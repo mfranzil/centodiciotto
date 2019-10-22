@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.PrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Prescription;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -33,7 +34,7 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     final private String FINDVALID = "SELECT * FROM  prescription " +
             "WHERE emission_date + interval '1 month' >= now();";
 
-    public JDBCPrescriptionDAO(Connection con) {
+    public JDBCPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -204,15 +205,15 @@ public class JDBCPrescriptionDAO extends JDBCDAO<Prescription, Integer> implemen
     }
 
     @Override
-    protected Prescription mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected Prescription mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Prescription prescription = new Prescription();
 
-            prescription.setDescription(resultSet.getString("description"));
-            prescription.setDate(resultSet.getDate("emission_date"));
-            prescription.setID(resultSet.getInt("prescription_id"));
-            prescription.setPatientID(resultSet.getString("patient_id"));
-            prescription.setPractitionerID(resultSet.getString("practitioner_id"));
+            prescription.setDescription(rs.getString("description"));
+            prescription.setDate(rs.getDate("emission_date"));
+            prescription.setID(rs.getInt("prescription_id"));
+            prescription.setPatientID(rs.getString("patient_id"));
+            prescription.setPractitionerID(rs.getString("practitioner_id"));
 
             return prescription;
         } catch (SQLException e) {

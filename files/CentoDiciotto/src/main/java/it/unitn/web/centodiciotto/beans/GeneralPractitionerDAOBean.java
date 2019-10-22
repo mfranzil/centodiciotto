@@ -8,9 +8,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
-import it.unitn.web.utils.PhotoService;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +44,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
         }
 
         try {
-            patients = patientDAO.getPatientsByPractitionerId(practitionerID);
+            patients = patientDAO.getPatientsByPractitionerID(practitionerID);
             System.out.println("Test: " + patients.size());
 
         } catch (DAOException ex) {

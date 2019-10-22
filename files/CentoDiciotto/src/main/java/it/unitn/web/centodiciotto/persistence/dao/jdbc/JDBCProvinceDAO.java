@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.ProvinceDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Province;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -21,7 +22,7 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
 
     private final String GETBYABBREVIATION = "SELECT * FROM province WHERE province_abbreviation = ?;";
 
-    public JDBCProvinceDAO(Connection con) {
+    public JDBCProvinceDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 

@@ -10,7 +10,7 @@ public interface PatientDAO extends DAO<Patient, String> {
 
     void updatePractitioner(Patient patient) throws DAOException;
 
-    List<Patient> getPatientsByPractitionerId(String email) throws DAOException;
+    List<Patient> getPatientsByPractitionerID(String email) throws DAOException;
 
 }
 

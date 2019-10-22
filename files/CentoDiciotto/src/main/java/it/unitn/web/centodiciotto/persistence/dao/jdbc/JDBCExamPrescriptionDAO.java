@@ -1,8 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
+import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
+import it.unitn.web.centodiciotto.persistence.entities.ExamList;
 import it.unitn.web.centodiciotto.persistence.entities.ExamPrescription;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -28,7 +31,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     final private String FINDBYPATIENT = "SELECT * FROM exam_prescription WHERE patient_id = ?;";
 
 
-    public JDBCExamPrescriptionDAO(Connection con) {
+    public JDBCExamPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -38,7 +41,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, examPrescription.getPractitionerID());
             stm.setString(2, examPrescription.getPatientID());
-            stm.setInt(3, examPrescription.getExamType());
+            stm.setInt(3, examPrescription.getExamType().getID());
             stm.setBoolean(4, examPrescription.getBooked());
 
             int row = stm.executeUpdate();
@@ -55,7 +58,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, examPrescription.getPractitionerID());
             stm.setString(2, examPrescription.getPatientID());
-            stm.setInt(3, examPrescription.getExamType());
+            stm.setInt(3, examPrescription.getExamType().getID());
             stm.setBoolean(4, examPrescription.getBooked());
             stm.setInt(5, examPrescription.getID());
 
@@ -148,18 +151,21 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     }
 
     @Override
-    protected ExamPrescription mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected ExamPrescription mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             ExamPrescription examPrescription = new ExamPrescription();
 
-            examPrescription.setID(resultSet.getInt("exam_prescription_id"));
-            examPrescription.setPractitionerID(resultSet.getString("practitioner_id"));
-            examPrescription.setPatientID(resultSet.getString("patient_id"));
-            examPrescription.setExamType(resultSet.getInt("exam_type"));
-            examPrescription.setBooked(resultSet.getBoolean("booked"));
+            ExamListDAO examListDAO = DAOFACTORY.getDAO(ExamListDAO.class);
+            ExamList examList = examListDAO.getByPrimaryKey(rs.getInt("exam_type"));
+
+            examPrescription.setID(rs.getInt("exam_prescription_id"));
+            examPrescription.setPractitionerID(rs.getString("practitioner_id"));
+            examPrescription.setPatientID(rs.getString("patient_id"));
+            examPrescription.setExamType(examList);
+            examPrescription.setBooked(rs.getBoolean("booked"));
 
             return examPrescription;
-        } catch (SQLException e) {
+        } catch (SQLException | DAOFactoryException e) {
             throw new DAOException("Error mapping row to ExamPrescription: ", e);
         }
     }

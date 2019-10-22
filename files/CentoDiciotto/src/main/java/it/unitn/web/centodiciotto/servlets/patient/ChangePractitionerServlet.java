@@ -109,7 +109,7 @@ public class ChangePractitionerServlet extends HttpServlet {
             if (user instanceof Patient) {
                 List<GeneralPractitioner> available_practitioners = null;
                 try {
-                    available_practitioners = practitionerDAO.getByProvince(((Patient) user).getLivingProvince());
+                    available_practitioners = practitionerDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }

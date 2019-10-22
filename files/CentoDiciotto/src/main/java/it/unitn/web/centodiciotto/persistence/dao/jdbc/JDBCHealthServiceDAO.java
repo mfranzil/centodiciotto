@@ -1,8 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.HealthServiceDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ProvinceDAO;
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
+import it.unitn.web.centodiciotto.persistence.entities.Province;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -25,7 +28,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String SELECTALL = "SELECT * FROM health_service;";
     final private String COUNT = "SELECT COUNT(*) FROM health_service;";
 
-    public JDBCHealthServiceDAO(Connection con) {
+    public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -34,7 +37,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, healthService.getID());
-            stm.setString(2, healthService.getOperatingProvince());
+            stm.setString(2, healthService.getOperatingProvince().getAbbreviation());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -48,7 +51,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     public void update(HealthService healthService) throws DAOException {
         try {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
-            stm.setString(1, healthService.getOperatingProvince());
+            stm.setString(1, healthService.getOperatingProvince().getAbbreviation());
             stm.setString(2, healthService.getID());
 
             int row = stm.executeUpdate();
@@ -121,15 +124,19 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     }
 
     @Override
-    protected HealthService mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected HealthService mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             HealthService healthService = new HealthService();
 
-            healthService.setID(resultSet.getString("health_service_id"));
-            healthService.setOperatingProvince(resultSet.getString("operating_province"));
+            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
+            Province province = provinceDAO.getByAbbreviation(
+                    rs.getString("operating_province"));
+
+            healthService.setID(rs.getString("health_service_id"));
+            healthService.setOperatingProvince(province);
 
             return healthService;
-        } catch (SQLException e) {
+        } catch (SQLException | DAOFactoryException e) {
             throw new DAOException("Error mapping row to HealthService: ", e);
         }
     }

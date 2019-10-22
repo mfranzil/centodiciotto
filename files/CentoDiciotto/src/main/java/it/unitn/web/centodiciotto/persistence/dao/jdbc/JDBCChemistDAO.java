@@ -1,8 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.ChemistDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ProvinceDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Chemist;
+import it.unitn.web.centodiciotto.persistence.entities.Province;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -25,7 +28,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
     final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
 
-    public JDBCChemistDAO(Connection con) {
+    public JDBCChemistDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -35,7 +38,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, chemist.getID());
             stm.setString(2, chemist.getName());
-            stm.setString(3, chemist.getProvince());
+            stm.setString(3, chemist.getProvince().getAbbreviation());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -50,7 +53,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, chemist.getName());
-            stm.setString(2, chemist.getProvince());
+            stm.setString(2, chemist.getProvince().getAbbreviation());
             stm.setString(3, chemist.getID());
 
             int row = stm.executeUpdate();
@@ -142,16 +145,19 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     }
 
     @Override
-    protected Chemist mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected Chemist mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Chemist chemist = new Chemist();
 
-            chemist.setID(resultSet.getString("chemist_id"));
-            chemist.setName(resultSet.getString("name"));
-            chemist.setProvince(resultSet.getString("chemist_province"));
+            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
+            Province province = provinceDAO.getByAbbreviation(rs.getString("chemist_province"));
+
+            chemist.setID(rs.getString("chemist_id"));
+            chemist.setName(rs.getString("name"));
+            chemist.setProvince(province);
 
             return chemist;
-        } catch (SQLException e) {
+        } catch (SQLException | DAOFactoryException e) {
             throw new DAOException("Error mapping row to Chemist: ", e);
         }
     }

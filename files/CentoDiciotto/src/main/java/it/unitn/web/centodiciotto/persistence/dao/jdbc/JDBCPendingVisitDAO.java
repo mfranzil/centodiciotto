@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.PendingVisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.PendingVisit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 import it.unitn.web.utils.Pair;
 
@@ -26,7 +27,7 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
 
     final private String FINDBYPRACTITIONER = "SELECT * FROM pending_visit WHERE practitioner_id = ?;";
 
-    public JDBCPendingVisitDAO(Connection con) {
+    public JDBCPendingVisitDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 

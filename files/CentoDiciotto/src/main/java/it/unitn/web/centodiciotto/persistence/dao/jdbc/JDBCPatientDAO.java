@@ -1,7 +1,9 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ProvinceDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.Province;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
@@ -16,23 +18,22 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
 
-    final private String GETBYEMAIL = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
-    final private String INSERT = "INSERT INTO patient (patient_id, first_name, last_name, birth_date, birth_place, ssn, " +
-            "gender, practitioner_id, living_province) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    final private String UPDATEPRACTITIONER = "UPDATE patient SET practitioner_id = ? WHERE patient_id = ?;";
+    final private String INSERT = "INSERT INTO patient" +
+            "(patient_id, first_name, last_name, birth_date, birth_place, " +
+            "ssn, gender, practitioner_id, living_province)" +
+            " values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE patient SET" +
+            " (first_name, last_name, birth_date, birth_place," +
+            " ssn, gender, practitioner_id, living_province)" +
+            " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
+    final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
+
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
     final private String SELECTALL = "SELECT * FROM patient;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
-    final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
-    final private String UPDATE = "UPDATE patient SET (first_name, last_name, birth_date, birth_place, ssn, gender, practitioner_id, living_province) = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
 
-    // WHY?
-    /* final private String PATIENTSBYEMAIL = "select P.patient_id, P.first_name, P.last_name," +
-            " P.birth_date, P.birth_place, P.ssn, P.gender," +
-            " P.practitioner_id, P.living_province FROM patient P" +
-            " INNER JOIN general_practitioner GP ON P.practitioner_id = GP.practitioner_id" +
-            " WHERE GP.practitioner_id = ?;";
-    */
-    final private String PATIENTSBYEMAIL = "SELECT * FROM patient WHERE practitioner_id = ?";
+    final private String UPDATEPRACTITIONER = "UPDATE patient SET practitioner_id = ? WHERE patient_id = ?;";
+    final private String PATIENTSBYID = "SELECT * FROM patient WHERE practitioner_id = ?";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -50,7 +51,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(6, patient.getSsn());
             stm.setString(7, String.valueOf(patient.getGender()));
             stm.setString(8, patient.getPractitionerID());
-            stm.setString(9, patient.getLivingProvince());
+            stm.setString(9, patient.getLivingProvince().getAbbreviation());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -71,7 +72,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(5, patient.getSsn());
             stm.setString(6, String.valueOf(patient.getGender()));
             stm.setString(7, patient.getPractitionerID());
-            stm.setString(8, patient.getLivingProvince());
+            stm.setString(8, patient.getLivingProvince().getAbbreviation());
             stm.setString(10, patient.getID());
 
             int row = stm.executeUpdate();
@@ -98,7 +99,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     public Patient getByPrimaryKey(String email) throws DAOException {
         Patient patient = null;
         try {
-            PreparedStatement stm = CON.prepareStatement(GETBYEMAIL);
+            PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY);
             stm.setString(1, email);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
@@ -156,11 +157,11 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         }
     }
 
-    public List<Patient> getPatientsByPractitionerId(String email) throws DAOException {
+    public List<Patient> getPatientsByPractitionerID(String ID) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYEMAIL)) {
-            stm.setString(1, email);
+        try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYID)) {
+            stm.setString(1, ID);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -174,22 +175,26 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     }
 
     @Override
-    protected Patient mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected Patient mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Patient patient = new Patient();
 
-            patient.setID(resultSet.getString("patient_id"));
-            patient.setFirstName(resultSet.getString("first_name"));
-            patient.setLastName(resultSet.getString("last_name"));
-            patient.setBirthDate(resultSet.getDate("birth_date"));
-            patient.setBirthPlace(resultSet.getString("birth_place"));
-            patient.setSsn(resultSet.getString("ssn"));
-            patient.setGender(resultSet.getString("gender").charAt(0));
-            patient.setPractitionerID(resultSet.getString("practitioner_id"));
-            patient.setLivingProvince(resultSet.getString("living_province"));
+            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
+            Province province = provinceDAO.getByAbbreviation(
+                    rs.getString("living_province"));
+
+            patient.setID(rs.getString("patient_id"));
+            patient.setFirstName(rs.getString("first_name"));
+            patient.setLastName(rs.getString("last_name"));
+            patient.setBirthDate(rs.getDate("birth_date"));
+            patient.setBirthPlace(rs.getString("birth_place"));
+            patient.setSsn(rs.getString("ssn"));
+            patient.setGender(rs.getString("gender").charAt(0));
+            patient.setPractitionerID(rs.getString("practitioner_id"));
+            patient.setLivingProvince(province);
 
             return patient;
-        } catch (SQLException e) {
+        } catch (SQLException | DAOFactoryException e) {
             throw new DAOException("Error mapping row to Patient: ", e);
         }
     }

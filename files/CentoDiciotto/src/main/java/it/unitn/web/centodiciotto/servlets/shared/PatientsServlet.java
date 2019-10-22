@@ -47,7 +47,7 @@ public class PatientsServlet extends HttpServlet {
 
             try {
                 if (user instanceof GeneralPractitioner) {
-                    available_patients = patientDAO.getPatientsByPractitionerId(user.getID());
+                    available_patients = patientDAO.getPatientsByPractitionerID(user.getID());
                 } else if (user instanceof SpecializedDoctor) {
                     available_patients = patientDAO.getAll();
                 } else if (user instanceof HealthService) {
@@ -63,7 +63,7 @@ public class PatientsServlet extends HttpServlet {
                     // TODO Inizio codice temporaneo da sostituire con beans
                     try {
                         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-                        var province = daoFactory.getDAO(ProvinceDAO.class).getByAbbreviation(patient.getLivingProvince());
+                        var province = daoFactory.getDAO(ProvinceDAO.class).getByAbbreviation(patient.getLivingProvince().getAbbreviation());
                         var generalPractitioner = daoFactory.getDAO(GeneralPractitionerDAO.class).getByPrimaryKey(patient.getPractitionerID());
                         var visit = daoFactory.getDAO(VisitDAO.class).getLastVisitByPatient(patient);
                         String visitPrString = "";
@@ -79,7 +79,7 @@ public class PatientsServlet extends HttpServlet {
 
                         if (exams != null && exams.size() > 0) {
                             for (Exam exam : exams) {
-                                examList.add(Pair.makePair(exam, exd.getByPrimaryKey(exam.getType()).getDescription()));
+                                examList.add(Pair.makePair(exam, exd.getByPrimaryKey(exam.getType().getID()).getDescription()));
                             }
                         }
 

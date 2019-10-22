@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -15,11 +16,11 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamListDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM exams_list WHERE exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM exams_list;";
-    final private String COUNT = "SELECT COUNT(*) FROM exam;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM exam_list WHERE exam_id = ?;";
+    final private String SELECTALL = "SELECT * FROM exam_list;";
+    final private String COUNT = "SELECT COUNT(*) FROM exam_list;";
 
-    public JDBCExamListDAO(Connection con) {
+    public JDBCExamListDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -88,12 +89,12 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     }
 
     @Override
-    protected ExamList mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected ExamList mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             ExamList examList = new ExamList();
 
-            examList.setDescription(resultSet.getString("exam_description"));
-            examList.setID(resultSet.getInt("exam_id"));
+            examList.setDescription(rs.getString("exam_description"));
+            examList.setID(rs.getInt("exam_id"));
 
             return examList;
         } catch (SQLException e) {

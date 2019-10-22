@@ -1,8 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
+import it.unitn.web.centodiciotto.persistence.entities.ExamList;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -31,7 +34,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDBYPATIENTLASTYEAR = "select * from exam where date <= localtimestamp and " +
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
 
-    public JDBCExamDAO(Connection con) {
+    public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -41,7 +44,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, exam.getPatientID());
             stm.setString(2, exam.getDoctorID());
-            stm.setInt(3, exam.getType());
+            stm.setInt(3, exam.getType().getID());
             stm.setBoolean(4, exam.getDone());
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
@@ -64,7 +67,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, exam.getPatientID());
             stm.setString(2, exam.getDoctorID());
-            stm.setInt(3, exam.getType());
+            stm.setInt(3, exam.getType().getID());
             stm.setBoolean(4, exam.getDone());
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
@@ -186,10 +189,14 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         try {
             Exam exam = new Exam();
 
+            ExamListDAO examListDAO = DAOFACTORY.getDAO(ExamListDAO.class);
+            ExamList examList = examListDAO.getByPrimaryKey(
+                    rs.getInt("exam_type"));
+
             exam.setID(rs.getInt("exam_id"));
             exam.setPatientID(rs.getString("patient_id"));
             exam.setDoctorID(rs.getString("doctor_id"));
-            exam.setType(rs.getInt("exam_type"));
+            exam.setType(examList);
             exam.setDone(rs.getBoolean("done"));
             exam.setDate(rs.getTimestamp("date"));
             exam.setResult(rs.getString("result"));
@@ -199,7 +206,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));
 
             return exam;
-        } catch (SQLException e) {
+        } catch (SQLException | DAOFactoryException e) {
             throw new DAOException("Error mapping row to Exam: ", e);
         }
     }
