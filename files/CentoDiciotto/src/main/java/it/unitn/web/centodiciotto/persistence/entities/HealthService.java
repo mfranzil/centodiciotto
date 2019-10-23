@@ -1,13 +1,13 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 public class HealthService extends User {
-    private String operatingProvince;
+    private Province operatingProvince;
 
-    public String getOperatingProvince() {
+    public Province getOperatingProvince() {
         return operatingProvince;
     }
 
-    public void setOperatingProvince(String operatingProvince) {
+    public void setOperatingProvince(Province operatingProvince) {
         this.operatingProvince = operatingProvince;
     }
 }

@@ -4,6 +4,7 @@ import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -32,7 +33,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     final private String GETLASTPATIENTVISIT = "SELECT * from visit where patient_id = " +
             "? and visit_date <= localtimestamp order by visit_date desc limit 1";
 
-    public JDBCVisitDAO(Connection con) {
+    public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 

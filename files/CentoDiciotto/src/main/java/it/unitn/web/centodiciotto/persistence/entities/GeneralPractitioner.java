@@ -3,7 +3,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 public class GeneralPractitioner extends User {
     private String firstName;
     private String lastName;
-    private String workingProvince;
+    private Province workingProvince;
 
     public String getFirstName() {
         return firstName;
@@ -21,11 +21,11 @@ public class GeneralPractitioner extends User {
         this.lastName = lastName;
     }
 
-    public String getWorkingProvince() {
+    public Province getWorkingProvince() {
         return workingProvince;
     }
 
-    public void setWorkingProvince(String workingProvince) {
+    public void setWorkingProvince(Province workingProvince) {
         this.workingProvince = workingProvince;
     }
 }

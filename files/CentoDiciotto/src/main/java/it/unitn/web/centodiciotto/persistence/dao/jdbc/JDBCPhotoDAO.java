@@ -4,6 +4,7 @@ import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -35,7 +36,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC;";
 
-    public JDBCPhotoDAO(Connection con) {
+    public JDBCPhotoDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -171,13 +172,13 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    protected Photo mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected Photo mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Photo photo = new Photo();
 
-            photo.setID(resultSet.getInt("photo_id"));
-            photo.setPatientID(resultSet.getString("patient_id"));
-            photo.setUploadDate(resultSet.getTimestamp("upload_date"));
+            photo.setID(rs.getInt("photo_id"));
+            photo.setPatientID(rs.getString("patient_id"));
+            photo.setUploadDate(rs.getTimestamp("upload_date"));
 
             return photo;
         } catch (SQLException e) {

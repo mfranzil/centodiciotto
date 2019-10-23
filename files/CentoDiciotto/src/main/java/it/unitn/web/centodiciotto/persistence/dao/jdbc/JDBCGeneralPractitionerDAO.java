@@ -1,8 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ProvinceDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
+import it.unitn.web.centodiciotto.persistence.entities.Province;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -27,7 +30,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
     final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
 
-    public JDBCGeneralPractitionerDAO(Connection con) {
+    public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -38,7 +41,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(1, generalPractitioner.getID());
             stm.setString(2, generalPractitioner.getFirstName());
             stm.setString(3, generalPractitioner.getLastName());
-            stm.setString(4, generalPractitioner.getWorkingProvince());
+            stm.setString(4, generalPractitioner.getWorkingProvince().getAbbreviation());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -54,7 +57,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, generalPractitioner.getFirstName());
             stm.setString(2, generalPractitioner.getLastName());
-            stm.setString(3, generalPractitioner.getWorkingProvince());
+            stm.setString(3, generalPractitioner.getWorkingProvince().getAbbreviation());
             stm.setString(4, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
@@ -146,17 +149,21 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     }
 
     @Override
-    protected GeneralPractitioner mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected GeneralPractitioner mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             GeneralPractitioner generalPractitioner = new GeneralPractitioner();
 
-            generalPractitioner.setID(resultSet.getString("practitioner_id"));
-            generalPractitioner.setFirstName(resultSet.getString("first_name"));
-            generalPractitioner.setLastName(resultSet.getString("last_name"));
-            generalPractitioner.setWorkingProvince(resultSet.getString("working_province"));
+            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
+            Province province = provinceDAO.getByAbbreviation(
+                    rs.getString("working_province"));
+
+            generalPractitioner.setID(rs.getString("practitioner_id"));
+            generalPractitioner.setFirstName(rs.getString("first_name"));
+            generalPractitioner.setLastName(rs.getString("last_name"));
+            generalPractitioner.setWorkingProvince(province);
 
             return generalPractitioner;
-        } catch (SQLException e) {
+        } catch (SQLException | DAOFactoryException e) {
             throw new DAOException("Error mapping row to GeneralPractitioner: ", e);
         }
     }

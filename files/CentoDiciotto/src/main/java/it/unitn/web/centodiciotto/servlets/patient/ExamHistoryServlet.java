@@ -52,7 +52,7 @@ public class ExamHistoryServlet extends HttpServlet {
                     for (Exam exam : exams_history) {
                         try {
                             to_be_sent.add(Pair.makePair(exam,
-                                    examListDAO.getByPrimaryKey(exam.getType()).getDescription()));
+                                    examListDAO.getByPrimaryKey(exam.getType().getID()).getDescription()));
                         } catch (DAOException e) {
                             e.printStackTrace();
                         }

@@ -5,7 +5,7 @@ public class ExamPrescription {
     private String patientID;
     private String practitionerID;
     private Boolean booked;
-    private Integer examType;
+    private ExamList examType;
 
     public Integer getID() {
         return ID;
@@ -39,11 +39,11 @@ public class ExamPrescription {
         this.booked = booked;
     }
 
-    public Integer getExamType() {
+    public ExamList getExamType() {
         return examType;
     }
 
-    public void setExamType(Integer examType) {
+    public void setExamType(ExamList examType) {
         this.examType = examType;
     }
 }

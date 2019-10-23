@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String SELECTALL = "SELECT * FROM specialized_doctor;";
     final private String COUNT = "SELECT COUNT(*) FROM specialized_doctor;";
 
-    public JDBCSpecializedDoctorDAO(Connection con) {
+    public JDBCSpecializedDoctorDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -123,13 +124,13 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     }
 
     @Override
-    protected SpecializedDoctor mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected SpecializedDoctor mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             SpecializedDoctor specializedDoctor = new SpecializedDoctor();
 
-            specializedDoctor.setID(resultSet.getString("doctor_id"));
-            specializedDoctor.setFirstName(resultSet.getString("first_name"));
-            specializedDoctor.setLastName(resultSet.getString("last_name"));
+            specializedDoctor.setID(rs.getString("doctor_id"));
+            specializedDoctor.setFirstName(rs.getString("first_name"));
+            specializedDoctor.setLastName(rs.getString("last_name"));
 
             return specializedDoctor;
         } catch (SQLException e) {

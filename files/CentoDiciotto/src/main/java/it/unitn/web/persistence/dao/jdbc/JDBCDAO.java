@@ -9,25 +9,21 @@ package it.unitn.web.persistence.dao.jdbc;
 import it.unitn.web.persistence.dao.DAO;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.HashMap;
 
 public abstract class JDBCDAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> implements DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
     protected final Connection CON;
-    protected final HashMap<Class, DAO> FRIEND_DAOS;
+    protected final DAOFactory DAOFACTORY;
 
-    protected JDBCDAO(Connection con) {
+    protected JDBCDAO(Connection con) throws DAOFactoryException {
         super();
         this.CON = con;
-        FRIEND_DAOS = new HashMap<>();
+        DAOFACTORY = JDBCDAOFactory.getInstance();
     }
 
-    @Override
-    public <DAO_CLASS extends DAO> DAO_CLASS getDAO(Class<DAO_CLASS> daoClass) throws DAOFactoryException {
-        return (DAO_CLASS) FRIEND_DAOS.get(daoClass);
-    }
-
-    abstract protected ENTITY_CLASS mapRowToEntity(ResultSet resultSet) throws DAOException;
+    abstract protected ENTITY_CLASS mapRowToEntity(ResultSet rs) throws DAOException;
 }

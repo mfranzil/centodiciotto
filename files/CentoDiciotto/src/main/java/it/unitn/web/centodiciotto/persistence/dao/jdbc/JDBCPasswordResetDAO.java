@@ -3,6 +3,7 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 import it.unitn.web.centodiciotto.persistence.dao.PasswordResetDAO;
 import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.Connection;
@@ -26,7 +27,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
     final private String FINDBYTOKEN = "SELECT * FROM password_reset WHERE token = ?;";
 
-    public JDBCPasswordResetDAO(Connection con) {
+    public JDBCPasswordResetDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
@@ -143,13 +144,13 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     }
 
     @Override
-    protected PasswordReset mapRowToEntity(ResultSet resultSet) throws DAOException {
+    protected PasswordReset mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             PasswordReset passwordReset = new PasswordReset();
 
-            passwordReset.setUserID(resultSet.getString("user_id"));
-            passwordReset.setToken(resultSet.getString("token"));
-            passwordReset.setExpiringDate(resultSet.getTimestamp("expiring_date"));
+            passwordReset.setUserID(rs.getString("user_id"));
+            passwordReset.setToken(rs.getString("token"));
+            passwordReset.setExpiringDate(rs.getTimestamp("expiring_date"));
 
             return passwordReset;
         } catch (SQLException e) {

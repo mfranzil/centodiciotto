@@ -9,7 +9,7 @@ public class Patient extends User {
     private String birthPlace;
     private String ssn;
     private Character gender;
-    private String livingProvince;
+    private Province livingProvince;
     private String practitionerID;
 
     public String getFirstName() {
@@ -60,11 +60,11 @@ public class Patient extends User {
         this.gender = gender;
     }
 
-    public String getLivingProvince() {
+    public Province getLivingProvince() {
         return livingProvince;
     }
 
-    public void setLivingProvince(String livingProvince) {
+    public void setLivingProvince(Province livingProvince) {
         this.livingProvince = livingProvince;
     }
 
