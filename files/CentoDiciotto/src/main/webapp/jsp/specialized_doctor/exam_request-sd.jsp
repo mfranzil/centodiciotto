@@ -52,7 +52,7 @@
                              src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png" alt="">
                     </div>
                     <div class="table-cell patient">{patient.firstName} {patient.lastName}</div>
-                    <div class="table-cell ssn">{patient.ssn}</div>
+                    <div class="table-cell ssn">{patient.SSN}</div>
                     <div class="table-cell action">
                         <button class="btn btn-block btn-personal popup-opener">
                             Choose date and time
@@ -63,8 +63,8 @@
                                     <!--action="${pageContext.request.contextPath}/restricted/general_practitioner/visits"-->
 
                                     Insert a date and time for the appointment, then confirm.
-                                    <input class="form-control my-4" type="datetime-local" name="visit_date">
-                                    <input type="hidden" value="{patient.email}" name="patient_email">
+                                    <input class="form-control my-4" type="datetime-local" name="visitDate">
+                                    <input type="hidden" value="{patient.ID}" name="patientID">
                                     <button class="btn btn-lg btn-block btn-personal" type="submit">
                                         Confirm the appointment
                                     </button>

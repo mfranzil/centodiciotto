@@ -46,7 +46,7 @@ public class PhotoUploadServlet extends HttpServlet {
 
         OutputStream out = null;
         InputStream filecontent = null;
-        Part filePart = request.getPart("avatar-select");
+        Part filePart = request.getPart("avatarSelect");
         String extension = request.getParameter("extension");
 
         Photo photo = new Photo();

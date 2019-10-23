@@ -40,7 +40,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
-        String email = request.getParameter("email");
+        String userID = request.getParameter("userID");
         PasswordReset pr;
 
         try {
@@ -48,11 +48,11 @@ public class RequestPasswordResetServlet extends HttpServlet {
                 Timestamp date = new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)); // 24 ore di durata
                 pr = new PasswordReset();
 
-                pr.setUserID(email);
+                pr.setUserID(userID);
                 pr.setToken(Crypto.getNextBase64Token());
                 pr.setExpiringDate(date);
 
-                if (prDAO.getByPrimaryKey(email) == null) {
+                if (prDAO.getByPrimaryKey(userID) == null) {
                     prDAO.insert(pr);
                 } else {
                     prDAO.update(pr);
@@ -66,7 +66,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
                 String url = "http://localhost:8080" + contextPath + "password_reset?token=" + pr.getToken();
                 String message =
                         "Somebody (hopefully you) requested a new password for Centodiciotto for "
-                                + email + ". No changes have been done to your account, yet.\n\n" +
+                                + userID + ". No changes have been done to your account, yet.\n\n" +
                                 "You can reset your password by clicking here:\n" + url + "\n\n" +
                                 "This link is valid for 24 hours and can only be used once.\n" +
                                 "If you didn't ask for this, you can safely ignore this email.\n" +

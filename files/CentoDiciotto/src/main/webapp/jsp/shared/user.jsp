@@ -43,11 +43,11 @@
                             </tr>
                             <tr>
                                 <th>E-mail</th>
-                                <td>${sessionScope.user.email} </td>
+                                <td>${sessionScope.user.ID} </td>
                             </tr>
                             <tr>
                                 <th>SSN</th>
-                                <td>${sessionScope.user.ssn} </td>
+                                <td>${sessionScope.user.SSN} </td>
                             </tr>
                             <tr>
                                 <th>Birthplace</th>
@@ -82,7 +82,7 @@
                             </tr>
                             <tr>
                                 <th>E-mail</th>
-                                <td>${sessionScope.user.email}</td>
+                                <td>${sessionScope.user.ID}</td>
                             </tr>
                             <tr>
                                 <th>Working province</th>
@@ -100,7 +100,7 @@
                             </tr>
                             <tr>
                                 <th>E-mail</th>
-                                <td>${sessionScope.user.email}</td>
+                                <td>${sessionScope.user.ID}</td>
                             </tr>
 
                         </c:when>
@@ -123,7 +123,7 @@
                             </tr>
                             <tr>
                                 <th>E-mail</th>
-                                <td>${sessionScope.user.email} </td>
+                                <td>${sessionScope.user.ID} </td>
                             </tr>
                         </c:when>
                         <c:otherwise>
@@ -142,13 +142,13 @@
                 <form action="${pageContext.request.contextPath}/restricted/password_change_handler"
                       id="password-change" method="POST">
                     <div class="form-label-group">
-                        <input class="form-control mb-2" id="old-password" name="old-password"
+                        <input class="form-control mb-2" id="old-password" name="oldPassword"
                                placeholder="Insert your current password"
                                required type="password">
-                        <input class="form-control mb-2" id="new-password" name="new-password"
+                        <input class="form-control mb-2" id="new-password" name="newPassword"
                                placeholder="Insert your new password"
                                required type="password">
-                        <input class="form-control mb-2" id="new-password-confirm" name="new-password-confirm"
+                        <input class="form-control mb-2" id="new-password-confirm" name="newPasswordConfirm"
                                placeholder="Confirm your new password"
                                required type="password">
                     </div>
@@ -165,7 +165,7 @@
                           id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
                         <div class="custom-file" style="z-index: 0;">
                             <input type="file" class="custom-file-input"
-                                   name="avatar-select" id="avatar-select" accept="image/png, image/jpeg">
+                                   name="avatarSelect" id="avatar-select" accept="image/png, image/jpeg">
                             <label class="custom-file-label" for="avatar-select">Choose file</label>
                             <input id="extension" type="hidden" name="extension" value="none">
                         </div>

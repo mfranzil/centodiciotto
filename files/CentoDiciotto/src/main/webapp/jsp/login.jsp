@@ -55,19 +55,19 @@
             </div>
             <input name="role" id="role" type="hidden" value="none">
             <div class="form-label-group">
-                <input autofocus class="form-control" id="email-login" name="email" placeholder="Email" required
-                       type="email">
-                <label for="email-login">Email</label>
+                <input autofocus class="form-control" id="userid-login" name="userID"
+                       placeholder="Email" required type="email">
+                <label for="userid-login">Email</label>
             </div>
             <div class="form-label-group">
-                <input class="form-control" id="password-login" name="password" placeholder="Password" required
-                       type="password">
+                <input class="form-control" id="password-login" name="password"
+                       placeholder="Password" required type="password">
                 <label for="password-login">Password</label>
             </div>
             <div class="mb-2" style="display: flex">
                 <div class="checkbox" style="flex: 50%;">
                     <label>
-                        <input id="remember-me" name="remember-me" type="checkbox">Remember me
+                        <input id="remember-me" name="rememberMe" type="checkbox">Remember me
                     </label>
                 </div>
                 <div style="text-align: right; flex: 50%">
@@ -83,7 +83,7 @@
                 Insert your email.<br>We will send you a link to reset your password.
             </div>
             <div class="mb-2">
-                <input autofocus class="form-control" id="email-recovery" name="email"
+                <input autofocus class="form-control" id="userID" name="userID"
                        placeholder="Insert your e-mail" required type="email">
             </div>
             <button class="btn btn-lg btn-block btn-personal" type="submit" id="submit-recovery">Reset password</button>

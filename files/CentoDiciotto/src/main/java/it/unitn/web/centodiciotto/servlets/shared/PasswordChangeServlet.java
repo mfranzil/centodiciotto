@@ -28,8 +28,8 @@ public class PasswordChangeServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         User user = (User) session.getAttribute("user");
 
-        String oldPassword = request.getParameter("old-password");
-        String newPassword = request.getParameter("new-password");
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
 
         if (Crypto.isCurrentPassword(user.getID(), oldPassword)) {
             Crypto.changePassword(user.getID(), newPassword);

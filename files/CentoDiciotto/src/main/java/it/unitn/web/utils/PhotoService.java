@@ -104,13 +104,13 @@ public class PhotoService {
         }
 
         String context = sc.getRealPath("/");
-        String email = photo.getPatientID();
-        String photoPath = avatarFolder + email + File.separator + id;
+        String patientID = photo.getPatientID();
+        String photoPath = avatarFolder + patientID + File.separator + id;
 
         if (new File(context + photoPath + ".jpg").exists()) {
-            photoPath = avatarFolder + email + File.separator + id + ".jpg";
+            photoPath = avatarFolder + patientID + File.separator + id + ".jpg";
         } else if (new File(context + photoPath + ".png").exists()) {
-            photoPath = avatarFolder + email + File.separator + id + ".png";
+            photoPath = avatarFolder + patientID + File.separator + id + ".png";
         } else {
             return avatarFolder + "default.png";
         }

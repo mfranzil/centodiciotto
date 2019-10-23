@@ -34,7 +34,7 @@
 
 <div class="container">
     <div class="form-group" style="display: flex; width: 100%; margin: auto">
-        <select id="exam-search" name="exam-search" class="select2-allow-clear form-control mr-1"
+        <select id="exam-search" name="examSearch" class="select2-allow-clear form-control mr-1"
                 style="margin: 1em" autofocus>
         </select>
         <button id="message" class="btn btn-personal" type="submit">
@@ -50,17 +50,17 @@
         <div class="table-cell action"></div>
     </div>
 
-    <div id="main_table">
+    <div id="main-table">
         <!-- TODO change to more clean version to check if exam is prescrivable !-->
-        <c:forEach items="${requestScope.exam_lists}" var="exam_list">
+        <c:forEach items="${requestScope.examLists}" var="examList">
             <c:set var="active" value="${false}"/>
-            <c:forEach items="${requestScope.exam_prescriptions}" var="exam_prescription">
-                <c:if test="${exam_prescription.examType eq exam_list.ID and !exam_prescription.booked}">
+            <c:forEach items="${requestScope.examPrescriptions}" var="examPrescription">
+                <c:if test="${examPrescription.examType eq examList.ID and !examPrescription.booked}">
                     <c:set var="active" value="${true}"/>
                 </c:if>
             </c:forEach>
             <div class="table-personal" id="table-select">
-                <div class="table-cell exam">${exam_list.description} </div>
+                <div class="table-cell exam">${examList.description} </div>
                 <div class="table-cell action">
                     <button type="button" ${active ? "" : "disabled" } class="btn btn-block btn-personal popup-opener">
                         Book Now

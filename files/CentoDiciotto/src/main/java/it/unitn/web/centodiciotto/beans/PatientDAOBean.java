@@ -12,7 +12,6 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.utils.PhotoService;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 import java.util.List;
 
@@ -26,10 +25,11 @@ public class PatientDAOBean implements Serializable {
     @PostConstruct
     public void init() {
         try {
-            //TODO change with proper model
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             patientDAO = daoFactory.getDAO(PatientDAO.class);
+            visitDAO = daoFactory.getDAO(VisitDAO.class);
+            examDAO = daoFactory.getDAO(ExamDAO.class);
 
         } catch (DAOFactoryException e) {
             e.printStackTrace();

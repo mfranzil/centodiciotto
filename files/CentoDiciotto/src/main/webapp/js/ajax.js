@@ -9,7 +9,7 @@ $("document").ready(function () {
             dataType: "json",
             success: function(json){
                 let divs = "";
-                const table = $("#main_table");
+                const table = $("#main-table");
                 table.html("");
 
                 $.each(json, function(index, item) {

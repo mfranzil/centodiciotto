@@ -21,7 +21,7 @@
 
                 let form = $(this);
                 let url = form.attr('action');
-                let pract = $("input[name='practitioner_email']:checked");
+                let pract = $(".practitioner-id:checked");
 
                 $.ajax({
                     type: "POST",
@@ -100,16 +100,16 @@
                         </button>
                     </div>
                     <div id="table-select">
-                        <c:forEach items="${requestScope.available_practitioners}" var="available_practitioner">
-                            <c:if test="${available_practitioner.email != practitioner.email}">
-                                <div id="${available_practitioner.email}" class="table-personal">
+                        <c:forEach items="${requestScope.availablePractitioners}" var="availablePractitioner">
+                            <c:if test="${availablePractitioner.ID != practitioner.ID}">
+                                <div id="${availablePractitioner.ID}" class="table-personal">
                                     <div class="table-cell name">
-                                            ${available_practitioner.firstName} ${available_practitioner.lastName}
+                                            ${availablePractitioner.firstName} ${availablePractitioner.lastName}
                                     </div>
-                                    <div class="table-cell province">${available_practitioner.workingProvince}
+                                    <div class="table-cell province">${availablePractitioner.workingProvince}
                                     </div>
                                     <div class="table-cell action">
-                                        <input type="radio" name="practitioner_email" value="${available_practitioner.email}">
+                                        <input class="practitioner-id" type="radio" name="practitionerID" value="${availablePractitioner.ID}">
                                     </div>
                                 </div>
                                 <hr>

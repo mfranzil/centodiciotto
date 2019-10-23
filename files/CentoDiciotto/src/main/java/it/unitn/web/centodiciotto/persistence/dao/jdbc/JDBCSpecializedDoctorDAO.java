@@ -75,10 +75,10 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     }
 
     @Override
-    public SpecializedDoctor getByPrimaryKey(String doctor_id) throws DAOException {
+    public SpecializedDoctor getByPrimaryKey(String primaryKey) throws DAOException {
         SpecializedDoctor res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setString(1, doctor_id);
+            stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

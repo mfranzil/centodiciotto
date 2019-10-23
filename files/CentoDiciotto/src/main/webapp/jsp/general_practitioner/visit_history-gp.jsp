@@ -60,8 +60,8 @@
                     <c:set var="patient" value="${pair.first}"/>
                     <c:set var="visit" value="${pair.second}"/>
                     <c:set var="insert" value="${empty visit.report}"/>
-                    <jsp:useBean id="visit_date" class="java.util.Date"/>
-                    <jsp:setProperty name="visit_date" property="time" value="${visit.visitDate.time}"/>
+                    <jsp:useBean id="visitDate" class="java.util.Date"/>
+                    <jsp:setProperty name="visitDate" property="time" value="${visit.visitDate.time}"/>
 
                     <div class="table-personal">
                         <div class="table-cell avt"><img class="avatar-small"
@@ -70,10 +70,10 @@
                         </div>
                         <div class="table-cell name">${patient.firstName} ${patient.lastName}
                         </div>
-                        <div class="table-cell ssn">${patient.ssn}
+                        <div class="table-cell ssn">${patient.SSN}
                         </div>
                         <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${visit_date}"/>
+                            <fmt:formatDate type="date" dateStyle="long" value="${visitDate}"/>
                         </div>
                         <div class="table-cell action">
                             <button type="submit"
@@ -89,8 +89,8 @@
                                             <h7><strong> Old report:</strong></h7>
                                             <p>${visit.report}</p>
                                         </c:if>
-                                        <input type="hidden" value="${visit.ID}" name="visit_id">
-                                        <textarea name="report_text"
+                                        <input type="hidden" value="${visit.ID}" name="visitID">
+                                        <textarea name="reportText"
                                                   placeholder="Click here to start typing"></textarea>
                                         <button class="btn btn-lg btn-block btn-personal" type="submit">
                                             Submit report

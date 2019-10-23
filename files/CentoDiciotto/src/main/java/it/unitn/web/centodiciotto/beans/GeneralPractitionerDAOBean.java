@@ -18,7 +18,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
     private GeneralPractitionerDAO generalPractitionerDAO = null;
     private String practitionerID = null;
 
-    public void setDAOFactory(String useless){
+    public void setDAOFactory(String useless) {
         try {
             //TODO change with proper model
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -53,15 +53,11 @@ public class GeneralPractitionerDAOBean implements Serializable {
         return patients;
     }
 
-    public String getFirstName(GeneralPractitioner generalPractitioner){
-        return generalPractitioner.getFirstName();
-    }
+    public GeneralPractitioner getGeneralPractitioner() throws DAOException {
+        if (practitionerID == null) {
+            throw new DAOException("Practitioner is null");
+        }
 
-    public String getLastName(GeneralPractitioner generalPractitioner){
-        return generalPractitioner.getLastName();
-    }
-
-    public GeneralPractitioner getGeneralPractitionerByID(String practitionerID) throws DAOException {
         try {
             return generalPractitionerDAO.getByPrimaryKey(practitionerID);
         } catch (DAOException ex) {

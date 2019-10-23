@@ -58,7 +58,7 @@ public class PhotoGalleryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        Integer photoId = Integer.valueOf(request.getParameter("photoid"));
+        Integer photoId = Integer.valueOf(request.getParameter("photoID"));
 
         try {
             Photo chosenPhoto = photoDAO.getByPrimaryKey(photoId);

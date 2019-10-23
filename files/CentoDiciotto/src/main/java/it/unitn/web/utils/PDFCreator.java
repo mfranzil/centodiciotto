@@ -15,19 +15,19 @@ import java.io.File;
 import java.io.IOException;
 
 public class PDFCreator {
-
-    public static PDDocument createPrescription(String practitioner_id, String patient_ssn, String prescription_date, String prescription_id, String prescription_description) throws IOException {
+    public static PDDocument createDrugPrescription(String practitionerID, String patientSSN, String prescriptionDate,
+                               String prescriptionID, String prescriptionDescription) throws IOException {
         PDRectangle rec = new PDRectangle(1545, 1182);
         PDDocument doc = new PDDocument();
         PDPage page = new PDPage(rec);
         doc.addPage(page);
 
         String QRcontent = "";
-        QRcontent += "practitioner_id:" + practitioner_id + ";";
-        QRcontent += "patient_ssn:" + patient_ssn + ";";
-        QRcontent += "prescription_date:" + prescription_date + ";";
-        QRcontent += "prescription_id:" + prescription_id + ";";
-        QRcontent += "prescription_description:" + prescription_description + ";";
+        QRcontent += "practitionerID:" + practitionerID + ";";
+        QRcontent += "patientSSN:" + patientSSN + ";";
+        QRcontent += "prescriptionDate:" + prescriptionDate + ";";
+        QRcontent += "prescriptionID:" + prescriptionID + ";";
+        QRcontent += "prescriptionDescription:" + prescriptionDescription + ";";
         File file = QRCode.from(QRcontent)
                 .to(ImageType.PNG)
                 .withSize(350, 350)
@@ -39,21 +39,21 @@ public class PDFCreator {
 
 
         try (PDPageContentStream contents = new PDPageContentStream(doc, page)) {
-            //add spaces in ssn:
-            String ssn = "";
+            //add spaces in SSN:
+            String SSN = "";
             int spaces = 2;
 
-            for (char c : patient_ssn.toCharArray()) {
-                ssn = ssn + c;
+            for (char c : patientSSN.toCharArray()) {
+                SSN = SSN + c;
                 for (int i = 0; i < spaces; i++) {
-                    ssn = ssn + " ";
+                    SSN = SSN + " ";
                 }
             }
             contents.drawImage(pdImage, 0, 0);
             contents.drawImage(QRCode, 725, 425);
             PDStreamUtils.write(
                     contents,
-                    ssn,
+                    SSN,
                     PDType1Font.HELVETICA,
                     34,
                     827,
@@ -62,7 +62,7 @@ public class PDFCreator {
 
             PDStreamUtils.write(
                     contents,
-                    prescription_description,
+                    prescriptionDescription,
                     PDType1Font.HELVETICA,
                     30,
                     70,
@@ -70,7 +70,7 @@ public class PDFCreator {
                     Color.BLACK);
             PDStreamUtils.write(
                     contents,
-                    practitioner_id,
+                    practitionerID,
                     PDType1Font.HELVETICA,
                     30,
                     1150,
@@ -105,7 +105,7 @@ public class PDFCreator {
                     Color.BLACK);
             PDStreamUtils.write(
                     contents,
-                    practitioner_id,
+                    practitionerID,
                     PDType1Font.HELVETICA,
                     12,
                     50,
@@ -122,7 +122,7 @@ public class PDFCreator {
                     Color.BLACK);
             PDStreamUtils.write(
                     contents,
-                    patient_ssn,
+                    patientSSN,
                     PDType1Font.HELVETICA,
                     12,
                     400,
@@ -139,7 +139,7 @@ public class PDFCreator {
                     Color.BLACK);
             PDStreamUtils.write(
                     contents,
-                    prescription_date,
+                    prescriptionDate,
                     PDType1Font.HELVETICA,
                     12,
                     50,

@@ -85,10 +85,10 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    public Photo getByPrimaryKey(Integer photoId) throws DAOException {
+    public Photo getByPrimaryKey(Integer primaryKey) throws DAOException {
         Photo photo = null;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setInt(1, photoId);
+            stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -136,9 +136,9 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public Photo getCurrentPhoto(Patient patient) throws DAOException {
         Photo photo = null;
         try {
-            String email = patient.getID();
+            String ID = patient.getID();
             PreparedStatement stm = CON.prepareStatement(GETCURRENTPHOTO);
-            stm.setString(1, email);
+            stm.setString(1, ID);
 
             ResultSet rs = stm.executeQuery();
 
@@ -155,9 +155,9 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public List<Photo> getAllPhotos(Patient patient) throws DAOException {
         List<Photo> photos = new ArrayList<>();
         try {
-            String email = patient.getID();
+            String ID = patient.getID();
             PreparedStatement stm = CON.prepareStatement(GET_ALL_PHOTOS);
-            stm.setString(1, email);
+            stm.setString(1, ID);
 
             ResultSet rs = stm.executeQuery();
 

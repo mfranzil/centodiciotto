@@ -1,4 +1,4 @@
-<%--suppress ELValidationInJSP --%>
+<%-suppress ELValidationInJSP --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,36 +38,47 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
+                <jsp:useBean id="drugPrescriptionDAO"
+                             class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean">
+                    <jsp:setProperty name="drugPrescriptionDAO" property="patientID"
+                                     value="${sessionScope.user.ID}"/>
+                    <jsp:setProperty name="drugPrescriptionDAO" property="DAOFactory" value=""/>
+                </jsp:useBean>
                 <div class="table-personal table-header">
                     <div class="table-cell doctor">Doctor</div>
                     <div class="table-cell date">Date</div>
                     <div class="table-cell report-state">Report State</div>
                     <div class="table-cell action">Report</div>
                 </div>
-
-                <c:forEach items="${requestScope.prescriptions}" var="pair">
-                    <c:set var="prescription" value="${pair.first}"/>
-                    <c:set var="available" value="${pair.second}"/>
+                <c:forEach items="${drugPrescriptionDAO.byPatient}" var="prescription">
+                    <jsp:useBean id="generalPractitionerDAO"
+                                 class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean">
+                        <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                                         value="${prescription.practitionerID}"/>
+                        <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                    </jsp:useBean>
+                    <c:set var="practitioner"
+                           value="${generalPractitionerDAO.generalPractitioner}"/>
+                    <c:set var="available"
+                           value="${empty prescription.dateSold or empty prescription.chemistID}"
                     <div class="table-personal">
-                        <div class="table-cell doctor">{prescription.firstName}&nbsp;{prescription.lastName}
+                        <div class="table-cell doctor">${practitioner.firstName}&nbsp;${practitioner.lastName}
                         </div>
-                        <div class="table-cell date">${prescription.date}
+                        <div class="table-cell date">${prescription.datePrescripted}
                         </div>
                         <div class="table-cell report-state">${available ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
                             <c:if test="${available}">
-                                <form target="_blank"
-                                      action="${pageContext.request.contextPath}/restricted/patient/prescriptions"
-                                      id="pdf"
-                                      method="POST">
-                                    <input type="hidden" name="practitioner_id"
-                                           value="${prescription.practitioner}"/>
-                                    <input type="hidden" name="patient_ssn" value="${sessionScope.user.ssn}"/>
-                                    <input type="hidden" name="prescription_date"
-                                           value="${prescription.date}"/>
-                                    <input type="hidden" name="prescription_id"
+                                <form action="${pageContext.request.contextPath}/restricted/patient/prescriptions"
+                                      id="pdf" target="_blank" method="POST">
+                                    <input type="hidden" name="practitionerID"
+                                           value="${practitioner.ID}"/>
+                                    <input type="hidden" name="patientSSN" value="${sessionScope.userSSN}"/>
+                                    <input type="hidden" name="prescriptionDate"
+                                           value="${prescription.datePrescripted}"/>
+                                    <input type="hidden" name="prescriptionID"
                                            value="${prescription.ID}"/>
-                                    <input type="hidden" name="prescription_description"
+                                    <input type="hidden" name="prescriptionDescription"
                                            value="${prescription.description}"/>
                                     <button type="submit" class="btn btn-block btn-personal">Download</button>
                                 </form>

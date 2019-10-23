@@ -7,7 +7,7 @@ public class Patient extends User {
     private String lastName;
     private Date birthDate;
     private String birthPlace;
-    private String ssn;
+    private String SSN;
     private Character gender;
     private Province livingProvince;
     private String practitionerID;
@@ -44,12 +44,12 @@ public class Patient extends User {
         this.birthPlace = birthPlace;
     }
 
-    public String getSsn() {
-        return ssn;
+    public String getSSN() {
+        return SSN;
     }
 
-    public void setSsn(String ssn) {
-        this.ssn = ssn;
+    public void setSSN(String SSN) {
+        this.SSN = SSN;
     }
 
     public Character getGender() {

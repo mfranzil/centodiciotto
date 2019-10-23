@@ -87,8 +87,8 @@ public class Crypto {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
     }
 
-    public static User authenticate(String email, String password, String role) throws RuntimeException {
-        if (email == null || password == null || email.equals("") || password.equals("")) {
+    public static User authenticate(String ID, String password, String role) throws RuntimeException {
+        if (ID == null || password == null || ID.equals("") || password.equals("")) {
             throw new RuntimeException("Email or password are null.");
         }
 
@@ -99,20 +99,20 @@ public class Crypto {
         }
 
         try {
-            User user = userDAO.getByPrimaryKey(email);
+            User user = userDAO.getByPrimaryKey(ID);
 
             if (user != null && isExpectedPassword(password, user.getSalt(), user.getHash())) {
                 switch (role) {
                     case "patient":
-                        return patientDAO.getByPrimaryKey(email);
+                        return patientDAO.getByPrimaryKey(ID);
                     case "general_practitioner":
-                        return practitionerDAO.getByPrimaryKey(email);
+                        return practitionerDAO.getByPrimaryKey(ID);
                     case "specialized_doctor":
-                        return specializedDoctorDAO.getByPrimaryKey(email);
+                        return specializedDoctorDAO.getByPrimaryKey(ID);
                     case "chemist":
-                        return chemistDAO.getByPrimaryKey(email);
+                        return chemistDAO.getByPrimaryKey(ID);
                     case "health_service":
-                        return healthServiceDAO.getByPrimaryKey(email);
+                        return healthServiceDAO.getByPrimaryKey(ID);
                     default:
                         return null;
                 }
@@ -124,8 +124,8 @@ public class Crypto {
         }
     }
 
-    public static void changePassword(String email, String newPassword) throws RuntimeException {
-        if (email == null || newPassword == null || email.equals("") || newPassword.equals("")) {
+    public static void changePassword(String ID, String newPassword) throws RuntimeException {
+        if (ID == null || newPassword == null || ID.equals("") || newPassword.equals("")) {
             throw new RuntimeException("Email or password are null.");
         }
 
@@ -133,7 +133,7 @@ public class Crypto {
         String newHash = hash(newPassword, newSalt);
 
         User user = new User();
-        user.setID(email);
+        user.setID(ID);
         user.setHash(newHash);
         user.setSalt(newSalt);
 
@@ -144,13 +144,13 @@ public class Crypto {
         }
     }
 
-    public static boolean isCurrentPassword(String email, String password) throws RuntimeException {
-        if (email == null || password == null || email.equals("") || password.equals("")) {
+    public static boolean isCurrentPassword(String ID, String password) throws RuntimeException {
+        if (ID == null || password == null || ID.equals("") || password.equals("")) {
             throw new RuntimeException("Email or password are null.");
         }
 
         try {
-            User user = userDAO.getByPrimaryKey(email);
+            User user = userDAO.getByPrimaryKey(ID);
             return isExpectedPassword(password, user.getSalt(), user.getHash());
         } catch (DAOException e) {
             throw new RuntimeException("Error in authentication method." + e.getMessage());

@@ -75,10 +75,10 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     }
 
     @Override
-    public HealthService getByPrimaryKey(String email) throws DAOException {
+    public HealthService getByPrimaryKey(String primaryKey) throws DAOException {
         HealthService res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setString(1, email);
+            stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

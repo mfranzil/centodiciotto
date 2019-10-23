@@ -47,7 +47,7 @@ public class PasswordResetServlet extends HttpServlet {
         try {
             pr = prDAO.getByToken(token);
             if (pr != null && pr.getExpiringDate().after(new Timestamp(System.currentTimeMillis()))) {
-                request.setAttribute("email", pr.getUserID());
+                request.setAttribute("userid", pr.getUserID());
                 request.getRequestDispatcher("/jsp/password_reset.jsp").forward(request, response);
             } else {
                 response.sendRedirect(response.encodeRedirectURL(contextPath));
@@ -60,12 +60,12 @@ public class PasswordResetServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String newPassword = request.getParameter("new-password");
+        String userID = request.getParameter("userID");
+        String newPassword = request.getParameter("newPassword");
 
         try {
-            Crypto.changePassword(email, newPassword);
-            prDAO.delete(prDAO.getByPrimaryKey(email));
+            Crypto.changePassword(userID, newPassword);
+            prDAO.delete(prDAO.getByPrimaryKey(userID));
             response.setStatus(200);
         } catch (DAOException ex) {
             request.getServletContext().log("Impossible to add a new password", ex);

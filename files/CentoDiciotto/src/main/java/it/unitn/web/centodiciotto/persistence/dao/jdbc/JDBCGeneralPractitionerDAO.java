@@ -81,10 +81,10 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     }
 
     @Override
-    public GeneralPractitioner getByPrimaryKey(String practitioner_id) throws DAOException {
+    public GeneralPractitioner getByPrimaryKey(String primaryKey) throws DAOException {
         GeneralPractitioner res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setString(1, practitioner_id);
+            stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

@@ -32,7 +32,7 @@
                         </div>
                         <img class="avatar mb-2" src="${pageContext.request.contextPath}/${photo}" alt="${photo}">
                         <label>
-                            <input type="text" hidden name="photoid" value="${id}">
+                            <input type="text" hidden name="photoID" value="${id}">
                         </label>
                         <button class="btn btn-lg btn-block btn-personal mb-2" type="submit" id="submit">Change photo
                         </button>

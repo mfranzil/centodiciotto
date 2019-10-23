@@ -58,8 +58,8 @@
                 url: getContextPath().toString() + "/restricted/general_practitioner/patient_list",
                 success: function (json) {
                     console.log(json);
-                    $("#test_table").createTableHeaders(tableHeaders);
-                    $("#test_table").insertRows(tableHeaders, json);
+                    $("#test-table").createTableHeaders(tableHeaders);
+                    $("#test-table").insertRows(tableHeaders, json);
                 }
             });
         });
@@ -89,7 +89,7 @@
                         </button>
                     </div>
                 </form>
-                <div id="test_table"></div>
+                <div id="test-table"></div>
             </div>
         </div>
     </div>

@@ -83,10 +83,10 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     }
 
     @Override
-    public ExamPrescription getByPrimaryKey(Integer examPrescriptionID) throws DAOException {
+    public ExamPrescription getByPrimaryKey(Integer primaryKey) throws DAOException {
         ExamPrescription res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setInt(1, examPrescriptionID);
+            stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

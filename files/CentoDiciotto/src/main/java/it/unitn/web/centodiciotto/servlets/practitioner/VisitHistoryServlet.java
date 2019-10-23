@@ -47,19 +47,19 @@ public class VisitHistoryServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getID();
+            String practitionerID = user.getID();
 
             try {
-                List<Pair<Patient, Visit>> patient_visits_report = new ArrayList<>();
+                List<Pair<Patient, Visit>> patientVisitsReport = new ArrayList<>();
 
-                List<Visit> visits = visitDAO.getByPractitioner(practitioner_email);
+                List<Visit> visits = visitDAO.getByPractitioner(practitionerID);
 
                 for (Visit visit : visits) {
                     if (visit.getReportAvailable()) {
-                        patient_visits_report.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
+                        patientVisitsReport.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
                     }
                 }
-                request.setAttribute("patient_visits_report", patient_visits_report);
+                request.setAttribute("patient_visits_report", patientVisitsReport);
 
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -71,13 +71,13 @@ public class VisitHistoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer visit_id = Integer.valueOf(request.getParameter("visit_id"));
-        String report_text = request.getParameter("report_text");
+        Integer visitID = Integer.valueOf(request.getParameter("visitID"));
+        String reportText = request.getParameter("reportText");
 
         try {
-            Visit tmp = visitDAO.getByPrimaryKey(visit_id);
+            Visit tmp = visitDAO.getByPrimaryKey(visitID);
 
-            tmp.setReport(report_text);
+            tmp.setReport(reportText);
 
             visitDAO.update(tmp);
 

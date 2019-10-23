@@ -50,17 +50,17 @@ public class ExamPrescriptionServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof Patient) {
-            List<ExamPrescription> exam_prescription = null;
+            List<ExamPrescription> examPrescription = null;
             try {
-                exam_prescription = examPrescriptionDAO.getByPatient(user.getID());
+                examPrescription = examPrescriptionDAO.getByPatient(user.getID());
             } catch (DAOException e) {
                 e.printStackTrace();
             }
-            request.setAttribute("exam_prescriptions", exam_prescription);
+            request.setAttribute("examPrescriptions", examPrescription);
         }
 
         List<ExamList> examLists = new ArrayList<>();
-        if (request.getParameter("exam-search") == null) {
+        if (request.getParameter("examSearch") == null) {
             try {
                 examLists = examListDAO.getAll();
             } catch (DAOException e) {
@@ -75,27 +75,29 @@ public class ExamPrescriptionServlet extends HttpServlet {
             }
         }
 
-        request.setAttribute("exam_lists", examLists);
+        request.setAttribute("examLists", examLists);
         request.getRequestDispatcher("/jsp/patient/exam_booking-p.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer selected_exam = Integer.valueOf(request.getParameter("selected_exam"));
+        Integer selectedExam = Integer.valueOf(request.getParameter("selectedExam"));
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof Patient) {
             try {
-                Boolean bookable = false;
+                boolean bookable = false;
                 List<Exam_> results = new ArrayList<>();
                 List<ExamPrescription> examPrescriptions = examPrescriptionDAO.getByPatient(user.getID());
 
-                ExamList exam = examListDAO.getByPrimaryKey(selected_exam);
+                ExamList exam = examListDAO.getByPrimaryKey(selectedExam);
 
                 for (ExamPrescription examPrescription : examPrescriptions) {
-                    if (examPrescription.getExamType().equals(selected_exam) && !examPrescription.getBooked()) {
+                    if (examPrescription.getExamType().getID().equals(selectedExam)
+                            && !examPrescription.getBooked()) {
                         bookable = true;
+                        break;
                     }
                 }
                 results.add(new Exam_(exam.getID(), exam.getDescription(), bookable));

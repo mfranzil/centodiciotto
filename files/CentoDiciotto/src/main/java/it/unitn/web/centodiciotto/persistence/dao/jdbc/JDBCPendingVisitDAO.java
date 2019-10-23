@@ -74,11 +74,11 @@ public class JDBCPendingVisitDAO extends JDBCDAO<PendingVisit, Pair<String, Stri
     }
 
     @Override
-    public PendingVisit getByPrimaryKey(Pair<String, String> key) throws DAOException {
+    public PendingVisit getByPrimaryKey(Pair<String, String> primaryKey) throws DAOException {
         PendingVisit res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setString(1, key.getFirst());
-            stm.setString(2, key.getSecond());
+            stm.setString(1, primaryKey.getFirst());
+            stm.setString(2, primaryKey.getSecond());
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

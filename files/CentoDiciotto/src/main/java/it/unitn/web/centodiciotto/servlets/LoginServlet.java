@@ -50,10 +50,10 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
+        String userID = request.getParameter("userID");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
-        String rememberMe = request.getParameter("remember-me");
+        String rememberMe = request.getParameter("rememberMe");
 
         String contextPath = getServletContext().getContextPath();
         if (!contextPath.endsWith("/")) {
@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
         }
 
         try {
-            User user = Crypto.authenticate(email, password, role);
+            User user = Crypto.authenticate(userID, password, role);
             JSONObject jobj = new JSONObject();
 
             if (user == null) {

@@ -49,11 +49,11 @@ public class VisitRequestServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getID();
+            String practitionerID = user.getID();
             try {
                 List<Patient> pendingPatients = new ArrayList<>();
 
-                List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitioner_email);
+                List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitionerID);
 
                 for (PendingVisit pendingVisit : pendingVisits) {
                     pendingPatients.add(patientDAO.getByPrimaryKey(pendingVisit.getPatientID()));
@@ -71,25 +71,25 @@ public class VisitRequestServlet extends HttpServlet {
             throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("user");
-        String practitioner_email = user.getID();
-        String patient_email = request.getParameter("patient_email");
-        String visit_timestamp = request.getParameter("visit_date");
+        String practitionerID = user.getID();
+        String patientID = request.getParameter("patientID");
+        String visit_timestamp = request.getParameter("visitDate");
 
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
         try {
             Date date = formatter.parse(visit_timestamp);
 
             Visit insertVisit = new Visit();
-            insertVisit.setPractitionerID(practitioner_email);
-            insertVisit.setPatientID(patient_email);
+            insertVisit.setPractitionerID(practitionerID);
+            insertVisit.setPatientID(patientID);
             insertVisit.setDate(new Timestamp(date.getTime()));
             insertVisit.setReportAvailable(false);
 
             visitDAO.insert(insertVisit);
 
             PendingVisit toBeDeleted = new PendingVisit();
-            toBeDeleted.setPatientID(patient_email);
-            toBeDeleted.setPractitionerID(practitioner_email);
+            toBeDeleted.setPatientID(patientID);
+            toBeDeleted.setPractitionerID(practitionerID);
 
             pendingVisitDAO.delete(toBeDeleted);
 

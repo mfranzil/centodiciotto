@@ -48,7 +48,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(3, patient.getLastName());
             stm.setDate(4, patient.getBirthDate());
             stm.setString(5, patient.getBirthPlace());
-            stm.setString(6, patient.getSsn());
+            stm.setString(6, patient.getSSN());
             stm.setString(7, String.valueOf(patient.getGender()));
             stm.setString(8, patient.getPractitionerID());
             stm.setString(9, patient.getLivingProvince().getAbbreviation());
@@ -69,7 +69,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(2, patient.getLastName());
             stm.setDate(3, patient.getBirthDate());
             stm.setString(4, patient.getBirthPlace());
-            stm.setString(5, patient.getSsn());
+            stm.setString(5, patient.getSSN());
             stm.setString(6, String.valueOf(patient.getGender()));
             stm.setString(7, patient.getPractitionerID());
             stm.setString(8, patient.getLivingProvince().getAbbreviation());
@@ -96,11 +96,11 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     }
 
     @Override
-    public Patient getByPrimaryKey(String email) throws DAOException {
+    public Patient getByPrimaryKey(String primaryKey) throws DAOException {
         Patient patient = null;
         try {
             PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY);
-            stm.setString(1, email);
+            stm.setString(1, primaryKey);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 patient = mapRowToEntity(rs);
@@ -188,7 +188,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             patient.setLastName(rs.getString("last_name"));
             patient.setBirthDate(rs.getDate("birth_date"));
             patient.setBirthPlace(rs.getString("birth_place"));
-            patient.setSsn(rs.getString("ssn"));
+            patient.setSSN(rs.getString("ssn"));
             patient.setGender(rs.getString("gender").charAt(0));
             patient.setPractitionerID(rs.getString("practitioner_id"));
             patient.setLivingProvince(province);

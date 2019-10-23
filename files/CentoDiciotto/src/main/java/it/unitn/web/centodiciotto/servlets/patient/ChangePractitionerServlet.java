@@ -45,12 +45,12 @@ public class ChangePractitionerServlet extends HttpServlet {
 
         if (user instanceof Patient) {
             try {
-                String newPractEmail = request.getParameter("practitioner_email");
+                String newPractitionerID = request.getParameter("practitionerID");
 
                 GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
-                GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractEmail);
+                GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractitionerID);
 
-                ((Patient) user).setPractitionerID(newPractEmail);
+                ((Patient) user).setPractitionerID(newPractitionerID);
                 request.getSession().setAttribute("practitioner", newPract);
                 patientDAO.updatePractitioner((Patient) user);
 
@@ -107,13 +107,13 @@ public class ChangePractitionerServlet extends HttpServlet {
 
         if (user != null) {
             if (user instanceof Patient) {
-                List<GeneralPractitioner> available_practitioners = null;
+                List<GeneralPractitioner> availablePractitioners = null;
                 try {
-                    available_practitioners = practitionerDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
+                    availablePractitioners = practitionerDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
                 } catch (DAOException e) {
                     e.printStackTrace();
                 }
-                request.setAttribute("available_practitioners", available_practitioners);
+                request.setAttribute("availablePractitioners", availablePractitioners);
             }
         }
         request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);

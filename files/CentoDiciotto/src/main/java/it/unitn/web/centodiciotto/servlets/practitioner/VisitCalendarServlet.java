@@ -47,19 +47,18 @@ public class VisitCalendarServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
-            String practitioner_email = user.getID();
+            String practitionerID = user.getID();
 
             try {
-                List<Pair<Patient, Visit>> patient_visits = new ArrayList<>();
-
-                List<Visit> visits = visitDAO.getByPractitioner(practitioner_email);
+                List<Pair<Patient, Visit>> patientVisits = new ArrayList<>();
+                List<Visit> visits = visitDAO.getByPractitioner(practitionerID);
 
                 for (Visit visit : visits) {
                     if (!visit.getReportAvailable()) {
-                        patient_visits.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
+                        patientVisits.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
                     }
                 }
-                request.setAttribute("patient_visits", patient_visits);
+                request.setAttribute("patient_visits", patientVisits);
 
             } catch (DAOException e) {
                 e.printStackTrace();
@@ -71,7 +70,7 @@ public class VisitCalendarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        Integer visit_id = Integer.valueOf(request.getParameter("visit_id"));
+        Integer visit_id = Integer.valueOf(request.getParameter("visitID"));
 
         try {
             Visit tmp = visitDAO.getByPrimaryKey(visit_id);

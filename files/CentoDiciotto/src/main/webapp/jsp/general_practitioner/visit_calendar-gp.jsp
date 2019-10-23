@@ -57,8 +57,8 @@
     <c:forEach items="${requestScope.patient_visits}" var="pair">
         <c:set var="patient" value="${pair.first}"/>
         <c:set var="visit" value="${pair.second}"/>
-        <jsp:useBean id="visit_date" class="java.util.Date"/>
-        <jsp:setProperty name="visit_date" property="time" value="${visit.visitDate.time}"/>
+        <jsp:useBean id="visitDate" class="java.util.Date"/>
+        <jsp:setProperty name="visitDate" property="time" value="${visit.visitDate.time}"/>
 
         <div class="table-personal">
             <div class="table-cell image">
@@ -70,12 +70,12 @@
             <div class="table-cell date">
                 <fmt:formatDate type="date" dateStyle="long" value="${visit_date}"/>
             </div>
-            <div class="table-cell time"><fmt:formatDate pattern="HH:mm" value="${visit_date}"/>
+            <div class="table-cell time"><fmt:formatDate pattern="HH:mm" value="${visitDate}"/>
             </div>
             <div class="table-cell action">
                 <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
                       id="mark_completed" method="POST">
-                    <input type="hidden" value="${visit.ID}" name="visit_id">
+                    <input type="hidden" value="${visit.ID}" name="visitID">
                     <button type="submit" class="btn btn-block btn-personal ">Mark as completed</button>
                 </form>
             </div>

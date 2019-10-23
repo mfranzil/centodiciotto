@@ -14,7 +14,7 @@
                 let form = $(this);
                 let url = form.attr('action');
 
-                if ($("#email").val() !== "${requestScope.email}") {
+                if ($("#userid").val() !== "${requestScope.userID}") {
                     alert("Email non corrispondente alla richiesta.");
                     return;
                 }
@@ -26,7 +26,7 @@
                     data: form.serialize(),
                     success: function (__data) {
                         $("#message").html("Password changed successfully.");
-                        $("#new-password,#new-password-confirm,#email").slideUp();
+                        $("#new-password,#new-password-confirm,#userid").slideUp();
                         $("#password-change-button").html("Go to login").click(function (e) {
                             e.preventDefault();
                             window.location = window.location.pathname.substring(
@@ -55,14 +55,12 @@
             <form action="${pageContext.request.contextPath}/password_reset"
                   id="password-reset" method="POST">
                 <div class="form-label-group">
-                    <input autofocus class="form-control mb-2" id="email" name="email"
+                    <input autofocus class="form-control mb-2" id="userid" name="userID"
                            placeholder="Insert your e-mail" required type="email">
-                    <input class="form-control mb-2" id="new-password" name="new-password"
-                           placeholder="Insert your new password"
-                           required type="password">
-                    <input class="form-control mb-2" id="new-password-confirm" name="new-password-confirm"
-                           placeholder="Confirm your new password"
-                           required type="password">
+                    <input class="form-control mb-2" id="new-password" name="newPassword"
+                           placeholder="Insert your new password" required type="password">
+                    <input class="form-control mb-2" id="new-password-confirm" name="newPasswordConfirm"
+                           placeholder="Confirm your new password" required type="password">
                 </div>
                 <button id="password-change-button"
                         class="btn btn-lg btn-block mt-4 btn-personal" type="submit">Reset password
