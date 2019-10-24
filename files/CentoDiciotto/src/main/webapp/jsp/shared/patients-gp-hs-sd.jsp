@@ -84,6 +84,9 @@
                         <jsp:setProperty name="patientDaoBean" property="DAOFactory" value=""/>
                     </jsp:useBean>
 
+
+
+
                     <div class="table-personal" id="table-select">
                         <div class="table-cell avt"><img class="avatar-small"
                                                          src="${pageContext.request.contextPath}${patientDaoBean.getPhotoPath(current_patient)}"

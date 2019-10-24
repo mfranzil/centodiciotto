@@ -69,6 +69,7 @@
                     <div class="table-cell action">Report</div>
                 </div>
                 <c:forEach items="${requestScope.visits}" var="visit">
+
                     <!-- TODO: MODIFICARE IL NOME/COGNOME DEL MEDICO -->
                     <div class="table-personal">
                         <div class="table-cell practitioner">${practitioner.firstName} ${practitioner.lastName}
