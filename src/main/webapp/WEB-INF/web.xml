@@ -58,17 +58,6 @@
         <url-pattern>/restricted/user</url-pattern>
     </servlet-mapping>
 
-    <!-- Patient -->
-
-    <servlet>
-        <servlet-name>Tickets</servlet-name>
-        <jsp-file>/jsp/patient/tickets-p.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Tickets</servlet-name>
-        <url-pattern>/restricted/patient/tickets</url-pattern>
-    </servlet-mapping>
-
     <!-- General practitioner -->
     <servlet>
         <servlet-name>PrescriptionsPractitioner</servlet-name>

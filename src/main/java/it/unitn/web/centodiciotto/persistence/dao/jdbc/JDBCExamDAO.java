@@ -33,6 +33,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?";
     final private String FINDBYPATIENTLASTYEAR = "select * from exam where date <= localtimestamp and " +
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
+    final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? AND ticket_paid = false";
+
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -181,6 +183,25 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting last year Exams by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public List<Exam> getByPatientNotPaid(String PatientEmail) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTPAID)) {
+            stm.setString(1, PatientEmail);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting not paid Exams by PatientID: ", e);
         }
     }
 
