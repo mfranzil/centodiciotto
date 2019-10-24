@@ -1,20 +1,21 @@
 # IntelliJ, VSCode, macOS Files
 .idea/
 .settings/
+target/
+out/
+docs/
+
 *.iml
 .DS_Store
 .classpath
 .project
-
-# Temporary DB
-# sl.db
 
 # Config file
 resources/
 *.properties
 
 # Compiled class file
-*.clas
+*.class
 
 # Log file
 *.log
@@ -34,14 +35,6 @@ resources/
 *.tar.gz
 *.rar
 
-# N on-web graphic files
+# Non-web graphic files
 *.ai
 *.psd
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# User files
-files/CentoDiciotto/target/
-oldfiles/
-files/CentoDiciotto/.idea/
