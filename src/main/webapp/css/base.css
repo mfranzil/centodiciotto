@@ -454,6 +454,12 @@ textarea:focus {
     border-radius: .5em;
 }
 
+/* Timepicker */
+
+.ui-timepicker-container {
+    z-index: 5 !important;
+}
+
 /* Colori */
 
 .green {

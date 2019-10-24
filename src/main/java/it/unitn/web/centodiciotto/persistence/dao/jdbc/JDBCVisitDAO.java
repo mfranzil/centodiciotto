@@ -64,7 +64,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setTimestamp(3, visit.getDate());
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
-            stm.setInt(6, visit.getVisitID());
+            stm.setInt(6, visit.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -77,7 +77,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     @Override
     public void delete(Visit visit) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
-            stm.setInt(1, visit.getVisitID());
+            stm.setInt(1, visit.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -197,7 +197,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
         try {
             Visit visit = new Visit();
 
-            visit.setVisitID(rs.getInt("visit_id"));
+            visit.setID(rs.getInt("visit_id"));
             visit.setPractitionerID(rs.getString("practitioner_id"));
             visit.setPatientID(rs.getString("patient_id"));
             visit.setDate(rs.getTimestamp("visit_date"));

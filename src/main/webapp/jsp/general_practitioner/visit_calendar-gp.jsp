@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- TODO change Exam history to proper title for all jsp pages !-->
     <title>Visit calendar - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
 
@@ -57,8 +56,9 @@
     <c:forEach items="${requestScope.patient_visits}" var="pair">
         <c:set var="patient" value="${pair.first}"/>
         <c:set var="visit" value="${pair.second}"/>
+
         <jsp:useBean id="visitDate" class="java.util.Date"/>
-        <jsp:setProperty name="visitDate" property="time" value="${visit.visitDate.time}"/>
+        <jsp:setProperty name="visitDate" property="time" value="${visit.date.time}"/>
 
         <div class="table-personal">
             <div class="table-cell image">

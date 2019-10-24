@@ -71,14 +71,14 @@
 
                     <!-- TODO: MODIFICARE IL NOME/COGNOME DEL MEDICO -->
                     <div class="table-personal">
-                        <div class="table-cell practitioner">${practitioner.firstName} ${practitioner.lastName}
+                        <div class="table-cell practitioner">{practitioner.firstName} {practitioner.lastName}
                         </div>
-                        <div class="table-cell date">${visit.visitDate}
+                        <div class="table-cell date">${visit.date}
                         </div>
                         <div class="table-cell report-state">${visit.reportAvailable ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
                             <button type="button" class="btn btn-block btn-personal popup-opener"
-                                ${visit.reportAvailable ? "disabled" : ""} >See Report
+                                ${visit.reportAvailable ? "" : "disabled"} >See Report
                             </button>
                             <div class="popup-window">
                                 <div class="popup animate-in">

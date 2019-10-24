@@ -54,7 +54,7 @@
         <c:forEach items="${requestScope.examLists}" var="examList">
             <c:set var="active" value="${false}"/>
             <c:forEach items="${requestScope.examPrescriptions}" var="examPrescription">
-                <c:if test="${examPrescription.examType eq examList.ID and !examPrescription.booked}">
+                <c:if test="${examPrescription.examType.ID eq examList.ID and !examPrescription.booked}">
                     <c:set var="active" value="${true}"/>
                 </c:if>
             </c:forEach>
@@ -62,7 +62,7 @@
                 <div class="table-cell exam">${examList.description} </div>
                 <div class="table-cell action">
                     <button type="button" ${active ? "" : "disabled" } class="btn btn-block btn-personal popup-opener">
-                        Book Now
+                        Book now
                     </button>
                     <div class="popup-window">
                         <div class="popup animate-in">

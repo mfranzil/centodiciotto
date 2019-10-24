@@ -61,9 +61,9 @@ $("document").ready(function () {
                         }
                     }
                 }
-                tableRows += "</div><hr>";
+                tableRows += "</div>";
             });
-            tableRows += "</div>";
+            tableRows += "</div><hr>";
         });
         this.append(tableRows);
 

@@ -60,7 +60,7 @@
                     <c:set var="visit" value="${pair.second}"/>
                     <c:set var="insert" value="${empty visit.report}"/>
                     <jsp:useBean id="visitDate" class="java.util.Date"/>
-                    <jsp:setProperty name="visitDate" property="time" value="${visit.visitDate.time}"/>
+                    <jsp:setProperty name="visitDate" property="time" value="${visit.date.time}"/>
 
                     <div class="table-personal">
                         <div class="table-cell avt"><img class="avatar-small"

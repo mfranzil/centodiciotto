@@ -10,11 +10,11 @@ public class Visit {
     private Boolean reportAvailable;
     private String report;
 
-    public Integer getVisitID() {
+    public Integer getID() {
         return ID;
     }
 
-    public void setVisitID(Integer visitID) {
+    public void setID(Integer visitID) {
         this.ID = visitID;
     }
 

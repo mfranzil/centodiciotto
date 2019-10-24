@@ -23,6 +23,27 @@
             }
         }
     </style>
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                beforeShowDay: $.datepicker.noWeekends,
+                defaultDate: 0,
+                firstDay: 1,
+                minDate: 1
+            });
+            $('input.timepicker').timepicker({
+                timeFormat: 'HH:mm',
+                interval: 15,
+                minTime: '8:30',
+                maxTime: '19:00',
+                defaultTime: '14:00',
+                startTime: '8:30',
+                dynamic: true,
+                dropdown: true,
+                scrollbar: true
+            });
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -42,7 +63,7 @@
                     <div class="table-cell image">&nbsp;</div>
                     <div class="table-cell patient">Patient</div>
                     <div class="table-cell ssn">SSN</div>
-                    <div class="table-cell action">%nbsp;</div>
+                    <div class="table-cell action">&nbsp;</div>
                 </div>
                 <c:forEach items="${requestScope.pending_patients}" var="patient">
                     <div class="table-personal">
@@ -64,7 +85,17 @@
                                     <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visits"
                                           id="set_visit" method="POST">
                                         Insert a date and time for the appointment, then confirm.
-                                        <input class="form-control my-4" type="datetime-local" name="visitDate">
+                                        <!-- TODO: Spostarlo --->
+                                        <div style="display: flex; width: 100%;">
+                                            <label style="flex: 50%" class="my-2 mr-1">
+                                                <input class="form-control datepicker"
+                                                       type="text" name="visitDate">
+                                            </label>
+                                            <label style="flex: 50%" class="my-2 ml-1">
+                                                <input class="form-control timepicker"
+                                                       type="text" name="visitTime">
+                                            </label>
+                                        </div>
                                         <input type="hidden" value="${patient.ID}" name="patientID">
                                         <button class="btn btn-lg btn-block btn-personal" type="submit">
                                             Confirm the appointment
