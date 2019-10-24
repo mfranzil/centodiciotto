@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ExamDAOBean implements Serializable {
     private ExamDAO examDAO = null;
-    private String examID = null;
+    private String userID = null;
 
     public void setDAOFactory(String useless){
         try {
@@ -30,20 +30,20 @@ public class ExamDAOBean implements Serializable {
         }
     }
 
-    public void setExamID(String examID) {
-        System.out.println("Settato practitionerID a: " + examID);
-        this.examID = examID;
+    public void setUserID(String userID) {
+        System.out.println("Settato userID a: " + userID);
+        this.userID = userID;
     }
 
     public List<Exam> getPatientsNotPaid() throws DAOException {
         List<Exam> exams;
 
-        if (examID == null) {
+        if (userID == null) {
             throw new DAOException("Practitioner is null");
         }
 
         try {
-            exams = examDAO.getByPatientNotPaid(examID);
+            exams = examDAO.getByPatientNotPaid(userID);
             System.out.println("Test: " + exams.size());
         } catch (DAOException ex) {
             throw new DAOException("Error getting exam list in examDaoBean: ", ex);

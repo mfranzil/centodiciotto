@@ -7,25 +7,23 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.specialized-doctor {
-                width: 10%;
+                width: 25%;
             }
 
             .table-cell.exam {
-                width: 35%;
+                width: 25%;
             }
 
             .table-cell.date {
-                width: 30%;
+                width: 20%;
             }
 
             .table-cell.action {
-                width: 25%;
-                padding-right: 2%;
+                width: 20%;
             }
 
             .table-cell.amount {
-                width: 25%;
-                padding-right: 2%;
+                width: 10%;
             }
 
             .table-cell.action > button {
@@ -67,39 +65,42 @@
 
                 <jsp:useBean id="examDAOBean"
                              class="it.unitn.web.centodiciotto.beans.ExamDAOBean">
-                    <jsp:setProperty name="examDAOBean" property="examID"
+                    <jsp:setProperty name="examDAOBean" property="userID"
                                      value="${sessionScope.user.ID}"/>
                     <jsp:setProperty name="examDAOBean" property="DAOFactory" value=""/>
                 </jsp:useBean>
+
                 <c:forEach items="${examDAOBean.patientsNotPaid}" var="exam">
                     <jsp:useBean id="specialistDAOBean"
                                  class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean">
                         <jsp:setProperty name="specialistDAOBean" property="specialistID"
-                                         value="${sessionScope.user.ID}"/>
+                                         value="${exam.doctorID}"/>
                         <jsp:setProperty name="specialistDAOBean" property="DAOFactory"
                                          value=""/>
                     </jsp:useBean>
-
+                    <c:set var="specialist" value="${specialistDAOBean.specializedDoctorByID}"/>
 
                     <div class="table-personal">
                         <div class="table-cell specialized-doctor">${specialist.firstName} ${specialist.lastName}
                         </div>
-                        <div class="table-cell exam">${exam.result} ${exam.zzz}
+                        <div class="table-cell exam">${exam.ID}
                         </div>
-                        <div class="table-cell date">${exam.getDate}
+                        <div class="table-cell date">${exam.date}
                         </div>
-                        <div class="table-cell amount">${exam.getTicket}
+                        <div class="table-cell amount">$ ${exam.ticket}
                         </div>
-                        <div class="table-cell amount">
-                            <input onclick='document.getElementById("myButton3").value="Payed"; this.disabled=true;'
-                                   type="button" class="btn btn-block btn-personal" value="Pay" id="myButton3"
-                                                              style="width:130px"/>
+                        <div class="table-cell action">
+                            <button type="button" class="btn btn-block btn-personal">
+                                Pay
+                            </button>
+                            <!--<input onclick='document.getElementById("myButton3").value="Payed"; this.disabled=true;' type="button" class="btn btn-block btn-personal" value="Pay" id="myButton3"
+                                                              style="width:130px"/>-->
                         </div>
                     </div>
                     <hr>
                 </c:forEach>
             </div>
-        </div>s
+        </div>
     </div>
 </div>
 

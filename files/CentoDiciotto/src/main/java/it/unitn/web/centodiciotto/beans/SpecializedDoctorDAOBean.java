@@ -32,7 +32,6 @@ public class SpecializedDoctorDAOBean implements Serializable {
     }
 
     public void setSpecialistID(String specialistID) {
-        System.out.println("Settato specialistID a: " + specialistID);
         this.specialistID = specialistID;
     }
 
@@ -53,15 +52,7 @@ public class SpecializedDoctorDAOBean implements Serializable {
         return patients;
     }
 
-    public String getFirstName(SpecializedDoctor specializedDoctor){
-        return specializedDoctor.getFirstName();
-    }
-
-    public String getLastName(SpecializedDoctor specializedDoctor){
-        return specializedDoctor.getLastName();
-    }
-
-    public SpecializedDoctor getSpecializedDoctorByID(String specialistID) throws DAOException {
+    public SpecializedDoctor getSpecializedDoctorByID() throws DAOException {
         try {
             return specializedDoctorDAO.getByPrimaryKey(specialistID);
         } catch (DAOException ex) {
