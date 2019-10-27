@@ -49,9 +49,9 @@ public class PatientListServlet extends HttpServlet {
 
                 List<WholePatient> wholePatients = new ArrayList<>();
                 for (Patient patient : patientList) {
-                    String photoPath = PhotoService.getLastPhoto(patient);
-
-                    wholePatients.add(new WholePatient(patient.getFirstName() + " " + patient.getLastName(), patient.getSSN(), photoPath, patient.getID(), "Patient Data"));
+                    wholePatients.add(new WholePatient(patient.getFirstName() + " " + patient.getLastName(),
+                            patient.getSSN(), PhotoService.getLastPhoto(patient.getID()),
+                            patient.getID(), "Patient Data"));
                 }
 
                 Gson gson = new Gson();

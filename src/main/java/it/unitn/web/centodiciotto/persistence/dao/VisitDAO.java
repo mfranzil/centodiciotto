@@ -13,6 +13,6 @@ public interface VisitDAO extends DAO<Visit, Integer> {
 
     List<Visit> getByPractitioner(String practitionerEmail) throws DAOException;
 
-    Visit getLastVisitByPatient(Patient patient) throws DAOException;
+    Visit getLastVisitByPatientID(String patient) throws DAOException;
 
 }

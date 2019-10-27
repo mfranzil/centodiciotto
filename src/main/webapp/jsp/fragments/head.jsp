@@ -18,5 +18,5 @@
 <script src="${pageContext.request.contextPath}/vendor/jquery-ui.min.js"></script>
 
 <%-- CSS e JS personali --%>
-<link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/base.js"></script>

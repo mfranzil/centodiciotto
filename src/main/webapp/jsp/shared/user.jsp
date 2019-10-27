@@ -16,7 +16,13 @@
         Welcome, <c:out value="${sessionScope.displayName}"/>.
     </h2>
     <c:if test="${sessionScope.role eq 'patient'}">
-        <img class="avatar" src="${pageContext.request.contextPath}/${sessionScope.photoPath}" alt="">
+        <jsp:useBean id="patientDAO"
+                     class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
+            <jsp:setProperty name="patientDAO" property="patientID"
+                             value="${sessionScope.user.ID}"/>
+            <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+        </jsp:useBean>
+        <img class="avatar" src="${pageContext.request.contextPath}/${patientDAO.photoPath}" alt="">
     </c:if>
     <p class="lead mt-4 mx-4">
         To get started, use the navigation bar on top.

@@ -45,7 +45,7 @@ public class PhotoGalleryServlet extends HttpServlet {
             if (user instanceof Patient) {
                 List<Pair<String, Integer>> photoPathList;
                 try {
-                    photoPathList = PhotoService.getAllPhotosWithId((Patient) user);
+                    photoPathList = PhotoService.getAllPhotosWithID(user.getID());
 
                     request.setAttribute("photos", photoPathList);
                     request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
@@ -66,7 +66,6 @@ public class PhotoGalleryServlet extends HttpServlet {
             photoDAO.update(chosenPhoto);
 
             String photoPath = PhotoService.getPhotoPath(chosenPhoto);
-            request.getSession().setAttribute("photo_path", photoPath);
         } catch (DAOException ex) {
             throw new ServletException("Cannot update profile photo", ex);
         }

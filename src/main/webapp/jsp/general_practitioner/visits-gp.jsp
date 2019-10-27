@@ -27,9 +27,12 @@
         $(function () {
             $(".datepicker").datepicker({
                 beforeShowDay: $.datepicker.noWeekends,
-                defaultDate: 0,
+                defaultDate: +1,
                 firstDay: 1,
-                minDate: 1
+                minDate: 1,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
             });
             $('input.timepicker').timepicker({
                 timeFormat: 'HH:mm',
@@ -38,7 +41,6 @@
                 maxTime: '19:00',
                 defaultTime: '14:00',
                 startTime: '8:30',
-                dynamic: true,
                 dropdown: true,
                 scrollbar: true
             });

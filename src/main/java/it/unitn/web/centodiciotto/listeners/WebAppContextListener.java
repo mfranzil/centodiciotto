@@ -4,7 +4,6 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.utils.Crypto;
-import it.unitn.web.utils.PDFCreator;
 import it.unitn.web.utils.PhotoService;
 import it.unitn.web.utils.SendEmail;
 
@@ -24,20 +23,22 @@ public class WebAppContextListener implements ServletContextListener {
 
             Crypto.configure(daoFactory);
             PhotoService.configure(daoFactory, sce.getServletContext());
-            PDFCreator.configure(sce.getServletContext());
 
             sce.getServletContext().setAttribute("daoFactory", daoFactory);
-        } catch (DAOFactoryException ex) {
-            throw new RuntimeException(ex);
+        } catch (DAOFactoryException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        DAOFactory daoFactory = (DAOFactory) sce.getServletContext().getAttribute("daoFactory");
-        if (daoFactory != null) {
-            daoFactory.shutdown();
+        try {
+            DAOFactory daoFactory = (DAOFactory) sce.getServletContext().getAttribute("daoFactory");
+            if (daoFactory != null) {
+                daoFactory.shutdown();
+            }
+        } catch (DAOFactoryException e) {
+            throw new RuntimeException("Error during WebApplication closure: ", e);
         }
-        daoFactory = null;
     }
 }

@@ -8,7 +8,6 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -53,12 +52,23 @@ public class Crypto {
         Arrays.fill(passwordChar, Character.MIN_VALUE);
         try {
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            return DatatypeConverter.printHexBinary(skf.generateSecret(spec).getEncoded());
+            return bytesToHex(skf.generateSecret(spec).getEncoded());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
         } finally {
             spec.clearPassword();
         }
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = HEX_ARRAY[v >>> 4];
+            hexChars[j * 2 + 1] = HEX_ARRAY[v & 0x0F];
+        }
+        return new String(hexChars);
     }
 
     private static boolean isExpectedPassword(String password, String salt, String expectedHash) {
@@ -78,7 +88,7 @@ public class Crypto {
     private static String getNextSalt() {
         byte[] salt = new byte[8];
         RANDOM.nextBytes(salt);
-        return DatatypeConverter.printHexBinary(salt);
+        return bytesToHex(salt);
     }
 
     public static String getNextBase64Token() {

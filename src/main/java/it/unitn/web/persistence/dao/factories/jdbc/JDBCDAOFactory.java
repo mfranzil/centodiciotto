@@ -11,15 +11,17 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 public class JDBCDAOFactory implements DAOFactory {
     private static JDBCDAOFactory instance;
@@ -27,32 +29,35 @@ public class JDBCDAOFactory implements DAOFactory {
     private final transient HashMap<Class, DAO> DAO_CACHE;
 
     private JDBCDAOFactory() throws DAOFactoryException {
-        super();
-
-        String url = null;
-        String username = null;
-        String password = null;
+        String url;
+        String username;
+        String password;
 
         Properties data = new Properties();
 
-        try (InputStream stream = JDBCDAOFactory.class
-                .getClassLoader().getResourceAsStream("database.properties")) {
-            data.load(stream);
+        InputStream stream = JDBCDAOFactory.class.getClassLoader().getResourceAsStream("database.properties");
 
-            String hostname = data.getProperty("HostName");
-            String defaultDatabase = data.getProperty("DefaultDatabase");
-            username = data.getProperty("UserName");
-            password = data.getProperty("Password");
+        if (stream != null) {
+            try {
+                data.load(stream);
+                String hostname = data.getProperty("HostName");
+                String defaultDatabase = data.getProperty("DefaultDatabase");
+                username = data.getProperty("UserName");
+                password = data.getProperty("Password");
 
-            url = "jdbc:postgresql://" + hostname + "/" + defaultDatabase;
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading configuration file: " + e.getMessage());
+                url = "jdbc:postgresql://" + hostname + "/" + defaultDatabase;
+
+            } catch (IOException e) {
+                throw new DAOFactoryException("Error reading database.properties file: ", e);
+            }
+        } else {
+            throw new DAOFactoryException("Missing database.properties file.");
         }
 
         try {
             Class.forName("org.postgresql.Driver", true, getClass().getClassLoader());
         } catch (ClassNotFoundException cnfe) {
-            throw new RuntimeException(cnfe.getMessage(), cnfe.getCause());
+            throw new DAOFactoryException(cnfe.getMessage(), cnfe.getCause());
         }
 
         try {
@@ -75,18 +80,23 @@ public class JDBCDAOFactory implements DAOFactory {
     public static JDBCDAOFactory getInstance() throws DAOFactoryException {
         if (instance == null) {
             throw new DAOFactoryException("DAOFactory not yet configured. " +
-                    "Call DAOFactory.configure(String ini_file) before use the class");
+                    "Call DAOFactory.configure() before use the class");
         }
         return instance;
     }
 
     @Override
-    public void shutdown() {
-        try {
-            DriverManager.getConnection("jdbc:postgresql:;shutdown=true");
-        } catch (SQLException sqle) {
-            Logger.getLogger(JDBCDAOFactory.class.getName()).info(sqle.getMessage());
-        }
+    public void shutdown() throws DAOFactoryException {
+            Enumeration<Driver> drivers = DriverManager.getDrivers();
+            while (drivers.hasMoreElements()) {
+                Driver driver = drivers.nextElement();
+                try {
+                    DriverManager.deregisterDriver(driver);
+                } catch (SQLException e) {
+                    throw new DAOFactoryException("Error deregistering driver " + driver + ": ", e);
+                }
+
+            }
     }
 
     @Override

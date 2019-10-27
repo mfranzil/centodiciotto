@@ -1,6 +1,6 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
@@ -62,7 +62,8 @@ public class PhotoUploadServlet extends HttpServlet {
                     + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getID();
             Files.createDirectories(Paths.get(path));
 
-            JSONObject jobj = new JSONObject();
+            Gson gson = new Gson();
+            String gObj;
 
             try {
                 out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
@@ -74,18 +75,20 @@ public class PhotoUploadServlet extends HttpServlet {
                 while ((read = filecontent.read(bytes)) != -1) {
                     out.write(bytes, 0, read);
                 }
-                System.out.println(fileName + " created at " + path);
-
-                request.getSession().setAttribute("photo_path", File.separator +
-                        getServletContext().getInitParameter("avatar-folder") + user.getID() +
-                        File.separator + fileName + "." + extension);
-
+                System.out.println(fileName + " created at " + path); // TODO LOG
                 response.setStatus(200);
-                jobj.put("output", true);
+
+                gObj = gson.toJson(new Object() {
+                    boolean output = true;
+                });
             } catch (FileNotFoundException ex) {
                 request.getServletContext().log("Problems during file upload.", ex);
+
                 response.setStatus(400);
-                jobj.put("output", false);
+
+                gObj = gson.toJson(new Object() {
+                    boolean output = false;
+                });
             } finally {
                 if (out != null) {
                     out.close();
@@ -94,6 +97,7 @@ public class PhotoUploadServlet extends HttpServlet {
                     filecontent.close();
                 }
             }
+            response.getWriter().write(gObj);
         } catch (DAOException e) {
             e.printStackTrace();
         }

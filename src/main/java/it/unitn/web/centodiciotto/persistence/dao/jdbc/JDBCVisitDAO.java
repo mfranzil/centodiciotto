@@ -1,7 +1,6 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
@@ -136,11 +135,11 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public List<Visit> getByPatient(String PatientEmail) throws DAOException {
+    public List<Visit> getByPatient(String patientID) throws DAOException {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
-            stm.setString(1, PatientEmail);
+            stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -155,11 +154,11 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public List<Visit> getByPractitioner(String practitionerEmail) throws DAOException {
+    public List<Visit> getByPractitioner(String practitionerID) throws DAOException {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
-            stm.setString(1, practitionerEmail);
+            stm.setString(1, practitionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -174,10 +173,9 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public Visit getLastVisitByPatient(Patient patient) throws DAOException {
+    public Visit getLastVisitByPatientID(String patientID) throws DAOException {
         Visit visit = null;
         try {
-            String patientID = patient.getID();
             PreparedStatement stm = CON.prepareStatement(GETLASTPATIENTVISIT);
             stm.setString(1, patientID);
 

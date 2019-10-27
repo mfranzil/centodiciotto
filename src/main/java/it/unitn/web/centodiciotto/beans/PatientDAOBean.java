@@ -21,21 +21,6 @@ public class PatientDAOBean implements Serializable {
     private ExamDAO examDAO = null;
     private String patientID = null;
 
-    /*
-    @PostConstruct
-    public void init() {
-        try {
-            DAOFactory daoFactory = JDBCDAOFactory.getInstance();
-
-            patientDAO = daoFactory.getDAO(PatientDAO.class);
-            visitDAO = daoFactory.getDAO(VisitDAO.class);
-            examDAO = daoFactory.getDAO(ExamDAO.class);
-
-        } catch (DAOFactoryException e) {
-            e.printStackTrace();
-        }
-    }
-     */
     public void setDAOFactory(String useless){
         try {
             //TODO change with proper model
@@ -58,7 +43,6 @@ public class PatientDAOBean implements Serializable {
         this.patientID = patientID;
     }
 
-
     public Patient getPatient() throws DAOException {
         if (patientID == null) {
             throw new DAOException("PatientID is null");
@@ -73,21 +57,21 @@ public class PatientDAOBean implements Serializable {
         return res;
     }
 
-    public String getPhotoPath(Patient patient){
-        return PhotoService.getLastPhoto(patient);
+    public String getPhotoPath(){
+        return PhotoService.getLastPhoto(patientID);
     }
 
-    public Visit getLastVisit(Patient patient) throws DAOException {
+    public Visit getLastVisit() throws DAOException {
         try {
-            return visitDAO.getLastVisitByPatient(patient);
+            return visitDAO.getLastVisitByPatientID(patientID);
         } catch (DAOException ex) {
             throw new DAOException("Error getting lastVisit in patientDaoBean: ", ex);
         }
     }
 
-    public List<Exam> getExams(Patient patient) throws DAOException {
+    public List<Exam> getExams() throws DAOException {
         try {
-            return examDAO.getByPatient(patient.getID());
+            return examDAO.getByPatient(patientID);
         } catch (DAOException ex) {
             throw new DAOException("Error getting exams in patientDaoBean: ", ex);
         }

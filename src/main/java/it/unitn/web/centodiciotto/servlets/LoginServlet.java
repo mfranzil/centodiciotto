@@ -1,13 +1,11 @@
 package it.unitn.web.centodiciotto.servlets;
 
-import com.alibaba.fastjson.JSONObject;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Crypto;
-import it.unitn.web.utils.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,11 +60,11 @@ public class LoginServlet extends HttpServlet {
 
         try {
             User user = Crypto.authenticate(userID, password, role);
-            JSONObject jobj = new JSONObject();
+            String json;
 
             if (user == null) {
                 response.setStatus(400);
-                jobj.put("url", "");
+                json = "{'url':''}";
             } else {
                 if (rememberMe != null && rememberMe.equals("on")) {
                     request.getSession().setMaxInactiveInterval(2592000);
@@ -75,12 +73,10 @@ public class LoginServlet extends HttpServlet {
                 response.setStatus(200);
 
                 String displayName = "default";
-                String photoPath = null;
                 GeneralPractitioner practitioner = null;
 
                 if (user instanceof Patient) {
                     practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
-                    photoPath = PhotoService.getLastPhoto((Patient) user);
                     displayName = ((Patient) user).getFirstName();
                 } else if (user instanceof GeneralPractitioner) {
                     displayName = ((GeneralPractitioner) user).getFirstName();
@@ -94,13 +90,12 @@ public class LoginServlet extends HttpServlet {
 
                 request.getSession().setAttribute("user", user);
                 request.getSession().setAttribute("practitioner", practitioner);
-                request.getSession().setAttribute("photoPath", photoPath);
                 request.getSession().setAttribute("role", role);
                 request.getSession().setAttribute("displayName", displayName);
 
-                jobj.put("url", response.encodeRedirectURL(contextPath + "restricted/user"));
+                json = "{'url':'" + response.encodeRedirectURL(contextPath + "restricted/user") + "'}";
             }
-            response.getWriter().write(jobj.toString());
+            response.getWriter().write(json);
         } catch (RuntimeException | DAOException ex) {
             throw new ServletException("Impossible to retrieve the user.", ex);
         }

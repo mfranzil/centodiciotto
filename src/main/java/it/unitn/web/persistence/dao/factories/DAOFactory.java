@@ -11,7 +11,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 
 public interface DAOFactory {
 
-    void shutdown();
+    void shutdown() throws DAOFactoryException;
 
     <DAO_CLASS extends DAO> DAO_CLASS getDAO(Class<DAO_CLASS> daoInterface) throws DAOFactoryException;
 }

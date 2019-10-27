@@ -1,7 +1,6 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
@@ -31,7 +30,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC " +
             "LIMIT 1;";
-    final private String GET_ALL_PHOTOS = "SELECT * " +
+    final private String GETALLPHOTOS = "SELECT * " +
             "FROM photo " +
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC;";
@@ -133,12 +132,11 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    public Photo getCurrentPhoto(Patient patient) throws DAOException {
+    public Photo getCurrentPhoto(String patientID) throws DAOException {
         Photo photo = null;
         try {
-            String ID = patient.getID();
             PreparedStatement stm = CON.prepareStatement(GETCURRENTPHOTO);
-            stm.setString(1, ID);
+            stm.setString(1, patientID);
 
             ResultSet rs = stm.executeQuery();
 
@@ -152,12 +150,11 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    public List<Photo> getAllPhotos(Patient patient) throws DAOException {
+    public List<Photo> getAllPhotos(String patientID) throws DAOException {
         List<Photo> photos = new ArrayList<>();
         try {
-            String ID = patient.getID();
-            PreparedStatement stm = CON.prepareStatement(GET_ALL_PHOTOS);
-            stm.setString(1, ID);
+            PreparedStatement stm = CON.prepareStatement(GETALLPHOTOS);
+            stm.setString(1, patientID);
 
             ResultSet rs = stm.executeQuery();
 

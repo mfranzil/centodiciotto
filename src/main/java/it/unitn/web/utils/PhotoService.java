@@ -1,7 +1,6 @@
 package it.unitn.web.utils;
 
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
@@ -29,16 +28,16 @@ public class PhotoService {
         }
     }
 
-    public static String getLastPhoto(Patient patient) throws RuntimeException {
+    public static String getLastPhoto(String patientID) throws RuntimeException {
         int id;
         Photo photo = null;
 
-        if (patient == null) {
+        if (patientID == null) {
             return null;
         }
 
         try {
-            photo = photoDAO.getCurrentPhoto(patient);
+            photo = photoDAO.getCurrentPhoto(patientID);
         } catch (DAOException ex) {
             throw new RuntimeException("Error contacting the DAO for photo retrieval", ex);
         }
@@ -47,17 +46,17 @@ public class PhotoService {
     }
 
 
-    public static List<String> getAllPhotos(Patient patient) throws RuntimeException {
+    public static List<String> getAllPhotos(String patientID) throws RuntimeException {
         int id;
         List<Photo> photos = null;
         List<String> photo_paths = new ArrayList<>();
 
-        if (patient == null) {
+        if (patientID == null) {
             return null;
         }
 
         try {
-            photos = photoDAO.getAllPhotos(patient);
+            photos = photoDAO.getAllPhotos(patientID);
         } catch (DAOException ex) {
             throw new RuntimeException("Error contacting the DAO for photo retrieval", ex);
         }
@@ -70,17 +69,17 @@ public class PhotoService {
     }
 
 
-    public static List<Pair<String, Integer>> getAllPhotosWithId(Patient patient) throws RuntimeException {
+    public static List<Pair<String, Integer>> getAllPhotosWithID(String patientID) throws RuntimeException {
         int id;
         List<Photo> photos = null;
         List<Pair<String, Integer>> photo_paths = new ArrayList<>();
 
-        if (patient == null) {
+        if (patientID == null) {
             return null;
         }
 
         try {
-            photos = photoDAO.getAllPhotos(patient);
+            photos = photoDAO.getAllPhotos(patientID);
         } catch (DAOException ex) {
             throw new RuntimeException("Error contacting the DAO for photo retrieval", ex);
         }

@@ -76,15 +76,12 @@
                             <c:if test="${available}">
                                 <form action="${pageContext.request.contextPath}/restricted/patient/prescriptions"
                                       id="pdf" target="_blank" method="POST">
+                                    <input type="hidden" name="patientID"
+                                           value="${prescription.patientID}"/>
                                     <input type="hidden" name="practitionerID"
-                                           value="${practitioner.ID}"/>
-                                    <input type="hidden" name="patientSSN" value="${sessionScope.user.SSN}"/>
-                                    <input type="hidden" name="prescriptionDate"
-                                           value="${prescription.datePrescripted}"/>
+                                           value="${prescription.practitionerID}"/>
                                     <input type="hidden" name="prescriptionID"
                                            value="${prescription.ID}"/>
-                                    <input type="hidden" name="prescriptionDescription"
-                                           value="${prescription.description}"/>
                                     <button type="submit" class="btn btn-block btn-personal">Download</button>
                                 </form>
                             </c:if>
