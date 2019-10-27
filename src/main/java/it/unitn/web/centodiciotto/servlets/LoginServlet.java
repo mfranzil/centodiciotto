@@ -64,7 +64,7 @@ public class LoginServlet extends HttpServlet {
 
             if (user == null) {
                 response.setStatus(400);
-                json = "{'url':''}";
+                json = "{\"url\":\"\"}";
             } else {
                 if (rememberMe != null && rememberMe.equals("on")) {
                     request.getSession().setMaxInactiveInterval(2592000);
@@ -93,7 +93,7 @@ public class LoginServlet extends HttpServlet {
                 request.getSession().setAttribute("role", role);
                 request.getSession().setAttribute("displayName", displayName);
 
-                json = "{'url':'" + response.encodeRedirectURL(contextPath + "restricted/user") + "'}";
+                json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
             }
             response.getWriter().write(json);
         } catch (RuntimeException | DAOException ex) {

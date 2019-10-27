@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
@@ -57,13 +56,10 @@ public class PhotoUploadServlet extends HttpServlet {
             photoDAO.insert(photo);
 
             String fileName = Integer.toString(photo.getID());
-
             String path = getServletContext().getRealPath("/") + File.separator
                     + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getID();
             Files.createDirectories(Paths.get(path));
-
-            Gson gson = new Gson();
-            String gObj;
+            String json;
 
             try {
                 out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
@@ -78,17 +74,13 @@ public class PhotoUploadServlet extends HttpServlet {
                 System.out.println(fileName + " created at " + path); // TODO LOG
                 response.setStatus(200);
 
-                gObj = gson.toJson(new Object() {
-                    boolean output = true;
-                });
+                json = "{\"output\": true}";
             } catch (FileNotFoundException ex) {
                 request.getServletContext().log("Problems during file upload.", ex);
 
                 response.setStatus(400);
 
-                gObj = gson.toJson(new Object() {
-                    boolean output = false;
-                });
+                json = "{\"output\": false}";
             } finally {
                 if (out != null) {
                     out.close();
@@ -97,7 +89,7 @@ public class PhotoUploadServlet extends HttpServlet {
                     filecontent.close();
                 }
             }
-            response.getWriter().write(gObj);
+            response.getWriter().write(json);
         } catch (DAOException e) {
             e.printStackTrace();
         }
