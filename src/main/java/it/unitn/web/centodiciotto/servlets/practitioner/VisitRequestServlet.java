@@ -1,7 +1,6 @@
 package it.unitn.web.centodiciotto.servlets.practitioner;
 
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PendingVisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
@@ -24,7 +23,6 @@ import java.util.List;
 
 @WebServlet("/restricted/general_practitioner/visits")
 public class VisitRequestServlet extends HttpServlet {
-    private PendingVisitDAO pendingVisitDAO;
     private PatientDAO patientDAO;
     private VisitDAO visitDAO;
 
@@ -35,7 +33,6 @@ public class VisitRequestServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for visit request storage system");
         }
         try {
-            pendingVisitDAO = daoFactory.getDAO(PendingVisitDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
@@ -53,9 +50,10 @@ public class VisitRequestServlet extends HttpServlet {
             try {
                 List<Patient> pendingPatients = new ArrayList<>();
 
-                List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitionerID);
+                // List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitionerID);
+                List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);
 
-                for (PendingVisit pendingVisit : pendingVisits) {
+                for (Visit pendingVisit : pendingVisits) {
                     pendingPatients.add(patientDAO.getByPrimaryKey(pendingVisit.getPatientID()));
                 }
 
@@ -79,19 +77,20 @@ public class VisitRequestServlet extends HttpServlet {
         try {
             Date date = formatter.parse(visit_timestamp);
 
-            Visit insertVisit = new Visit();
-            insertVisit.setPractitionerID(practitionerID);
-            insertVisit.setPatientID(patientID);
-            insertVisit.setDate(new Timestamp(date.getTime()));
-            insertVisit.setReportAvailable(false);
+            Visit toBook = null;
 
-            visitDAO.insert(insertVisit);
+            List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);
 
-            PendingVisit toBeDeleted = new PendingVisit();
-            toBeDeleted.setPatientID(patientID);
-            toBeDeleted.setPractitionerID(practitionerID);
+            for (Visit visit: pendingVisits){
+                if (visit.getPatientID().equals(patientID)){ // only one pending visit should exist
+                    toBook = visit;
+                }
+            }
+            toBook.setDate(new Timestamp(date.getTime()));
+            toBook.setBooked(true);
 
-            pendingVisitDAO.delete(toBeDeleted);
+            visitDAO.update(toBook);
+
 
         } catch (ParseException | DAOException e) {
             e.printStackTrace();

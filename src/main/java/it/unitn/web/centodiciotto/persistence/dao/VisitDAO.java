@@ -15,4 +15,6 @@ public interface VisitDAO extends DAO<Visit, Integer> {
 
     Visit getLastVisitByPatientID(String patient) throws DAOException;
 
+    List<Visit> getPendingVisitsByPractitioner(String practictionerEmail) throws DAOException;
+
 }

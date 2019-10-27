@@ -1,7 +1,6 @@
 package it.unitn.web.centodiciotto.servlets.practitioner;
 
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PendingVisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
@@ -23,7 +22,6 @@ import java.util.List;
 
 @WebServlet("/restricted/general_practitioner/visit_calendar")
 public class VisitCalendarServlet extends HttpServlet {
-    private PendingVisitDAO pendingVisitDAO;
     private PatientDAO patientDAO;
     private VisitDAO visitDAO;
 
@@ -34,7 +32,6 @@ public class VisitCalendarServlet extends HttpServlet {
             throw new ServletException("Impossible to get dao factory for visit request storage system");
         }
         try {
-            pendingVisitDAO = daoFactory.getDAO(PendingVisitDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {

@@ -5,6 +5,7 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
+import org.apache.derby.client.am.SqlException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,10 +18,10 @@ import java.util.List;
 public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
 
     final private String INSERT = "INSERT INTO visit " +
-            "(practitioner_id, patient_id, visit_date, report_available, report) values (?, ?, ?, ?, ?);";
+            "(practitioner_id, patient_id, visit_date, report_available, report, booked) values (?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE visit SET " +
-            "(practitioner_id, patient_id, visit_date, report_available, report) =" +
-            " (?, ?, ?, ?, ?) WHERE visit_id = ?;";
+            "(practitioner_id, patient_id, visit_date, report_available, report, booked) =" +
+            " (?, ?, ?, ?, ?, ?) WHERE visit_id = ?;";
     final private String DELETE = "DELETE FROM visit WHERE visit_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM visit WHERE visit_id = ?;";
@@ -31,6 +32,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     final private String FINDBYPRACTITIONER = "SELECT * FROM visit WHERE practitioner_id = ?;";
     final private String GETLASTPATIENTVISIT = "SELECT * from visit where patient_id = " +
             "? and visit_date <= localtimestamp order by visit_date desc limit 1";
+    final private String PENDINGBYPRACTITIONER = "SELECT * FROM visit WHERE practitioner_id = ? AND booked = FALSE";
 
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -45,6 +47,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setTimestamp(3, visit.getDate());
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
+            stm.setBoolean(6, visit.isBooked());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -63,7 +66,8 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setTimestamp(3, visit.getDate());
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
-            stm.setInt(6, visit.getID());
+            stm.setBoolean(6, visit.isBooked());
+            stm.setInt(7, visit.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -191,6 +195,25 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
+    public List<Visit> getPendingVisitsByPractitioner(String practictionerEmail) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(PENDINGBYPRACTITIONER)) {
+            stm.setString(1, practictionerEmail);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Pending Visits by practitioner email: ", e);
+        }
+    }
+
+    @Override
     protected Visit mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Visit visit = new Visit();
@@ -201,6 +224,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             visit.setDate(rs.getTimestamp("visit_date"));
             visit.setReportAvailable(rs.getBoolean("report_available"));
             visit.setReport(rs.getString("report"));
+            visit.setBooked(rs.getBoolean("booked"));
 
             return visit;
         } catch (SQLException e) {

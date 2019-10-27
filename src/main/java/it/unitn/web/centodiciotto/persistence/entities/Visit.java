@@ -9,6 +9,15 @@ public class Visit {
     private Timestamp date;
     private Boolean reportAvailable;
     private String report;
+    private boolean booked;
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
+    }
 
     public Integer getID() {
         return ID;

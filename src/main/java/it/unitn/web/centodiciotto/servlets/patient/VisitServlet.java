@@ -1,12 +1,10 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-import it.unitn.web.centodiciotto.persistence.dao.PendingVisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +17,6 @@ import java.util.List;
 @WebServlet("/restricted/patient/visits")
 public class VisitServlet extends HttpServlet {
     private VisitDAO visitDAO;
-    private PendingVisitDAO pendingVisitDAO;
 
     @Override
     public void init() throws ServletException {
@@ -29,7 +26,6 @@ public class VisitServlet extends HttpServlet {
         }
         try {
             visitDAO = daoFactory.getDAO(VisitDAO.class);
-            pendingVisitDAO = daoFactory.getDAO(PendingVisitDAO.class);
         } catch (DAOFactoryException e) {
             e.printStackTrace();
         }
@@ -47,8 +43,12 @@ public class VisitServlet extends HttpServlet {
             try {
                 visits = visitDAO.getByPatient(user.getID());
 
-                Pair<String, String> key = new Pair<>(user.getID(), practitioner.getID());
-                already_booked = (pendingVisitDAO.getByPrimaryKey(key) != null);
+                List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitioner.getID());
+                for (Visit visit: pendingVisits){
+                    if (visit.getPatientID().equals(user.getID())){
+                        already_booked = true;
+                    }
+                }
 
                 request.setAttribute("visits", visits);
                 request.setAttribute("already_booked", already_booked);
@@ -69,12 +69,13 @@ public class VisitServlet extends HttpServlet {
             String patientEmail = user.getID();
             String practitionerEmail = practitioner.getID();
 
-            PendingVisit pendingVisit = new PendingVisit();
+            Visit pendingVisit = new Visit();
             pendingVisit.setPatientID(patientEmail);
             pendingVisit.setPractitionerID(practitionerEmail);
 
             try {
-                pendingVisitDAO.insert(pendingVisit);
+                visitDAO.insert(pendingVisit); // allowed only if no other pending visit exists for the patients
+                // TODO: better handling of exceptions
             } catch (DAOException e) {
                 e.printStackTrace();
             }
