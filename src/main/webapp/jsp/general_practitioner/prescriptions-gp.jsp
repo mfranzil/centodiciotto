@@ -90,24 +90,6 @@
                                 <form action="" id="form1" method="POST">
                                     <div>
                                         <h4>Choose a prescription...</h4>
-                                        <table class="table">
-                                            <tr>
-                                                <td>Esame1</td>
-                                                <td><label>
-                                                    <input type="radio" name="form1"
-                                                           value="VALOREDAMETTERE1">
-                                                </label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Esame2</td>
-                                                <td><label>
-                                                    <input type="radio" name="form1"
-                                                           value="VALOREDAMETTERE2">
-                                                </label>
-                                                </td>
-                                            </tr>
-                                        </table>
                                     </div>
                                 </form>
                                 <button class="btn btn-lg btn-block btn-personal" type="submit">
@@ -122,7 +104,7 @@
                             Drug prescription
                         </button>
                         <div class="popup-window">
-                            <div class="popup animate-in">asdfghjk</div></div>
+                            <div class="popup animate-in">...</div></div>
                     </div>
                 </div>
                 <hr>

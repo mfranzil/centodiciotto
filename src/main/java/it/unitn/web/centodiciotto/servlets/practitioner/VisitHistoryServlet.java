@@ -29,58 +29,56 @@ public class VisitHistoryServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for visit request storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+
         if (user instanceof GeneralPractitioner) {
             String practitionerID = user.getID();
 
             try {
                 List<Pair<Patient, Visit>> patientVisitsReport = new ArrayList<>();
-
                 List<Visit> visits = visitDAO.getByPractitioner(practitionerID);
-
                 for (Visit visit : visits) {
                     if (visit.getReportAvailable()) {
                         patientVisitsReport.add(new Pair<>(patientDAO.getByPrimaryKey(visit.getPatientID()), visit));
                     }
                 }
                 request.setAttribute("patient_visits_report", patientVisitsReport);
+                request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
 
             } catch (DAOException e) {
-                e.printStackTrace();
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
-        request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
 
-        Integer visitID = Integer.valueOf(request.getParameter("visitID"));
-        String reportText = request.getParameter("reportText");
+        if (user instanceof GeneralPractitioner) {
+            Integer visitID = Integer.valueOf(request.getParameter("visitID"));
+            String reportText = request.getParameter("reportText");
 
-        try {
-            Visit tmp = visitDAO.getByPrimaryKey(visitID);
+            try {
+                Visit tmp = visitDAO.getByPrimaryKey(visitID);
+                tmp.setReport(reportText);
+                visitDAO.update(tmp);
 
-            tmp.setReport(reportText);
-
-            visitDAO.update(tmp);
-
-        } catch (DAOException e) {
-            e.printStackTrace();
+                doGet(request, response); // TODO Use json?
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
+            }
         }
-        doGet(request, response);
     }
 }

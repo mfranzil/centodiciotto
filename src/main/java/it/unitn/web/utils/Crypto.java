@@ -31,7 +31,7 @@ public class Crypto {
     public static void configure(DAOFactory daoFactory) throws RuntimeException {
         RANDOM = new SecureRandom();
         if (daoFactory == null) {
-            throw new RuntimeException("Impossible to get dao factory for user storage system");
+            throw new RuntimeException("DAOFactory is null.");
         }
         try {
             userDAO = daoFactory.getDAO(UserDAO.class);
@@ -41,8 +41,8 @@ public class Crypto {
             specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             chemistDAO = daoFactory.getDAO(ChemistDAO.class);
             healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new RuntimeException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new RuntimeException("Error in" + Crypto.class.getName() +"::init: ", e);
         }
     }
 

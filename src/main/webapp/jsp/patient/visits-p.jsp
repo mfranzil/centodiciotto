@@ -37,13 +37,20 @@
 
 <div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
+        <jsp:useBean id="patientDAO"
+                     class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
+            <jsp:setProperty name="patientDAO" property="patientID"
+                             value="${sessionScope.user.ID}"/>
+            <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+        </jsp:useBean>
 
-        <c:set var="practitioner" value="${sessionScope.practitioner}"/>
-        <c:set var="already_booked" value="${requestScope.already_booked}"/>
+        <c:set var="practitioner" value="${patientDAO.practitioner}"/>
+        <c:set var="alreadyBooked" value="${!empty patientDAO.pendingVisit}"/>
+
         <h3>${practitioner.firstName} ${practitioner.lastName}</h3>
         <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book_visit" method="post">
             <button id="booknow" class="btn btn-block btn-personal" type="submit"
-            ${already_booked ? "disabled" : ""}> ${already_booked ? "Already booked" : "Book now"}
+            ${alreadyBooked ? "disabled" : ""}> ${alreadyBooked ? "Already booked" : "Book now"}
             </button>
         </form>
     </div>
@@ -67,11 +74,24 @@
                     <div class="table-cell report-state">Report State</div>
                     <div class="table-cell action">Report</div>
                 </div>
-                <c:forEach items="${requestScope.visits}" var="visit">
 
-                    <!-- TODO: MODIFICARE IL NOME/COGNOME DEL MEDICO -->
+                <c:forEach items="${patientDAO.doneVisits}" var="visit">
+                    <c:if test="${visit.practitionerID ne practitioner.ID}">
+                        <jsp:useBean id="generalPractitionerDAO"
+                                     class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                        <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                                         value="${visit.practitionerID}"/>
+                        <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                        <c:set var="visitPractitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
+                    </c:if>
                     <div class="table-personal">
-                        <div class="table-cell practitioner">{practitioner.firstName} {practitioner.lastName}
+                        <div class="table-cell practitioner">
+                            <c:if test="${visit.practitionerID ne practitioner.ID}">
+                                ${visitPractitioner.firstName} ${visitPractitioner.lastName}
+                            </c:if>
+                            <c:if test="${visit.practitionerID eq practitioner.ID}">
+                                ${practitioner.firstName} ${practitioner.lastName}
+                            </c:if>
                         </div>
                         <div class="table-cell date">${visit.date}
                         </div>

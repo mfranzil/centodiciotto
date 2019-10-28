@@ -28,56 +28,51 @@ public class PhotoGalleryServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             photoDAO = daoFactory.getDAO(PhotoDAO.class);
-
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user != null) {
-            if (user instanceof Patient) {
-                List<Pair<String, Integer>> photoPathList;
-                try {
-                    photoPathList = PhotoService.getAllPhotosWithID(user.getID());
+        if (user instanceof Patient) {
+            try {
+                List<Pair<String, Integer>> photoPathList = PhotoService.getAllPhotosWithID(user.getID());
 
-                    request.setAttribute("photos", photoPathList);
-                    request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
-                } catch (RuntimeException ex) {
-                    throw new ServletException("Cannot load page for photo gallery", ex);
-                }
+                request.setAttribute("photos", photoPathList);
+                request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
+            } catch (RuntimeException e) {
+                throw new ServletException("Error in Service usage: ", e);
             }
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        Integer photoId = Integer.valueOf(request.getParameter("photoID"));
+        Integer photoID = Integer.valueOf(request.getParameter("photoID"));
 
-        try {
-            Photo chosenPhoto = photoDAO.getByPrimaryKey(photoId);
-            chosenPhoto.setUploadDate(new Timestamp(System.currentTimeMillis()));
-            photoDAO.update(chosenPhoto);
+        if (user instanceof Patient) {
+            try {
+                Photo chosenPhoto = photoDAO.getByPrimaryKey(photoID);
+                chosenPhoto.setUploadDate(new Timestamp(System.currentTimeMillis()));
+                photoDAO.update(chosenPhoto);
 
-            String photoPath = PhotoService.getPhotoPath(chosenPhoto);
-        } catch (DAOException ex) {
-            throw new ServletException("Cannot update profile photo", ex);
-        }
+                String contextPath = getServletContext().getContextPath();
+                if (!contextPath.endsWith("/")) {
+                    contextPath += "/";
+                }
 
-
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
-        if (!response.isCommitted()) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
+                if (!response.isCommitted()) {
+                    response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));
+                }
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
+            }
         }
     }
 }

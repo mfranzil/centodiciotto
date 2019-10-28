@@ -26,12 +26,12 @@ public class PatientsServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 

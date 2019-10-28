@@ -29,20 +29,20 @@ public class VisitCalendarServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for visit request storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+
         if (user instanceof GeneralPractitioner) {
             String practitionerID = user.getID();
 
@@ -56,29 +56,28 @@ public class VisitCalendarServlet extends HttpServlet {
                     }
                 }
                 request.setAttribute("patient_visits", patientVisits);
-
+                request.getRequestDispatcher("/jsp/general_practitioner/visit_calendar-gp.jsp").forward(request, response);
             } catch (DAOException e) {
-                e.printStackTrace();
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
-        request.getRequestDispatcher("/jsp/general_practitioner/visit_calendar-gp.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
 
-        Integer visit_id = Integer.valueOf(request.getParameter("visitID"));
+        if (user instanceof GeneralPractitioner) {
+            Integer visit_id = Integer.valueOf(request.getParameter("visitID"));
 
-        try {
-            Visit tmp = visitDAO.getByPrimaryKey(visit_id);
+            try {
+                Visit tmp = visitDAO.getByPrimaryKey(visit_id);
+                tmp.setReportAvailable(true);
+                visitDAO.update(tmp);
 
-            tmp.setReportAvailable(true);
-
-            visitDAO.update(tmp);
-
-        } catch (DAOException e) {
-            e.printStackTrace();
+                doGet(request, response); // TODO use json / reload
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
+            }
         }
-        doGet(request, response);
     }
 }

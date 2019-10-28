@@ -28,26 +28,23 @@ public class PatientListServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for exam_list storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for exam_list storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user instanceof GeneralPractitioner) {
+        if (user instanceof GeneralPractitioner) { // TODO........
             try {
-
                 List<Patient> patientList = patientDAO.getPatientsByPractitionerID(user.getID());
-
                 List<WholePatient> wholePatients = new ArrayList<>();
+
                 for (Patient patient : patientList) {
                     wholePatients.add(new WholePatient(patient.getFirstName() + " " + patient.getLastName(),
                             patient.getSSN(), PhotoService.getLastPhoto(patient.getID()),
@@ -58,9 +55,8 @@ public class PatientListServlet extends HttpServlet {
 
                 response.setContentType("application/json");
                 response.getWriter().write(gson.toJson(wholePatients));
-
-            } catch (DAOException ex) {
-                throw new ServletException("Error while getting patients by practitionerID in PatientListServlet", ex);
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
     }

@@ -3,6 +3,8 @@ package it.unitn.web.centodiciotto.servlets.patient;
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -17,13 +19,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO Ne siamo proprio sicuri?
 @WebServlet("/restricted/patient/exams")
 public class ExamPrescriptionCreatorServlet extends HttpServlet {
     private static final List<Exam_> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
     /*
-    It's still testing time, please do not pay attention
+    TODO It's still testing time, please do not pay attention
      */
     private ExamListDAO examListDAO;
 
@@ -31,54 +32,53 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for exam_list storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             examListDAO = daoFactory.getDAO(ExamListDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for exam_list storage system", ex);
-        }
-        try {
+
             ALL_EXAMS = examListDAO.getAll();
-        } catch (DAOException e) {
-            e.printStackTrace();
-        }
-        for (ExamList exam : ALL_EXAMS) {
-            ALL_INTERNAL_EXAMS.add(new Exam_(exam.getID(), exam.getDescription()));
+            for (ExamList exam : ALL_EXAMS) {
+                ALL_INTERNAL_EXAMS.add(new Exam_(exam.getID(), exam.getDescription()));
+            }
+        } catch (DAOFactoryException | DAOException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        doPost(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (user instanceof Patient) {
+            doPost(request, response);
+        }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
 
+        if (user instanceof Patient) {
+            String userInput = request.getParameter("term");
 
-        String userInput = request.getParameter("term");
+            List<Exam_> results;
 
-        List<Exam_> results = new ArrayList<>();
+            if (userInput == null) {
+                results = ALL_INTERNAL_EXAMS;
+            } else {
+                List<Exam_> tmpResults = new ArrayList<>();
+                ALL_INTERNAL_EXAMS.stream().filter(exam_
+                        -> (exam_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                results = tmpResults;
+            }
 
-        if (userInput == null) {
-            results = ALL_INTERNAL_EXAMS;
-        } else {
-            List<Exam_> tmp_results = new ArrayList<>();
-            ALL_INTERNAL_EXAMS.stream().filter((Exam_ exam_) -> (exam_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(_item -> {
-                tmp_results.add(_item);
-            });
-            results = tmp_results;
+            Gson gson = new Gson();
+            response.setContentType("application/json");
+            response.getWriter().write(gson.toJson(new Results(results.toArray(new Exam_[0]))));
         }
-
-        Gson gson = new Gson();
-        response.setContentType("application/json");
-        response.getWriter().write(gson.toJson(new Results(results.toArray(new Exam_[0]))));
     }
 
     public static class Exam_ implements Serializable {
-
         private Integer id;
         private String text;
 

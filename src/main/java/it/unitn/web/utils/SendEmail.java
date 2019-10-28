@@ -51,8 +51,21 @@ public class SendEmail {
 
     }
 
+    public static void send(final String recipient, final String message, final String subject) throws RuntimeException {
+        Runnable runnable = () -> {
+            try {
+                SendEmail.process(recipient, message, subject);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+
     @SuppressWarnings("StringBufferReplaceableByString")
-    public static void send(String recipient, String message, String subject)
+    private static void process(String recipient, String message, String subject)
             throws MessagingException, UnsupportedEncodingException {
         StringBuilder plainTextMessageBuilder = new StringBuilder();
         plainTextMessageBuilder.append(message).append("\n");

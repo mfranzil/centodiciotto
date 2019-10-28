@@ -4,7 +4,7 @@ $("document").ready(function () {
             type: "POST",
             url : 'http://localhost:8080/CentoDiciotto_war_exploded/restricted/patient/exam_booking',
             data : {
-                selected_exam : $('#exam-search').val()
+                selectedExam: $('#exam-search').val()
             },
             dataType: "json",
             success: function(json){

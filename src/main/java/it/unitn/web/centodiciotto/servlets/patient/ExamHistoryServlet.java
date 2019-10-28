@@ -29,43 +29,39 @@ public class ExamHistoryServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for exam history servlet");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             examDAO = daoFactory.getDAO(ExamDAO.class);
             examListDAO = daoFactory.getDAO(ExamListDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for exam history servlet", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user != null) {
-            if (user instanceof Patient) {
-                // TODO Inizio codice da modificare con i beans
+        if (user instanceof Patient) {
+            // TODO Inizio codice da modificare con i beans
+            try {
                 List<Pair<Exam, String>> to_be_sent = new ArrayList<>();
-                try {
-                    List<Exam> exams_history = examDAO.getByPatient(user.getID());
-                    // Since Exam description is in another table, here I join everything together
-                    for (Exam exam : exams_history) {
-                        try {
-                            to_be_sent.add(Pair.makePair(exam,
-                                    examListDAO.getByPrimaryKey(exam.getType().getID()).getDescription()));
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                        }
+                List<Exam> exams_history = examDAO.getByPatient(user.getID());
+                // Since Exam description is in another table, here I join everything together
+                for (Exam exam : exams_history) {
+                    try {
+                        to_be_sent.add(Pair.makePair(exam,
+                                examListDAO.getByPrimaryKey(exam.getType().getID()).getDescription()));
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
                     }
-                } catch (DAOException e) {
-                    e.printStackTrace();
                 }
                 request.setAttribute("exams", to_be_sent);
-                // Fine codice da modificare
+                request.getRequestDispatcher("/jsp/patient/exam_history-p.jsp").forward(request, response);
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
             }
+            // TODO Fine codice da modificare
         }
-        request.getRequestDispatcher("/jsp/patient/exam_history-p.jsp").forward(request, response);
-
     }
-
 }

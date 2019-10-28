@@ -1,5 +1,6 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
@@ -33,55 +34,43 @@ public class ExamPrescriptionServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for exam_list storage system");
+            throw new ServletException("DAOFactory is null.");
         }
 
         try {
             examListDAO = daoFactory.getDAO(ExamListDAO.class);
             examPrescriptionDAO = daoFactory.getDAO(ExamPrescriptionDAO.class);
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof Patient) {
-            List<ExamPrescription> examPrescription = null;
             try {
-                examPrescription = examPrescriptionDAO.getByPatient(user.getID());
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
-            request.setAttribute("examPrescriptions", examPrescription);
-        }
+                List<ExamPrescription> examPrescription = examPrescriptionDAO.getByPatient(user.getID());
+                request.setAttribute("examPrescriptions", examPrescription);
 
-        List<ExamList> examLists = new ArrayList<>();
-        if (request.getParameter("examSearch") == null) {
-            try {
-                examLists = examListDAO.getAll();
+                List<ExamList> examLists;
+                if (request.getParameter("examSearch") == null) {
+                    examLists = examListDAO.getAll();
+                } else {
+                    examLists = Lists.newArrayList(
+                            examListDAO.getByPrimaryKey(Integer.parseInt(request.getParameter("exam-search"))));
+                }
+
+                request.setAttribute("examLists", examLists);
+                request.getRequestDispatcher("/jsp/patient/exam_booking-p.jsp").forward(request, response);
             } catch (DAOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                ExamList examList = examListDAO.getByPrimaryKey(Integer.parseInt(request.getParameter("exam-search")));
-                examLists.add(examList);
-            } catch (DAOException e) {
-                e.printStackTrace();
+                throw new ServletException("Error in DAO usage:", e);
             }
         }
-
-        request.setAttribute("examLists", examLists);
-        request.getRequestDispatcher("/jsp/patient/exam_booking-p.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer selectedExam = Integer.valueOf(request.getParameter("selectedExam"));
         User user = (User) request.getSession().getAttribute("user");
 
@@ -94,8 +83,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
                 ExamList exam = examListDAO.getByPrimaryKey(selectedExam);
 
                 for (ExamPrescription examPrescription : examPrescriptions) {
-                    if (examPrescription.getExamType().getID().equals(selectedExam)
-                            && !examPrescription.getBooked()) {
+                    if (examPrescription.getExamType().getID().equals(selectedExam) && !examPrescription.getBooked()) {
                         bookable = true;
                         break;
                     }
@@ -105,9 +93,8 @@ public class ExamPrescriptionServlet extends HttpServlet {
                 Gson gson = new Gson();
                 response.setContentType("application/json");
                 response.getWriter().write(gson.toJson(new Results(results.toArray(new Exam_[0]))));
-
             } catch (DAOException e) {
-                e.printStackTrace();
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
     }

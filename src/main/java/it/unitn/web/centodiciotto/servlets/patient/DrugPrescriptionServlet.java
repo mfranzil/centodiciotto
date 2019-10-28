@@ -32,14 +32,14 @@ public class DrugPrescriptionServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -53,26 +53,30 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String practitionerID = request.getParameter("practitionerID");
-        int prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
-        String patientID = request.getParameter("patientID");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
 
-        try {
-            GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(practitionerID);
-            DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
-            Patient patient = patientDAO.getByPrimaryKey(patientID);
+        if (user instanceof Patient) {
+            String practitionerID = request.getParameter("practitionerID");
+            int prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
+            String patientID = request.getParameter("patientID");
 
-            drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
+            try {
+                GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(practitionerID);
+                DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                Patient patient = patientDAO.getByPrimaryKey(patientID);
 
-            PDDocument prescriptionDoc = PDFCreator.createDrugPrescription(drugPrescription, patient, practitioner);
+                drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
 
-            response.setContentType("application/pdf");
-            response.setHeader("Content-disposition", "inline; filename='prescription.pdf'");
-            prescriptionDoc.save(response.getOutputStream());
+                PDDocument prescriptionDoc = PDFCreator.createDrugPrescription(drugPrescription, patient, practitioner);
 
-        } catch (DAOException e) {
-            throw new ServletException("Failure in PDF composition,", e);
+                response.setContentType("application/pdf");
+                response.setHeader("Content-disposition", "inline; filename='prescription.pdf'");
+                prescriptionDoc.save(response.getOutputStream());
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
+            }
         }
+
     }
 }

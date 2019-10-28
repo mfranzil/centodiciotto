@@ -22,6 +22,7 @@
                              value="${sessionScope.user.ID}"/>
             <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
         </jsp:useBean>
+        <c:set var="practitioner" value="${patientDAO.practitioner}"/>
         <img class="avatar" src="${pageContext.request.contextPath}/${patientDAO.photoPath}" alt="">
     </c:if>
     <p class="lead mt-4 mx-4">
@@ -74,7 +75,7 @@
                             </tr>
                             <tr>
                                 <th>Practitioner</th>
-                                <td>${sessionScope.practitioner.firstName} ${sessionScope.practitioner.lastName}</td>
+                                <td>${practitioner.firstName} ${practitioner.lastName}</td>
                             </tr>
                         </c:when>
                         <c:when test="${sessionScope.role eq 'general_practitioner'}">
@@ -111,7 +112,6 @@
 
                         </c:when>
                         <c:when test="${sessionScope.role eq 'health_service'}">
-
                             <tr>
                                 <th>Operating Province</th>
                                 <td>${sessionScope.user.operatingProvince}
@@ -145,7 +145,7 @@
                 <h3 class="my-4">
                     Change your password
                 </h3>
-                <form action="${pageContext.request.contextPath}/restricted/password_change_handler"
+                <form action="${pageContext.request.contextPath}/restricted/change_password"
                       id="password-change" method="POST">
                     <div class="form-label-group">
                         <input class="form-control mb-2" id="old-password" name="oldPassword"
@@ -167,7 +167,7 @@
                     Change your profile picture
                 </h3>
                 <div class="input-group">
-                    <form action="${pageContext.request.contextPath}/restricted/photo_upload_handler"
+                    <form action="${pageContext.request.contextPath}/restricted/patient/upload_photo"
                           id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
                         <div class="custom-file" style="z-index: 0;">
                             <input type="file" class="custom-file-input"

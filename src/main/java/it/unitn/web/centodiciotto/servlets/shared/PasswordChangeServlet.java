@@ -9,33 +9,33 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/restricted/password_change_handler")
+@WebServlet("/restricted/change_password")
 public class PasswordChangeServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
+        if (user != null) {
+            String oldPassword = request.getParameter("oldPassword");
+            String newPassword = request.getParameter("newPassword");
 
-        if (Crypto.isCurrentPassword(user.getID(), oldPassword)) {
-            Crypto.changePassword(user.getID(), newPassword);
-            response.setStatus(200);
-        } else {
-            response.setStatus(400);
+            if (Crypto.isCurrentPassword(user.getID(), oldPassword)) {
+                Crypto.changePassword(user.getID(), newPassword);
+                response.setStatus(200);
+            } else {
+                response.setStatus(400);
+            }
         }
     }
 }

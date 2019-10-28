@@ -1,7 +1,9 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
-import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -12,7 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet("/restricted/patient/visits")
 public class VisitServlet extends HttpServlet {
@@ -22,64 +23,43 @@ public class VisitServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for visit storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        GeneralPractitioner practitioner = (GeneralPractitioner) request.getSession().getAttribute("practitioner");
         if (user instanceof Patient) {
-            List<Visit> visits = null;
-            boolean already_booked = false;
-            try {
-                visits = visitDAO.getByPatient(user.getID());
-
-                List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitioner.getID());
-                for (Visit visit: pendingVisits){
-                    if (visit.getPatientID().equals(user.getID())){
-                        already_booked = true;
-                    }
-                }
-
-                request.setAttribute("visits", visits);
-                request.setAttribute("already_booked", already_booked);
-                //TODO cosa succede se ho un practitioner e lo cambio? gli appuntamenti rimangono?
-            } catch (DAOException e) {
-                e.printStackTrace();
-            }
+            request.getRequestDispatcher("/jsp/patient/visits-p.jsp").forward(request, response);
         }
-        request.getRequestDispatcher("/jsp/patient/visits-p.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession(false).getAttribute("user");
-        GeneralPractitioner practitioner = (GeneralPractitioner) request.getSession(false).getAttribute("practitioner");
+
         if (user instanceof Patient) {
-            String patientEmail = user.getID();
-            String practitionerEmail = practitioner.getID();
+            String patientID = user.getID();
+            String practitionerID = ((Patient) user).getPractitionerID();
 
             Visit pendingVisit = new Visit();
-            pendingVisit.setPatientID(patientEmail);
-            pendingVisit.setPractitionerID(practitionerEmail);
+            pendingVisit.setPatientID(patientID);
+            pendingVisit.setPractitionerID(practitionerID);
+            pendingVisit.setReportAvailable(false);
+            pendingVisit.setBooked(false);
 
             try {
-                visitDAO.insert(pendingVisit); // allowed only if no other pending visit exists for the patients
-                // TODO: better handling of exceptions
+                visitDAO.insert(pendingVisit);
             } catch (DAOException e) {
-                e.printStackTrace();
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
-        doGet(request, response);
+        doGet(request, response); // TODO Usare JSON
     }
 }

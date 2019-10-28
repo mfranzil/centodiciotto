@@ -119,8 +119,8 @@ public class JDBCDAOFactory implements DAOFactory {
             }
             DAO_CACHE.put(daoInterface, daoInstance);
             return daoInstance;
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | SecurityException ex) {
-            throw new DAOFactoryException("Impossible to return the DAO", ex);
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | SecurityException e) {
+            throw new DAOFactoryException("Impossible to return the DAO", e);
         }
     }
 }

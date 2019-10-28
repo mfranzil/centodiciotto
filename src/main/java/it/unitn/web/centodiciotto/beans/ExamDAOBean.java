@@ -1,18 +1,13 @@
 package it.unitn.web.centodiciotto.beans;
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
-import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
-import it.unitn.web.centodiciotto.persistence.entities.Exam;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 public class ExamDAOBean implements Serializable {
@@ -26,12 +21,11 @@ public class ExamDAOBean implements Serializable {
 
             examDAO = daoFactory.getDAO(ExamDAO.class);
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
     public void setUserID(String userID) {
-        System.out.println("Settato userID a: " + userID);
         this.userID = userID;
     }
 
@@ -44,9 +38,8 @@ public class ExamDAOBean implements Serializable {
 
         try {
             exams = examDAO.getByPatientNotPaid(userID);
-            System.out.println("Test: " + exams.size());
-        } catch (DAOException ex) {
-            throw new DAOException("Error getting exam list in examDaoBean: ", ex);
+        } catch (DAOException e) {
+            throw new DAOException("Error getting exam list in examDaoBean: ", e);
         }
         return exams;
     }

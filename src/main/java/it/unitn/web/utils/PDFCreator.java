@@ -115,12 +115,12 @@ public class PDFCreator {
             // Drug description
             splitWrite(
                     contents, dp.getDrugType().getDescription(),
-                    PDType1Font.HELVETICA, 21, 40, 500, Color.BLACK, 17);
+                    PDType1Font.HELVETICA, 21, 40, 500, Color.BLACK, 26);
             // Prescription description
             if (dp.getDescription() != null) {
                 splitWrite(
                         contents, dp.getDescription(),
-                        PDType1Font.HELVETICA, 21, 380, 500, Color.BLACK, 17);
+                        PDType1Font.HELVETICA, 21, 380, 500, Color.BLACK, 26);
             }
             // Ticket
             PDStreamUtils.write(

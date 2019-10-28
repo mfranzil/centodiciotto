@@ -2,15 +2,16 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.SendEmail;
 
-import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,18 +25,20 @@ public class ChangePractitionerServlet extends HttpServlet {
 
     private GeneralPractitionerDAO practitionerDAO;
     private PatientDAO patientDAO;
+    private VisitDAO visitDAO;
 
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+            visitDAO = daoFactory.getDAO(VisitDAO.class);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -51,8 +54,12 @@ public class ChangePractitionerServlet extends HttpServlet {
                 GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractitionerID);
 
                 ((Patient) user).setPractitionerID(newPractitionerID);
-                request.getSession().setAttribute("practitioner", newPract);
                 patientDAO.updatePractitioner((Patient) user);
+
+                Visit pendingVisit = visitDAO.getPendingVisitByPractitionerAndPatient(oldPract.getID(), user.getID());
+                if (pendingVisit != null) {
+                    visitDAO.delete(pendingVisit);
+                }
 
                 String recipient = oldPract.getID();
                 String message = "Dear " + oldPract.getFirstName() + " " + oldPract.getLastName() + ",\n\n" +
@@ -85,19 +92,14 @@ public class ChangePractitionerServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - Practitioner change notification";
 
-                // Avviso il nuovo practitioner
+                // Avviso il paziente
                 SendEmail.send(recipient, message, subject);
 
                 response.setStatus(200);
-            } catch (NullPointerException | ClassCastException | DAOException ex) {
+            } catch (DAOException e) {
                 response.setStatus(400);
-                throw new ServletException("Impossible to retrieve the patient.", ex);
-            } catch (MessagingException ex) {
-                response.setStatus(400);
-                throw new ServletException("Cannot send email notification. Database was modified.", ex);
+                throw new ServletException("Error in DAO usage: ", e);
             }
-        } else {
-            response.setStatus(400);
         }
     }
 
@@ -105,17 +107,18 @@ public class ChangePractitionerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user != null) {
-            if (user instanceof Patient) {
-                List<GeneralPractitioner> availablePractitioners = null;
-                try {
-                    availablePractitioners = practitionerDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
-                } catch (DAOException e) {
-                    e.printStackTrace();
-                }
+        if (user instanceof Patient) {
+            try {
+                List<GeneralPractitioner> availablePractitioners =
+                        practitionerDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
+                GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
+
+                request.setAttribute("practitioner", practitioner);
                 request.setAttribute("availablePractitioners", availablePractitioners);
+                request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
-        request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);
     }
 }

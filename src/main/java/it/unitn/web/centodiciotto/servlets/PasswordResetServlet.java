@@ -24,53 +24,63 @@ public class PasswordResetServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             prDAO = daoFactory.getDAO(PasswordResetDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String contextPath = getServletContext().getContextPath();
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
 
-        String token = request.getParameter("token");
-        PasswordReset pr;
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath));
+        } else {
+            try {
+                String token = request.getParameter("token");
+                PasswordReset pr = prDAO.getByToken(token);
 
-        try {
-            pr = prDAO.getByToken(token);
-            if (pr != null && pr.getExpiringDate().after(new Timestamp(System.currentTimeMillis()))) {
-                request.setAttribute("userid", pr.getUserID());
-                request.getRequestDispatcher("/jsp/password_reset.jsp").forward(request, response);
-            } else {
-                response.sendRedirect(response.encodeRedirectURL(contextPath));
+                if (pr != null && pr.getExpiringDate().after(new Timestamp(System.currentTimeMillis()))) {
+                    request.setAttribute("userID", pr.getUserID());
+                    request.getRequestDispatcher("/jsp/password_reset.jsp").forward(request, response);
+                } else {
+                    response.sendRedirect(response.encodeRedirectURL(contextPath));
+                }
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
             }
-        } catch (DAOException e) {
-            throw new ServletException("Error in PR retrieval. ", e);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String userID = request.getParameter("userID");
-        String newPassword = request.getParameter("newPassword");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            String contextPath = getServletContext().getContextPath();
+            if (!contextPath.endsWith("/")) {
+                contextPath += "/";
+            }
 
-        try {
-            Crypto.changePassword(userID, newPassword);
-            prDAO.delete(prDAO.getByPrimaryKey(userID));
-            response.setStatus(200);
-        } catch (DAOException ex) {
-            request.getServletContext().log("Impossible to add a new password", ex);
-            response.setStatus(400);
+            response.sendRedirect(response.encodeRedirectURL(contextPath));
+        } else {
+            String userID = request.getParameter("userID");
+            String newPassword = request.getParameter("newPassword");
+
+            try {
+                Crypto.changePassword(userID, newPassword);
+                prDAO.delete(prDAO.getByPrimaryKey(userID));
+
+                response.setStatus(200);
+            } catch (DAOException e) {
+                response.setStatus(400);
+                throw new ServletException("Error in DAO usage: ", e);
+            }
         }
-
     }
 }

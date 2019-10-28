@@ -78,7 +78,7 @@
                     Your general practitioner
                 </h3>
 
-                <c:set var="practitioner" value="${sessionScope.practitioner}"/>
+                <c:set var="practitioner" value="${requestScope.practitioner}"/>
                 <div id="current-practitioner" class="table-personal chosen-practitioner">
                     <div class="table-cell name">${practitioner.firstName} ${practitioner.lastName}</div>
                     <div class="table-cell province">${practitioner.workingProvince}</div>

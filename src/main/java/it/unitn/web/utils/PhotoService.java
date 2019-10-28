@@ -19,18 +19,17 @@ public class PhotoService {
         sc = servletContext;
 
         if (daoFactory == null) {
-            throw new RuntimeException("Impossible to get dao factory for user storage system");
+            throw new RuntimeException("DAOFactory is null.");
         }
         try {
             photoDAO = daoFactory.getDAO(PhotoDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new RuntimeException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
     public static String getLastPhoto(String patientID) throws RuntimeException {
-        int id;
-        Photo photo = null;
+        Photo photo;
 
         if (patientID == null) {
             return null;
@@ -38,13 +37,12 @@ public class PhotoService {
 
         try {
             photo = photoDAO.getCurrentPhoto(patientID);
-        } catch (DAOException ex) {
-            throw new RuntimeException("Error contacting the DAO for photo retrieval", ex);
+        } catch (DAOException e) {
+            throw new RuntimeException("Error in DAO usage: ", e);
         }
 
         return getPhotoPath(photo);
     }
-
 
     public static List<String> getAllPhotos(String patientID) throws RuntimeException {
         int id;
@@ -57,8 +55,8 @@ public class PhotoService {
 
         try {
             photos = photoDAO.getAllPhotos(patientID);
-        } catch (DAOException ex) {
-            throw new RuntimeException("Error contacting the DAO for photo retrieval", ex);
+        } catch (DAOException e) {
+            throw new RuntimeException("Error in DAO usage: ", e);
         }
 
         for (Photo photo : photos) {
@@ -70,8 +68,7 @@ public class PhotoService {
 
 
     public static List<Pair<String, Integer>> getAllPhotosWithID(String patientID) throws RuntimeException {
-        int id;
-        List<Photo> photos = null;
+        List<Photo> photos;
         List<Pair<String, Integer>> photo_paths = new ArrayList<>();
 
         if (patientID == null) {
@@ -80,8 +77,8 @@ public class PhotoService {
 
         try {
             photos = photoDAO.getAllPhotos(patientID);
-        } catch (DAOException ex) {
-            throw new RuntimeException("Error contacting the DAO for photo retrieval", ex);
+        } catch (DAOException e) {
+            throw new RuntimeException("Error in DAO usage: ", e);
         }
 
         for (Photo photo : photos) {
@@ -91,7 +88,7 @@ public class PhotoService {
         return photo_paths;
     }
 
-    public static String getPhotoPath(Photo photo) {
+    private static String getPhotoPath(Photo photo) {
         int id;
         String avatarFolder = getAvatarFolder();
 
@@ -116,8 +113,12 @@ public class PhotoService {
         return photoPath;
     }
 
-    private static String getAvatarFolder() {
+    public static String getAvatarFolder() {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator;
+    }
+
+    public static String getPatientAvatarFolder(String patientID) {
+        return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;
     }
 
 

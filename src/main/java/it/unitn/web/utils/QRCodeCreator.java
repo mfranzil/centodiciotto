@@ -7,7 +7,7 @@ import java.util.List;
 
 public class QRCodeCreator {
 
-    // TODO DAre un senso al qr
+    // TODO Dare un senso al qr
     public static QRCode createQRCodeURL(String url, List<Pair<String, Object>> parameters, int width, int height) {
         StringBuilder QRcontent = new StringBuilder();
         QRcontent.append(url);

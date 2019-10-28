@@ -27,7 +27,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
             generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
 
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -44,10 +44,8 @@ public class GeneralPractitionerDAOBean implements Serializable {
 
         try {
             patients = patientDAO.getPatientsByPractitionerID(practitionerID);
-            System.out.println("Test: " + patients.size());
-
-        } catch (DAOException ex) {
-            throw new DAOException("Error getting patients list in practitionerDaoBean: ", ex);
+        } catch (DAOException e) {
+            throw new DAOException("Error getting patients list in practitionerDaoBean: ", e);
         }
         return patients;
     }
@@ -59,8 +57,8 @@ public class GeneralPractitionerDAOBean implements Serializable {
 
         try {
             return generalPractitionerDAO.getByPrimaryKey(practitionerID);
-        } catch (DAOException ex) {
-            throw new DAOException("Error getting lastVisit in practitionerDaoBean: ", ex);
+        } catch (DAOException e) {
+            throw new DAOException("Error getting lastVisit in practitionerDaoBean: ", e);
         }
     }
 }

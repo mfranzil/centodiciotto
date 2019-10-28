@@ -1,11 +1,13 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -19,7 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 
-@WebServlet("/restricted/photo_upload_handler")
+@WebServlet("/restricted/patient/upload_photo")
 @MultipartConfig
 public class PhotoUploadServlet extends HttpServlet {
 
@@ -29,39 +31,39 @@ public class PhotoUploadServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             photoDAO = daoFactory.getDAO(PhotoDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
         User user = (User) request.getSession().getAttribute("user");
 
-        OutputStream out = null;
-        InputStream filecontent = null;
-        Part filePart = request.getPart("avatarSelect");
-        String extension = request.getParameter("extension");
+        if (user instanceof Patient) {
+            OutputStream out = null;
+            InputStream filecontent = null;
+            String json = "{\"output\": false}";
 
-        Photo photo = new Photo();
-        photo.setPatientID(user.getID());
-        photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
+            Part filePart = request.getPart("avatarSelect");
+            String extension = request.getParameter("extension");
 
-        try {
-            photoDAO.insert(photo);
-
-            String fileName = Integer.toString(photo.getID());
-            String path = getServletContext().getRealPath("/") + File.separator
-                    + getServletContext().getInitParameter("avatar-folder") + File.separator + user.getID();
-            Files.createDirectories(Paths.get(path));
-            String json;
+            Photo photo = new Photo();
+            photo.setPatientID(user.getID());
+            photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
 
             try {
+                photoDAO.insert(photo);
+
+                String fileName = Integer.toString(photo.getID());
+                String path = getServletContext().getRealPath("/")
+                        + PhotoService.getPatientAvatarFolder(user.getID());
+
+                Files.createDirectories(Paths.get(path));
+
                 out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
                 filecontent = filePart.getInputStream();
 
@@ -71,16 +73,12 @@ public class PhotoUploadServlet extends HttpServlet {
                 while ((read = filecontent.read(bytes)) != -1) {
                     out.write(bytes, 0, read);
                 }
-                System.out.println(fileName + " created at " + path); // TODO LOG
+
                 response.setStatus(200);
-
                 json = "{\"output\": true}";
-            } catch (FileNotFoundException ex) {
-                request.getServletContext().log("Problems during file upload.", ex);
-
+            } catch (DAOException e) {
                 response.setStatus(400);
-
-                json = "{\"output\": false}";
+                throw new ServletException("Error in DAO usage: ", e);
             } finally {
                 if (out != null) {
                     out.close();
@@ -88,10 +86,8 @@ public class PhotoUploadServlet extends HttpServlet {
                 if (filecontent != null) {
                     filecontent.close();
                 }
+                response.getWriter().write(json);
             }
-            response.getWriter().write(json);
-        } catch (DAOException e) {
-            e.printStackTrace();
         }
     }
 }

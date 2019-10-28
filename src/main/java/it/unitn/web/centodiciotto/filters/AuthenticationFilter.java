@@ -19,7 +19,7 @@ public class AuthenticationFilter implements Filter {
 
         ServletContext servletContext = request.getServletContext();
         HttpSession session = request.getSession(false);
-        User user = null;
+        User user;
 
         String contextPath = servletContext.getContextPath();
         if (!contextPath.endsWith("/")) {

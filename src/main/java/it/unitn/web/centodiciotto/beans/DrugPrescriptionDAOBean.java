@@ -24,7 +24,7 @@ public class DrugPrescriptionDAOBean implements Serializable {
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
 
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -43,8 +43,8 @@ public class DrugPrescriptionDAOBean implements Serializable {
         try {
             drugPrescriptions = drugPrescriptionDAO.getByPatient(patientID);
 
-        } catch (DAOException ex) {
-            throw new DAOException("Error getting drugPre list in practitionerDaoBean: ", ex);
+        } catch (DAOException e) {
+            throw new DAOException("Error getting drugPre list in practitionerDaoBean: ", e);
         }
         return drugPrescriptions;
     }

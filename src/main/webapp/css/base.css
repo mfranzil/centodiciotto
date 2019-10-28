@@ -470,6 +470,9 @@ textarea:focus {
     color: white;
 }
 
+.text-personal {
+    color: rgb(var(--118-medium-dark));
+}
 /* Sfondi */
 
 .chosen-practitioner {

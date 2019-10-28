@@ -45,6 +45,10 @@
 </div>
 <div class="popup-window" id="form-window">
     <div class="popup animate-in">
+        <div class="justify-content-center" id="loading-container" style="text-align: center; display: none !important">
+            <div><strong>Loading...</strong></div>
+            <div class="spinner-border text-personal mt-2" role="status"></div>
+        </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
             <div class="center-100">
                 <img id="form-image" style="width: 32px" src="" alt="...">
@@ -54,9 +58,9 @@
             </div>
             <input name="role" id="role" type="hidden" value="none">
             <div class="form-label-group">
-                <input autofocus class="form-control" id="userid-login" name="userID"
+                <input autofocus class="form-control" id="user-id-login" name="userID"
                        placeholder="Email" required type="email">
-                <label for="userid-login">Email</label>
+                <label for="user-id-login">Email</label>
             </div>
             <div class="form-label-group">
                 <input class="form-control" id="password-login" name="password"

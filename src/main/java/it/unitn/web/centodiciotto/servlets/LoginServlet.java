@@ -1,10 +1,10 @@
 package it.unitn.web.centodiciotto.servlets;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.entities.*;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Common;
 import it.unitn.web.utils.Crypto;
 
 import javax.servlet.ServletException;
@@ -23,18 +23,18 @@ public class LoginServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for user storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
-        } catch (DAOFactoryException ex) {
-            throw new ServletException("Impossible to get dao factory for user storage system", ex);
+        } catch (DAOFactoryException e) {
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession(false) != null && request.getSession().getAttribute("user") != null) {
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             String contextPath = getServletContext().getContextPath();
             if (!contextPath.endsWith("/")) {
                 contextPath += "/";
@@ -48,17 +48,19 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userID = request.getParameter("userID");
-        String password = request.getParameter("password");
-        String role = request.getParameter("role");
-        String rememberMe = request.getParameter("rememberMe");
-
         String contextPath = getServletContext().getContextPath();
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
 
-        try {
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            response.sendRedirect(response.encodeRedirectURL(contextPath));
+        } else {
+            String userID = request.getParameter("userID");
+            String password = request.getParameter("password");
+            String role = request.getParameter("role");
+            String rememberMe = request.getParameter("rememberMe");
+
             User user = Crypto.authenticate(userID, password, role);
             String json;
 
@@ -70,34 +72,14 @@ public class LoginServlet extends HttpServlet {
                     request.getSession().setMaxInactiveInterval(2592000);
                 }
 
-                response.setStatus(200);
-
-                String displayName = "default";
-                GeneralPractitioner practitioner = null;
-
-                if (user instanceof Patient) {
-                    practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
-                    displayName = ((Patient) user).getFirstName();
-                } else if (user instanceof GeneralPractitioner) {
-                    displayName = ((GeneralPractitioner) user).getFirstName();
-                } else if (user instanceof SpecializedDoctor) {
-                    displayName = ((SpecializedDoctor) user).getFirstName();
-                } else if (user instanceof Chemist) {
-                    displayName = ((Chemist) user).getName();
-                } else if (user instanceof HealthService) {
-                    displayName = ((HealthService) user).getOperatingProvince() + " Health Service";
-                }
-
                 request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("practitioner", practitioner);
                 request.getSession().setAttribute("role", role);
-                request.getSession().setAttribute("displayName", displayName);
+                request.getSession().setAttribute("displayName", Common.getDisplayName(user));
 
+                response.setStatus(200);
                 json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
             }
             response.getWriter().write(json);
-        } catch (RuntimeException | DAOException ex) {
-            throw new ServletException("Impossible to retrieve the user.", ex);
         }
     }
 }

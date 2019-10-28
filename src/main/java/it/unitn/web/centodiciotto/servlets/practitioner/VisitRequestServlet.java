@@ -2,7 +2,10 @@ package it.unitn.web.centodiciotto.servlets.practitioner;
 
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
-import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -30,27 +33,24 @@ public class VisitRequestServlet extends HttpServlet {
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("Impossible to get dao factory for visit request storage system");
+            throw new ServletException("DAOFactory is null.");
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user instanceof GeneralPractitioner) {
             String practitionerID = user.getID();
             try {
                 List<Patient> pendingPatients = new ArrayList<>();
 
-                // List<PendingVisit> pendingVisits = pendingVisitDAO.getByPractitioner(practitionerID);
                 List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);
 
                 for (Visit pendingVisit : pendingVisits) {
@@ -58,44 +58,47 @@ public class VisitRequestServlet extends HttpServlet {
                 }
 
                 request.setAttribute("pending_patients", pendingPatients);
+                request.getRequestDispatcher("/jsp/general_practitioner/visits-gp.jsp").forward(request, response);
             } catch (DAOException e) {
-                e.printStackTrace();
+                throw new ServletException("Error in DAO usage: ", e);
             }
         }
-        request.getRequestDispatcher("/jsp/general_practitioner/visits-gp.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String practitionerID = user.getID();
-        String patientID = request.getParameter("patientID");
-        String visit_timestamp = request.getParameter("visitDate");
 
-        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
-        try {
-            Date date = formatter.parse(visit_timestamp);
+        if (user instanceof GeneralPractitioner) {
+            String practitionerID = user.getID();
+            String patientID = request.getParameter("patientID");
+            String visit_timestamp = request.getParameter("visitDate");
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
 
-            Visit toBook = null;
+            try {
+                Date date = formatter.parse(visit_timestamp);
+                Visit toBook = null;
 
-            List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);
+                List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);
 
-            for (Visit visit: pendingVisits){
-                if (visit.getPatientID().equals(patientID)){ // only one pending visit should exist
-                    toBook = visit;
+                for (Visit visit : pendingVisits) {
+                    if (visit.getPatientID().equals(patientID)) {
+                        toBook = visit;
+                    }
                 }
+
+                if (toBook != null) {
+                    toBook.setDate(new Timestamp(date.getTime()));
+                    toBook.setBooked(true);
+
+                    visitDAO.update(toBook);
+
+                    doGet(request, response); // TODO usare json / reload
+                }
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
+            } catch (ParseException e) {
+                throw new ServletException("Error in Date parsing: ", e);
             }
-            toBook.setDate(new Timestamp(date.getTime()));
-            toBook.setBooked(true);
-
-            visitDAO.update(toBook);
-
-
-        } catch (ParseException | DAOException e) {
-            e.printStackTrace();
         }
-
-        doGet(request, response);
     }
 }

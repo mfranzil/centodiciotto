@@ -13,27 +13,21 @@ import java.io.IOException;
 @WebServlet("/restricted/logout_handler")
 public class LogoutServlet extends HttpServlet {
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            User user = (User) session.getAttribute("user");
-            if (user != null) {
-                session.setAttribute("user", null);
-                session.setAttribute("practitioner", null);
-                session.invalidate();
-                user = null;
+        if (user != null) {
+            session.setAttribute("user", null);
+            session.setAttribute("role", null);
+            session.setAttribute("displayName", null);
+            session.invalidate();
+
+            String contextPath = getServletContext().getContextPath();
+            if (!contextPath.endsWith("/")) {
+                contextPath += "/";
             }
-        }
 
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
-
-        if (!response.isCommitted()) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
         }
     }

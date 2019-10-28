@@ -1,16 +1,15 @@
 package it.unitn.web.centodiciotto.beans;
 
-import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
-import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
+import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 public class SpecializedDoctorDAOBean implements Serializable {
@@ -27,7 +26,7 @@ public class SpecializedDoctorDAOBean implements Serializable {
             specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
 
         } catch (DAOFactoryException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -44,10 +43,9 @@ public class SpecializedDoctorDAOBean implements Serializable {
 
         try {
             patients = patientDAO.getPatientsByPractitionerID(specialistID);
-            System.out.println("Test: " + patients.size());
 
-        } catch (DAOException ex) {
-            throw new DAOException("Error getting patients list in SpecializedDoctorDaoBean: ", ex);
+        } catch (DAOException e) {
+            throw new DAOException("Error getting patients list in SpecializedDoctorDaoBean: ", e);
         }
         return patients;
     }
@@ -55,8 +53,8 @@ public class SpecializedDoctorDAOBean implements Serializable {
     public SpecializedDoctor getSpecializedDoctorByID() throws DAOException {
         try {
             return specializedDoctorDAO.getByPrimaryKey(specialistID);
-        } catch (DAOException ex) {
-            throw new DAOException("Error getting lastVisit in specialistDaoBean: ", ex);
+        } catch (DAOException e) {
+            throw new DAOException("Error getting lastVisit in specialistDaoBean: ", e);
         }
 
     }

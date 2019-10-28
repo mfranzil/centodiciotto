@@ -14,7 +14,7 @@
                 let form = $(this);
                 let url = form.attr('action');
 
-                if ($("#userid").val() !== "${requestScope.userID}") {
+                if ($("#user-id").val() !== "${requestScope.userID}") {
                     alert("Email non corrispondente alla richiesta.");
                     return;
                 }
@@ -26,7 +26,7 @@
                     data: form.serialize(),
                     success: function (__data) {
                         $("#message").html("Password changed successfully.");
-                        $("#new-password,#new-password-confirm,#userid").slideUp();
+                        $("#new-password,#new-password-confirm,#user-id").slideUp();
                         $("#password-change-button").html("Go to login").click(function (e) {
                             e.preventDefault();
                             window.location = window.location.pathname.substring(
@@ -55,7 +55,7 @@
             <form action="${pageContext.request.contextPath}/password_reset"
                   id="password-reset" method="POST">
                 <div class="form-label-group">
-                    <input autofocus class="form-control mb-2" id="userid" name="userID"
+                    <input autofocus class="form-control mb-2" id="user-id" name="userID"
                            placeholder="Insert your e-mail" required type="email">
                     <input class="form-control mb-2" id="new-password" name="newPassword"
                            placeholder="Insert your new password" required type="password">
