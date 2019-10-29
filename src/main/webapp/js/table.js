@@ -1,7 +1,5 @@
 function getDetails(patientID) {
-    let popup_window = document.createElement("div");
-    popup_window.id = "popup";
-    popup_window.style.display = "none";
+    let content = document.createElement("div");
     $.ajax({
         type: "POST",
         dataType: "json",
@@ -11,24 +9,12 @@ function getDetails(patientID) {
         },
         url: getContextPath() + "/restricted/general_practitioner/patients",
         success: function (json) {
-            console.log(json);
-            popup_window.className = "popup-window";
-
-            let popup_animate = document.createElement("div");
-            popup_animate.classList.add("popup");
-            popup_animate.classList.add("animate-in");
-
-            let inner_popup = document.createElement("div");
-
             let text = document.createElement("p");
-            text.textContent = "speriamo che vada";
-
-            inner_popup.appendChild(text);
-            popup_animate.appendChild(inner_popup);
-            popup_window.appendChild(popup_animate);
+            text.textContent = json.firstName;
+            content.appendChild(text);
         }
     });
-    return popup_window;
+    return content;
 }
 
 $("document").ready(function () {
@@ -85,28 +71,38 @@ $("document").ready(function () {
                             button.classList.add("btn-personal");
                             button.classList.add("popup-opener");
                             button.innerHTML = item[header.field];
-                            button.onclick = function(){
-                                $("#popup").remove();
-                                cell.appendChild(getDetails(item.ID));
-                                enablePopup();
-                            };
 
+
+
+                            let popup_window = document.createElement("div");
+                            popup_window.style.display = "none";
+                            popup_window.className = "popup-window";
+
+                            let popup_animate = document.createElement("div");
+                            popup_animate.classList.add("popup");
+                            popup_animate.classList.add("animate-in");
+
+                            //popup_animate.appendChild(getDetails(item.ID));
+                            popup_window.appendChild(popup_animate);
+
+                            button.onclick = function(){
+                                if(popup_animate.childElementCount > 0){
+                                    popup_animate.childNodes[0].remove();
+                                }
+                                popup_animate.appendChild(getDetails(item.ID));
+                            };
                             cell.appendChild(button);
-                            enablePopup();
+                            cell.appendChild(popup_window);
                             break;
                         }
                         default: {
                         }
                     }
-
                 }
                 row.appendChild(cell);
-                enablePopup();
             });
             main_table.append(row);
-            enablePopup();
         });
-        enablePopup();
         return this;
 
     };
