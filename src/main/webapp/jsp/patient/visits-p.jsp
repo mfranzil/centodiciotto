@@ -1,4 +1,5 @@
 <%--suppress ELValidationInJSP --%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -84,6 +85,10 @@
                         <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
                         <c:set var="visitPractitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
                     </c:if>
+
+                    <jsp:useBean id="date" class="java.util.Date"/>
+                    <jsp:setProperty name="date" property="time"
+                                     value="${visit.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell practitioner">
                             <c:if test="${visit.practitionerID ne practitioner.ID}">
@@ -93,7 +98,9 @@
                                 ${practitioner.firstName} ${practitioner.lastName}
                             </c:if>
                         </div>
-                        <div class="table-cell date">${visit.date}
+                        <div class="table-cell date">
+                            <fmt:formatDate type="date" dateStyle="long" value="${date}"/>
+                            <fmt:formatDate pattern="HH:mm" value="${date}"/>
                         </div>
                         <div class="table-cell report-state">${visit.reportAvailable ? "Available" : "Not available"}</div>
                         <div class="table-cell action">

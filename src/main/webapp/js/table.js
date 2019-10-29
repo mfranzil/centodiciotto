@@ -9,7 +9,7 @@ function getDetails(patientID) {
             request_type: "detailed_info",
             patient: patientID
         },
-        url: getContextPath() + "/restricted/general_practitioner/patient_list",
+        url: getContextPath() + "/restricted/general_practitioner/patients",
         success: function (json) {
             console.log(json);
             popup_window.className = "popup-window";

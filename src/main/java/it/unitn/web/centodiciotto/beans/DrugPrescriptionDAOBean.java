@@ -31,8 +31,7 @@ public class DrugPrescriptionDAOBean implements Serializable {
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
-
-
+    
     public List<DrugPrescription> getByPatient() throws DAOException {
         List<DrugPrescription> drugPrescriptions = Collections.emptyList();
 
@@ -41,7 +40,7 @@ public class DrugPrescriptionDAOBean implements Serializable {
         }
 
         try {
-            drugPrescriptions = drugPrescriptionDAO.getByPatient(patientID);
+            drugPrescriptions = drugPrescriptionDAO.getValidByPatient(patientID);
 
         } catch (DAOException e) {
             throw new DAOException("Error getting drugPre list in practitionerDaoBean: ", e);

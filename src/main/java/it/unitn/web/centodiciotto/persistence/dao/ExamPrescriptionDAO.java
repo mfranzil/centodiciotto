@@ -7,6 +7,6 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import java.util.List;
 
 public interface ExamPrescriptionDAO extends DAO<ExamPrescription, Integer> {
-    List<ExamPrescription> getByPatient(String PatientEmail) throws DAOException;
+    List<ExamPrescription> getByPatient(String PatientID) throws DAOException;
 
 }

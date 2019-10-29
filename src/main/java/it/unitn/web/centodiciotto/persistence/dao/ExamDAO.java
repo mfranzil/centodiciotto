@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface ExamDAO extends DAO<Exam, Integer> {
 
-    List<Exam> getByPatient(String patientEmail) throws DAOException;
+    List<Exam> getByPatient(String patientID) throws DAOException;
 
-    List<Exam> getByPatientLastYear(String patientEmail) throws DAOException;
+    List<Exam> getByPatientLastYear(String patientID) throws DAOException;
 
-    List<Exam> getByPatientNotPaid(String patientEmail) throws DAOException;
+    List<Exam> getByPatientNotPaid(String patientID) throws DAOException;
 
 }

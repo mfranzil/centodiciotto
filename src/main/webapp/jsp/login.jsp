@@ -46,8 +46,8 @@
 <div class="popup-window" id="form-window">
     <div class="popup animate-in">
         <div class="justify-content-center" id="loading-container" style="text-align: center; display: none !important">
-            <div><strong>Loading...</strong></div>
-            <div class="spinner-border text-personal mt-2" role="status"></div>
+            <img class="rotating mt-2" role="status" style="width: 64px"
+                 src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
         </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
             <div class="center-100">

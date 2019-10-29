@@ -54,7 +54,7 @@
                 data : {
                     request_type : "patient_list"
                 },
-                url: getContextPath() + "/restricted/general_practitioner/patient_list",
+                url: getContextPath() + "/restricted/general_practitioner/patients",
                 success: function (json) {
                     console.log(json);
                     $("#test-table").insertRows(tableHeaders, json);

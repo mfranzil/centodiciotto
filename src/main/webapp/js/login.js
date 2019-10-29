@@ -40,6 +40,7 @@ $("document").ready(function () {
             data: form.serialize(),
             success: function (result) {
                 result = JSON.parse(result);
+                $(".hover-button").prop("disabled", "true");
                 $("#form-window").fadeOut();
                 window.location = result.url;
             },

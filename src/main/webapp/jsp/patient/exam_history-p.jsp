@@ -1,4 +1,5 @@
 <%--suppress ELValidationInJSP --%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,9 +51,16 @@
                 <c:forEach items="${requestScope.exams}" var="pair">
                     <c:set var="exam" value="${pair.first}"/>
                     <c:set var="description" value="${pair.second}"/>
+
+                    <jsp:useBean id="date" class="java.util.Date"/>
+                    <jsp:setProperty name="date" property="time"
+                                     value="${exam.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell exam">${description}</div>
-                        <div class="table-cell date">${exam.date}</div>
+                        <div class="table-cell date">
+                            <fmt:formatDate type="date" dateStyle="long" value="${date}"/>
+                            <fmt:formatDate pattern="HH:mm" value="${date}"/>
+                        </div>
                         <div class="table-cell report-state">${exam.done ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
                             <button type="button" ${exam.done ? "" : "disabled"}

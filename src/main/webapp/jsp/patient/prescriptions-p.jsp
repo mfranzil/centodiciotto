@@ -70,6 +70,7 @@
                         </div>
                         <div class="table-cell date">
                             <fmt:formatDate type="date" dateStyle="long" value="${datePrescripted}"/>
+                            <fmt:formatDate pattern="HH:mm" value="${datePrescripted}"/>
                         </div>
                         <div class="table-cell report-state">${available ? "Available" : "Not available"}</div>
                         <div class="table-cell action">

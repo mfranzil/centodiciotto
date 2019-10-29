@@ -15,4 +15,6 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
     List<DrugPrescription> getExpired() throws DAOException;
 
     List<DrugPrescription> getValid() throws DAOException;
+
+    public List<DrugPrescription> getValidByPatient(String patientID) throws DAOException;
 }
