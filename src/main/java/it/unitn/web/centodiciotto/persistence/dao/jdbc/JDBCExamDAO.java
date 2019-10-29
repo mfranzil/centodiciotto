@@ -149,11 +149,11 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getByPatient(String patientEmail) throws DAOException {
+    public List<Exam> getByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
-            stm.setString(1, patientEmail);
+            stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -168,11 +168,11 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getByPatientLastYear(String PatientEmail) throws DAOException {
+    public List<Exam> getByPatientLastYear(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTLASTYEAR)) {
-            stm.setString(1, PatientEmail);
+            stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

@@ -37,7 +37,11 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String FINDEXPIRED = "SELECT * FROM drug_prescription " +
             "WHERE date_prescripted + interval '1 month' >= now();";
     final private String FINDVALID = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescripted + interval '1 month' < now();";
+            "WHERE date_prescripted + interval '1 month' < now()" +
+            "order by date_prescripted asc;";
+    final private String FINDVALIDBYPATIENT = "SELECT * FROM drug_prescription " +
+            "WHERE date_prescripted + interval '1 month' < now() AND patient_id = ? " +
+            "order by date_prescripted asc;";
 
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -149,11 +153,11 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public List<DrugPrescription> getByPatient(String patientEmail) throws DAOException {
+    public List<DrugPrescription> getByPatient(String patientID) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
-            stm.setString(1, patientEmail);
+            stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -167,11 +171,11 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         }
     }
 
-    public List<DrugPrescription> getByPractitioner(String practitionerEmail) throws DAOException {
+    public List<DrugPrescription> getByPractitioner(String practitionerID) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
-            stm.setString(1, practitionerEmail);
+            stm.setString(1, practitionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -215,6 +219,25 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting valid DrugPrescriptions: ", e);
+        }
+    }
+
+    public List<DrugPrescription> getValidByPatient(String patientID) throws DAOException {
+        List<DrugPrescription> res = new ArrayList<>();
+        DrugPrescription tmp;
+
+        try (PreparedStatement stm = CON.prepareStatement(FINDVALIDBYPATIENT)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting valid DrugPrescriptions by patient: : ", e);
         }
     }
 

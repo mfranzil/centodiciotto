@@ -132,11 +132,11 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     }
 
     @Override
-    public List<ExamPrescription> getByPatient(String patientEmail) throws DAOException {
+    public List<ExamPrescription> getByPatient(String patientID) throws DAOException {
         List<ExamPrescription> res = new ArrayList<>();
         ExamPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
-            stm.setString(1, patientEmail);
+            stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

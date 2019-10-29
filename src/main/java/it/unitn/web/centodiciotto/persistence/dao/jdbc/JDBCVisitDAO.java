@@ -235,11 +235,11 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public List<Visit> getPendingVisitsByPractitioner(String practictionerEmail) throws DAOException {
+    public List<Visit> getPendingVisitsByPractitioner(String practitionerID) throws DAOException {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
         try (PreparedStatement stm = CON.prepareStatement(PENDINGBYPRACTITIONER)) {
-            stm.setString(1, practictionerEmail);
+            stm.setString(1, practictionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -249,7 +249,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
                 return res;
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting Pending Visits by practitioner email: ", e);
+            throw new DAOException("Error getting Pending Visits by practitionerID: ", e);
         }
     }
 
