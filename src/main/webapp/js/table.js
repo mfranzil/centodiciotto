@@ -1,4 +1,20 @@
+function getPatientDetails(patientID) {
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        data: {
+            request_type: "detailed_patient_info",
+            patient: patientID
+        },
+        url: getContextPath() + "/restricted/general_practitioner/patient_list",
+        success: function (json) {
+            console.log(json);
+        }
+    });
+}
+
 $("document").ready(function () {
+
     $.fn.createTableHeaders = function (headers) {
         this.html("");
         let tableHeaders = "";
@@ -15,58 +31,57 @@ $("document").ready(function () {
     };
 
     $.fn.insertRows = function (headers, data) {
-        let tableRows = "";
+        let main_table = this;
 
         $.each(data, function (index, item) {
-            console.log(item);
-            tableRows += "<div class=\"table-personal\" id=\"table-select\">";
+            let row = document.createElement("div");
+            row.className = "table-personal";
+            row.id = "table-select";
 
             $.each(headers, function (index1, header) {
-                tableRows += "<div class=\"table-cell " + header.field + "\">";
+                let cell = document.createElement("div");
+                cell.className = "table-cell " + header.field;
+
                 if (item.hasOwnProperty(header.field)) {
                     switch (header.type) {
                         case "string": {
-                            tableRows += item[header.field];
+                            cell.innerHTML = item[header.field];
                             break;
                         }
                         case "photo" : {
-                            tableRows += "<img class=\"avatar-small\" src=\"" + getContextPath() + item[header.field] + "\" alt =\"Profile photo\">";
+                            let img = document.createElement("img");
+                            img.className = "avatar-small";
+                            img.src = getContextPath() + item[header.field];
+                            img.alt = "Profile photo";
+
+                            cell.appendChild(img);
                             break;
                         }
                         case "button" : {
-                            let a = "<div class=\"popup-window\">\n" +
-                                "                                <div class=\"popup animate-in\">\n" +
-                                "                                    <form action=\"${pageContext.request.contextPath}/restricted/general_practitioner/visits\"\n" +
-                                "                                          id=\"set_visit\" method=\"POST\">\n" +
-                                "                                        Insert a date and time for the appointment, then confirm.\n" +
-                                "                                        <input class=\"form-control my-4\" type=\"datetime-local\" name=\"visit_date\">\n" +
-                                "                                        <input type=\"hidden\" value=\"${patient.email}\" name=\"patient_email\">\n" +
-                                "                                        <button class=\"btn btn-lg btn-block btn-personal\" type=\"submit\">\n" +
-                                "                                            Confirm the appointment\n" +
-                                "                                        </button>\n" +
-                                "                                        <button class=\"btn btn-lg btn-block popup-closer btn-secondary\" type=\"button\">\n" +
-                                "                                            Cancel\n" +
-                                "                                        </button>\n" +
-                                "                                    </form>\n" +
-                                "                                </div>\n" +
-                                "                            </div>";
-                            tableRows += "<button type=\"button\" class=\"btn btn-block btn-personal popup-opener\">";
-                            tableRows += item[header.field];
-                            tableRows += "</button>";
-                            tableRows += a;
-                            //<div class=\"popup-window\"><div class=\"popup animate-in\"><h4>Patient data</h4></div></div>";
+                            let button = document.createElement("button");
+                            button.type = "button";
+                            button.classList.add("btn");
+                            button.classList.add("btn-block");
+                            button.classList.add("btn-personal");
+                            button.classList.add("popup-opener");
+                            button.innerHTML = item[header.field];
+                            button.onclick = function(){
+                                console.log(item.ID);
+                                getPatientDetails(item.ID);
+                            };
+
+                            cell.appendChild(button);
                             break;
                         }
                         default: {
                         }
                     }
-                }
-                tableRows += "</div>";
-            });
-            tableRows += "</div><hr>";
-        });
-        this.append(tableRows);
 
+                }
+                row.appendChild(cell);
+            });
+            main_table.append(row);
+        });
         return this;
     };
 });

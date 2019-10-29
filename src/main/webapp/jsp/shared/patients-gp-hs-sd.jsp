@@ -46,13 +46,18 @@
                 {field: "action",  type : "button", text: "&nbsp;"}
             ];
 
+            $("#test-table").createTableHeaders(tableHeaders);
+
             $.ajax({
                 type: "POST",
                 dataType: "json",
+                data : {
+                    request_type : "patient_list"
+                },
                 url: getContextPath() + "/restricted/general_practitioner/patient_list",
                 success: function (json) {
                     console.log(json);
-                    $("#test-table").createTableHeaders(tableHeaders).insertRows(tableHeaders, json);
+                    $("#test-table").insertRows(tableHeaders, json);
                     enablePopup();
                 }
             });

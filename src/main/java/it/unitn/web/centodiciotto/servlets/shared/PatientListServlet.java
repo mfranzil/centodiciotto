@@ -1,6 +1,7 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
 import com.google.gson.Gson;
+import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
@@ -23,57 +24,112 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/patient_list"})
 public class PatientListServlet extends HttpServlet {
     private PatientDAO patientDAO = null;
+    private GeneralPractitionerDAO practitionerDAO = null;
 
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
-            throw new ServletException("DAOFactory is null.");
+            throw new ServletException("Impossible to get dao factory for exam_list storage system");
         }
         try {
+
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-        } catch (DAOFactoryException e) {
-            throw new ServletException("Error in DAO retrieval: ", e);
+            practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
+
+        } catch (DAOFactoryException ex) {
+            throw new ServletException("Impossible to get dao factory for exam_list storage system", ex);
         }
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
         User user = (User) request.getSession().getAttribute("user");
+        String ajax_type = (String) request.getParameter("request_type");
 
-        if (user instanceof GeneralPractitioner) { // TODO........
-            try {
-                List<Patient> patientList = patientDAO.getPatientsByPractitionerID(user.getID());
-                List<WholePatient> wholePatients = new ArrayList<>();
+        switch (ajax_type) {
+            case "patient_list": {
+                if (user instanceof GeneralPractitioner) {
+                    try {
 
-                for (Patient patient : patientList) {
-                    wholePatients.add(new WholePatient(patient.getFirstName() + " " + patient.getLastName(),
-                            patient.getSSN(), PhotoService.getLastPhoto(patient.getID()),
-                            patient.getID(), "Patient Data"));
+                        List<Patient> patientList = patientDAO.getPatientsByPractitionerID(user.getID());
+
+                        List<PatientListElement> patientListElements = new ArrayList<>();
+                        for (Patient patient : patientList) {
+                            String photoPath = PhotoService.getLastPhoto(patient.getID());
+
+                            patientListElements.add(new PatientListElement(patient.getFirstName() + " " + patient.getLastName(), patient.getSSN(), photoPath, patient.getID(), "Patient Data"));
+                        }
+
+                        Gson gson = new Gson();
+
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(patientListElements));
+
+                    } catch (DAOException ex) {
+                        throw new ServletException("Error while getting patients by practitionerID in PatientListServlet", ex);
+                    }
                 }
-
-                Gson gson = new Gson();
-
-                response.setContentType("application/json");
-                response.getWriter().write(gson.toJson(wholePatients));
-            } catch (DAOException e) {
-                throw new ServletException("Error in DAO usage: ", e);
+                break;
             }
+            case "detailed_patient_info": {
+                String patientID = (String) request.getParameter("patient");
+
+                try {
+                    Patient patient = patientDAO.getByPrimaryKey(patientID);
+                    System.out.println(patientID + " " + patient);
+                    GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(patient.getPractitionerID());
+
+                    Gson gson = new Gson();
+
+                    response.setContentType("application/json");
+                    response.getWriter().write(gson.toJson(new PatientDetails(patient.getFirstName(), patient.getLastName(), patient.getSSN(), patient.getBirthDate().toString(), patient.getGender().toString(), patient.getLivingProvince().getName(), practitioner.getFirstName() + " " + practitioner.getLastName())));
+                } catch (DAOException e) {
+                    throw new ServletException("Error while getting patient detail in PatientListServlet", e);
+                }
+                break;
+            }
+            default: {
+            }
+            ;
         }
+
     }
 
-    private static class WholePatient {
+    private static class PatientListElement {
         private String name;
         private String ssn;
         private String avt;
         private String action;
         private String ID;
 
-        public WholePatient(String name, String ssn, String avt, String ID, String action) {
+        public PatientListElement(String name, String ssn, String avt, String ID, String action) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;
             this.ID = ID;
             this.action = action;
+        }
+    }
+
+    private static class PatientDetails {
+        private String firstName;
+        private String lastName;
+        private String ssn;
+        private String birthDate;
+        private String gender;
+        private String province;
+        private String practitionerName;
+
+        public PatientDetails(String firstName, String lastName, String ssn, String birthDate, String gender, String province, String practitionerName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.ssn = ssn;
+            this.birthDate = birthDate;
+            this.gender = gender;
+            this.province = province;
+            this.practitionerName = practitionerName;
         }
     }
 
