@@ -73,14 +73,14 @@ public class PatientListServlet extends HttpServlet {
                 }
                 break;
             }
-            case "detailed_patient_info": {
+            case "detailed_info": {
                 String patientID = (String) request.getParameter("patient");
 
                 try {
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
-                    System.out.println(patientID + " " + patient);
                     GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(patient.getPractitionerID());
 
+                    System.out.println(patientID + " " + practitioner.getID());
                     Gson gson = new Gson();
 
                     response.setContentType("application/json");
