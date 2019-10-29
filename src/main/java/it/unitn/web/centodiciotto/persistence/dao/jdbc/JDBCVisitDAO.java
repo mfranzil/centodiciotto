@@ -239,7 +239,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
         try (PreparedStatement stm = CON.prepareStatement(PENDINGBYPRACTITIONER)) {
-            stm.setString(1, practictionerID);
+            stm.setString(1, practitionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
