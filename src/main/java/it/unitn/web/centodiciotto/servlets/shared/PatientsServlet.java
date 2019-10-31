@@ -1,13 +1,13 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
 import com.google.gson.Gson;
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +26,9 @@ public class PatientsServlet extends HttpServlet {
 
     private PatientDAO patientDAO;
     private GeneralPractitionerDAO practitionerDAO;
+    private VisitDAO visitDAO;
+    private ExamDAO examDAO;
+    private ExamListDAO examListDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,6 +39,10 @@ public class PatientsServlet extends HttpServlet {
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
+            visitDAO = daoFactory.getDAO(VisitDAO.class);
+            examDAO = daoFactory.getDAO(ExamDAO.class);
+            examListDAO = daoFactory.getDAO(ExamListDAO.class);
+
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -83,15 +90,55 @@ public class PatientsServlet extends HttpServlet {
             case "detailed_info": {
                 String patientID = (String) request.getParameter("patient");
 
+                List<Object> jsonResponse = new ArrayList<>();
+
                 try {
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
                     GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(patient.getPractitionerID());
 
-                    System.out.println(patientID + " " + practitioner.getID());
-                    Gson gson = new Gson();
+                    //Patient data
+                    jsonResponse.add(new JsonUtils.HtmlElement("h4", "", "Patient data"));
+                    jsonResponse.add(new JsonUtils.HtmlElement("table", "table table-unresponsive", ""));
 
+                    jsonResponse.add(JsonUtils.createTableEntry("Name", patient.getFirstName()));
+                    jsonResponse.add(JsonUtils.createTableEntry("Surname", patient.getLastName()));
+                    jsonResponse.add(JsonUtils.createTableEntry("SSN", patient.getSSN()));
+                    jsonResponse.add(JsonUtils.createTableEntry("Birthdate", patient.getBirthDate().toString()));
+                    jsonResponse.add(JsonUtils.createTableEntry("Gender", patient.getGender().toString()));
+                    jsonResponse.add(JsonUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
+                    jsonResponse.add(JsonUtils.createTableEntry("Practitioner", practitioner.getFirstName() + " " + practitioner.getLastName()));
+
+                    //Last visit
+                    Visit lastVisit = visitDAO.getLastVisitByPatientID(patientID);
+                    if(lastVisit != null) {
+                        GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(lastVisit.getPractitionerID());
+
+                        jsonResponse.add(new JsonUtils.HtmlElement("h4", "", "Last visit"));
+                        jsonResponse.add(new JsonUtils.HtmlElement("table", "table table-unresponsive", ""));
+
+                        jsonResponse.add(JsonUtils.createTableEntry("Date", lastVisit.getDate().toString()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Practitioner", visitPractitioner.getFirstName() + " " + visitPractitioner.getLastName()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Report", lastVisit.getReport()));
+                    }
+                    //Last exam
+                    List <Exam> examPatientList = examDAO.getByPatientLastYear(patientID);
+                    if(!examPatientList.isEmpty()) {
+                        jsonResponse.add(new JsonUtils.HtmlElement("h4", "", "Last exams"));
+                        jsonResponse.add(new JsonUtils.HtmlElement("table", "table table-unresponsive", ""));
+
+                        for (Exam exam : examPatientList) {
+                            jsonResponse.add(JsonUtils.createTableEntry("Date", exam.getDate().toString()));
+                            jsonResponse.add(JsonUtils.createTableEntry("Description", exam.getType().getDescription()));
+                            if(exam.getResult() != null) {
+                                jsonResponse.add(JsonUtils.createTableEntry("Result", exam.getResult()));
+                            }
+                            jsonResponse.add(JsonUtils.createTableEntry("", ""));
+                        }
+                    }
+
+                    Gson gson = new Gson();
                     response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new PatientDetails(patient.getFirstName(), patient.getLastName(), patient.getSSN(), patient.getBirthDate().toString(), patient.getGender().toString(), patient.getLivingProvince().getName(), practitioner.getFirstName() + " " + practitioner.getLastName())));
+                    response.getWriter().write(gson.toJson(jsonResponse));
                 } catch (DAOException e) {
                     throw new ServletException("Error while getting patient detail in PatientListServlet", e);
                 }
@@ -103,6 +150,8 @@ public class PatientsServlet extends HttpServlet {
         }
 
     }
+
+
 
     private static class PatientListElement {
         private String name;

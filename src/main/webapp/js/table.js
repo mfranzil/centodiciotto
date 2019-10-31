@@ -1,3 +1,20 @@
+function buildHtmlFromJson(json, parent){
+    let lastElement;
+    json.forEach( function(element, index){
+        if(element instanceof Array){
+            buildHtmlFromJson(element, lastElement);
+        }
+        else {
+            let htmlParagraphElement = document.createElement(element.elementType);
+            htmlParagraphElement.className = element.elementClass;
+            htmlParagraphElement.innerHTML = element.elementContent;
+            parent.appendChild(htmlParagraphElement);
+            lastElement = htmlParagraphElement;
+        }
+    });
+    return parent;
+}
+
 function getDetails(patientID) {
     let content = document.createElement("div");
     $.ajax({
@@ -9,9 +26,8 @@ function getDetails(patientID) {
         },
         url: getContextPath() + "/restricted/general_practitioner/patients",
         success: function (json) {
-            let text = document.createElement("p");
-            text.textContent = json.firstName;
-            content.appendChild(text);
+            console.log(json);
+            buildHtmlFromJson(json, content);
         }
     });
     return content;
