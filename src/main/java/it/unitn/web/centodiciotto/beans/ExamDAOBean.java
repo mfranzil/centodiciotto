@@ -1,6 +1,7 @@
 package it.unitn.web.centodiciotto.beans;
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
@@ -20,6 +21,7 @@ public class ExamDAOBean implements Serializable {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             examDAO = daoFactory.getDAO(ExamDAO.class);
+
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error in DAO retrieval: ", e);
         }

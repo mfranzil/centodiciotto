@@ -17,6 +17,7 @@ import java.util.List;
 public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamListDAO {
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM exam_list WHERE exam_id = ?;";
+    final private String FINDNAMEBYPRIMARYKEY = "SELECT description FROM exam_list WHERE exam_id = ?;";
     final private String SELECTALL = "SELECT * FROM exam_list;";
     final private String COUNT = "SELECT COUNT(*) FROM exam_list;";
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,21 +81,31 @@
                     </jsp:useBean>
                     <c:set var="specialist" value="${specialistDAOBean.specializedDoctorByID}"/>
 
+                    <jsp:useBean id="examDate" class="java.util.Date"/>
+                    <jsp:setProperty name="examDate" property="time"
+                                     value="${exam.date.time}"/>
+
                     <div class="table-personal">
                         <div class="table-cell specialized-doctor">${specialist.firstName} ${specialist.lastName}
                         </div>
-                        <div class="table-cell exam">${exam.ID}
+                        <div class="table-cell exam">${exam.type.description}
                         </div>
-                        <div class="table-cell date">${exam.date}
+                        <div class="table-cell date">
+                            <fmt:formatDate type="date" dateStyle="long" value="${examDate}"/>
                         </div>
-                        <div class="table-cell amount">$ ${exam.ticket}
+                        <div class="table-cell amount">$${exam.ticket}
                         </div>
                         <div class="table-cell action">
-                            <button type="button" class="btn btn-block btn-personal">
-                                Pay
-                            </button>
-                            <!--<input onclick='document.getElementById("myButton3").value="Payed"; this.disabled=true;' type="button" class="btn btn-block btn-personal" value="Pay" id="myButton3"
-                                                              style="width:130px"/>-->
+                            <form method="POST">
+                                <input type="hidden" value="${exam.ID}" type="text" name="ID">
+                                <input type="hidden" value="exam" type="text" name="type">
+                                <button type="submit" class="btn btn-block btn-personal">
+                                    Pay
+                                </button>
+                                <!--TO DO: mettere metodo doPost nel servlet (sempre ticket?)
+                                in modo che rimanga memorizzata l'informazione!
+                                -->
+                            </form>
                         </div>
                     </div>
                     <hr>

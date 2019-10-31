@@ -33,6 +33,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?";
     final private String FINDBYPATIENTLASTYEAR = "select * from exam where date <= localtimestamp and " +
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
+    final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
     final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? AND ticket_paid = false";
 
 
