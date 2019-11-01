@@ -4,7 +4,6 @@
 <head>
     <title>Book your exam - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-    <script src="${pageContext.request.contextPath}/js/search.js"></script>
     <script src="${pageContext.request.contextPath}/js/ajax.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css">
@@ -20,6 +19,22 @@
 
         }
     </style>
+    <script>
+        $("document").ready(function () {
+            $(function () {
+                $("#exam-search").select2({
+                    placeholder: "Choose an exam",
+                    allowClear: true,
+                    closeOnSelect: true,
+                    ajax: {
+                        url: getContextPath() + "/restricted/patient/exams",
+                        dataType: "json"
+                    }
+
+                }).val(null).trigger("change");
+            });
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
