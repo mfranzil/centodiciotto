@@ -25,9 +25,14 @@ function getDetails(patientID) {
             patient: patientID
         },
         url: getContextPath() + "/restricted/general_practitioner/patients",
+        start : function(){
+
+        },
         success: function (json) {
+            console.log("prima");
             console.log(json);
             buildHtmlFromJson(json, content);
+
         }
     });
     return content;
@@ -54,7 +59,6 @@ $("document").ready(function () {
 
     $.fn.insertRows = function (headers, data) {
         let main_table = this;
-
         $.each(data, function (index, item) {
             let row = document.createElement("div");
             row.className = "table-personal";
