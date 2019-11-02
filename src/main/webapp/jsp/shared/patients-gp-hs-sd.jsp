@@ -113,7 +113,6 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <!-- TODO SIMONE BARRA DI RICERCA: tutti i pazienti di un medico -->
                 <div class="form-label-group my-4 mx-4 ls-search">
                     <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control mr-1"
                             style="margin: 1em" autofocus>
