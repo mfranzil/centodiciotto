@@ -57,11 +57,12 @@ $("document").ready(function () {
 
     $.fn.insertRows = function (headers, data) {
         let main_table = this;
+        let enter = document.createElement("hr");
+
         $.each(data, function (index, item) {
             let row = document.createElement("div");
             row.className = "table-personal";
             row.id = "table-select";
-
             $.each(headers, function (index1, header) {
                 let cell = document.createElement("div");
                 cell.className = "table-cell " + header.field;
@@ -98,7 +99,10 @@ $("document").ready(function () {
                             popup_animate.classList.add("popup");
                             popup_animate.classList.add("animate-in");
 
-                            //popup_animate.appendChild(getDetails(item.ID));
+                            let exit_button = document.createElement("button");
+                            exit_button.className = "btn btn-lg btn-block btn-secondary popup-closer";
+                            exit_button.innerText = "Exit";
+
                             popup_window.appendChild(popup_animate);
 
                             button.onclick = function () {
@@ -120,6 +124,8 @@ $("document").ready(function () {
                                 loading.append(loadingImage);
 
                                 popup_animate.appendChild(getDetails(item.ID));
+                                popup_animate.appendChild(exit_button);
+                                enablePopup();
                             };
                             cell.appendChild(button);
                             cell.appendChild(popup_window);
@@ -132,7 +138,7 @@ $("document").ready(function () {
                 row.appendChild(cell);
             });
             main_table.append(row);
-            main_table.append()
+            main_table.append('<hr />');
         });
         return this;
     };
