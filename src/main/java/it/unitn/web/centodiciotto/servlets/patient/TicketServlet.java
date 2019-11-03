@@ -2,7 +2,10 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
+import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +16,7 @@ import java.io.IOException;
 
 @WebServlet("/restricted/patient/tickets")
 public class TicketServlet extends HttpServlet {
+    private ExamDAO examDAO;
 
     @Override
     public void init() throws ServletException {
@@ -28,5 +32,21 @@ public class TicketServlet extends HttpServlet {
         if (user instanceof Patient) {
             request.getRequestDispatcher("/jsp/patient/tickets-p.jsp").forward(request, response);
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+
+        Exam selectedExam = new Exam();
+        selectedExam.setTicketPaid(true);
+
+        try {
+            selectedExam.setTicketPaid(true);
+            examDAO.insert(selectedExam);
+        } catch (DAOException e) {
+            throw new ServletException("Error in DAO usage: ", e);
+        }
+        //doGet(request, response);
     }
 }

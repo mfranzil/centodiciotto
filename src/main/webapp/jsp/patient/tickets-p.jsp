@@ -99,8 +99,8 @@
                             <form method="POST">
                                 <input type="hidden" value="${exam.ID}" type="text" name="ID">
                                 <input type="hidden" value="exam" type="text" name="type">
-                                <button type="submit" class="btn btn-block btn-personal">
-                                    Pay
+                                <button type="button" class="btn btn-block btn-personal"
+                                        ${exam.ticketPaid ? "disabled" : ""}> ${exam.ticketPaid ? "Paid" : "Pay"}
                                 </button>
                                 <!--TO DO: mettere metodo doPost nel servlet (sempre ticket?)
                                 in modo che rimanga memorizzata l'informazione!
