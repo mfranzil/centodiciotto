@@ -100,7 +100,11 @@ $("document").ready(function () {
                             button.classList.add("btn-block");
                             button.classList.add("btn-personal");
                             button.classList.add("popup-opener");
-                            button.innerHTML = item[header.field];
+                            button.innerHTML = item[header.field].label;
+
+                            if (!item[header.field].enable) {
+                                button.disabled = true;
+                            }
 
                             let popupWindow = document.createElement("div");
                             popupWindow.style.display = "none";
