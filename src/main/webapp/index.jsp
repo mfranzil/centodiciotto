@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
     <title>CentoDiciotto - Home</title>
+    <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
-    <%@ include file="/jsp/fragments/head.jsp" %>
 </head>
 <body id="page-top" style="padding-top: 0"> <!-- COZZA CON LA NAVBAR! Non toccare a meno che non sistemiate la nav -->
 <%@ include file="/jsp/fragments/nav.jsp" %>

@@ -100,7 +100,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
     }
 
     //TODO warning duplicate code
-    public static class Exam_ implements Serializable {
+    private static class Exam_ implements Serializable {
 
         private Integer id;
         private String text;
@@ -137,7 +137,7 @@ public class ExamPrescriptionServlet extends HttpServlet {
         }
     }
 
-    public static class Results implements Serializable {
+    private static class Results implements Serializable {
 
         private Exam_[] results;
 

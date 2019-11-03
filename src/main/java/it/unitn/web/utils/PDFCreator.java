@@ -12,6 +12,7 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
+import javax.servlet.ServletContext;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +25,12 @@ import java.util.List;
 
 @SuppressWarnings("SameParameterValue")
 public class PDFCreator {
+
+    private static ServletContext sc;
+
+    public static void configure(ServletContext servletContext) {
+        sc = servletContext;
+    }
 
     private static String insertSpaces(String string, int spaces) {
         StringBuilder res = new StringBuilder();
@@ -49,7 +56,7 @@ public class PDFCreator {
                 .withZone(ZoneId.systemDefault()).format(ts.toInstant()), 3);
     }
 
-    public static PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra)
+    public static PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra, String qrCodeURL)
             throws RuntimeException {
 
         PDRectangle rec = new PDRectangle(1000, 765);
@@ -58,15 +65,17 @@ public class PDFCreator {
         doc.addPage(page);
 
         List<Pair<String, Object>> parameters = new ArrayList<>();
+        parameters.add(Pair.makePair("action", "qr"));
         parameters.add(Pair.makePair("practitionerID", pra.getID()));
         parameters.add(Pair.makePair("prescriptionID", dp.getID()));
         parameters.add(Pair.makePair("patientID", pat.getID()));
 
-        File file = QRCodeCreator.createQRCodeURL("", parameters, 220, 220).file();
+        File file = QRCodeCreator.createQRCodeURL(
+                qrCodeURL + sc.getContextPath() + "/restricted/chemist/prescriptions", parameters,
+                220, 220).file();
 
         try {
-            //String imagePath = sc.getRealPath("/") + File.separator + "img" + File.separator + "prescription.png";
-            String imagePath = "C:\\Users\\matte\\OneDrive\\Università\\Didattica\\ProgettoWeb\\src\\main\\webapp\\img\\prescription.png";
+            String imagePath = sc.getRealPath("/") + File.separator + "img" + File.separator + "prescription.png";
 
             PDImageXObject QRCode = PDImageXObject.createFromFileByContent(file, doc);
             PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, doc);

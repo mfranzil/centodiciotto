@@ -8,7 +8,7 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <style>
         @media (min-width: 992px) {
-            .table-cell.doctor {
+            .table-cell.pract {
                 width: 40%;
             }
 
@@ -46,10 +46,10 @@
                     <jsp:setProperty name="drugPrescriptionDAO" property="DAOFactory" value=""/>
                 </jsp:useBean>
                 <div class="table-personal table-header">
-                    <div class="table-cell doctor">Doctor</div>
+                    <div class="table-cell pract">Practitioner</div>
                     <div class="table-cell date">Date</div>
-                    <div class="table-cell report-state">Report State</div>
-                    <div class="table-cell action">Report</div>
+                    <div class="table-cell report-state">Availability</div>
+                    <div class="table-cell action">Prescription</div>
                 </div>
                 <c:forEach items="${drugPrescriptionDAO.byPatient}" var="prescription">
 
@@ -66,7 +66,7 @@
                     <c:set var="practitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
                     <c:set var="available" value="${empty prescription.dateSold or empty prescription.chemistID}"/>
                     <div class="table-personal">
-                        <div class="table-cell doctor">${practitioner.firstName}&nbsp;${practitioner.lastName}
+                        <div class="table-cell pract">${practitioner.firstName}&nbsp;${practitioner.lastName}
                         </div>
                         <div class="table-cell date">
                             <fmt:formatDate type="date" dateStyle="long" value="${datePrescripted}"/>

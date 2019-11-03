@@ -115,17 +115,6 @@
         <url-pattern>/restricted/health_service/recalls</url-pattern>
     </servlet-mapping>
 
-    <!-- Chemist -->
-    <servlet>
-        <servlet-name>PrescriptionsChemist</servlet-name>
-        <jsp-file>/jsp/chemist/prescriptions-c.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PrescriptionsChemist</servlet-name>
-        <url-pattern>/restricted/chemist/prescriptions</url-pattern>
-    </servlet-mapping>
-
-
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
         <session-timeout>

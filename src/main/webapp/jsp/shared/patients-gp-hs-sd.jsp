@@ -42,32 +42,33 @@
     <script>
         $("document").ready(function () {
             $(function () {
-                $("#patient-search").select2({
-                    placeholder: "Select a patient",
-                    allowClear: true,
-                    closeOnSelect: true,
-                    ajax: {
-                        type: "POST",
-                        data: function (params) {
-                            return {
-                                term: params.term,
-                                request_type: 'patient_search'
-                            }
-                        },
-                        url: getContextPath() + "/restricted/general_practitioner/patients",
-                        dataType: "json",
-                    }
-                }).val(null).trigger("change");
-
-                $('#patient-search').on('select2:select', function (e) {
-                    $("#test-table").children().not('first').remove();
-                    renderPatientsRows(e.params.data.patientID);
-                });
-
-                $('#patient-search').on('select2:unselect', function (e) {
-                    $("#test-table").children().not('first').remove();
-                    renderPatientsRows();
-                });
+                $("#patient-search")
+                    .select2({
+                        placeholder: "Select a patient",
+                        allowClear: true,
+                        closeOnSelect: true,
+                        ajax: {
+                            type: "POST",
+                            data: function (params) {
+                                return {
+                                    term: params.term,
+                                    request_type: 'patient_search'
+                                }
+                            },
+                            url: getContextPath() + "/restricted/general_practitioner/patients",
+                            dataType: "json",
+                        }
+                    })
+                    .val(null)
+                    .trigger("change")
+                    .on('select2:select', function (e) {
+                        $("#test-table").children().not('first').remove();
+                        renderPatientsRows(e.params.data.patientID);
+                    })
+                    .on('select2:unselect', function (e) {
+                        $("#test-table").children().not('first').remove();
+                        renderPatientsRows();
+                    });
             });
 
             let tableHeaders = [
@@ -79,6 +80,7 @@
 
             $("#test-table").createTableHeaders(tableHeaders);
             renderPatientsRows();
+            $("#main-loading-container").slideUp();
 
             function renderPatientsRows(patientID) {
                 $.ajax({
@@ -103,7 +105,7 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
-        <h1>My Patients</h1> <!-- TODO cambiare titolo a seconda della provenienza -->
+        <h1>Patients</h1>
         <p class="lead mt-4 mx-4">
             Click on a patient to get more information, including past visits, exams and prescriptions.
         </p>
@@ -113,11 +115,14 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <!-- TODO SIMONE BARRA DI RICERCA: tutti i pazienti di un medico -->
                 <div class="form-label-group my-4 mx-4 ls-search">
-                    <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control mr-1"
-                            style="margin: 1em" autofocus>
+                    <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control"
+                            autofocus>
                     </select>
+                </div>
+                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>
                 <div id="test-table"></div>
             </div>

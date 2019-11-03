@@ -18,7 +18,7 @@
     <div class="flex-wrap">
         <div class="hover-button focused" id="patient">
             <img alt="Patient" class="mb-2 icon"
-                 src="${pageContext.request.contextPath}/img/classes/patient.png"">
+                 src="${pageContext.request.contextPath}/img/classes/patient.png">
             <br>Patient
         </div>
         <div class="hover-button focused" id="general_practitioner">
@@ -45,8 +45,8 @@
 </div>
 <div class="popup-window" id="form-window">
     <div class="popup animate-in">
-        <div class="justify-content-center" id="loading-container" style="text-align: center; display: none !important">
-            <img class="rotating mt-2" role="status" style="width: 64px"
+        <div class="justify-content-center loading" id="loading-container" style="text-align: center; display: none !important">
+            <img class="rotating" role="status" style="width: 64px"
                  src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
         </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
@@ -57,6 +57,7 @@
                 Logging in as...
             </div>
             <input name="role" id="role" type="hidden" value="none">
+            <input name="referrer" id="referrer" type="hidden" value="${pageContext.request.getParameter('referrer')}">
             <div class="form-label-group">
                 <input autofocus class="form-control" id="user-id-login" name="userID"
                        placeholder="Email" required type="email">
@@ -82,15 +83,16 @@
         </form>
         <form action="${pageContext.request.contextPath}/request_password_reset"
               id="recovery" method="POST" style="display: none">
-            <div id="message center-100" class="mb-2">
+            <div id="message" class="center-100 mb-2">
                 Insert your email.<br>We will send you a link to reset your password.
             </div>
             <div class="mb-2">
-                <input autofocus class="form-control" id="userID" name="userID"
+                <label for="user-id-recovery" style="display: none">Insert your e-mail</label>
+                <input autofocus class="form-control" id="user-id-recovery" name="userID"
                        placeholder="Insert your e-mail" required type="email">
             </div>
             <button class="btn btn-lg btn-block btn-personal" type="submit" id="submit-recovery">Reset password</button>
-            <button class="btn btn-lg btn-block btn-secondary" type="button" id="to-login">Cancel</button>
+            <button class="btn btn-lg btn-block btn-secondary" type="button" id="to-login">Back</button>
         </form>
     </div>
 </div>

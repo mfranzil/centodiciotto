@@ -4,6 +4,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.utils.Crypto;
+import it.unitn.web.utils.PDFCreator;
 import it.unitn.web.utils.PhotoService;
 import it.unitn.web.utils.SendEmail;
 
@@ -23,6 +24,7 @@ public class WebAppContextListener implements ServletContextListener {
 
             Crypto.configure(daoFactory);
             PhotoService.configure(daoFactory, sce.getServletContext());
+            PDFCreator.configure(sce.getServletContext());
 
             sce.getServletContext().setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException e) {

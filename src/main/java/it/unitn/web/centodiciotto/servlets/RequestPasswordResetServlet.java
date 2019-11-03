@@ -65,7 +65,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
                                 + userID + ". No changes have been done to your account, yet.\n\n" +
                                 "You can reset your password by clicking here:\n" + url + "\n\n" +
                                 "This link is valid for 24 hours and can only be used once.\n" +
-                                "If you didn't ask for this, you can safely ignore this email.\n" +
+                                "If you didn't ask for this, you can safely ignore this email.\n\n" +
                                 "Yours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - reset your password";
 
@@ -74,7 +74,7 @@ public class RequestPasswordResetServlet extends HttpServlet {
                 response.setStatus(200);
             } catch (DAOException e) {
                 response.setStatus(400);
-                throw new ServletException("Impossible to retrieve the user.", e);
+                throw new ServletException("Error in DAO usage. ", e);
             }
         }
     }

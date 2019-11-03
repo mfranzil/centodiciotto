@@ -1,19 +1,19 @@
 $("document").ready(function () {
-    $("#message").click(function(){
+    $("#message").click(function () {
         $.ajax({
             type: "POST",
-            url : 'http://localhost:8080/CentoDiciotto_war_exploded/restricted/patient/exam_booking',
-            data : {
+            url: 'http://localhost:8080/CentoDiciotto_war_exploded/restricted/patient/exam_booking',
+            data: {
                 selectedExam: $('#exam-search').val()
             },
             dataType: "json",
-            success: function(json){
+            success: function (json) {
                 let divs = "";
                 const table = $("#main-table");
                 table.html("");
 
-                $.each(json, function(index, item) {
-                    $.each(item, function(index_1, item_1) {
+                $.each(json, function (index, item) {
+                    $.each(item, function (index_1, item_1) {
                         console.log(item_1.id);
                         console.log(item_1.text);
                         console.log(item_1.valid);

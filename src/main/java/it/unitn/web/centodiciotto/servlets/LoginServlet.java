@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.logging.Level;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -60,6 +62,7 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("password");
             String role = request.getParameter("role");
             String rememberMe = request.getParameter("rememberMe");
+            String referrer = request.getParameter("referrer");
 
             User user = Crypto.authenticate(userID, password, role);
             String json;
@@ -77,7 +80,16 @@ public class LoginServlet extends HttpServlet {
                 request.getSession().setAttribute("displayName", Common.getDisplayName(user));
 
                 response.setStatus(200);
-                json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
+                if (!Objects.equals(referrer, "")
+                        && !referrer.equals(request.getContextPath() + "/restricted/logout_handler")) {
+                    json = "{\"url\":\"" + referrer.replace('$','&') + "\"}";
+                } else {
+                    json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
+                }
+
+                java.util.logging.Logger.getLogger("SCE").log(Level.INFO,
+                        "User " + userID + " logged in with role "
+                        + role + " - redirected with JSON " + json);
             }
             response.getWriter().write(json);
         }

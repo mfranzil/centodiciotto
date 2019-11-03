@@ -12,6 +12,7 @@ import java.util.Properties;
 
 public class SendEmail {
     private static Session session;
+    private static InternetAddress sender;
 
     public static void configure() throws RuntimeException {
         Properties data = new Properties();
@@ -28,6 +29,8 @@ public class SendEmail {
             final String port = data.getProperty("smtp-port");
             final String username = data.getProperty("smtp-username");
             final String password = data.getProperty("smtp-password");
+
+            sender = new InternetAddress(username, username.trim());
 
             Properties systemProperties = System.getProperties();
 
@@ -88,8 +91,10 @@ public class SendEmail {
 
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress(recipient, "CentoDiciotto"));
-        msg.setRecipients(Message.RecipientType.TO,
-                new InternetAddress[]{new InternetAddress(recipient, recipient.trim())});
+
+        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient, recipient.trim()));
+        msg.setRecipient(Message.RecipientType.CC, sender);
+
         msg.setSubject(subject);
         msg.setSentDate(new java.util.Date());
         msg.setContent(multipart);

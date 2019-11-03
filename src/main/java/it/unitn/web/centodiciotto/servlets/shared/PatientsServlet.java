@@ -6,8 +6,8 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.PhotoService;
 import it.unitn.web.utils.JsonUtils;
+import it.unitn.web.utils.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,18 +58,18 @@ public class PatientsServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String ajax_type = (String) request.getParameter("request_type");
+        String ajax_type = request.getParameter("request_type");
+
         switch (ajax_type) {
             case "patient_list": {
                 if (user instanceof GeneralPractitioner) {
                     try {
-                        String patientID = (String) request.getParameter("patientID");
+                        String patientID = request.getParameter("patientID");
 
                         List<Patient> patientList = new ArrayList<>();
-                        if(patientID == null) {
+                        if (patientID == null) {
                             patientList = patientDAO.getPatientsByPractitionerID(user.getID());
-                        }
-                        else{
+                        } else {
                             patientList.add(patientDAO.getByPrimaryKey(patientID));
                         }
 
@@ -84,14 +84,14 @@ public class PatientsServlet extends HttpServlet {
                         response.setContentType("application/json");
                         response.getWriter().write(gson.toJson(patientListElements));
 
-                    } catch (DAOException ex) {
-                        throw new ServletException("Error while getting patients by practitionerID in PatientListServlet", ex);
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
                     }
                 }
                 break;
             }
             case "detailed_info": {
-                String patientID = (String) request.getParameter("patient");
+                String patientID = request.getParameter("patient");
 
                 List<Object> jsonResponse = new ArrayList<>();
 
@@ -99,7 +99,7 @@ public class PatientsServlet extends HttpServlet {
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
                     GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(patient.getPractitionerID());
 
-                    //Patient data
+                    // Patient data
                     jsonResponse.add(new JsonUtils.HtmlElement("h4", "", "Patient data"));
                     jsonResponse.add(new JsonUtils.HtmlElement("table", "table table-unresponsive", ""));
 
@@ -111,7 +111,7 @@ public class PatientsServlet extends HttpServlet {
                     jsonResponse.add(JsonUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
                     jsonResponse.add(JsonUtils.createTableEntry("Practitioner", practitioner.getFirstName() + " " + practitioner.getLastName()));
 
-                    //Last visit
+                    // Last visit
                     Visit lastVisit = visitDAO.getLastVisitByPatientID(patientID);
                     if (lastVisit != null) {
                         GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(lastVisit.getPractitionerID());
@@ -123,7 +123,7 @@ public class PatientsServlet extends HttpServlet {
                         jsonResponse.add(JsonUtils.createTableEntry("Practitioner", visitPractitioner.getFirstName() + " " + visitPractitioner.getLastName()));
                         jsonResponse.add(JsonUtils.createTableEntry("Report", lastVisit.getReport()));
                     }
-                    //Last exam
+                    // Last exam
                     List<Exam> examPatientList = examDAO.getByPatientLastYear(patientID);
                     if (!examPatientList.isEmpty()) {
                         jsonResponse.add(new JsonUtils.HtmlElement("h4", "", "Last exams"));
@@ -139,7 +139,7 @@ public class PatientsServlet extends HttpServlet {
                         }
                     }
 
-                    //Medicinali
+                    // Medicinali
                     List<DrugPrescription> prescriptions = drugPrescription.getValidByPatient(patientID);
                     if (!examPatientList.isEmpty()) {
                         jsonResponse.add(new JsonUtils.HtmlElement("h4", "", "Last prescriptions"));
@@ -171,7 +171,7 @@ public class PatientsServlet extends HttpServlet {
                         List<Patient> ALL_PATIENT = patientDAO.getPatientsByPractitionerID(user.getID());
                         List<PatientSearchResult> results = new ArrayList<>();
 
-                        Integer id = 0;
+                        int id = 0;
                         for (Patient patient : ALL_PATIENT) {
                             results.add(new PatientSearchResult(id++, patient.getFirstName() + " " + patient.getLastName(), patient.getID()));
                         }
@@ -194,10 +194,8 @@ public class PatientsServlet extends HttpServlet {
             }
             default: {
             }
-            ;
         }
     }
-
 
     private static class PatientListElement {
         private String name;
@@ -215,7 +213,7 @@ public class PatientsServlet extends HttpServlet {
         }
     }
 
-    public static class PatientSearchResult implements Serializable {
+    private static class PatientSearchResult implements Serializable {
 
         private Integer id;
         private String text;
@@ -231,7 +229,8 @@ public class PatientsServlet extends HttpServlet {
             return text;
         }
     }
-    public static class Results implements Serializable {
+
+    private static class Results implements Serializable {
 
         private PatientSearchResult[] results;
 

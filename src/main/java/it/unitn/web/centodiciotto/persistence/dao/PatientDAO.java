@@ -12,5 +12,7 @@ public interface PatientDAO extends DAO<Patient, String> {
 
     List<Patient> getPatientsByPractitionerID(String practitionerID) throws DAOException;
 
+    List<Patient> getPatientsBySSNOrPartialName(String query) throws DAOException;
+
 }
 

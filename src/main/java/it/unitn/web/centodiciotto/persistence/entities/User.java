@@ -21,10 +21,6 @@ public class User {
         this.ID = ID;
     }
 
-    public String getEmail() {
-        return ID;
-    }
-
     public String getHash() {
         return hash;
     }

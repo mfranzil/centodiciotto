@@ -45,12 +45,15 @@ $("document").ready(function () {
                 window.location = result.url;
             },
             error: function (data) {
-                alert("Nome utente o password non corretti.");
+                $("#form-name").html("Incorrect email or password.").css("color", "rgba(135, 0, 0, 1)");
                 $('#user-id-login,#password-login').css("background", "rgba(255, 0, 0, 0.2)")
                     .css("border-color", "red");
+
                 setTimeout(function () {
                     $('#user-id-login,#password-login').css("background", "").css("border-color", "");
-                }, 2000);
+                    $("#form-name").html("Logging in as...").css("color", "rgba(0, 0, 0, 1)");
+                }, 4000);
+
                 $("#login").slideDown();
                 $("#loading-container").slideUp();
             }
@@ -59,6 +62,10 @@ $("document").ready(function () {
 
     $("#recovery").submit(function (e) {
         e.preventDefault();
+
+        $("#recovery").slideUp();
+        $("#loading-container").slideDown();
+
         $('#submit-recovery').prop('disabled', true);
         let form = $(this);
         let url = form.attr('action');
@@ -69,11 +76,15 @@ $("document").ready(function () {
             cache: false,
             data: form.serialize(),
             success: function (data) {
+                $("#recovery").slideDown();
+                $("#loading-container").slideUp();
+                $('#submit-recovery').slideUp();
+
                 $('#message').html("If " + $('#user-id-recovery').val() + " corresponds to a valid email," +
                     " you'll receive instructions for resetting your password in your inbox. <br>" +
                     "The link is valid for 24 hours.");
                 $('#user-id-recovery').css("background", "rgba(0, 255, 0, 0.2)")
-                    .css("border-color", "green").val("").prop('disabled', true);
+                    .css("border-color", "green").prop('disabled', true);
             }
         });
     });

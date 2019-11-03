@@ -1,10 +1,9 @@
-function buildHtmlFromJson(json, parent){
+function buildHtmlFromJson(json, parent) {
     let lastElement;
-    json.forEach( function(element, index){
-        if(element instanceof Array){
+    json.forEach(function (element, index) {
+        if (element instanceof Array) {
             buildHtmlFromJson(element, lastElement);
-        }
-        else {
+        } else {
             let htmlParagraphElement = document.createElement(element.elementType);
             htmlParagraphElement.className = element.elementClass;
             htmlParagraphElement.innerHTML = element.elementContent;
@@ -25,21 +24,20 @@ function getDetails(patientID) {
             patient: patientID
         },
         url: getContextPath() + "/restricted/general_practitioner/patients",
-        start : function(){
+        start: function () {
 
         },
         success: function (json) {
             console.log("prima");
             console.log(json);
             buildHtmlFromJson(json, content);
-
+            $(".loading").slideUp();
         }
     });
     return content;
 }
 
 $("document").ready(function () {
-
     $.fn.createTableHeaders = function (headers) {
         this.html("");
         let headersDiv = document.createElement("div");
@@ -92,8 +90,6 @@ $("document").ready(function () {
                             button.classList.add("popup-opener");
                             button.innerHTML = item[header.field];
 
-
-
                             let popup_window = document.createElement("div");
                             popup_window.style.display = "none";
                             popup_window.className = "popup-window";
@@ -105,10 +101,24 @@ $("document").ready(function () {
                             //popup_animate.appendChild(getDetails(item.ID));
                             popup_window.appendChild(popup_animate);
 
-                            button.onclick = function(){
-                                if(popup_animate.childElementCount > 0){
+                            button.onclick = function () {
+                                if (popup_animate.childElementCount > 0) {
                                     popup_animate.childNodes[0].remove();
                                 }
+
+                                let loading = document.createElement("div");
+                                loading.classList.add("justify-content-center");
+                                loading.classList.add("loading");
+                                loading.style.textAlign = "center";
+                                popup_animate.append(loading);
+
+                                let loadingImage = document.createElement("img");
+                                loadingImage.classList.add("rotating");
+                                loadingImage.style.width = "64px";
+                                loadingImage.src = getContextPath() + "/img/logo_blue.svg";
+                                loadingImage.alt = "Loading";
+                                loading.append(loadingImage);
+
                                 popup_animate.appendChild(getDetails(item.ID));
                             };
                             cell.appendChild(button);
@@ -122,8 +132,8 @@ $("document").ready(function () {
                 row.appendChild(cell);
             });
             main_table.append(row);
+            main_table.append()
         });
         return this;
-
     };
 });

@@ -188,11 +188,11 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getByPatientNotPaid(String PatientEmail) throws DAOException {
+    public List<Exam> getByPatientNotPaid(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTPAID)) {
-            stm.setString(1, PatientEmail);
+            stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

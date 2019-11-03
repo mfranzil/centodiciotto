@@ -26,12 +26,26 @@ public class AuthenticationFilter implements Filter {
             contextPath += "/";
         }
 
+        String redirectUrl;
+
+        if (request.getRequestURI() != null) {
+            if (request.getQueryString() != null) {
+                String originalRequest = request.getRequestURI() + "?"
+                        + request.getQueryString().replace('&', '$');
+                redirectUrl = contextPath + "login?referrer=" + originalRequest;
+            } else {
+                redirectUrl = contextPath + "login?referrer=" +request.getRequestURI();
+            }
+        } else {
+            redirectUrl = contextPath + "login";
+        }
+
         if (session == null) {
-            response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
+            response.sendRedirect(response.encodeRedirectURL(redirectUrl));
         } else {
             user = (User) session.getAttribute("user");
             if (user == null) {
-                response.sendRedirect(response.encodeRedirectURL(contextPath + "login"));
+                response.sendRedirect(response.encodeRedirectURL(redirectUrl));
             } else {
                 boolean allowed = true;
                 String requestedUrl = request.getRequestURL().toString();

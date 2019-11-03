@@ -4,19 +4,18 @@
 <head>
     <title>Patients - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css">
     <style>
         @media (min-width: 992px) {
             /* Tabella principale */
-            .table-cell.avt {
-                width: 10%;
+            .table-cell.pract {
+                width: 50%;
             }
 
-            .table-cell.name {
-                width: 35%;
-            }
-
-            .table-cell.ssn {
-                width: 30%;
+            .table-cell.date {
+                width: 25%;
             }
 
             .table-cell.action {
@@ -37,6 +36,71 @@
 
         }
     </style>
+    <script>
+        $("document").ready(function () {
+            $("#patient-info").slideUp();
+
+            $(function () {
+                $("#patient-search")
+                    .select2({
+                        placeholder: "Select a patient",
+                        allowClear: true,
+                        closeOnSelect: true,
+                        minimumInputSize: 6,
+                        ajax: {
+                            type: "POST",
+                            data: function (params) {
+                                return {
+                                    term: params.term,
+                                    request_type: 'patient_search'
+                                }
+                            },
+                            url: getContextPath() + "/restricted/chemist/prescriptions",
+                            dataType: "json",
+                        }
+                    })
+                    .val(null)
+                    .trigger("change")
+                    .on('select2:select', function (e) {
+                        $("#test-table").children().not('first').remove();
+                        $("#patient-name").html(e.params.data.fullName);
+                        $("#patient-ssn").html(e.params.data.SSN);
+                        $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
+                        $("#patient-info").slideDown();
+                        renderPrescriptions(e.params.data.patientID);
+                    })
+                    .on('select2:unselect', function (e) {
+                        $("#test-table").children().not('first').remove();
+                        $("#patient-info").slideUp();
+                        renderPrescriptions();
+                    });
+            });
+
+            let tableHeaders = [
+                {field: "pract", type: "string", text: "Practitioner"},
+                {field: "date", type: "string", text: "Date"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#test-table").createTableHeaders(tableHeaders);
+
+            function renderPrescriptions(patientID) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        request_type: "prescriptions",
+                        patientID: patientID
+                    },
+                    url: getContextPath() + "/restricted/chemist/prescriptions",
+                    success: function (json) {
+                        $("#test-table").insertRows(tableHeaders, json);
+                        enablePopup();
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -44,8 +108,7 @@
     <div class="jumbotron mt-4">
         <h1>Prescriptions</h1>
         <p class="lead mt-4 mx-4">
-            To provide a drug to a person you have to search him (by name or SSD) and select him.
-            You will see all the prescriptions still valid.
+            To check all the available prescriptions, search a patient using his SSN, then choose a prescription.
         </p>
     </div>
 </div>
@@ -53,93 +116,24 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <form action="search_patient" method="POST">
-                    <div class="form-label-group my-4 mx-4 ls-search">
-                        <!--TODO SIMONE BARRA DI RICERCA: tutti i pazienti -->
-                        <input class="form-control mx-2" id="query" name="query" placeholder="Search..." required
-                               type="text">
-                        <button id="message" class="btn btn-personal" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </form>
-                <div class="table-personal table-header">
-                    <div class="table-cell avt"></div>
-                    <div class="table-cell name">Name</div>
-                    <div class="table-cell ssn">SSN</div>
-                    <div class="table-cell action"></div>
+                <div class="form-label-group my-4 mx-4 ls-search">
+                    <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control"
+                            autofocus>
+                    </select>
                 </div>
-                <div class="table-personal">
-                    <div class="table-cell avt">
-                        <img class="avatar-small"
-                             src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                             alt="">
+                <!--<div class="justify-content-center loading" id="main-loading-container" style="text-align: center; display: none !important">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                </div>-->
+                <div class="patient-info" style="text-align: center">
+                    <img id="patient-avatar" class="avatar-medium" src="" alt="">
+                    <div id="patient-name" class="mt-2">
                     </div>
-                    <div class="table-cell name">Matteo Franzil</div>
-                    <div class="table-cell ssn">FRNMTT98E20I452H</div>
-                    <div class="table-cell action">
-                        <button type="button" class="btn btn-block btn-personal popup-opener">
-                            See Valid Prescriptions
-                        </button>
-                        <div class="popup-window">
-                            <div class="popup animate-in">
-                                <div>
-                                    <h4>Patient data</h4>
-                                    <table class="table table-unresponsive">
-                                        <tr>
-                                            <th>Name</th>
-                                            <td>Matteo</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Surname</th>
-                                            <td>Franzil</td>
-                                        </tr>
-                                        <tr>
-                                            <th>SSN</th>
-                                            <td>FRNMTT98E20I452H</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Birthdate</th>
-                                            <td>May 20, 1998</td> <!--USARE CLASSE DATA JSTL-->
-                                        </tr>
-                                        <tr>
-                                            <th>Gender</th>
-                                            <td>Male</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div>
-                                </div>
-                                <div>
-                                    <h4>Valid Prescriptions</h4>
-                                    <div>
-                                        <div class="table-personal">
-                                            <div class="table-cell date">17/08/2019</div>
-                                            <div class="table-cell medicine">Tachipirina</div>
-                                            <div class="table-cell deliver"><input
-                                                    onclick='document.getElementById("myButton1").value="Delivered"; this.disabled=true;'
-                                                    type="button" class="btn btn-block btn-personal"
-                                                    value="Mark as delivered" id="myButton1">
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="table-personal">
-                                            <div class="table-cell date">17/08/2019</div>
-                                            <div class="table-cell medicine">Oki</div>
-                                            <div class="table-cell deliver">
-                                                <input onclick='document.getElementById("myButton2").value="Delivered"; this.disabled=true;'
-                                                       type="button" class="btn btn-block btn-personal"
-                                                       value="Mark as delivered" id="myButton2">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
-                            </div>
-                        </div>
+                    <div id="patient-ssn" class="mb-2">
                     </div>
+                    <hr>
                 </div>
-                <hr>
+                <div id="test-table"></div>
             </div>
         </div>
     </div>

@@ -125,7 +125,7 @@
                             </tr>
                             <tr>
                                 <th>Province</th>
-                                <td>${sessionScope.user.chemistProvince} </td>
+                                <td>${sessionScope.user.province} </td>
                             </tr>
                             <tr>
                                 <th>E-mail</th>

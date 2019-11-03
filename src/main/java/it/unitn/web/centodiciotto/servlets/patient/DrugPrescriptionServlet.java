@@ -68,7 +68,16 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
                 drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
 
-                PDDocument prescriptionDoc = PDFCreator.createDrugPrescription(drugPrescription, patient, practitioner);
+                // Inserisco l'indirizzo corrente, possibile soltanto a livello di richiesta
+                // in modo da aggiungerlo al codice QR
+                String qrCodeURL = request.getScheme() + "://" +
+                        request.getServerName() + (
+                        "http".equals(request.getScheme()) && request.getServerPort() == 80 ||
+                                "https".equals(request.getScheme()) && request.getServerPort() == 443
+                                ? "" : ":" + request.getServerPort());
+
+                PDDocument prescriptionDoc = PDFCreator.createDrugPrescription(
+                        drugPrescription, patient, practitioner, qrCodeURL);
 
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "inline; filename='prescription.pdf'");
