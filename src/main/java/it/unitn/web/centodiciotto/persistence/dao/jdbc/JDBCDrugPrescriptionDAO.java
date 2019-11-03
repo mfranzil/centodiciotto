@@ -32,7 +32,8 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String SELECTALL = "SELECT * FROM drug_prescription;";
     final private String COUNT = "SELECT COUNT(*) FROM drug_prescription;";
 
-    final private String FINDBYPATIENT = "SELECT * FROM drug_prescription WHERE patient_id = ?;";
+    final private String FINDBYPATIENT = "SELECT * FROM drug_prescription " +
+            "WHERE patient_id = ? order by date_prescripted asc;";
     final private String FINDBYPRACTITIONER = "SELECT * FROM drug_prescription WHERE practitioner_id = ?;";
     final private String FINDEXPIRED = "SELECT * FROM drug_prescription " +
             "WHERE date_prescripted + interval '1 month' >= now();";

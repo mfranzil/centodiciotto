@@ -41,6 +41,7 @@
     </style>
     <script>
         $("document").ready(function () {
+            const url = getContextPath() + "/restricted/general_practitioner/patients";
             $(function () {
                 $("#patient-search")
                     .select2({
@@ -52,10 +53,10 @@
                             data: function (params) {
                                 return {
                                     term: params.term,
-                                    request_type: 'patient_search'
+                                    requestType: 'patientSearch'
                                 }
                             },
-                            url: getContextPath() + "/restricted/general_practitioner/patients",
+                            url: url,
                             dataType: "json",
                         }
                     })
@@ -87,13 +88,12 @@
                     type: "POST",
                     dataType: "json",
                     data: {
-                        request_type: "patient_list",
+                        requestType: "patientList",
                         patientID: patientID
                     },
-                    url: getContextPath() + "/restricted/general_practitioner/patients",
+                    url: url,
                     success: function (json) {
-                        console.log(json);
-                        $("#test-table").insertRows(tableHeaders, json);
+                        $("#test-table").insertRows(tableHeaders, json, url);
                         enablePopup();
                     }
                 });

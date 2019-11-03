@@ -11,34 +11,27 @@
         @media (min-width: 992px) {
             /* Tabella principale */
             .table-cell.pract {
-                width: 50%;
+                width: 40%;
+            }
+
+            .table-cell.drug {
+                width: 20%;
             }
 
             .table-cell.date {
-                width: 25%;
+                width: 20%;
             }
 
             .table-cell.action {
-                width: 25%;
+                width: 20%;
             }
-            /* Tabella sotto */
-            .table-cell.date {
-                width: 25%;
-            }
-
-            .table-cell.medicine {
-                width: 50%;
-            }
-
-            .table-cell.deliver {
-                width: 25%;
-            }
-
         }
     </style>
     <script>
         $("document").ready(function () {
+            const url = getContextPath() + "/restricted/chemist/prescriptions";
             $("#patient-info").slideUp();
+            $("#main-loading-container").slideUp();
 
             $(function () {
                 $("#patient-search")
@@ -52,16 +45,17 @@
                             data: function (params) {
                                 return {
                                     term: params.term,
-                                    request_type: 'patient_search'
+                                    requestType: 'patientSearch'
                                 }
                             },
-                            url: getContextPath() + "/restricted/chemist/prescriptions",
+                            url: url,
                             dataType: "json",
                         }
                     })
                     .val(null)
                     .trigger("change")
                     .on('select2:select', function (e) {
+                        $("#main-loading-container").slideDown();
                         $("#test-table").children().not('first').remove();
                         $("#patient-name").html(e.params.data.fullName);
                         $("#patient-ssn").html(e.params.data.SSN);
@@ -70,14 +64,16 @@
                         renderPrescriptions(e.params.data.patientID);
                     })
                     .on('select2:unselect', function (e) {
-                        $("#test-table").children().not('first').remove();
+                        $("#main-loading-container").slideUp();
                         $("#patient-info").slideUp();
+                        $("#test-table").children().not('first').remove();
                         renderPrescriptions();
                     });
             });
 
             let tableHeaders = [
                 {field: "pract", type: "string", text: "Practitioner"},
+                {field: "drug", type: "string", text: "Drug"},
                 {field: "date", type: "string", text: "Date"},
                 {field: "action", type: "button", text: "&nbsp;"}
             ];
@@ -89,13 +85,14 @@
                     type: "POST",
                     dataType: "json",
                     data: {
-                        request_type: "prescriptions",
+                        requestType: "prescriptions",
                         patientID: patientID
                     },
-                    url: getContextPath() + "/restricted/chemist/prescriptions",
+                    url: url,
                     success: function (json) {
-                        $("#test-table").insertRows(tableHeaders, json);
+                        $("#test-table").insertRows(tableHeaders, json, url);
                         enablePopup();
+                        $("#main-loading-container").slideUp();
                     }
                 });
             }
@@ -121,17 +118,18 @@
                             autofocus>
                     </select>
                 </div>
-                <!--<div class="justify-content-center loading" id="main-loading-container" style="text-align: center; display: none !important">
-                    <img class="rotating" role="status" style="width: 64px"
-                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
-                </div>-->
-                <div class="patient-info" style="text-align: center">
+                <div class="patient-info" id="patient-info" style="text-align: center">
                     <img id="patient-avatar" class="avatar-medium" src="" alt="">
                     <div id="patient-name" class="mt-2">
                     </div>
                     <div id="patient-ssn" class="mb-2">
                     </div>
                     <hr>
+                </div>
+                <div class="justify-content-center loading mt-2" id="main-loading-container"
+                     style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>
                 <div id="test-table"></div>
             </div>

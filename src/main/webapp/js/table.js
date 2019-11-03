@@ -5,7 +5,21 @@ function buildHtmlFromJson(json, parent) {
             buildHtmlFromJson(element, lastElement);
         } else {
             let htmlParagraphElement = document.createElement(element.elementType);
+
+            if (element.elementType === "button") {
+                htmlParagraphElement.type = element.elementButtonType;
+            } else if (element.elementType === "form") {
+                htmlParagraphElement.action = element.elementFormAction;
+                htmlParagraphElement.target = element.elementFormTarget;
+                htmlParagraphElement.method = element.elementFormMethod;
+            } else if (element.elementType === "input") {
+                htmlParagraphElement.value = element.elementInputValue;
+                htmlParagraphElement.type = element.elementInputType;
+                htmlParagraphElement.name = element.elementInputName;
+            }
+
             htmlParagraphElement.className = element.elementClass;
+            htmlParagraphElement.id = element.elementID;
             htmlParagraphElement.innerHTML = element.elementContent;
             parent.appendChild(htmlParagraphElement);
             lastElement = htmlParagraphElement;
@@ -14,22 +28,20 @@ function buildHtmlFromJson(json, parent) {
     return parent;
 }
 
-function getDetails(patientID) {
+function getDetails(id, url) {
     let content = document.createElement("div");
     $.ajax({
         type: "POST",
         dataType: "json",
         data: {
-            request_type: "detailed_info",
-            patient: patientID
+            requestType: "detailedInfo",
+            item: id
         },
-        url: getContextPath() + "/restricted/general_practitioner/patients",
+        url: url,
         start: function () {
 
         },
         success: function (json) {
-            console.log("prima");
-            console.log(json);
             buildHtmlFromJson(json, content);
             $(".loading").slideUp();
         }
@@ -55,9 +67,8 @@ $("document").ready(function () {
         return this;
     };
 
-    $.fn.insertRows = function (headers, data) {
-        let main_table = this;
-        let enter = document.createElement("hr");
+    $.fn.insertRows = function (headers, data, url) {
+        let mainTable = this;
 
         $.each(data, function (index, item) {
             let row = document.createElement("div");
@@ -91,30 +102,30 @@ $("document").ready(function () {
                             button.classList.add("popup-opener");
                             button.innerHTML = item[header.field];
 
-                            let popup_window = document.createElement("div");
-                            popup_window.style.display = "none";
-                            popup_window.className = "popup-window";
+                            let popupWindow = document.createElement("div");
+                            popupWindow.style.display = "none";
+                            popupWindow.className = "popup-window";
 
-                            let popup_animate = document.createElement("div");
-                            popup_animate.classList.add("popup");
-                            popup_animate.classList.add("animate-in");
+                            let popupAnimate = document.createElement("div");
+                            popupAnimate.classList.add("popup");
+                            popupAnimate.classList.add("animate-in");
 
-                            let exit_button = document.createElement("button");
-                            exit_button.className = "btn btn-lg btn-block btn-secondary popup-closer";
-                            exit_button.innerText = "Exit";
+                            let exitButton = document.createElement("button");
+                            exitButton.className = "btn btn-lg btn-block btn-secondary popup-closer";
+                            exitButton.innerText = "Exit";
 
-                            popup_window.appendChild(popup_animate);
+                            popupWindow.appendChild(popupAnimate);
 
                             button.onclick = function () {
-                                if (popup_animate.childElementCount > 0) {
-                                    popup_animate.childNodes[0].remove();
+                                while (popupAnimate.firstChild) {
+                                    popupAnimate.removeChild(popupAnimate.firstChild);
                                 }
-
                                 let loading = document.createElement("div");
                                 loading.classList.add("justify-content-center");
                                 loading.classList.add("loading");
+                                loading.classList.add("mb-2");
                                 loading.style.textAlign = "center";
-                                popup_animate.append(loading);
+                                popupAnimate.append(loading);
 
                                 let loadingImage = document.createElement("img");
                                 loadingImage.classList.add("rotating");
@@ -123,12 +134,12 @@ $("document").ready(function () {
                                 loadingImage.alt = "Loading";
                                 loading.append(loadingImage);
 
-                                popup_animate.appendChild(getDetails(item.ID));
-                                popup_animate.appendChild(exit_button);
+                                popupAnimate.appendChild(getDetails(item.ID, url));
+                                popupAnimate.appendChild(exitButton);
                                 enablePopup();
                             };
                             cell.appendChild(button);
-                            cell.appendChild(popup_window);
+                            cell.appendChild(popupWindow);
                             break;
                         }
                         default: {
@@ -137,8 +148,8 @@ $("document").ready(function () {
                 }
                 row.appendChild(cell);
             });
-            main_table.append(row);
-            main_table.append('<hr />');
+            mainTable.append(row);
+            mainTable.append(document.createElement("hr"));
         });
         return this;
     };
