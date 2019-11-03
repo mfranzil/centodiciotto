@@ -5,6 +5,7 @@
     <title>Book your exam - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/ajax.js"></script>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css">
     <style>
@@ -21,18 +22,64 @@
     </style>
     <script>
         $("document").ready(function () {
-            $(function () {
-                $("#exam-search").select2({
-                    placeholder: "Choose an exam",
-                    allowClear: true,
-                    closeOnSelect: true,
-                    ajax: {
-                        url: getContextPath() + "/restricted/patient/exams",
-                        dataType: "json"
-                    }
+            const url = getContextPath() + "/restricted/patient/exams";
+            let onlyAvailable = true;
 
-                }).val(null).trigger("change");
+            $(function () {
+                $("#exam-search")
+                    .select2({
+                        placeholder: "Choose an exam",
+                        allowClear: true,
+                        closeOnSelect: true,
+                        ajax: {
+                            type: "POST",
+                            data: function (params) {
+                                return {
+                                    term: params.term,
+                                    requestType: 'examSearch'
+                                }
+                            },
+                            url: url,
+                            dataType: "json",
+                        }
+                    })
+                    .val(null)
+                    .trigger("change")
+                    .on('select2:select', function (e) {
+                        $("#main-table").children().not('first').remove();
+                        renderExamsRows(e.params.data.id);
+                    })
+                    .on('select2:unselect', function (e) {
+                        $("#main-table").children().not('first').remove();
+                        renderExamsRows();
+                    });
             });
+
+            let tableHeaders = [
+                {field: "exam", type: "string", text: "Exam"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#main-table").createTableHeaders(tableHeaders);
+            renderExamsRows();
+            $("#main-loading-container").slideUp();
+
+            function renderExamsRows(examID) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        requestType: "examList",
+                        examID: examID,
+                        onlyAvailable: onlyAvailable
+                    },
+                    url: url,
+                    success: function (json) {
+                        $("#main-table").insertRows(tableHeaders, json, url);
+                        enablePopup();
+                    }
+                });
+            }
         });
     </script>
 </head>
@@ -51,35 +98,17 @@
         <select id="exam-search" name="examSearch" class="select2-allow-clear form-control mr-1"
                 style="margin: 1em" autofocus>
         </select>
-        <button id="message" class="btn btn-personal" type="submit">
-            <i class="fa fa-search"></i>
-        </button>
         <button id="my_filter" class="btn btn-personal ml-1" type="button">
             Available Exams
         </button>
     </div>
-
-    <div class="table-personal table-header">
-        <div class="table-cell exam">Exam</div>
-        <div class="table-cell action"></div>
+    <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+        <img class="rotating" role="status" style="width: 64px"
+             src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
     </div>
-
     <div id="main-table">
-        <!-- TODO change to more clean version to check if exam is prescrivable !-->
-        <c:forEach items="${requestScope.examLists}" var="examList">
-            <c:set var="active" value="${false}"/>
-            <c:forEach items="${requestScope.examPrescriptions}" var="examPrescription">
-                <c:if test="${examPrescription.examType.ID eq examList.ID and !examPrescription.booked}">
-                    <c:set var="active" value="${true}"/>
-                </c:if>
-            </c:forEach>
-            <div class="table-personal" id="table-select">
-                <div class="table-cell exam">${examList.description} </div>
-                <div class="table-cell action">
-                    <button type="button" ${active ? "" : "disabled" } class="btn btn-block btn-personal popup-opener">
-                        Book now
-                    </button>
-                    <div class="popup-window">
+        <!--
+        <div class="popup-window">
                         <div class="popup animate-in">
                             <div>
                                 <h4>Prenota presso un medico specialista</h4>
@@ -91,7 +120,7 @@
                 </div>
             </div>
             <hr>
-        </c:forEach>
+             !-->
     </div>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>

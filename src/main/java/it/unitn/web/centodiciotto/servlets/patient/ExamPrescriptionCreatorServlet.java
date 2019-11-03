@@ -2,7 +2,9 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
+import it.unitn.web.centodiciotto.persistence.entities.ExamPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
@@ -21,12 +23,14 @@ import java.util.List;
 
 @WebServlet("/restricted/patient/exams")
 public class ExamPrescriptionCreatorServlet extends HttpServlet {
-    private static final List<Exam_> ALL_INTERNAL_EXAMS = new ArrayList<>();
+    private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
+
     /*
     TODO It's still testing time, please do not pay attention
      */
     private ExamListDAO examListDAO;
+    private ExamPrescriptionDAO examPrescriptionDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,10 +40,11 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
         }
         try {
             examListDAO = daoFactory.getDAO(ExamListDAO.class);
+            examPrescriptionDAO = daoFactory.getDAO(ExamPrescriptionDAO.class);
 
             ALL_EXAMS = examListDAO.getAll();
             for (ExamList exam : ALL_EXAMS) {
-                ALL_INTERNAL_EXAMS.add(new Exam_(exam.getID(), exam.getDescription()));
+                ALL_INTERNAL_EXAMS.add(new ExamSearchResult(exam.getID(), exam.getDescription()));
             }
         } catch (DAOFactoryException | DAOException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
@@ -57,66 +62,96 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        String requestType = (String) request.getParameter("requestType");
 
-        if (user instanceof Patient) {
-            String userInput = request.getParameter("term");
+        switch (requestType) {
+            case "examList": {
+                try {
+                    if (user instanceof Patient) {
+                        Boolean onlyAvailable = Boolean.valueOf(request.getParameter("onlyAvailable"));
+                        String examID = request.getParameter("examID");
 
-            List<Exam_> results;
+                        List<ExamListElement> examListElements = new ArrayList<>();
 
-            if (userInput == null) {
-                results = ALL_INTERNAL_EXAMS;
-            } else {
-                List<Exam_> tmpResults = new ArrayList<>();
-                ALL_INTERNAL_EXAMS.stream().filter(exam_
-                        -> (exam_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
-                results = tmpResults;
+                        List<ExamPrescription> examPrescriptionList = examPrescriptionDAO.getByPatient(user.getID());
+
+                        if(examID == null) {
+                            for (ExamList examList : ALL_EXAMS) {
+                                if (onlyAvailable) {
+                                    for (ExamPrescription examPrescription : examPrescriptionList) {
+                                        if (!examPrescription.getBooked() && examPrescription.getExamType().getID() == examList.getID()) {
+                                            examListElements.add(new ExamListElement(examList.getDescription(), "Book Now"));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(Integer.valueOf(examID)).getDescription(), "Book Now"));
+                        }
+
+                        Gson gson = new Gson();
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(examListElements));
+                    }
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                break;
             }
+            case "examSearch": {
+                if (user instanceof Patient) {
+                    String userInput = request.getParameter("term");
 
-            Gson gson = new Gson();
-            response.setContentType("application/json");
-            response.getWriter().write(gson.toJson(new Results(results.toArray(new Exam_[0]))));
+                    List<ExamSearchResult> results;
+
+                    if (userInput == null) {
+                        results = ALL_INTERNAL_EXAMS;
+                    } else {
+                        List<ExamSearchResult> tmpResults = new ArrayList<>();
+                        ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
+                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                        results = tmpResults;
+                    }
+
+                    Gson gson = new Gson();
+                    response.setContentType("application/json");
+                    response.getWriter().write(gson.toJson(new Results(results.toArray(new ExamSearchResult[0]))));
+                }
+                break;
+            }
         }
     }
 
-    private static class Exam_ implements Serializable {
+    private static class ExamListElement {
+        private String exam;
+        private String action;
+
+        public ExamListElement(String exam, String action) {
+            this.exam = exam;
+            this.action = action;
+        }
+    }
+
+    public static class ExamSearchResult implements Serializable {
         private Integer id;
         private String text;
 
-        public Exam_(Integer id, String text) {
+        public ExamSearchResult(Integer id, String text) {
             this.id = id;
             this.text = text;
-        }
-
-        public Integer getId() {
-            return id;
-        }
-
-        public void setId(Integer id) {
-            this.id = id;
         }
 
         public String getText() {
             return text;
         }
 
-        public void setText(String text) {
-            this.text = text;
-        }
     }
 
-    private static class Results implements Serializable {
+    public static class Results implements Serializable {
+        private ExamSearchResult[] results;
 
-        private Exam_[] results;
-
-        public Results(Exam_[] results) {
-            this.results = results;
-        }
-
-        public Exam_[] getResults() {
-            return results;
-        }
-
-        public void setResults(Exam_[] results) {
+        public Results(ExamSearchResult[] results) {
             this.results = results;
         }
     }
