@@ -7,20 +7,33 @@ function buildHtmlFromJson(json, parent) {
             let htmlParagraphElement = document.createElement(element.elementType);
 
             if (element.elementType === "button") {
-                htmlParagraphElement.type = element.elementButtonType;
+                htmlParagraphElement.type = (typeof element.elementButtonType === "undefined") ?
+                    htmlParagraphElement.type : element.elementButtonType;
             } else if (element.elementType === "form") {
-                htmlParagraphElement.action = element.elementFormAction;
-                htmlParagraphElement.target = element.elementFormTarget;
-                htmlParagraphElement.method = element.elementFormMethod;
+                htmlParagraphElement.action = (typeof element.elementFormAction === "undefined") ?
+                    htmlParagraphElement.action : element.elementFormAction;
+                htmlParagraphElement.target = (typeof element.elementFormTarget === "undefined") ?
+                    htmlParagraphElement.target : element.elementFormTarget;
+                htmlParagraphElement.method = (typeof element.elementFormMethod === "undefined") ?
+                    htmlParagraphElement.method : element.elementFormMethod;
             } else if (element.elementType === "input") {
-                htmlParagraphElement.value = element.elementInputValue;
-                htmlParagraphElement.type = element.elementInputType;
-                htmlParagraphElement.name = element.elementInputName;
+                htmlParagraphElement.value = (typeof element.elementInputValue === "undefined") ?
+                    htmlParagraphElement.value : element.elementInputValue;
+                htmlParagraphElement.type = (typeof element.elementInputType === "undefined") ?
+                    htmlParagraphElement.type : element.elementInputType;
+                htmlParagraphElement.name = (typeof element.elementInputName === "undefined") ?
+                    htmlParagraphElement.name : element.elementInputName;
             }
 
-            htmlParagraphElement.className = element.elementClass;
-            htmlParagraphElement.id = element.elementID;
-            htmlParagraphElement.innerHTML = element.elementContent;
+            htmlParagraphElement.className = (typeof element.elementClass === "undefined") ?
+                htmlParagraphElement.className : element.elementClass;
+
+            htmlParagraphElement.id = (typeof element.elementID === "undefined") ?
+                htmlParagraphElement.id : element.elementID;
+
+            htmlParagraphElement.innerHTML = (typeof element.elementContent === "undefined") ?
+                htmlParagraphElement.innerHTML : element.elementContent;
+
             parent.appendChild(htmlParagraphElement);
             lastElement = htmlParagraphElement;
         }

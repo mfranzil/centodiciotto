@@ -25,7 +25,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String UPDATE = "UPDATE drug_prescription SET" +
             " (practitioner_id, patient_id, drug_type, date_prescripted," +
             " date_sold, chemist_id, ticket, ticket_paid, description)" +
-            " = (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE drug_prescription_id = ?;";
     final private String DELETE = "DELETE FROM drug_prescription WHERE drug_prescription_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM drug_prescription WHERE drug_prescription_id = ?;";
@@ -36,12 +36,18 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             "WHERE patient_id = ? order by date_prescripted asc;";
     final private String FINDBYPRACTITIONER = "SELECT * FROM drug_prescription WHERE practitioner_id = ?;";
     final private String FINDEXPIRED = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescripted + interval '1 month' >= now();";
+            "WHERE date_prescripted + interval '1 month' >= now() " +
+            "AND NOT(chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false);";
     final private String FINDVALID = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescripted + interval '1 month' < now()" +
+            "WHERE date_prescripted + interval '1 month' < now() " +
+            "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
             "order by date_prescripted asc;";
     final private String FINDVALIDBYPATIENT = "SELECT * FROM drug_prescription " +
             "WHERE date_prescripted + interval '1 month' < now() AND patient_id = ? " +
+            "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
+            "order by date_prescripted asc;";
+    final private String FINDUNPAIDBYPATIENT = "SELECT * FROM drug_prescription " +
+            "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = false " +
             "order by date_prescripted asc;";
 
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
@@ -83,6 +89,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(7, drugPrescription.getTicket());
             stm.setBoolean(8, drugPrescription.getTicketPaid());
             stm.setString(9, drugPrescription.getDescription());
+            stm.setInt(10, drugPrescription.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);

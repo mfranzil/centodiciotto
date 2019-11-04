@@ -1,20 +1,20 @@
 package it.unitn.web.utils;
 
 public class HtmlElement {
-    private String elementType = "";
-    private String elementClass = "";
-    private String elementContent = "";
-    private String elementID = "";
+    private String elementType;
+    private String elementClass;
+    private String elementContent;
+    private String elementID;
 
-    private String elementButtonType = "";
+    private String elementButtonType;
 
-    private String elementInputType = "";
-    private String elementInputName = "";
-    private String elementInputValue = "";
+    private String elementInputType;
+    private String elementInputName;
+    private String elementInputValue;
 
-    private String elementFormAction = "";
-    private String elementFormTarget = "";
-    private String elementFormMethod = "";
+    private String elementFormAction;
+    private String elementFormTarget;
+    private String elementFormMethod;
 
     public String getElementInputType() {
         return elementInputType;

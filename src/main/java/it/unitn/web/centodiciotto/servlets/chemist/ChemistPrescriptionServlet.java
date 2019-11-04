@@ -19,9 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet("/restricted/chemist/prescriptions")
 public class ChemistPrescriptionServlet extends HttpServlet {
@@ -84,8 +87,28 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
         switch (ajax_type) {
             case "serve": {
-                System.out.println("WOW ce l'hai fatta");
+                if (user instanceof Chemist) {
+                    Integer prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
+
+                    try {
+                        DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+
+                        if (!drugPrescription.getTicketPaid() && drugPrescription.getChemistID() == null && drugPrescription.getDateSold() == null) {
+
+                            drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
+                            drugPrescription.setChemistID(user.getID());
+                            drugPrescriptionDAO.update(drugPrescription);
+                        Logger.getLogger("SCE").log(Level.INFO,
+                                "Succesfully activated prescription with ID " + prescriptionID);
+                        }
+
+                        response.getWriter().write( "{\"patientID\": \"" + drugPrescription.getPatientID() + "\"}");
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
+                    }
+                }
             }
+            break;
             case "patientSearch": {
                 if (user instanceof Chemist) {
                     try {
@@ -117,80 +140,82 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             }
             break;
             case "prescriptions": {
-                try {
-                    String patientID = request.getParameter("patientID");
+                if (user instanceof Chemist) {
 
-                    List<DrugPrescription> prescriptionList = drugPrescriptionDAO.getValidByPatient(patientID);
+                    try {
+                        String patientID = request.getParameter("patientID");
 
-                    List<PrescriptionListElement> patientListElements = new ArrayList<>();
-                    for (DrugPrescription prescription : prescriptionList) {
-                        GeneralPractitioner generalPractitioner =
-                                generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
-                        patientListElements.add(new PrescriptionListElement(
-                                generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName(),
-                                prescription.getDrugType().getDescription(),
-                                new Date(prescription.getDatePrescripted().getTime()),
-                                prescription.getID(),
-                                "Serve prescription"));
+                        List<DrugPrescription> prescriptionList = drugPrescriptionDAO.getValidByPatient(patientID);
+
+                        List<PrescriptionListElement> patientListElements = new ArrayList<>();
+                        for (DrugPrescription prescription : prescriptionList) {
+                            GeneralPractitioner generalPractitioner =
+                                    generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
+                            patientListElements.add(new PrescriptionListElement(
+                                    generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName(),
+                                    prescription.getDrugType().getDescription(),
+                                    new Date(prescription.getDatePrescripted().getTime()),
+                                    prescription.getID(),
+                                    "Serve prescription"));
+                        }
+                        Gson gson = new Gson();
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(patientListElements));
+
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
                     }
-
-                    Gson gson = new Gson();
-
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(patientListElements));
-
-                } catch (DAOException e) {
-                    throw new ServletException("Error in DAO usage: ", e);
                 }
             }
             break;
             case "detailedInfo": {
-                Integer prescriptionID = Integer.valueOf(request.getParameter("item"));
+                if (user instanceof Chemist) {
+                    Integer prescriptionID = Integer.valueOf(request.getParameter("item"));
+                    List<Object> jsonResponse = new ArrayList<>();
 
-                List<Object> jsonResponse = new ArrayList<>();
+                    try {
+                        DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                        Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
+                        GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
 
-                try {
-                    DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
-                    Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
-                    GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
+                        jsonResponse.add(new HtmlElement().setElementType("h4").setElementClass("").setElementContent("Serve this prescription"));
 
-                    jsonResponse.add(new HtmlElement().setElementType("h4").setElementClass("").setElementContent("Serve this prescription"));
+                        jsonResponse.add(new HtmlElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
+                        jsonResponse.add(JsonUtils.createTableEntry("Patient name", patient.getFirstName() + " " + patient.getLastName()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Patient SSN", patient.getSSN()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Practitioner name", practitioner.getFirstName() + " " + practitioner.getLastName()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Prescription ID", drugPrescription.getID().toString()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Prescription drug", drugPrescription.getDrugType().getDescription()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Description",
+                                drugPrescription.getDescription() == null ? "" : drugPrescription.getDescription()));
 
-                    jsonResponse.add(new HtmlElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
-                    jsonResponse.add(JsonUtils.createTableEntry("Patient name", patient.getFirstName() + " " + patient.getLastName()));
-                    jsonResponse.add(JsonUtils.createTableEntry("Patient SSN", patient.getSSN()));
-                    jsonResponse.add(JsonUtils.createTableEntry("Practitioner name", practitioner.getFirstName() + " " + practitioner.getLastName()));
-                    jsonResponse.add(JsonUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
-                    jsonResponse.add(JsonUtils.createTableEntry("Prescription ID", drugPrescription.getID().toString()));
-                    jsonResponse.add(JsonUtils.createTableEntry("Prescription drug", drugPrescription.getDrugType().getDescription()));
-                    jsonResponse.add(JsonUtils.createTableEntry("Description",
-                            drugPrescription.getDescription() == null ? "" : drugPrescription.getDescription()));
+                        jsonResponse.add(new HtmlElement().setElementType("form")
+                                .setElementClass("serve-prescription")
+                                .setElementFormAction(contextPath + "restricted/chemist/prescriptions")
+                                .setElementFormMethod("POST"));
 
-                    jsonResponse.add(new HtmlElement().setElementType("form")
-                            .setElementFormAction(contextPath + "restricted/chemist/prescriptions")
-                            .setElementID("serve-prescription")
-                            .setElementFormMethod("POST"));
+                        List<HtmlElement> form = new ArrayList<>();
+                        form.add(new HtmlElement().setElementType("input")
+                                .setElementInputType("hidden")
+                                .setElementInputName("requestType")
+                                .setElementInputValue("serve"));
+                        form.add(new HtmlElement().setElementType("input")
+                                .setElementInputType("hidden")
+                                .setElementInputName("prescriptionID")
+                                .setElementInputValue(prescriptionID.toString()));
+                        form.add(new HtmlElement().setElementType("button")
+                                .setElementClass("btn btn-lg btn-block btn-personal mb-2 submit-serve")
+                                .setElementContent("Serve")
+                                .setElementButtonType("submit"));
+                        jsonResponse.add(form);
 
-                    List<HtmlElement> form = new ArrayList<>();
-                    form.add(new HtmlElement().setElementType("input")
-                            .setElementInputType("hidden")
-                            .setElementInputName("requestType")
-                            .setElementInputValue("serve"));
-                    form.add(new HtmlElement().setElementType("input")
-                            .setElementInputType("hidden")
-                            .setElementInputName("prescriptionID")
-                            .setElementInputValue(prescriptionID.toString()));
-                    form.add(new HtmlElement().setElementType("button")
-                            .setElementClass("btn btn-lg btn-block btn-personal")
-                            .setElementContent("Serve")
-                            .setElementButtonType("submit"));
-                    jsonResponse.add(form);
-
-                    Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(jsonResponse));
-                } catch (DAOException e) {
-                    throw new ServletException("Error while getting patient detail in PatientListServlet", e);
+                        Gson gson = new Gson();
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(jsonResponse));
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
+                    }
                 }
             }
             break;

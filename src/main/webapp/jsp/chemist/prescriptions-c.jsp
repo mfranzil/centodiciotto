@@ -30,47 +30,6 @@
     <script>
         $("document").ready(function () {
             const url = getContextPath() + "/restricted/chemist/prescriptions";
-            $("#patient-info").slideUp();
-            $("#main-loading-container").slideUp();
-
-            $(function () {
-                $("#patient-search")
-                    .select2({
-                        placeholder: "Select a patient",
-                        allowClear: true,
-                        closeOnSelect: true,
-                        minimumInputSize: 6,
-                        ajax: {
-                            type: "POST",
-                            data: function (params) {
-                                return {
-                                    term: params.term,
-                                    requestType: 'patientSearch'
-                                }
-                            },
-                            url: url,
-                            dataType: "json",
-                        }
-                    })
-                    .val(null)
-                    .trigger("change")
-                    .on('select2:select', function (e) {
-                        $("#main-loading-container").slideDown();
-                        $("#test-table").children().not('first').remove();
-                        $("#patient-name").html(e.params.data.fullName);
-                        $("#patient-ssn").html(e.params.data.SSN);
-                        $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
-                        $("#patient-info").slideDown();
-                        renderPrescriptions(e.params.data.patientID);
-                    })
-                    .on('select2:unselect', function (e) {
-                        $("#main-loading-container").slideUp();
-                        $("#patient-info").slideUp();
-                        $("#test-table").children().not('first').remove();
-                        renderPrescriptions();
-                    });
-            });
-
             let tableHeaders = [
                 {field: "pract", type: "string", text: "Practitioner"},
                 {field: "drug", type: "string", text: "Drug"},
@@ -78,7 +37,43 @@
                 {field: "action", type: "button", text: "&nbsp;"}
             ];
 
-            $("#test-table").createTableHeaders(tableHeaders);
+            $("#patient-info,#main-loading-container").hide();
+
+            $("#patient-search")
+                .select2({
+                    placeholder: "Select a patient",
+                    allowClear: true,
+                    closeOnSelect: true,
+                    minimumInputSize: 6,
+                    ajax: {
+                        type: "POST",
+                        data: function (params) {
+                            return {
+                                term: params.term,
+                                requestType: 'patientSearch'
+                            }
+                        },
+                        url: url,
+                        dataType: "json",
+                    }
+                })
+                .val(null)
+                .trigger("change")
+                .on('select2:select', function (e) {
+                    $("#main-loading-container").slideDown();
+                    $("#test-table").children().not('first').remove();
+                    $("#patient-name").html(e.params.data.fullName);
+                    $("#patient-ssn").html(e.params.data.SSN);
+                    $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
+                    $("#patient-info").slideDown();
+                    renderPrescriptions(e.params.data.patientID);
+                })
+                .on('select2:unselect', function (e) {
+                    $("#main-loading-container").slideUp();
+                    $("#patient-info").slideUp();
+                    $("#test-table").children().not('first').remove();
+                    renderPrescriptions();
+                });
 
             function renderPrescriptions(patientID) {
                 $.ajax({
@@ -90,10 +85,49 @@
                     },
                     url: url,
                     success: function (json) {
+                        $("#test-table").createTableHeaders(tableHeaders);
                         $("#test-table").insertRows(tableHeaders, json, url);
                         enablePopup();
                         $("#main-loading-container").slideUp();
                     }
+                });
+            }
+
+            $(document).ajaxSuccess(function () {
+                activateForm();
+            });
+
+            function activateForm() {
+                $(".serve-prescription").submit(function (e) {
+                    e.preventDefault();
+
+                    $('#submit-serve').prop('disabled', true);
+
+                    let form = $(this);
+                    let url = form.attr('action');
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        cache: false,
+                        data: form.serialize(),
+                        success: function (data) {
+                            $(".submit-serve").css("background", "rgba(0, 55, 0, 0.8)")
+                                .prop("disabled", "true").html("Submitted");
+                            data = JSON.parse(data);
+
+                            setTimeout(function () {
+                                $(".popup-window").hide();
+                                $("#main-loading-container").slideDown();
+                                $("#test-table").children().not('first').remove();
+                            }, 750);
+
+                            setTimeout(function () {
+                                renderPrescriptions(data.patientID);
+                            }, 1500);
+
+                        }
+                    });
                 });
             }
         });
@@ -124,7 +158,6 @@
                     </div>
                     <div id="patient-ssn" class="mb-2">
                     </div>
-                    <hr>
                 </div>
                 <div class="justify-content-center loading mt-2" id="main-loading-container"
                      style="text-align: center;">
