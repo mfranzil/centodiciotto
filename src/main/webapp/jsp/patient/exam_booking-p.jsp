@@ -23,7 +23,7 @@
     <script>
         $("document").ready(function () {
             const url = getContextPath() + "/restricted/patient/exams";
-            let onlyAvailable = true;
+            let availableExamFilter = true;
 
             $(function () {
                 $("#exam-search")
@@ -46,11 +46,11 @@
                     .val(null)
                     .trigger("change")
                     .on('select2:select', function (e) {
-                        $("#main-table").children().not('first').remove();
+                        $("#main-table").children().slice(1).remove();
                         renderExamsRows(e.params.data.id);
                     })
                     .on('select2:unselect', function (e) {
-                        $("#main-table").children().not('first').remove();
+                        $("#main-table").children().slice(1).remove();
                         renderExamsRows();
                     });
             });
@@ -64,7 +64,7 @@
             renderExamsRows();
             $("#main-loading-container").slideUp();
 
-            function renderExamsRows(examID) {
+            function renderExamsRows(examID, onlyAvailable = true) {
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -80,6 +80,15 @@
                     }
                 });
             }
+
+            $("#my_filter").click(() => {
+                $("#main-table").children().slice(1).remove();
+                $("#main-loading-container").show();
+                renderExamsRows(undefined, !availableExamFilter);
+                $("#main-loading-container").slideUp();
+                availableExamFilter = !availableExamFilter;
+            });
+
         });
     </script>
 </head>

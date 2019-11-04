@@ -9,4 +9,5 @@ import java.util.List;
 public interface ExamPrescriptionDAO extends DAO<ExamPrescription, Integer> {
     List<ExamPrescription> getByPatient(String PatientID) throws DAOException;
 
+    List<ExamPrescription> getByPatientNotBooked(String PatientID) throws DAOException;
 }

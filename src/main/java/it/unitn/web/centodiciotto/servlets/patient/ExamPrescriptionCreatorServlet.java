@@ -72,22 +72,32 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
                         String examID = request.getParameter("examID");
 
                         List<ExamListElement> examListElements = new ArrayList<>();
+                        System.out.println(onlyAvailable.toString() + " " + examID);
+                        List<ExamPrescription> patientExamPrescriptionList = examPrescriptionDAO.getByPatientNotBooked(user.getID());
 
-                        List<ExamPrescription> examPrescriptionList = examPrescriptionDAO.getByPatient(user.getID());
-
-                        if(examID == null) {
+                        if (examID == null) {
                             for (ExamList examList : ALL_EXAMS) {
-                                if (onlyAvailable) {
-                                    for (ExamPrescription examPrescription : examPrescriptionList) {
-                                        if (!examPrescription.getBooked() && examPrescription.getExamType().getID() == examList.getID()) {
-                                            examListElements.add(new ExamListElement(examList.getDescription(), "Book Now"));
-                                        }
+                                if (examList.getID() == patientExamPrescriptionList.get(0).getExamType().getID()) {
+                                    examListElements.add(new ExamListElement(examList.getDescription(), new ExamAction("Book Now", true)));
+                                    patientExamPrescriptionList.remove(0);
+                                } else {
+                                    if (!onlyAvailable) {
+                                        examListElements.add(new ExamListElement(examList.getDescription(), new ExamAction("Book Now", false)));
                                     }
                                 }
                             }
-                        }
-                        else{
-                            examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(Integer.valueOf(examID)).getDescription(), "Book Now"));
+                        } else {
+                            Integer integerExamID = Integer.valueOf(examID);
+                            boolean found = false;
+                            for (ExamPrescription examPrescription : patientExamPrescriptionList) {
+                                if (examPrescription.getExamType().getID() == integerExamID) {
+                                    examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new ExamAction("Book Now", true)));
+                                    found = true;
+                                }
+                            }
+                            if (!found) {
+                                examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new ExamAction("Book Now", false)));
+                            }
                         }
 
                         Gson gson = new Gson();
@@ -123,21 +133,32 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
         }
     }
 
+
+    private static class ExamAction {
+        private String label;
+        private Boolean enable;
+
+        ExamAction(String label, Boolean enable) {
+            this.label = label;
+            this.enable = enable;
+        }
+    }
+
     private static class ExamListElement {
         private String exam;
-        private String action;
+        private ExamAction action;
 
-        public ExamListElement(String exam, String action) {
+        ExamListElement(String exam, ExamAction action) {
             this.exam = exam;
             this.action = action;
         }
     }
 
-    public static class ExamSearchResult implements Serializable {
+    private static class ExamSearchResult implements Serializable {
         private Integer id;
         private String text;
 
-        public ExamSearchResult(Integer id, String text) {
+        ExamSearchResult(Integer id, String text) {
             this.id = id;
             this.text = text;
         }
@@ -148,10 +169,10 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
 
     }
 
-    public static class Results implements Serializable {
+    private static class Results implements Serializable {
         private ExamSearchResult[] results;
 
-        public Results(ExamSearchResult[] results) {
+        Results(ExamSearchResult[] results) {
             this.results = results;
         }
     }

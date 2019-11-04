@@ -29,6 +29,7 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
     final private String COUNT = "SELECT COUNT(*) FROM exam_prescription;";
 
     final private String FINDBYPATIENT = "SELECT * FROM exam_prescription WHERE patient_id = ?;";
+    final private String FINDBYPATIENTNOTBOOKED = "SELECT * FROM exam_prescription WHERE patient_id = ? AND booked = false ORDER BY exam_type;";
 
 
     public JDBCExamPrescriptionDAO(Connection con) throws DAOFactoryException {
@@ -147,6 +148,25 @@ public class JDBCExamPrescriptionDAO extends JDBCDAO<ExamPrescription, Integer> 
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting ExamPrescriptions by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public List<ExamPrescription> getByPatientNotBooked(String patientID) throws DAOException {
+        List<ExamPrescription> res = new ArrayList<>();
+        ExamPrescription tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTBOOKED)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting ExamPrescriptions by PatientID not booked: ", e);
         }
     }
 
