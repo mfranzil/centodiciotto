@@ -16,6 +16,9 @@ public class HtmlElement {
     private String elementFormTarget;
     private String elementFormMethod;
 
+    private String elementTextAreaName;
+    private String elementTextAreaPlaceholder;
+
     public String getElementInputType() {
         return elementInputType;
     }
@@ -112,6 +115,24 @@ public class HtmlElement {
 
     public HtmlElement setElementFormMethod(String elementFormMethod) {
         this.elementFormMethod = elementFormMethod;
+        return this;
+    }
+
+    public String getElementTextAreaPlaceholder() {
+        return elementTextAreaPlaceholder;
+    }
+
+    public HtmlElement setElementTextAreaPlaceholder(String elementTextAreaPlaceholder) {
+        this.elementTextAreaPlaceholder = elementTextAreaPlaceholder;
+        return this;
+    }
+
+    public String getElementTextAreaName() {
+        return elementTextAreaName;
+    }
+
+    public HtmlElement setElementTextAreaName(String elementTextAreaName) {
+        this.elementTextAreaName = elementTextAreaName;
         return this;
     }
 }

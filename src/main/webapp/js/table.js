@@ -23,6 +23,11 @@ function buildHtmlFromJson(json, parent) {
                     htmlParagraphElement.type : element.elementInputType;
                 htmlParagraphElement.name = (typeof element.elementInputName === "undefined") ?
                     htmlParagraphElement.name : element.elementInputName;
+            } else if (element.elementType === "textarea") {
+                htmlParagraphElement.placeholder = (typeof element.elementTextAreaPlaceholder === "undefined") ?
+                    htmlParagraphElement.placeholder : element.elementTextAreaPlaceholder;
+                htmlParagraphElement.name = (typeof element.elementTextAreaName === "undefined") ?
+                    htmlParagraphElement.name : element.elementTextAreaName;
             }
 
             htmlParagraphElement.className = (typeof element.elementClass === "undefined") ?
