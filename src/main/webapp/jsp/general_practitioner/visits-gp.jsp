@@ -26,6 +26,7 @@
     <script>
         $(function () {
             $(".datepicker").datepicker({
+                dateFormat: "dd/mm/yy",
                 beforeShowDay: $.datepicker.noWeekends,
                 defaultDate: +1,
                 firstDay: 1,
@@ -88,7 +89,6 @@
                                     <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visits"
                                           id="set_visit" method="POST">
                                         Insert a date and time for the appointment, then confirm.
-                                        <!-- TODO: Spostarlo --->
                                         <div style="display: flex; width: 100%;">
                                             <label style="flex: 50%" class="my-2 mr-1">
                                                 <input class="form-control datepicker"

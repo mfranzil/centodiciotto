@@ -73,13 +73,10 @@ public class VisitRequestServlet extends HttpServlet {
             String patientID = request.getParameter("patientID");
             String visitDate = request.getParameter("visitDate");
             String visitTime = request.getParameter("visitTime");
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-            try {
-                Date date = dateFormat.parse(visitDate);
-                Date time = timeFormat.parse(visitTime);
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
-                date = new Date(date.getTime() + time.getTime() + 3600000);
+            try {
+                Date date = formatter.parse(visitDate + " " + visitTime);
 
                 Visit toBook = null;
 
