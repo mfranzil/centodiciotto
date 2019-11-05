@@ -30,6 +30,42 @@
             }
         }
     </style>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
+    <script>
+        $("document").ready(function () {
+            const url = getContextPath() + "/restricted/general_practitioner/visit_history";
+
+            let tableHeaders = [
+                {field: "avt", type: "photo", text: "&nbsp;"},
+                {field: "name", type: "string", text: "Name"},
+                {field: "ssn", type: "string", text: "SSN"},
+                {field: "date", type: "string", text: "Date"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#history_table").createTableHeaders(tableHeaders);
+            renderPatientsRows();
+
+            //$("#main-loading-container").slideUp();
+
+            function renderPatientsRows() {
+                console.log("here");
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        requestType: "patientList",
+                    },
+                    url: url,
+                    success: function (json) {
+                        console.log(json);
+                        $("#history_table").insertRows(tableHeaders, json, url);
+                        enablePopup();
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -47,63 +83,61 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <div class="table-personal table-header">
-                    <div class="table-cell avt"></div>
-                    <div class="table-cell name">Name</div>
-                    <div class="table-cell ssn">SSN</div>
-                    <div class="table-cell date">Date</div>
-                    <div class="table-cell action"></div>
-                </div>
+                <div id="history_table">
 
-                <c:forEach items="${requestScope.patient_visits_report}" var="pair">
-                    <c:set var="patient" value="${pair.first}"/>
-                    <c:set var="visit" value="${pair.second}"/>
-                    <c:set var="insert" value="${empty visit.report}"/>
-                    <jsp:useBean id="visitDate" class="java.util.Date"/>
-                    <jsp:setProperty name="visitDate" property="time" value="${visit.date.time}"/>
+                    <c:forEach items="${requestScope.patient_visits_report}" var="pair">
+                        <c:set var="patient" value="${pair.first}"/>
+                        <c:set var="visit" value="${pair.second}"/>
+                        <c:set var="insert" value="${empty visit.report}"/>
+                        <jsp:useBean id="visitDate" class="java.util.Date"/>
+                        <jsp:setProperty name="visitDate" property="time" value="${visit.date.time}"/>
 
-                    <div class="table-personal">
-                        <div class="table-cell avt"><img class="avatar-small"
-                                                         src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                                                         alt="">
-                        </div>
-                        <div class="table-cell name">${patient.firstName} ${patient.lastName}
-                        </div>
-                        <div class="table-cell ssn">${patient.SSN}
-                        </div>
-                        <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${visitDate}"/>
-                        </div>
-                        <div class="table-cell action">
-                            <button type="submit"
-                                    class="btn btn-block btn-personal popup-opener">${insert ? "Insert" : "Edit"} Report
-                            </button>
-                            <div class="popup-window">
-                                <div class="popup animate-in">
-                                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history"
-                                          id="set_visit" method="POST">
-                                        <h5><strong>Please enter the report in the form below, then click on submit to
-                                                    set it.</strong></h5>
-                                        <c:if test="${!insert}">
-                                            <h7><strong> Old report:</strong></h7>
-                                            <p>${visit.report}</p>
-                                        </c:if>
-                                        <input type="hidden" value="${visit.ID}" name="visitID">
-                                        <textarea name="reportText"
-                                                  placeholder="Click here to start typing"></textarea>
-                                        <button class="btn btn-lg btn-block btn-personal" type="submit">
-                                            Submit report
-                                        </button>
-                                        <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
-                                            Cancel
-                                        </button>
-                                    </form>
+                        <div class="table-personal">
+                            <div class="table-cell avt"><img class="avatar-small"
+                                                             src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
+                                                             alt="">
+                            </div>
+                            <div class="table-cell name">${patient.firstName} ${patient.lastName}
+                            </div>
+                            <div class="table-cell ssn">${patient.SSN}
+                            </div>
+                            <div class="table-cell date">
+                                <fmt:formatDate type="date" dateStyle="long" value="${visitDate}"/>
+                            </div>
+                            <div class="table-cell action">
+                                <button type="submit"
+                                        class="btn btn-block btn-personal popup-opener">${insert ? "Insert" : "Edit"}
+                                    Report
+                                </button>
+                                <div class="popup-window">
+                                    <div class="popup animate-in">
+                                        <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_history"
+                                              id="set_visit" method="POST">
+                                            <h5><strong>Please enter the report in the form below, then click on submit
+                                                to
+                                                set it.</strong></h5>
+                                            <c:if test="${!insert}">
+                                                <h7><strong> Old report:</strong></h7>
+                                                <p>${visit.report}</p>
+                                            </c:if>
+                                            <input type="hidden" value="${visit.ID}" name="visitID">
+                                            <textarea name="reportText"
+                                                      placeholder="Click here to start typing"></textarea>
+                                            <button class="btn btn-lg btn-block btn-personal" type="submit">
+                                                Submit report
+                                            </button>
+                                            <button class="btn btn-lg btn-block popup-closer btn-secondary"
+                                                    type="button">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                </c:forEach>
+                        <hr>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </div>
