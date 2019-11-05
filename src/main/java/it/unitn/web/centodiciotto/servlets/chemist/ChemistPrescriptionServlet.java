@@ -230,7 +230,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private String SSN;
         private String photoPath;
 
-        public PatientSearchResult(Integer id, String text, String patientID,
+        PatientSearchResult(Integer id, String text, String patientID,
                                    String fullName, String SSN, String photoPath) {
             this.id = id;
             this.text = text;
@@ -245,25 +245,36 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private String pract;
         private String drug;
         private Date date;
-        private String action;
+        private ExamAction action;
         private Integer ID;
 
-        public PrescriptionListElement(String pract, String drug, Date date, Integer ID, String action) {
+        PrescriptionListElement(String pract, String drug, Date date, Integer ID, String action) {
             this.pract = pract;
             this.drug = drug;
             this.date = date;
             this.ID = ID;
-            this.action = action;
+            this.action = new ExamAction(action, true);
         }
     }
 
     private static class Results implements Serializable {
         private PatientSearchResult[] results;
 
-        public Results(PatientSearchResult[] results) {
+        Results(PatientSearchResult[] results) {
             this.results = results;
         }
     }
+
+    private static class ExamAction {
+        private String label;
+        private Boolean enable;
+
+        ExamAction(String label, Boolean enable) {
+            this.label = label;
+            this.enable = enable;
+        }
+    }
+
 }
 
 

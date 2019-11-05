@@ -112,8 +112,7 @@
                         cache: false,
                         data: form.serialize(),
                         success: function (data) {
-                            $(".submit-serve").css("background", "rgba(0, 55, 0, 0.8)")
-                                .prop("disabled", "true").html("Submitted");
+                            $(".submit-serve").css("background", "rgba(0, 55, 0, 0.8)").html("Submitted");
                             data = JSON.parse(data);
 
                             setTimeout(function () {
