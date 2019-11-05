@@ -61,7 +61,7 @@
 
                     <jsp:useBean id="datePrescripted" class="java.util.Date"/>
                     <jsp:setProperty name="datePrescripted" property="time"
-                                     value="${prescription.datePrescripted.time}"/>
+                                     value="${prescription.datePrescribed.time}"/>
 
                     <c:set var="practitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
                     <c:set var="available" value="${empty prescription.dateSold or empty prescription.chemistID}"/>

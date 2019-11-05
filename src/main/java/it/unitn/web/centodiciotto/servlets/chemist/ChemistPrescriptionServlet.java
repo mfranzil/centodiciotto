@@ -171,7 +171,7 @@ MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
                             patientListElements.add(new PrescriptionListElement(
                                     generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName(),
                                     prescription.getDrugType().getDescription(),
-                                    new Date(prescription.getDatePrescripted().getTime()),
+                                    new Date(prescription.getDatePrescribed().getTime()),
                                     prescription.getID(),
                                     "Serve prescription"));
                         }

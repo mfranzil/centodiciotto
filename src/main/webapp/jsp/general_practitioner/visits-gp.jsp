@@ -33,7 +33,8 @@
                 minDate: 1,
                 changeMonth: true,
                 changeYear: true,
-                showButtonPanel: true
+                showButtonPanel: true,
+                dateFormat: "dd-mm-yy"
             });
             $('input.timepicker').timepicker({
                 timeFormat: 'HH:mm',

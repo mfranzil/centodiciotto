@@ -77,6 +77,7 @@ public class VisitRequestServlet extends HttpServlet {
 
             try {
                 Date date = formatter.parse(visitDate + " " + visitTime);
+
                 Visit toBook = null;
 
                 List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);

@@ -77,7 +77,7 @@ public class PatientsServlet extends HttpServlet {
                         List<PatientListElement> patientListElements = new ArrayList<>();
                         for (Patient patient : patientList) {
                             String photoPath = PhotoService.getLastPhoto(patient.getID());
-                            patientListElements.add(new PatientListElement(patient.getFirstName() + " " + patient.getLastName(), patient.getSSN(), photoPath, patient.getID(), "Patient Data"));
+                            patientListElements.add(new PatientListElement(patient.getFirstName() + " " + patient.getLastName(), patient.getSSN(), photoPath, patient.getID(), new JsonUtils.Action("Patient Data", true)));
                         }
 
                         Gson gson = new Gson();
@@ -147,7 +147,7 @@ public class PatientsServlet extends HttpServlet {
                         jsonResponse.add(new HtmlElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
 
                         for (DrugPrescription drugPrescription : prescriptions) {
-                            jsonResponse.add(JsonUtils.createTableEntry("Prescription date", drugPrescription.getDatePrescripted().toString()));
+                            jsonResponse.add(JsonUtils.createTableEntry("Prescription date", drugPrescription.getDatePrescribed().toString()));
                             jsonResponse.add(JsonUtils.createTableEntry("Drug description", drugPrescription.getDrugType().getDescription()));
                             if (drugPrescription.getDescription() != null) {
                                 jsonResponse.add(JsonUtils.createTableEntry("Description", drugPrescription.getDescription()));
@@ -205,10 +205,10 @@ public class PatientsServlet extends HttpServlet {
         private String name;
         private String ssn;
         private String avt;
-        private String action;
+        private JsonUtils.Action action;
         private String ID;
 
-        public PatientListElement(String name, String ssn, String avt, String ID, String action) {
+        public PatientListElement(String name, String ssn, String avt, String ID, JsonUtils.Action action) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;
