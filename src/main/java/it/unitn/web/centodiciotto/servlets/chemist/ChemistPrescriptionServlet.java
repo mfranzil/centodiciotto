@@ -1,6 +1,7 @@
 package it.unitn.web.centodiciotto.servlets.chemist;
 
 import com.google.gson.Gson;
+import it.unitn.web.centodiciotto.persistence.dao.ChemistDAO;
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -11,6 +12,7 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
 import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.SendEmail;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +33,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
     private DrugPrescriptionDAO drugPrescriptionDAO;
     private PatientDAO patientDAO;
+    private ChemistDAO chemistDAO;
     private GeneralPractitionerDAO generalPractitionerDAO;
 
     @Override
@@ -42,6 +45,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         try {
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
+            chemistDAO = daoFactory.getDAO(ChemistDAO.class);
             generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
@@ -97,22 +101,33 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
                             drugPrescription.setChemistID(user.getID());
                             drugPrescriptionDAO.update(drugPrescription);
+
                             Logger.getLogger("SCE").log(Level.INFO,
                                     "Succesfully activated prescription with ID " + prescriptionID);
-/*
-MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
-                            String recipient = oldPract.getID();
-                            String message = "Dear " + oldPract.getFirstName() + " " + oldPract.getLastName() + ",\n\n" +
-                                    "one of your patients just asked for a change of practitioner " +
-                                    "and will be no longer on your patient list.\n" +
-                                    "Here are the patient details:\n\n" +
-                                    ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + "\n" +
+
+                            Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
+                            Chemist chemist = chemistDAO.getByPrimaryKey(drugPrescription.getChemistID());
+                            GeneralPractitioner generalPractitioner =
+                                    generalPractitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
+
+                            String recipient = patient.getID();
+                            String message = "Dear " + patient.toString() + ",\n\n" +
+                                    "a drug prescription was just dispatched to you. Here are the details:\n" +
+                                    "\n" +
+                                    "Drug: " + drugPrescription.getDrugType().getDescription() + "\n" +
+                                    "Prescription: " + drugPrescription.getDescription() + "\n" +
+                                    "\n" +
+                                    "General practitioner: " + generalPractitioner.toString() + "\n" +
+                                    "Chemist's: " + chemist.toString() + "\n" +
+                                    "\n" +
+                                    "Prescription date: " + drugPrescription.getDatePrescribed() + "\n" +
+                                    "Dispatch date: " + drugPrescription.getDateSold() + "\n\n" +
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
                             String subject = "CentoDiciotto - Patient change notification";
 
-                            // Avviso il vecchio practitioner
+                            // Avviso il paziente dell'avvenuta ricezione del farmaco
                             SendEmail.send(recipient, message, subject);
-*/
+
                             response.setStatus(200);
                             response.getWriter().write("{\"patientID\": \"" + drugPrescription.getPatientID() + "\"}");
                         } else {
@@ -139,9 +154,9 @@ MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
                             if (patient.getLivingProvince().getID().equals(((Chemist) user).getProvince().getID())) {
                                 results.add(new PatientSearchResult(
                                         id++,
-                                        patient.getFirstName() + " " + patient.getLastName() + " - " + patient.getSSN(),
+                                        patient.toString() + " - " + patient.getSSN(),
                                         patient.getID(),
-                                        patient.getFirstName() + " " + patient.getLastName(),
+                                        patient.toString(),
                                         patient.getSSN(),
                                         PhotoService.getLastPhoto(patient.getID())));
                             }
@@ -169,11 +184,11 @@ MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
                             GeneralPractitioner generalPractitioner =
                                     generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
                             patientListElements.add(new PrescriptionListElement(
-                                    generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName(),
+                                    generalPractitioner.toString(),
                                     prescription.getDrugType().getDescription(),
                                     new Date(prescription.getDatePrescribed().getTime()),
                                     prescription.getID(),
-                                    "Serve prescription"));
+                                    "Dispatch prescription"));
                         }
                         Gson gson = new Gson();
                         response.setContentType("application/json");
@@ -195,12 +210,12 @@ MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
                         Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
                         GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
 
-                        jsonResponse.add(new HtmlElement().setElementType("h4").setElementClass("").setElementContent("Serve this prescription"));
+                        jsonResponse.add(new HtmlElement().setElementType("h4").setElementClass("").setElementContent("Dispatch this prescription"));
 
                         jsonResponse.add(new HtmlElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
-                        jsonResponse.add(JsonUtils.createTableEntry("Patient name", patient.getFirstName() + " " + patient.getLastName()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Patient name", patient.toString()));
                         jsonResponse.add(JsonUtils.createTableEntry("Patient SSN", patient.getSSN()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Practitioner name", practitioner.getFirstName() + " " + practitioner.getLastName()));
+                        jsonResponse.add(JsonUtils.createTableEntry("Practitioner name", practitioner.toString()));
                         jsonResponse.add(JsonUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
                         jsonResponse.add(JsonUtils.createTableEntry("Prescription ID", drugPrescription.getID().toString()));
                         jsonResponse.add(JsonUtils.createTableEntry("Prescription drug", drugPrescription.getDrugType().getDescription()));
@@ -223,7 +238,7 @@ MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
                                 .setElementInputValue(prescriptionID.toString()));
                         form.add(new HtmlElement().setElementType("button")
                                 .setElementClass("btn btn-lg btn-block btn-personal mb-2 submit-serve")
-                                .setElementContent("Serve")
+                                .setElementContent("Dispatch")
                                 .setElementButtonType("submit"));
                         jsonResponse.add(form);
 

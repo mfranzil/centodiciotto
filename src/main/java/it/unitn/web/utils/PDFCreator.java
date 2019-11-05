@@ -86,11 +86,11 @@ public class PDFCreator {
 
             // Patient name
             PDStreamUtils.write(
-                    contents, pat.getFirstName() + " " + pat.getLastName(),
+                    contents, pat.toString(),
                     PDType1Font.HELVETICA, 28, 30, 743, Color.BLACK);
             // Practitioner name
             PDStreamUtils.write(
-                    contents, pra.getFirstName() + " " + pra.getLastName(),
+                    contents, pra.toString(),
                     PDType1Font.HELVETICA, 28, 616, 743, Color.BLACK);
             // Birthdate and birthplace
             PDStreamUtils.write(

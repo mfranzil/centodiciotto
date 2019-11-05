@@ -212,8 +212,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             Exam exam = new Exam();
 
             ExamListDAO examListDAO = DAOFACTORY.getDAO(ExamListDAO.class);
-            ExamList examList = examListDAO.getByPrimaryKey(
-                    rs.getInt("exam_type"));
+            ExamList examList = examListDAO.getByPrimaryKey(rs.getInt("exam_type"));
 
             exam.setID(rs.getInt("exam_id"));
             exam.setPatientID(rs.getString("patient_id"));

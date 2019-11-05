@@ -19,5 +19,10 @@ public class SpecializedDoctor extends User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
 

@@ -59,8 +59,8 @@
                                      value="${prescription.practitionerID}"/>
                     <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
 
-                    <jsp:useBean id="datePrescripted" class="java.util.Date"/>
-                    <jsp:setProperty name="datePrescripted" property="time"
+                    <jsp:useBean id="datePrescribed" class="java.util.Date"/>
+                    <jsp:setProperty name="datePrescribed" property="time"
                                      value="${prescription.datePrescribed.time}"/>
 
                     <c:set var="practitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
@@ -69,8 +69,8 @@
                         <div class="table-cell pract">${practitioner.firstName}&nbsp;${practitioner.lastName}
                         </div>
                         <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${datePrescripted}"/>
-                            <fmt:formatDate pattern="HH:mm" value="${datePrescripted}"/>
+                            <fmt:formatDate type="date" dateStyle="long" value="${datePrescribed}"/>
+                            <fmt:formatDate pattern="HH:mm" value="${datePrescribed}"/>
                         </div>
                         <div class="table-cell report-state">${available ? "Available" : "Not available"}</div>
                         <div class="table-cell action">

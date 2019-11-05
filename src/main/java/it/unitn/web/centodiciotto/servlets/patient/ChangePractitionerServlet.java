@@ -54,7 +54,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractitionerID);
 
                 ((Patient) user).setPractitionerID(newPractitionerID);
-                patientDAO.updatePractitioner((Patient) user);
+                patientDAO.update((Patient) user);
 
                 Visit pendingVisit = visitDAO.getPendingVisitByPractitionerAndPatient(oldPract.getID(), user.getID());
                 if (pendingVisit != null) {
@@ -62,11 +62,11 @@ public class ChangePractitionerServlet extends HttpServlet {
                 }
 
                 String recipient = oldPract.getID();
-                String message = "Dear " + oldPract.getFirstName() + " " + oldPract.getLastName() + ",\n\n" +
+                String message = "Dear " + oldPract.toString() + ",\n\n" +
                         "one of your patients just asked for a change of practitioner " +
                         "and will be no longer on your patient list.\n" +
                         "Here are the patient details:\n\n" +
-                        ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + "\n" +
+                        ((Patient) user).toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Patient change notification";
 
@@ -74,10 +74,10 @@ public class ChangePractitionerServlet extends HttpServlet {
                 SendEmail.send(recipient, message, subject);
 
                 recipient = newPract.getID();
-                message = "Dear " + newPract.getFirstName() + " " + newPract.getLastName() + ",\n\n" +
+                message = "Dear " + newPract.toString() + ",\n\n" +
                         "we are glad to tell you that you have a new patient on your patient list.\n" +
                         "Here are the patient details:\n\n" +
-                        ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + "\n" +
+                        ((Patient) user).toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - New patient notification";
 
@@ -85,10 +85,10 @@ public class ChangePractitionerServlet extends HttpServlet {
                 SendEmail.send(recipient, message, subject);
 
                 recipient = user.getID();
-                message = "Dear " + ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + ",\n\n" +
+                message = "Dear " + ((Patient) user).toString() + ",\n\n" +
                         "we inform you that your general practitioner has been successfully changed.\n" +
                         "Here are the practitioner details:\n\n" +
-                        oldPract.getFirstName() + " " + oldPract.getLastName() + "\n" +
+                        oldPract.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - Practitioner change notification";
 
