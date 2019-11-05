@@ -34,8 +34,9 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
 
     final private String UPDATEPRACTITIONER = "UPDATE patient SET practitioner_id = ? WHERE patient_id = ?;";
     final private String PATIENTSBYID = "SELECT * FROM patient WHERE practitioner_id = ?;";
-    final private String PATIENTSLIKESSNORID = "select * from patient where LOWER(ssn) like " +
-            "LOWER(?) or LOWER(patient_id) like LOWER(?);";
+    final private String PATIENTSLIKESSNORIDANDPROVINCE = "select * from patient where (LOWER(ssn) like " +
+            "LOWER(?) or LOWER(patient_id) like LOWER(?)) AND living_province = ?;";
+    final private String PATIENTSBYPROVINCE = "SELECT * FROM patient WHERE living_province = ?;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -176,12 +177,13 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         }
     }
 
-    public List<Patient> getPatientsBySSNOrPartialName(String query) throws DAOException {
+    public List<Patient> getPatientsBySSNOrPartialNameandProvince(String query, String provinceAbbreviation) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PATIENTSLIKESSNORID)) {
+        try (PreparedStatement stm = CON.prepareStatement(PATIENTSLIKESSNORIDANDPROVINCE)) {
             stm.setString(1, "%" + query + "%");
             stm.setString(2, "%" + query + "%");
+            stm.setString(3, provinceAbbreviation);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -194,6 +196,22 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         }
     }
 
+    public List<Patient> getPatientByProvince(String provinceAbbreviation) throws DAOException {
+        List<Patient> res = new ArrayList<>();
+        Patient tmp;
+        try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYPROVINCE)) {
+            stm.setString(1, provinceAbbreviation);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Patients by Province: ", e);
+        }
+    }
 
     @Override
     protected Patient mapRowToEntity(ResultSet rs) throws DAOException {
