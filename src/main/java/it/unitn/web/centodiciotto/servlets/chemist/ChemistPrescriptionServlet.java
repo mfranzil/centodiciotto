@@ -145,26 +145,30 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                 if (user instanceof Chemist) {
                     try {
                         String userInput = request.getParameter("term");
+                        Province province = ((Chemist) user).getProvince();
 
-                        List<Patient> query = patientDAO.getPatientsBySSNOrPartialName(userInput);
                         List<PatientSearchResult> results = new ArrayList<>();
+                        List<Patient> allPatients = new ArrayList<>();
 
+                        if (userInput == null) {
+                            allPatients = patientDAO.getPatientsByProvince(province.getAbbreviation());
+                        } else {
+                            allPatients = patientDAO.getPatientsBySSNOrPartialNameandProvince(userInput, province.getAbbreviation());
+                        }
                         int id = 0;
-                        for (Patient patient : query) {
-                            if (patient.getLivingProvince().getID().equals(((Chemist) user).getProvince().getID())) {
-                                results.add(new PatientSearchResult(
-                                        id++,
-                                        patient.toString() + " - " + patient.getSSN(),
-                                        patient.getID(),
-                                        patient.toString(),
-                                        patient.getSSN(),
-                                        PhotoService.getLastPhoto(patient.getID())));
-                            }
+                        for (Patient patient : allPatients) {
+                            results.add(new PatientSearchResult(
+                                    id++, patient.getFirstName() + " " + patient.getLastName() + " - " + patient.getSSN(),
+                                    patient.getID(),
+                                    patient.getFirstName() + " " + patient.getLastName(),
+                                    patient.getSSN(),
+                                    PhotoService.getLastPhoto(patient.getID())));
                         }
                         Gson gson = new Gson();
                         response.setContentType("application/json");
                         response.getWriter().write(gson.toJson(
                                 new Results(results.toArray(new PatientSearchResult[0]))));
+
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }

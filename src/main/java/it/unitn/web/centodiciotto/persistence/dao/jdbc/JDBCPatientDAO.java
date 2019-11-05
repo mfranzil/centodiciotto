@@ -33,9 +33,9 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
 
     final private String PATIENTSBYPRACTITIONER = "SELECT * FROM patient WHERE practitioner_id = ?;";
-    final private String PATIENTSLIKESSNORID = "select * from patient where LOWER(ssn) like " +
-            "LOWER(?) or LOWER(patient_id) like LOWER(?);";
-    final private String PATIENTSBYPROVINCE = "SELECT * FROM patient WHERE province_id = ?;";
+    final private String PATIENTSLIKESSNORIDANDPROVINCE = "select * from patient where (LOWER(ssn) like " +
+            "LOWER(?) or LOWER(patient_id) like LOWER(?)) AND living_province = ?;";
+    final private String PATIENTSBYPROVINCE = "SELECT * FROM patient WHERE living_province = ?;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -161,12 +161,13 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         }
     }
 
-    public List<Patient> getPatientsBySSNOrPartialName(String query) throws DAOException {
+    public List<Patient> getPatientsBySSNOrPartialNameandProvince(String query, String provinceAbbreviation) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PATIENTSLIKESSNORID)) {
+        try (PreparedStatement stm = CON.prepareStatement(PATIENTSLIKESSNORIDANDPROVINCE)) {
             stm.setString(1, "%" + query + "%");
             stm.setString(2, "%" + query + "%");
+            stm.setString(3, provinceAbbreviation);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -179,13 +180,11 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         }
     }
 
-    @Override
-    public List<Patient> getPatientsByProvince(Integer provinceID) throws DAOException {
+    public List<Patient> getPatientsByProvince(String provinceAbbreviation) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
         try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYPROVINCE)) {
-            stm.setInt(1, provinceID);
-
+            stm.setString(1, provinceAbbreviation);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -197,7 +196,6 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             throw new DAOException("Error getting Patients by Province: ", e);
         }
     }
-
 
     @Override
     protected Patient mapRowToEntity(ResultSet rs) throws DAOException {
