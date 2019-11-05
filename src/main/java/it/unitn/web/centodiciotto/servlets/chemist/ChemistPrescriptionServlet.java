@@ -11,7 +11,6 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
 import it.unitn.web.utils.PhotoService;
-import it.unitn.web.utils.SendEmail;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
