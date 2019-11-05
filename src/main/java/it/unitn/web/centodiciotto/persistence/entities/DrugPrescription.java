@@ -7,7 +7,7 @@ public class DrugPrescription {
     private String practitionerID;
     private String patientID;
     private DrugList drugType;
-    private Timestamp datePrescripted;
+    private Timestamp datePrescribed;
     private Timestamp dateSold;
     private String chemistID;
     private Integer ticket;
@@ -46,12 +46,12 @@ public class DrugPrescription {
         this.drugType = drugType;
     }
 
-    public Timestamp getDatePrescripted() {
-        return datePrescripted;
+    public Timestamp getDatePrescribed() {
+        return datePrescribed;
     }
 
-    public void setDatePrescripted(Timestamp datePrescripted) {
-        this.datePrescripted = datePrescripted;
+    public void setDatePrescribed(Timestamp datePrescribed) {
+        this.datePrescribed = datePrescribed;
     }
 
     public Timestamp getDateSold() {
