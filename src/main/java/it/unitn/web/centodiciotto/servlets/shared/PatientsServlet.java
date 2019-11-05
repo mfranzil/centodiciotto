@@ -147,7 +147,7 @@ public class PatientsServlet extends HttpServlet {
                         jsonResponse.add(new HtmlElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
 
                         for (DrugPrescription drugPrescription : prescriptions) {
-                            jsonResponse.add(JsonUtils.createTableEntry("Prescription date", drugPrescription.getDatePrescripted().toString()));
+                            jsonResponse.add(JsonUtils.createTableEntry("Prescription date", drugPrescription.getDatePrescribed().toString()));
                             jsonResponse.add(JsonUtils.createTableEntry("Drug description", drugPrescription.getDrugType().getDescription()));
                             if (drugPrescription.getDescription() != null) {
                                 jsonResponse.add(JsonUtils.createTableEntry("Description", drugPrescription.getDescription()));

@@ -111,7 +111,7 @@ public class PDFCreator {
                     PDType1Font.HELVETICA, 21, 562, 560, Color.BLACK);
             // Prescription date
             PDStreamUtils.write(
-                    contents, dateTimeFormatter(dp.getDatePrescripted(), "ddMMyyHHMM"),
+                    contents, dateTimeFormatter(dp.getDatePrescribed(), "ddMMyyHHMM"),
                     PDType1Font.HELVETICA, 21, 397, 320, Color.BLACK);
             // Prescription time
             PDStreamUtils.write(

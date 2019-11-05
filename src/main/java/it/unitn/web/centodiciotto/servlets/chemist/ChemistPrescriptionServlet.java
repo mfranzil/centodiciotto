@@ -11,7 +11,6 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
 import it.unitn.web.utils.PhotoService;
-import it.unitn.web.utils.SendEmail;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -172,7 +171,7 @@ MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
                             patientListElements.add(new PrescriptionListElement(
                                     generalPractitioner.getFirstName() + " " + generalPractitioner.getLastName(),
                                     prescription.getDrugType().getDescription(),
-                                    new Date(prescription.getDatePrescripted().getTime()),
+                                    new Date(prescription.getDatePrescribed().getTime()),
                                     prescription.getID(),
                                     "Serve prescription"));
                         }

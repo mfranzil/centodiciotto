@@ -61,7 +61,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(1, drugPrescription.getPractitionerID());
             stm.setString(2, drugPrescription.getPatientID());
             stm.setInt(3, drugPrescription.getDrugType().getID());
-            stm.setTimestamp(4, drugPrescription.getDatePrescripted());
+            stm.setTimestamp(4, drugPrescription.getDatePrescribed());
             stm.setTimestamp(5, drugPrescription.getDateSold());
             stm.setString(6, drugPrescription.getChemistID());
             stm.setInt(7, drugPrescription.getTicket());
@@ -83,7 +83,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(1, drugPrescription.getPractitionerID());
             stm.setString(2, drugPrescription.getPatientID());
             stm.setInt(3, drugPrescription.getDrugType().getID());
-            stm.setTimestamp(4, drugPrescription.getDatePrescripted());
+            stm.setTimestamp(4, drugPrescription.getDatePrescribed());
             stm.setTimestamp(5, drugPrescription.getDateSold());
             stm.setString(6, drugPrescription.getChemistID());
             stm.setInt(7, drugPrescription.getTicket());
@@ -262,7 +262,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             drugPrescription.setPractitionerID(rs.getString("practitioner_id"));
             drugPrescription.setPatientID(rs.getString("patient_id"));
             drugPrescription.setDrugType(drugList);
-            drugPrescription.setDatePrescripted(rs.getTimestamp("date_prescripted"));
+            drugPrescription.setDatePrescribed(rs.getTimestamp("date_prescripted"));
             drugPrescription.setDateSold(rs.getTimestamp("date_sold"));
             drugPrescription.setChemistID(rs.getString("chemist_id"));
             drugPrescription.setTicket(rs.getInt("ticket"));
