@@ -19,11 +19,11 @@ import java.util.List;
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
     final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, exam_prescription_id, ticket_paid) " +
-            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            " result, health_service_id, ticket, exam_prescription_id, ticket_paid, recall) " +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE exam SET (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, exam_prescription_id, ticket_paid) " +
-            "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
+            " result, health_service_id, ticket, exam_prescription_id, ticket_paid, recall) " +
+            "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
     final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM exam WHERE exam_id = ?;";
@@ -55,6 +55,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
+            stm.setBoolean(11, exam.isRecall());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -79,6 +80,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
+            stm.setBoolean(11, exam.isRecall());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -225,6 +227,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setTicket(rs.getInt("ticket"));
             exam.setExamPrescriptionID(rs.getInt("exam_prescription_id"));
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));
+            exam.setRecall(rs.getBoolean("recall"));
 
             return exam;
         } catch (SQLException | DAOFactoryException e) {
