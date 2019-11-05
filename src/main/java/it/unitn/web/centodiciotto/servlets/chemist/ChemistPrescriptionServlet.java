@@ -11,6 +11,7 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
 import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.SendEmail;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -94,15 +95,32 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
 
                         if (!drugPrescription.getTicketPaid() && drugPrescription.getChemistID() == null && drugPrescription.getDateSold() == null) {
-
                             drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
                             drugPrescription.setChemistID(user.getID());
                             drugPrescriptionDAO.update(drugPrescription);
-                        Logger.getLogger("SCE").log(Level.INFO,
-                                "Succesfully activated prescription with ID " + prescriptionID);
+                            Logger.getLogger("SCE").log(Level.INFO,
+                                    "Succesfully activated prescription with ID " + prescriptionID);
+/*
+MAIL DA MODIFICARE DA MANDARE AL PAZIENTE
+                            String recipient = oldPract.getID();
+                            String message = "Dear " + oldPract.getFirstName() + " " + oldPract.getLastName() + ",\n\n" +
+                                    "one of your patients just asked for a change of practitioner " +
+                                    "and will be no longer on your patient list.\n" +
+                                    "Here are the patient details:\n\n" +
+                                    ((Patient) user).getFirstName() + " " + ((Patient) user).getLastName() + "\n" +
+                                    "\n\nYours,\nThe CentoDiciotto team.\n";
+                            String subject = "CentoDiciotto - Patient change notification";
+
+                            // Avviso il vecchio practitioner
+                            SendEmail.send(recipient, message, subject);
+*/
+                            response.setStatus(200);
+                            response.getWriter().write("{\"patientID\": \"" + drugPrescription.getPatientID() + "\"}");
+                        } else {
+                            response.setStatus(400);
+                            response.getWriter().write("{\"patientID\": \"\"}");
                         }
 
-                        response.getWriter().write( "{\"patientID\": \"" + drugPrescription.getPatientID() + "\"}");
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
@@ -231,7 +249,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private String photoPath;
 
         PatientSearchResult(Integer id, String text, String patientID,
-                                   String fullName, String SSN, String photoPath) {
+                            String fullName, String SSN, String photoPath) {
             this.id = id;
             this.text = text;
             this.patientID = patientID;

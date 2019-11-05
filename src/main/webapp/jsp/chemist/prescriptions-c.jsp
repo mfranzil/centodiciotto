@@ -124,7 +124,13 @@
                             setTimeout(function () {
                                 renderPrescriptions(data.patientID);
                             }, 1500);
-
+                        },
+                        error: function (data) {
+                            alert("Error. Prescription already served.");
+                            $(".popup-window").hide();
+                            $("#main-loading-container").slideDown();
+                            $("#test-table").children().not('first').remove();
+                            renderPrescriptions();
                         }
                     });
                 });
