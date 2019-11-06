@@ -33,14 +33,14 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             "WHERE patient_id = ? order by date_prescribed asc;";
     final private String FINDBYPRACTITIONER = "SELECT * FROM drug_prescription WHERE practitioner_id = ?;";
     final private String FINDEXPIRED = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescribed + interval '1 month' >= now() " +
+            "WHERE date_prescribed + interval '1 month' < now() " +
             "AND NOT(chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false);";
     final private String FINDVALID = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescribed + interval '1 month' < now() " +
+            "WHERE date_prescribed + interval '1 month' >= now() " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
             "order by date_prescribed asc;";
     final private String FINDVALIDBYPATIENT = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescribed + interval '1 month' < now() AND patient_id = ? " +
+            "WHERE date_prescribed + interval '1 month' >= now() AND patient_id = ? " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
             "order by date_prescribed asc;";
     final private String FINDUNPAIDBYPATIENT = "SELECT * FROM drug_prescription " +
