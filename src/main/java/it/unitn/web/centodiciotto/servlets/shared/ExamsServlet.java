@@ -1,12 +1,9 @@
-package it.unitn.web.centodiciotto.servlets.patient;
+package it.unitn.web.centodiciotto.servlets.shared;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
-import it.unitn.web.centodiciotto.persistence.entities.ExamList;
-import it.unitn.web.centodiciotto.persistence.entities.ExamPrescription;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
@@ -74,7 +71,7 @@ public class ExamsServlet extends HttpServlet {
                         String examID = request.getParameter("examID");
 
                         List<ExamListElement> examListElements = new ArrayList<>();
-                        System.out.println(onlyAvailable.toString() + " " + examID);
+
                         List<ExamPrescription> patientExamPrescriptionList = examPrescriptionDAO.getByPatientNotBooked(user.getID());
 
                         if (examID == null) {
@@ -112,7 +109,7 @@ public class ExamsServlet extends HttpServlet {
                 break;
             }
             case "examSearch": {
-                if (user instanceof Patient) {
+                if (user instanceof Patient || user instanceof GeneralPractitioner) {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -129,6 +126,29 @@ public class ExamsServlet extends HttpServlet {
                     Gson gson = new Gson();
                     response.setContentType("application/json");
                     response.getWriter().write(gson.toJson(new Results(results.toArray(new ExamSearchResult[0]))));
+                }
+                break;
+            }
+            case "examAdd": {
+                try {
+                    if (user instanceof GeneralPractitioner) {
+                        String examID = request.getParameter("examID");
+                        String patientID = request.getParameter("patientID");
+
+                        ExamList examList = examListDAO.getByPrimaryKey(Integer.valueOf(examID));
+
+                        ExamPrescription newPrescription = new ExamPrescription();
+                        newPrescription.setPatientID(patientID);
+                        newPrescription.setPractitionerID(user.getID());
+                        newPrescription.setBooked(false);
+                        newPrescription.setExamType(examList);
+
+                        examPrescriptionDAO.insert(newPrescription);
+                    }
+                } catch (DAOException e) {
+                    throw new ServletException("Error with DAOs in ExamsServlet", e);
+                } catch (NumberFormatException e) {
+                    throw new ServletException("Error ExamID is null", e);
                 }
                 break;
             }
