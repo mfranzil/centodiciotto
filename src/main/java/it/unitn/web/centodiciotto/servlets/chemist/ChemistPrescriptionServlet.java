@@ -11,8 +11,9 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
-import it.unitn.web.utils.PhotoService;
-import it.unitn.web.utils.SendEmail;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.PhotoService;
+import it.unitn.web.utils.services.EmailService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -89,6 +90,16 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             contextPath += "/";
         }
 
+        PhotoService photoService;
+        EmailService emailService;
+
+        try {
+            photoService = PhotoService.getInstance();
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in EmailService or PhotoService retrieval: ", e);
+        }
+
         switch (ajax_type) {
             case "serve": {
                 if (user instanceof Chemist) {
@@ -126,7 +137,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             String subject = "CentoDiciotto - Patient change notification";
 
                             // Avviso il paziente dell'avvenuta ricezione del farmaco
-                            SendEmail.send(recipient, message, subject);
+                            emailService.sendEmail(recipient, message, subject);
 
                             response.setStatus(200);
                             response.getWriter().write("{\"patientID\": \"" + drugPrescription.getPatientID() + "\"}");
@@ -137,6 +148,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in Email sending: ", e);
                     }
                 }
             }
@@ -162,7 +175,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                                     patient.getID(),
                                     patient.getFirstName() + " " + patient.getLastName(),
                                     patient.getSSN(),
-                                    PhotoService.getLastPhoto(patient.getID())));
+                                    photoService.getLastPhoto(patient.getID())));
                         }
                         Gson gson = new Gson();
                         response.setContentType("application/json");
@@ -171,6 +184,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in Photo path retrieval: ", e);
                     }
                 }
             }

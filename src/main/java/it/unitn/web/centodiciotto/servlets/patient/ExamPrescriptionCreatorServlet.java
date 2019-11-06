@@ -63,7 +63,7 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String requestType = (String) request.getParameter("requestType");
+        String requestType = request.getParameter("requestType");
 
         switch (requestType) {
             case "examList": {

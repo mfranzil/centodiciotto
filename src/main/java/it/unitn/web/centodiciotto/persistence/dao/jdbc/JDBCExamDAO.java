@@ -8,10 +8,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
     final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
     final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? AND ticket_paid = false";
-
+    final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -51,7 +48,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(4, exam.getDone());
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
-            stm.setInt(7, exam.getHealthServiceID());
+            stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
@@ -76,7 +73,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
             stm.setInt(7, exam.getID());
-            stm.setInt(7, exam.getHealthServiceID());
+            stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
@@ -209,6 +206,25 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
+    public List<Exam> getByDate(Timestamp ts) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYDATE)) {
+            stm.setTimestamp(1, ts);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Exams by date: ", e);
+        }
+    }
+
+    @Override
     protected Exam mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Exam exam = new Exam();
@@ -223,7 +239,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setDone(rs.getBoolean("done"));
             exam.setDate(rs.getTimestamp("date"));
             exam.setResult(rs.getString("result"));
-            exam.setHealthServiceID(rs.getInt("health_service_id"));
+            exam.setHealthServiceID(rs.getString("health_service_id"));
             exam.setTicket(rs.getInt("ticket"));
             exam.setExamPrescriptionID(rs.getInt("exam_prescription_id"));
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));

@@ -119,16 +119,30 @@
                                 Patients
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link nav-link-personal"
-                               href="${pageContext.request.contextPath}/restricted/health_service/prescriptions">
-                                Prescriptions
+                        <li class="nav-item dropdown">
+                            <a class="nav-link nav-link-personal dropdown-toggle"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Exams
                             </a>
+                            <div class="dropdown-menu nav-personal">
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/health_service/exam_request">Requests</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/health_service/exam_calendar">Calendar</a>
+                                <a class="dropdown-item nav-link-personal"
+                                   href="${pageContext.request.contextPath}/restricted/health_service/exam_history">History</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link nav-link-personal"
                                href="${pageContext.request.contextPath}/restricted/health_service/recalls">
                                 Recalls
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-personal"
+                               href="${pageContext.request.contextPath}/restricted/health_service/reports">
+                                Reports
                             </a>
                         </li>
                     </c:when>

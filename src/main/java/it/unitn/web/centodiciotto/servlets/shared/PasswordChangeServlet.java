@@ -2,7 +2,8 @@ package it.unitn.web.centodiciotto.servlets.shared;
 
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Crypto;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.CryptoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,14 +28,20 @@ public class PasswordChangeServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user != null) {
-            String oldPassword = request.getParameter("oldPassword");
-            String newPassword = request.getParameter("newPassword");
+            try {
+                String oldPassword = request.getParameter("oldPassword");
+                String newPassword = request.getParameter("newPassword");
+                CryptoService cryptoService = CryptoService.getInstance();
 
-            if (Crypto.isCurrentPassword(user.getID(), oldPassword)) {
-                Crypto.changePassword(user.getID(), newPassword);
-                response.setStatus(200);
-            } else {
+                if (cryptoService.isCurrentPassword(user.getID(), oldPassword)) {
+                    cryptoService.changePassword(user.getID(), newPassword);
+                    response.setStatus(200);
+                } else {
+                    response.setStatus(400);
+                }
+            } catch (ServiceException e) {
                 response.setStatus(400);
+                throw new ServletException("Failed to change password: ", e);
             }
         }
     }

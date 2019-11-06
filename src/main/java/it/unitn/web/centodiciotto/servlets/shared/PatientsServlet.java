@@ -8,7 +8,8 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
-import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -57,7 +58,7 @@ public class PatientsServlet extends HttpServlet {
         }
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String ajax_type = request.getParameter("requestType");
 
@@ -65,6 +66,8 @@ public class PatientsServlet extends HttpServlet {
             switch (ajax_type) {
                 case "patientList": {
                     try {
+                        PhotoService photoService = PhotoService.getInstance();
+
                         String patientID = request.getParameter("patientID");
 
                         List<Patient> patientList = new ArrayList<>();
@@ -83,7 +86,7 @@ public class PatientsServlet extends HttpServlet {
 
                         List<PatientListElement> patientListElements = new ArrayList<>();
                         for (Patient patient : patientList) {
-                            String photoPath = PhotoService.getLastPhoto(patient.getID());
+                            String photoPath = photoService.getLastPhoto(patient.getID());
                             patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, patient.getID(), new JsonUtils.Action("Patient Data", true)));
                         }
 
@@ -94,6 +97,8 @@ public class PatientsServlet extends HttpServlet {
 
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in Photo path retrieval: ", e);
                     }
                     break;
                 }

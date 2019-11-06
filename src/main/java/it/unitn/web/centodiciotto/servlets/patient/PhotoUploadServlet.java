@@ -7,7 +7,8 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -56,11 +57,13 @@ public class PhotoUploadServlet extends HttpServlet {
             photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
 
             try {
+                PhotoService photoService = PhotoService.getInstance();
+
                 photoDAO.insert(photo);
 
                 String fileName = Integer.toString(photo.getID());
                 String path = getServletContext().getRealPath("/")
-                        + PhotoService.getPatientAvatarFolder(user.getID());
+                        + photoService.getPatientAvatarFolder(user.getID());
 
                 Files.createDirectories(Paths.get(path));
 
@@ -79,6 +82,8 @@ public class PhotoUploadServlet extends HttpServlet {
             } catch (DAOException e) {
                 response.setStatus(400);
                 throw new ServletException("Error in DAO usage: ", e);
+            } catch (ServiceException e) {
+                throw new ServletException("Error in Photo path retrival: ", e);
             } finally {
                 if (out != null) {
                     out.close();

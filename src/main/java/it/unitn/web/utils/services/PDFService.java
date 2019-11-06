@@ -1,9 +1,12 @@
-package it.unitn.web.utils;
+package it.unitn.web.utils.services;
 
 import be.quodlibet.boxable.utils.PDStreamUtils;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.utils.Pair;
+import it.unitn.web.utils.QRCodeCreator;
+import it.unitn.web.utils.exceptions.ServiceException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -24,15 +27,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("SameParameterValue")
-public class PDFCreator {
+public class PDFService {
 
-    private static ServletContext sc;
+    private static PDFService instance;
+    private transient ServletContext sc;
 
-    public static void configure(ServletContext servletContext) {
+    private PDFService(ServletContext servletContext) {
         sc = servletContext;
     }
 
-    private static String insertSpaces(String string, int spaces) {
+    public static void configure(ServletContext servletContext) throws ServiceException {
+        if (instance == null) {
+            instance = new PDFService(servletContext);
+        } else {
+            throw new ServiceException("PDFService already configured. You can call configure only one time");
+        }
+    }
+
+    public static PDFService getInstance() throws ServiceException {
+        if (instance == null) {
+            throw new ServiceException("PDFService not yet configured. " +
+                    "Call PDFService.configure() before use the class");
+        }
+        return instance;
+    }
+
+    private String insertSpaces(String string, int spaces) {
         StringBuilder res = new StringBuilder();
 
         for (char c : string.toCharArray()) {
@@ -43,21 +63,21 @@ public class PDFCreator {
         return res.toString();
     }
 
-    private static void splitWrite(PDPageContentStream stream, String text,
-                                   PDFont font, float fontSize, float x, float y, Color color, int split) {
+    private void splitWrite(PDPageContentStream stream, String text,
+                            PDFont font, float fontSize, float x, float y, Color color, int split) {
         String[] arr = text.split("(?<=\\G.{" + split + "})");
         for (int i = 0; i < arr.length; i++) {
             PDStreamUtils.write(stream, arr[i], font, fontSize, x, (float) (y - (i * fontSize * 1.6)), color);
         }
     }
 
-    private static String dateTimeFormatter(Timestamp ts, String pattern) {
+    private String dateTimeFormatter(Timestamp ts, String pattern) {
         return insertSpaces(DateTimeFormatter.ofPattern(pattern)
                 .withZone(ZoneId.systemDefault()).format(ts.toInstant()), 3);
     }
 
-    public static PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra, String qrCodeURL)
-            throws RuntimeException {
+    public PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra, String qrCodeURL)
+            throws ServiceException {
 
         PDRectangle rec = new PDRectangle(1000, 765);
         PDDocument doc = new PDDocument();
@@ -139,7 +159,7 @@ public class PDFCreator {
             contents.close();
             return doc;
         } catch (IOException e) {
-            throw new RuntimeException("Error in Prescription creation: ", e);
+            throw new ServiceException("Error in Prescription creation: ", e);
         }
     }
 }

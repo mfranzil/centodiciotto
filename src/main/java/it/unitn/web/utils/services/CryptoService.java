@@ -1,10 +1,12 @@
-package it.unitn.web.utils;
+package it.unitn.web.utils.services;
 
 import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.Common;
+import it.unitn.web.utils.exceptions.ServiceException;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -15,23 +17,22 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
 
-public class Crypto {
-    private static final int ITERATIONS = 10000;
-    private static final int KEY_LENGTH = 512;
-    private static Random RANDOM;
+public class CryptoService {
+    private static CryptoService instance;
+    private transient final int ITERATIONS = 10000;
+    private transient final int KEY_LENGTH = 512;
+    private transient Random RANDOM;
+    private transient UserDAO userDAO;
+    private transient PatientDAO patientDAO;
+    private transient GeneralPractitionerDAO practitionerDAO;
+    private transient SpecializedDoctorDAO specializedDoctorDAO;
+    private transient ChemistDAO chemistDAO;
+    private transient HealthServiceDAO healthServiceDAO;
 
-    private static UserDAO userDAO;
-
-    private static PatientDAO patientDAO;
-    private static GeneralPractitionerDAO practitionerDAO;
-    private static SpecializedDoctorDAO specializedDoctorDAO;
-    private static ChemistDAO chemistDAO;
-    private static HealthServiceDAO healthServiceDAO;
-
-    public static void configure(DAOFactory daoFactory) throws RuntimeException {
+    private CryptoService(DAOFactory daoFactory) throws ServiceException {
         RANDOM = new SecureRandom();
         if (daoFactory == null) {
-            throw new RuntimeException("DAOFactory is null.");
+            throw new ServiceException("DAOFactory is null.");
         }
         try {
             userDAO = daoFactory.getDAO(UserDAO.class);
@@ -42,11 +43,27 @@ public class Crypto {
             chemistDAO = daoFactory.getDAO(ChemistDAO.class);
             healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
         } catch (DAOFactoryException e) {
-            throw new RuntimeException("Error in" + Crypto.class.getName() +"::init: ", e);
+            throw new ServiceException("Error in DAO retrieval: ", e);
         }
     }
 
-    private static String hash(String password, String salt) {
+    public static void configure(DAOFactory daoFactory) throws ServiceException {
+        if (instance == null) {
+            instance = new CryptoService(daoFactory);
+        } else {
+            throw new ServiceException("EmailService already configured. You can call configure only one time");
+        }
+    }
+
+    public static CryptoService getInstance() throws ServiceException {
+        if (instance == null) {
+            throw new ServiceException("EmailService not yet configured. " +
+                    "Call EmaiLService.configure() before use the class");
+        }
+        return instance;
+    }
+
+    private String hash(String password, String salt) {
         char[] passwordChar = password.toCharArray();
         PBEKeySpec spec = new PBEKeySpec(passwordChar, salt.getBytes(), ITERATIONS, KEY_LENGTH);
         Arrays.fill(passwordChar, Character.MIN_VALUE);
@@ -60,7 +77,7 @@ public class Crypto {
         }
     }
 
-    private static String bytesToHex(byte[] bytes) {
+    private String bytesToHex(byte[] bytes) {
         final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
@@ -71,7 +88,7 @@ public class Crypto {
         return new String(hexChars);
     }
 
-    private static boolean isExpectedPassword(String password, String salt, String expectedHash) {
+    private boolean isExpectedPassword(String password, String salt, String expectedHash) {
         String inputHash = hash(password, salt);
         Arrays.fill(password.toCharArray(), Character.MIN_VALUE);
         if (inputHash.length() != expectedHash.length()) {
@@ -85,27 +102,27 @@ public class Crypto {
         return true;
     }
 
-    private static String getNextSalt() {
+    private String getNextSalt() {
         byte[] salt = new byte[8];
         RANDOM.nextBytes(salt);
         return bytesToHex(salt);
     }
 
-    public static String getNextBase64Token() {
+    public String getNextBase64Token() {
         byte[] token = new byte[32];
         RANDOM.nextBytes(token);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
     }
 
-    public static User authenticate(String ID, String password, String role) throws RuntimeException {
+    public User authenticate(String ID, String password, String role) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {
-            throw new RuntimeException("Email or password are null.");
+            throw new ServiceException("Email or password are null.");
         }
 
         String[] roles = {"patient", "general_practitioner", "specialized_doctor", "chemist", "health_service"};
 
         if (!Common.containsItemFromArray(role, roles)) {
-            throw new RuntimeException("Invalid role name.");
+            throw new ServiceException("Invalid role name.");
         }
 
         try {
@@ -130,13 +147,13 @@ public class Crypto {
                 return null;
             }
         } catch (DAOException e) {
-            throw new RuntimeException("Error in authentication method." + e.getMessage());
+            throw new ServiceException("Error in authentication method." + e.getMessage());
         }
     }
 
-    public static void changePassword(String ID, String newPassword) throws RuntimeException {
+    public void changePassword(String ID, String newPassword) throws ServiceException {
         if (ID == null || newPassword == null || ID.equals("") || newPassword.equals("")) {
-            throw new RuntimeException("Email or password are null.");
+            throw new ServiceException("Email or password are null.");
         }
 
         String newSalt = getNextSalt();
@@ -150,20 +167,20 @@ public class Crypto {
         try {
             userDAO.update(user);
         } catch (DAOException e) {
-            throw new RuntimeException("Error in Password " + e.getMessage());
+            throw new ServiceException("Error in Password " + e.getMessage());
         }
     }
 
-    public static boolean isCurrentPassword(String ID, String password) throws RuntimeException {
+    public boolean isCurrentPassword(String ID, String password) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {
-            throw new RuntimeException("Email or password are null.");
+            throw new ServiceException("Email or password are null.");
         }
 
         try {
             User user = userDAO.getByPrimaryKey(ID);
             return isExpectedPassword(password, user.getSalt(), user.getHash());
         } catch (DAOException e) {
-            throw new RuntimeException("Error in authentication method." + e.getMessage());
+            throw new ServiceException("Error in authentication method." + e.getMessage());
         }
     }
 }

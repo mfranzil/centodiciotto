@@ -5,7 +5,8 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Common;
-import it.unitn.web.utils.Crypto;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.CryptoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,40 +59,46 @@ public class LoginServlet extends HttpServlet {
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
         } else {
-            String userID = request.getParameter("userID");
-            String password = request.getParameter("password");
-            String role = request.getParameter("role");
-            String rememberMe = request.getParameter("rememberMe");
-            String referrer = request.getParameter("referrer");
+            try {
+                String userID = request.getParameter("userID");
+                String password = request.getParameter("password");
+                String role = request.getParameter("role");
+                String rememberMe = request.getParameter("rememberMe");
+                String referrer = request.getParameter("referrer");
 
-            User user = Crypto.authenticate(userID, password, role);
-            String json;
+                CryptoService cryptoService = CryptoService.getInstance();
+                User user = cryptoService.authenticate(userID, password, role);
+                String json;
 
-            if (user == null) {
-                response.setStatus(400);
-                json = "{\"url\":\"\"}";
-            } else {
-                if (rememberMe != null && rememberMe.equals("on")) {
-                    request.getSession().setMaxInactiveInterval(2592000);
-                }
-
-                request.getSession().setAttribute("user", user);
-                request.getSession().setAttribute("role", role);
-                request.getSession().setAttribute("displayName", Common.getDisplayName(user));
-
-                response.setStatus(200);
-                if (!Objects.equals(referrer, "")
-                        && !referrer.equals(request.getContextPath() + "/restricted/logout_handler")) {
-                    json = "{\"url\":\"" + referrer.replace('$','&') + "\"}";
+                if (user == null) {
+                    response.setStatus(400);
+                    json = "{\"url\":\"\"}";
                 } else {
-                    json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
+                    if (rememberMe != null && rememberMe.equals("on")) {
+                        request.getSession().setMaxInactiveInterval(2592000);
+                    }
+
+                    request.getSession().setAttribute("user", user);
+                    request.getSession().setAttribute("role", role);
+                    request.getSession().setAttribute("displayName", Common.getDisplayName(user));
+
+                    response.setStatus(200);
+                    if (!Objects.equals(referrer, "")
+                            && !referrer.equals(request.getContextPath() + "/restricted/logout_handler")) {
+                        json = "{\"url\":\"" + referrer.replace('$', '&') + "\"}";
+                    } else {
+                        json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
+                    }
+
+                    java.util.logging.Logger.getLogger("SCE").log(Level.INFO,
+                            "User " + userID + " logged in with role "
+                                    + role + " - redirected with JSON " + json);
                 }
 
-                java.util.logging.Logger.getLogger("SCE").log(Level.INFO,
-                        "User " + userID + " logged in with role "
-                        + role + " - redirected with JSON " + json);
+                response.getWriter().write(json);
+            } catch (ServiceException e) {
+                throw new ServletException("Failed to authenticate user: ", e);
             }
-            response.getWriter().write(json);
         }
     }
 }

@@ -5,7 +5,8 @@ import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Crypto;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.CryptoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -73,13 +74,16 @@ public class PasswordResetServlet extends HttpServlet {
             String newPassword = request.getParameter("newPassword");
 
             try {
-                Crypto.changePassword(userID, newPassword);
+                CryptoService.getInstance().changePassword(userID, newPassword);
                 prDAO.delete(prDAO.getByPrimaryKey(userID));
 
                 response.setStatus(200);
             } catch (DAOException e) {
                 response.setStatus(400);
                 throw new ServletException("Error in DAO usage: ", e);
+            } catch (ServiceException e) {
+                response.setStatus(400);
+                throw new ServletException("Error in CryptoService while changing password: ", e);
             }
         }
     }

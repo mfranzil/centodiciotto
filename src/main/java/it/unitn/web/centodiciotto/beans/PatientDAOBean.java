@@ -12,12 +12,15 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
-import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.exceptions.BeanException;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.PhotoService;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class PatientDAOBean implements Serializable {
+
     private VisitDAO visitDAO = null;
     private PatientDAO patientDAO = null;
     private GeneralPractitionerDAO practitionerDAO = null;
@@ -25,9 +28,8 @@ public class PatientDAOBean implements Serializable {
 
     private String patientID = null;
 
-    public void setDAOFactory(String useless){
+    public void setDAOFactory(String useless) {
         try {
-            //TODO change with proper model
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             patientDAO = daoFactory.getDAO(PatientDAO.class);
@@ -48,61 +50,65 @@ public class PatientDAOBean implements Serializable {
         this.patientID = patientID;
     }
 
-    public Patient getPatient() throws DAOException {
+    public Patient getPatient() throws BeanException {
         if (patientID == null) {
-            throw new DAOException("PatientID is null");
+            throw new BeanException("PatientID is null");
         }
 
-        Patient res = null;
+        Patient res;
         try {
             res = patientDAO.getByPrimaryKey(patientID);
         } catch (DAOException e) {
-            throw new DAOException("Error getting patient in patientDaoBean: ", e);
+            throw new BeanException("Error getting patient in patientDaoBean: ", e);
         }
         return res;
     }
 
-    public String getPhotoPath(){
-        return PhotoService.getLastPhoto(patientID);
+    public String getPhotoPath() throws BeanException {
+        try {
+            return PhotoService.getInstance().getLastPhoto(patientID);
+        } catch (ServiceException e) {
+            throw new BeanException("Error getting Photo path: ", e);
+        }
     }
 
-    public Visit getLastVisit() throws DAOException {
+    public Visit getLastVisit() throws BeanException {
         try {
             return visitDAO.getLastVisitByPatientID(patientID);
         } catch (DAOException e) {
-            throw new DAOException("Error getting lastVisit in patientDaoBean: ", e);
+            throw new BeanException("Error getting lastVisit in patientDaoBean: ", e);
         }
     }
 
-    public List<Exam> getExams() throws DAOException {
+    public List<Exam> getExams() throws BeanException {
         try {
             return examDAO.getByPatient(patientID);
         } catch (DAOException e) {
-            throw new DAOException("Error getting exams in patientDaoBean: ", e);
+            throw new BeanException("Error getting exams in patientDaoBean: ", e);
         }
     }
 
-    public List<Visit> getDoneVisits() throws DAOException {
+    public List<Visit> getDoneVisits() throws BeanException {
         try {
             return visitDAO.getDoneByPatient(patientID);
         } catch (DAOException e) {
-            throw new DAOException("Error getting exams in patientDaoBean: ", e);
+            throw new BeanException("Error getting exams in patientDaoBean: ", e);
         }
     }
 
-    public Visit getPendingVisit() throws DAOException {
+    public Visit getPendingVisit() throws BeanException {
         try {
             return visitDAO.getPendingVisitByPractitionerAndPatient(getPatient().getPractitionerID(), patientID);
         } catch (DAOException e) {
-            throw new DAOException("Error getting exams in patientDaoBean: ", e);
+            throw new BeanException("Error getting exams in patientDaoBean: ", e);
         }
     }
 
-    public GeneralPractitioner getPractitioner() throws DAOException {
+    public GeneralPractitioner getPractitioner() throws BeanException {
         try {
             return practitionerDAO.getByPrimaryKey(getPatient().getPractitionerID());
         } catch (DAOException e) {
-            throw new DAOException("Error getting exams in patientDaoBean: ", e);
+            throw new BeanException("Error getting exams in patientDaoBean: ", e);
         }
     }
 }

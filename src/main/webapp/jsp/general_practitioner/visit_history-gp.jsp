@@ -46,10 +46,7 @@
             $("#history_table").createTableHeaders(tableHeaders);
             renderPatientsRows();
 
-            //$("#main-loading-container").slideUp();
-
             function renderPatientsRows() {
-                console.log("here");
                 $.ajax({
                     type: "POST",
                     dataType: "json",

@@ -5,8 +5,9 @@ import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Crypto;
-import it.unitn.web.utils.SendEmail;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.CryptoService;
+import it.unitn.web.utils.services.EmailService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,10 +48,12 @@ public class RequestPasswordResetServlet extends HttpServlet {
         } else {
             try {
                 String userID = request.getParameter("userID");
+                CryptoService cryptoService = CryptoService.getInstance();
+                EmailService emailService = EmailService.getInstance();
 
                 PasswordReset pr = new PasswordReset();
                 pr.setUserID(userID);
-                pr.setToken(Crypto.getNextBase64Token());
+                pr.setToken(cryptoService.getNextBase64Token());
                 pr.setExpiringDate(new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)));
 
                 if (prDAO.getByPrimaryKey(userID) == null) {
@@ -69,12 +72,15 @@ public class RequestPasswordResetServlet extends HttpServlet {
                                 "Yours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - reset your password";
 
-                SendEmail.send(userID, message, subject);
+                emailService.sendEmail(userID, message, subject);
 
                 response.setStatus(200);
             } catch (DAOException e) {
                 response.setStatus(400);
                 throw new ServletException("Error in DAO usage. ", e);
+            } catch (ServiceException e) {
+                response.setStatus(400);
+                throw new ServletException("Error in mail sending or CryptoService: ", e);
             }
         }
     }

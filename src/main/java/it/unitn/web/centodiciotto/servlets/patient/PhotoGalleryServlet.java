@@ -8,7 +8,8 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.Pair;
-import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,11 +43,12 @@ public class PhotoGalleryServlet extends HttpServlet {
 
         if (user instanceof Patient) {
             try {
-                List<Pair<String, Integer>> photoPathList = PhotoService.getAllPhotosWithID(user.getID());
+                PhotoService photoService = PhotoService.getInstance();
+                List<Pair<String, Integer>> photoPathList = photoService.getAllPhotosWithID(user.getID());
 
                 request.setAttribute("photos", photoPathList);
                 request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
-            } catch (RuntimeException e) {
+            } catch (ServiceException e) {
                 throw new ServletException("Error in Service usage: ", e);
             }
         }

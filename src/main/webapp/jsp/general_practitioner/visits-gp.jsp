@@ -24,7 +24,7 @@
         }
     </style>
     <script>
-        $(function () {
+        $("document").ready(function () {
             $(".datepicker").datepicker({
                 dateFormat: "dd/mm/yy",
                 beforeShowDay: $.datepicker.noWeekends,
@@ -34,7 +34,6 @@
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
-                dateFormat: "dd-mm-yy"
             });
             $('input.timepicker').timepicker({
                 timeFormat: 'HH:mm',
@@ -91,11 +90,11 @@
                                         Insert a date and time for the appointment, then confirm.
                                         <div style="display: flex; width: 100%;">
                                             <label style="flex: 50%" class="my-2 mr-1">
-                                                <input class="form-control datepicker"
+                                                <input class="form-control datepicker" autocomplete="off"
                                                        type="text" name="visitDate">
                                             </label>
                                             <label style="flex: 50%" class="my-2 ml-1">
-                                                <input class="form-control timepicker"
+                                                <input class="form-control timepicker" autocomplete="off"
                                                        type="text" name="visitTime">
                                             </label>
                                         </div>

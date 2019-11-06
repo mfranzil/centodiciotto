@@ -10,7 +10,8 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.PDFCreator;
+import it.unitn.web.utils.services.PDFService;
+import it.unitn.web.utils.exceptions.ServiceException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.servlet.ServletException;
@@ -76,7 +77,7 @@ public class DrugPrescriptionServlet extends HttpServlet {
                                 "https".equals(request.getScheme()) && request.getServerPort() == 443
                                 ? "" : ":" + request.getServerPort());
 
-                PDDocument prescriptionDoc = PDFCreator.createDrugPrescription(
+                PDDocument prescriptionDoc = PDFService.getInstance().createDrugPrescription(
                         drugPrescription, patient, practitioner, qrCodeURL);
 
                 response.setContentType("application/pdf");
@@ -84,6 +85,8 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 prescriptionDoc.save(response.getOutputStream());
             } catch (DAOException e) {
                 throw new ServletException("Error in DAO usage: ", e);
+            } catch (ServiceException e) {
+                throw new ServletException("Error in PDF generation: ", e);
             }
         }
 

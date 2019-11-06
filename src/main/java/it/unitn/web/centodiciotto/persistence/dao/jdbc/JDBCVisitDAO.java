@@ -6,10 +6,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +34,8 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE";
     final private String PENDINGBYPRACTITIONER = "SELECT * FROM visit WHERE " +
             "practitioner_id = ? AND booked = FALSE order by visit_date desc";
+    final private String FINDBYDATE = "SELECT * from visit where visit_date::date = ?::date";
+
 
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -250,6 +249,25 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting Pending Visits by practitionerID: ", e);
+        }
+    }
+
+    @Override
+    public List<Visit> getByDate(Timestamp ts) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYDATE)) {
+            stm.setTimestamp(1, ts);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Visits by date: ", e);
         }
     }
 

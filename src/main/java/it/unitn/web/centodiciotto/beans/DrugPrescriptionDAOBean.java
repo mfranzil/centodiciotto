@@ -6,6 +6,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
+import it.unitn.web.utils.exceptions.BeanException;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -18,11 +19,9 @@ public class DrugPrescriptionDAOBean implements Serializable {
 
     public void setDAOFactory(String useless) {
         try {
-            //TODO change with proper model
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
-
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error in DAO retrieval: ", e);
         }
@@ -31,19 +30,19 @@ public class DrugPrescriptionDAOBean implements Serializable {
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
-    
-    public List<DrugPrescription> getByPatient() throws DAOException {
+
+    public List<DrugPrescription> getByPatient() throws BeanException {
         List<DrugPrescription> drugPrescriptions = Collections.emptyList();
 
         if (patientID == null) {
-            throw new DAOException("Practitioner is null");
+            throw new BeanException("Practitioner is null");
         }
 
         try {
             drugPrescriptions = drugPrescriptionDAO.getValidByPatient(patientID);
 
         } catch (DAOException e) {
-            throw new DAOException("Error getting drugPre list in practitionerDaoBean: ", e);
+            throw new BeanException("Error getting drugPre list in practitionerDaoBean: ", e);
         }
         return drugPrescriptions;
     }

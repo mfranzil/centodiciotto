@@ -1,4 +1,6 @@
-package it.unitn.web.utils;
+package it.unitn.web.utils.services;
+
+import it.unitn.web.utils.exceptions.ServiceException;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -10,17 +12,19 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
-public class SendEmail {
-    private static Session session;
-    private static InternetAddress sender;
+public class EmailService {
+    private static EmailService instance;
 
-    public static void configure() throws RuntimeException {
+    private final transient Session session;
+    private final transient InternetAddress sender;
+
+    private EmailService() throws ServiceException {
         Properties data = new Properties();
 
-        InputStream stream = SendEmail.class.getClassLoader().getResourceAsStream("email.properties");
+        InputStream stream = EmailService.class.getClassLoader().getResourceAsStream("email.properties");
 
         if (stream == null) {
-            throw new RuntimeException("Error loading email.properties file");
+            throw new ServiceException("Error loading email.properties file");
         }
 
         try {
@@ -42,33 +46,56 @@ public class SendEmail {
             systemProperties.setProperty("mail.smtp.starttls.enable", "true");
             systemProperties.setProperty("mail.debug", "true");
 
-            SendEmail.session = Session.getInstance(systemProperties, new Authenticator() {
+            this.session = Session.getInstance(systemProperties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(username, password);
                 }
             });
         } catch (IOException e) {
-            throw new RuntimeException("Error sending email", e);
+            throw new ServiceException("Error sending email", e);
         }
-
     }
 
-    public static void send(final String recipient, final String message, final String subject) throws RuntimeException {
+    public static void configure() throws ServiceException {
+        if (instance == null) {
+            instance = new EmailService();
+        } else {
+            throw new ServiceException("EmailService already configured. You can call configure only one time");
+        }
+    }
+
+    public static EmailService getInstance() throws ServiceException {
+        if (instance == null) {
+            throw new ServiceException("EmailService not yet configured. " +
+                    "Call EmailService.configure() before use the class");
+        }
+        return instance;
+    }
+
+    public void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
+        var throwableWrapper = new Object() {
+            Throwable tr = null;
+        };
+
         Runnable runnable = () -> {
             try {
-                SendEmail.process(recipient, message, subject);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                process(recipient, message, subject);
+            } catch (MessagingException | UnsupportedEncodingException e) {
+                throwableWrapper.tr = e;
             }
         };
+
+        if (throwableWrapper.tr != null) {
+            throw new ServiceException(throwableWrapper.tr);
+        }
 
         Thread thread = new Thread(runnable);
         thread.start();
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")
-    private static void process(String recipient, String message, String subject)
+    private void process(String recipient, String message, String subject)
             throws MessagingException, UnsupportedEncodingException {
         StringBuilder plainTextMessageBuilder = new StringBuilder();
         plainTextMessageBuilder.append(message).append("\n");

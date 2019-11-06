@@ -10,7 +10,8 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.SendEmail;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.EmailService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,6 +50,7 @@ public class ChangePractitionerServlet extends HttpServlet {
         if (user instanceof Patient) {
             try {
                 String newPractitionerID = request.getParameter("practitionerID");
+                EmailService emailService = EmailService.getInstance();
 
                 GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
                 GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractitionerID);
@@ -66,26 +68,26 @@ public class ChangePractitionerServlet extends HttpServlet {
                         "one of your patients just asked for a change of practitioner " +
                         "and will be no longer on your patient list.\n" +
                         "Here are the patient details:\n\n" +
-                        ((Patient) user).toString() + "\n" +
+                        user.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Patient change notification";
 
                 // Avviso il vecchio practitioner
-                SendEmail.send(recipient, message, subject);
+                emailService.sendEmail(recipient, message, subject);
 
                 recipient = newPract.getID();
                 message = "Dear " + newPract.toString() + ",\n\n" +
                         "we are glad to tell you that you have a new patient on your patient list.\n" +
                         "Here are the patient details:\n\n" +
-                        ((Patient) user).toString() + "\n" +
+                        user.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - New patient notification";
 
                 // Avviso il nuovo practitioner
-                SendEmail.send(recipient, message, subject);
+                emailService.sendEmail(recipient, message, subject);
 
                 recipient = user.getID();
-                message = "Dear " + ((Patient) user).toString() + ",\n\n" +
+                message = "Dear " + user.toString() + ",\n\n" +
                         "we inform you that your general practitioner has been successfully changed.\n" +
                         "Here are the practitioner details:\n\n" +
                         oldPract.toString() + "\n" +
@@ -93,12 +95,15 @@ public class ChangePractitionerServlet extends HttpServlet {
                 subject = "CentoDiciotto - Practitioner change notification";
 
                 // Avviso il paziente
-                SendEmail.send(recipient, message, subject);
+                emailService.sendEmail(recipient, message, subject);
 
                 response.setStatus(200);
             } catch (DAOException e) {
                 response.setStatus(400);
                 throw new ServletException("Error in DAO usage: ", e);
+            } catch (ServiceException e) {
+                response.setStatus(400);
+                throw new ServletException("Error in email sending: ", e);
             }
         }
     }

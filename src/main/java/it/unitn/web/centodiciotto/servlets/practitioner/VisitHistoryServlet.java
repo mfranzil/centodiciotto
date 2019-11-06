@@ -12,7 +12,8 @@ import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
-import it.unitn.web.utils.PhotoService;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -59,12 +60,14 @@ public class VisitHistoryServlet extends HttpServlet {
             case "patientList": {
                 if (user instanceof GeneralPractitioner) {
                     try {
+                        PhotoService photoService = PhotoService.getInstance();
+
                         List<Visit> visitList = visitDAO.getByPractitioner(user.getID());
                         List<visitListElement> visitListElements = new ArrayList<>();
 
                         for (Visit visit : visitList) {
                             Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
-                            String photoPath = PhotoService.getLastPhoto(patient.getID());
+                            String photoPath = photoService.getLastPhoto(patient.getID());
                             JsonUtils.Action action = ((visit.getReport() == null) ? new JsonUtils.Action("Insert Report", true) : new JsonUtils.Action("Edit Report", true));
 
                             visitListElements.add(new visitListElement(patient.getFirstName() + " " + patient.getLastName(), patient.getSSN(), photoPath, visit.getDate().toString(), action, visit.getID().toString()));
@@ -75,7 +78,9 @@ public class VisitHistoryServlet extends HttpServlet {
                         response.getWriter().write(gson.toJson(visitListElements));
 
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in Photo path retrieval: ", e);
                     }
                 }
                 break;

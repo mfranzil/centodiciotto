@@ -34,7 +34,7 @@ public class AuthenticationFilter implements Filter {
                         + request.getQueryString().replace('&', '$');
                 redirectUrl = contextPath + "login?referrer=" + originalRequest;
             } else {
-                redirectUrl = contextPath + "login?referrer=" +request.getRequestURI();
+                redirectUrl = contextPath + "login?referrer=" + request.getRequestURI();
             }
         } else {
             redirectUrl = contextPath + "login";

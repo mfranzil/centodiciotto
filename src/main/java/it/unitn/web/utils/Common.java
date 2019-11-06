@@ -20,7 +20,7 @@ public class Common {
         } else if (user instanceof Chemist) {
             displayName = ((Chemist) user).getName();
         } else if (user instanceof HealthService) {
-            displayName = ((HealthService) user).getOperatingProvince() + " Health Service";
+            displayName = ((HealthService) user).getOperatingProvince().getName() + " Health Service";
         } else {
             displayName = "default";
         }

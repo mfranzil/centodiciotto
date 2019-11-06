@@ -98,15 +98,6 @@
 
     <!-- Health Service -->
     <servlet>
-        <servlet-name>PrescriptionsHealthService</servlet-name>
-        <jsp-file>/jsp/health_service/prescriptions-hs.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>PrescriptionsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/prescriptions</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-name>RecallsHealthService</servlet-name>
         <jsp-file>/jsp/health_service/recalls-hs.jsp</jsp-file>
     </servlet>

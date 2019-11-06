@@ -8,10 +8,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +46,8 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String FINDUNPAIDBYPATIENT = "SELECT * FROM drug_prescription " +
             "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = false " +
             "order by date_prescribed asc;";
+    final private String FINDBYDATESOLD = "SELECT * from drug_prescription " +
+            "where date_sold::date = ?::date";
 
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -249,14 +248,32 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         }
     }
 
+    public List<DrugPrescription> getByDateSold(Timestamp ts) throws DAOException {
+        List<DrugPrescription> res = new ArrayList<>();
+        DrugPrescription tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYDATESOLD)) {
+            stm.setTimestamp(1, ts);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting DrugPrescriptions by date: ", e);
+        }
+    }
+
     @Override
     protected DrugPrescription mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             DrugPrescription drugPrescription = new DrugPrescription();
 
 
-           DrugListDAO drugListDAO = DAOFACTORY.getDAO(DrugListDAO.class);
-           DrugList drugList = drugListDAO.getByPrimaryKey(rs.getInt("drug_type"));
+            DrugListDAO drugListDAO = DAOFACTORY.getDAO(DrugListDAO.class);
+            DrugList drugList = drugListDAO.getByPrimaryKey(rs.getInt("drug_type"));
 
             drugPrescription.setID(rs.getInt("drug_prescription_id"));
             drugPrescription.setPractitionerID(rs.getString("practitioner_id"));

@@ -19,7 +19,7 @@ public class JDBCDrugListDAO extends JDBCDAO<DrugList, Integer> implements DrugL
     final private String FINDBYPRIMARYKEY = "SELECT * FROM drug_list WHERE drug_id = ?;";
     final private String SELECTALL = "SELECT * FROM drug_list;";
     final private String COUNT = "SELECT COUNT(*) FROM drug_list;";
-    
+
     public JDBCDrugListDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

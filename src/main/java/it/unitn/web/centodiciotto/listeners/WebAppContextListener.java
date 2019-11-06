@@ -3,11 +3,14 @@ package it.unitn.web.centodiciotto.listeners;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
-import it.unitn.web.utils.Crypto;
-import it.unitn.web.utils.PDFCreator;
-import it.unitn.web.utils.PhotoService;
-import it.unitn.web.utils.SendEmail;
+import it.unitn.web.utils.ExcelService;
+import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.utils.services.CryptoService;
+import it.unitn.web.utils.services.EmailService;
+import it.unitn.web.utils.services.PDFService;
+import it.unitn.web.utils.services.PhotoService;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -17,17 +20,19 @@ public class WebAppContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {
+            ServletContext sc = sce.getServletContext();
+
             JDBCDAOFactory.configure();
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
-            SendEmail.configure();
+            EmailService.configure();
+            CryptoService.configure(daoFactory);
+            PhotoService.configure(daoFactory, sc);
+            ExcelService.configure(daoFactory, sc);
+            PDFService.configure(sc);
 
-            Crypto.configure(daoFactory);
-            PhotoService.configure(daoFactory, sce.getServletContext());
-            PDFCreator.configure(sce.getServletContext());
-
-            sce.getServletContext().setAttribute("daoFactory", daoFactory);
-        } catch (DAOFactoryException e) {
+            sc.setAttribute("daoFactory", daoFactory);
+        } catch (DAOFactoryException | ServiceException e) {
             throw new RuntimeException(e);
         }
     }
