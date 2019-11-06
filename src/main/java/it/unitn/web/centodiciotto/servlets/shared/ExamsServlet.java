@@ -69,17 +69,21 @@ public class ExamsServlet extends HttpServlet {
                         List<ExamListElement> examListElements = new ArrayList<>();
 
                         List<ExamPrescription> patientExamPrescriptionList = examPrescriptionDAO.getByPatientNotBooked(user.getID());
-                        List<ExamList> patientExamList = new ArrayList<>();
 
                         if (examID == null) {
-                            for (ExamPrescription examPrescription : patientExamPrescriptionList) {
-                                examListElements.add(new ExamListElement(examPrescription.getExamType().getDescription(), new JsonUtils.Action("Book Now", true)));
-                                patientExamList.add(examPrescription.getExamType());
-                            }
-                            if (!onlyAvailable) {
-                                ALL_EXAMS.removeAll(patientExamList);
+                            if (onlyAvailable) {
+                                for (ExamPrescription examPrescription : patientExamPrescriptionList) {
+                                    examListElements.add(new ExamListElement(examPrescription.getExamType().getDescription(), new JsonUtils.Action("Book Now", true)));
+                                }
+                            } else {
+                                List<Integer> examListIDs = new ArrayList<>();
+
+                                for (ExamPrescription examPrescription : patientExamPrescriptionList) {
+                                    examListIDs.add(examPrescription.getExamType().getID());
+                                }
+
                                 for (ExamList examList : ALL_EXAMS) {
-                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", false)));
+                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", examListIDs.contains(examList.getID()))));
                                 }
                             }
                         } else {
