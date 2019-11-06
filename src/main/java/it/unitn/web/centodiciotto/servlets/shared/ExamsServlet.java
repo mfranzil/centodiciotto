@@ -2,8 +2,8 @@ package it.unitn.web.centodiciotto.servlets.shared;
 
 
 import com.google.gson.Gson;
+import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
@@ -26,7 +26,7 @@ public class ExamsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
     private ExamListDAO examListDAO;
-    private ExamPrescriptionDAO examPrescriptionDAO;
+    private ExamDAO examDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,7 +36,7 @@ public class ExamsServlet extends HttpServlet {
         }
         try {
             examListDAO = daoFactory.getDAO(ExamListDAO.class);
-            examPrescriptionDAO = daoFactory.getDAO(ExamPrescriptionDAO.class);
+            examDAO = daoFactory.getDAO(ExamDAO.class);
 
             ALL_EXAMS = examListDAO.getAll();
             for (ExamList exam : ALL_EXAMS) {
@@ -68,19 +68,19 @@ public class ExamsServlet extends HttpServlet {
                         String examID = request.getParameter("examID");
 
                         List<ExamListElement> examListElements = new ArrayList<>();
-
-                        List<ExamPrescription> patientExamPrescriptionList = examPrescriptionDAO.getByPatientNotBooked(user.getID());
+                        
+                        List<Exam> patientExamList = examDAO.getByPatientNotBooked(user.getID());
 
                         if (examID == null) {
                             if (onlyAvailable) {
-                                for (ExamPrescription examPrescription : patientExamPrescriptionList) {
-                                    examListElements.add(new ExamListElement(examPrescription.getExamType().getDescription(), new JsonUtils.Action("Book Now", true)));
+                                for (Exam exam : patientExamList) {
+                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new JsonUtils.Action("Book Now", true)));
                                 }
                             } else {
                                 List<Integer> examListIDs = new ArrayList<>();
 
-                                for (ExamPrescription examPrescription : patientExamPrescriptionList) {
-                                    examListIDs.add(examPrescription.getExamType().getID());
+                                for (Exam exam : patientExamList) {
+                                    examListIDs.add(exam.getType().getID());
                                 }
 
                                 for (ExamList examList : ALL_EXAMS) {
@@ -91,8 +91,8 @@ public class ExamsServlet extends HttpServlet {
                             Integer integerExamID = Integer.valueOf(examID);
                             boolean found = false;
 
-                            for (ExamPrescription examPrescription : patientExamPrescriptionList) {
-                                if (examPrescription.getExamType().getID().equals(integerExamID)) {
+                            for (Exam exam : patientExamList) {
+                                if (exam.getType().getID().equals(integerExamID)) {
                                     found = true;
                                 }
                             }
@@ -137,13 +137,13 @@ public class ExamsServlet extends HttpServlet {
 
                         ExamList examList = examListDAO.getByPrimaryKey(Integer.valueOf(examID));
 
-                        ExamPrescription newPrescription = new ExamPrescription();
-                        newPrescription.setPatientID(patientID);
-                        newPrescription.setPractitionerID(user.getID());
-                        newPrescription.setBooked(false);
-                        newPrescription.setExamType(examList);
+                        Exam newExam = new Exam();
+                        newExam.setPatientID(patientID);
+                        newExam.setPractitionerID(user.getID());
+                        newExam.setBooked(false);
+                        newExam.setType(examList);
 
-                        examPrescriptionDAO.insert(newPrescription);
+                        examDAO.insert(newExam);
                     }
                 } catch (DAOException e) {
                     throw new ServletException("Error with DAOs in ExamsServlet", e);

@@ -12,9 +12,10 @@ public class Exam {
     private String result;
     private String healthServiceID;
     private Integer ticket;
-    private Integer examPrescriptionID;
     private boolean ticketPaid;
     private boolean recall;
+    private String practitionerID;
+    private boolean booked;
 
     public Integer getID() {
         return ID;
@@ -88,14 +89,6 @@ public class Exam {
         this.ticket = ticket;
     }
 
-    public Integer getExamPrescriptionID() {
-        return examPrescriptionID;
-    }
-
-    public void setExamPrescriptionID(Integer examPrescriptionID) {
-        this.examPrescriptionID = examPrescriptionID;
-    }
-
     public boolean isTicketPaid() {
         return ticketPaid;
     }
@@ -110,5 +103,21 @@ public class Exam {
 
     public void setRecall(boolean recall) {
         this.recall = recall;
+    }
+
+    public String getPractitionerID() {
+        return practitionerID;
+    }
+
+    public void setPractitionerID(String practitionerID) {
+        this.practitionerID = practitionerID;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
     }
 }

@@ -16,11 +16,11 @@ import java.util.List;
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
     final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, exam_prescription_id, ticket_paid, recall) " +
-            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            " result, health_service_id, ticket, ticket_paid, recall, practitioner_id, booked) " +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE exam SET (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, exam_prescription_id, ticket_paid, recall) " +
-            "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
+            " result, health_service_id, ticket, ticket_paid, recall, practitioner_id, booked) " +
+            "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
     final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM exam WHERE exam_id = ?;";
@@ -33,6 +33,9 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
     final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND ticket_paid = false AND done = true";
+    final private String FINDBYPATIENTNOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND booked IS FALSE";
+
     final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
@@ -51,9 +54,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(6, exam.getResult());
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
-            stm.setInt(9, exam.getExamPrescriptionID());
-            stm.setBoolean(10, exam.isTicketPaid());
-            stm.setBoolean(11, exam.isRecall());
+            stm.setBoolean(9, exam.isTicketPaid());
+            stm.setBoolean(10, exam.isRecall());
+            stm.setString(11, exam.getPractitionerID());
+            stm.setBoolean(12, exam.isBooked());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -75,9 +79,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(6, exam.getResult());
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
-            stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
             stm.setBoolean(11, exam.isRecall());
+            stm.setString(11, exam.getPractitionerID());
+            stm.setBoolean(12, exam.isBooked());
 
             stm.setInt(11, exam.getID());
 
@@ -208,6 +213,25 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
+    public List<Exam> getByPatientNotBooked(String patientID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTBOOKED)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting not booked Exams by PatientID: ", e);
+        }
+    }
+
+    @Override
     public List<Exam> getByDate(Timestamp ts) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
@@ -243,9 +267,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setResult(rs.getString("result"));
             exam.setHealthServiceID(rs.getString("health_service_id"));
             exam.setTicket(rs.getInt("ticket"));
-            exam.setExamPrescriptionID(rs.getInt("exam_prescription_id"));
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));
             exam.setRecall(rs.getBoolean("recall"));
+            exam.setPractitionerID(rs.getString("practitioner_id"));
+            exam.setBooked(rs.getBoolean("booked"));
 
             return exam;
         } catch (SQLException | DAOFactoryException e) {
