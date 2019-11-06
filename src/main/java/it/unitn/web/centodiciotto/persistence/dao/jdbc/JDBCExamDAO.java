@@ -8,6 +8,7 @@ import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
+import javax.ws.rs.HEAD;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDBYPATIENTLASTYEAR = "select * from exam where date <= localtimestamp and " +
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
     final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
-    final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? AND ticket_paid = false";
+    final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND ticket_paid = false AND done = true";
     final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
@@ -72,12 +74,17 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(4, exam.getDone());
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
+<<<<<<<HEAD
             stm.setInt(7, exam.getID());
+=======
+>>>>>>> 9d4c73dbef126da056af24d6edb2ddbe7b8720f5
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
             stm.setBoolean(11, exam.isRecall());
+
+            stm.setInt(11, exam.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);

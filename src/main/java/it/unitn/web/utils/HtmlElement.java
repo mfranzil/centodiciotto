@@ -19,6 +19,12 @@ public class HtmlElement {
     private String elementTextAreaName;
     private String elementTextAreaPlaceholder;
 
+    private String elementScriptType;
+    private String elementScriptSrc;
+
+    private String elementLinkRel;
+    private String elementLinkHref;
+
     public String getElementInputType() {
         return elementInputType;
     }
@@ -133,6 +139,42 @@ public class HtmlElement {
 
     public HtmlElement setElementTextAreaName(String elementTextAreaName) {
         this.elementTextAreaName = elementTextAreaName;
+        return this;
+    }
+
+    public String getElementScriptType() {
+        return elementScriptType;
+    }
+
+    public HtmlElement setElementScriptType(String elementScriptType) {
+        this.elementScriptType = elementScriptType;
+        return this;
+    }
+
+    public String getElementScriptSrc() {
+        return elementScriptSrc;
+    }
+
+    public HtmlElement setElementScriptSrc(String elementScriptSrc) {
+        this.elementScriptSrc = elementScriptSrc;
+        return this;
+    }
+
+    public String getElementLinkRel() {
+        return elementLinkRel;
+    }
+
+    public HtmlElement setElementLinkRel(String elementLinkRel) {
+        this.elementLinkRel = elementLinkRel;
+        return this;
+    }
+
+    public String getElementLinkHref() {
+        return elementLinkHref;
+    }
+
+    public HtmlElement setElementLinkHref(String elementLinkHref) {
+        this.elementLinkHref = elementLinkHref;
         return this;
     }
 }
