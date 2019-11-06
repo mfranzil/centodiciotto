@@ -12,8 +12,8 @@ import it.unitn.web.persistence.dao.factories.DAOFactory;
 import it.unitn.web.utils.HtmlElement;
 import it.unitn.web.utils.JsonUtils;
 import it.unitn.web.utils.exceptions.ServiceException;
-import it.unitn.web.utils.services.PhotoService;
 import it.unitn.web.utils.services.EmailService;
+import it.unitn.web.utils.services.PhotoService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -171,9 +171,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         int id = 0;
                         for (Patient patient : allPatients) {
                             results.add(new PatientSearchResult(
-                                    id++, patient.getFirstName() + " " + patient.getLastName() + " - " + patient.getSSN(),
+                                    id++, patient.toString() + " - " + patient.getSSN(),
                                     patient.getID(),
-                                    patient.getFirstName() + " " + patient.getLastName(),
+                                    patient.toString(),
                                     patient.getSSN(),
                                     photoService.getLastPhoto(patient.getID())));
                         }
