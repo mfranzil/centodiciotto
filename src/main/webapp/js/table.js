@@ -40,6 +40,9 @@ function buildHtmlFromJson(json, parent) {
                     htmlParagraphElement.href : element.elementLinkHref;
                 htmlParagraphElement.rel = (typeof element.elementLinkRel === "undefined") ?
                     htmlParagraphElement.rel : element.elementLinkRel;
+            } else if (element.elementType === "select") {
+                htmlParagraphElement.name = (typeof element.elementSelectName === "undefined") ?
+                    htmlParagraphElement.name : element.elementSelectName;
             }
 
             htmlParagraphElement.className = (typeof element.elementClass === "undefined") ?
