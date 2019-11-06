@@ -24,10 +24,6 @@ import java.util.List;
 public class ExamsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
-
-    /*
-    TODO It's still testing time, please do not pay attention
-     */
     private ExamListDAO examListDAO;
     private ExamPrescriptionDAO examPrescriptionDAO;
 
@@ -73,30 +69,29 @@ public class ExamsServlet extends HttpServlet {
                         List<ExamListElement> examListElements = new ArrayList<>();
 
                         List<ExamPrescription> patientExamPrescriptionList = examPrescriptionDAO.getByPatientNotBooked(user.getID());
+                        List<ExamList> patientExamList = new ArrayList<>();
 
                         if (examID == null) {
-                            for (ExamList examList : ALL_EXAMS) {
-                                if (examList.getID() == patientExamPrescriptionList.get(0).getExamType().getID()) {
-                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", true)));
-                                    patientExamPrescriptionList.remove(0);
-                                } else {
-                                    if (!onlyAvailable) {
-                                        examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", false)));
-                                    }
+                            for (ExamPrescription examPrescription : patientExamPrescriptionList) {
+                                examListElements.add(new ExamListElement(examPrescription.getExamType().getDescription(), new JsonUtils.Action("Book Now", true)));
+                                patientExamList.add(examPrescription.getExamType());
+                            }
+                            if (!onlyAvailable) {
+                                ALL_EXAMS.removeAll(patientExamList);
+                                for (ExamList examList : ALL_EXAMS) {
+                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", false)));
                                 }
                             }
                         } else {
                             Integer integerExamID = Integer.valueOf(examID);
                             boolean found = false;
+
                             for (ExamPrescription examPrescription : patientExamPrescriptionList) {
-                                if (examPrescription.getExamType().getID() == integerExamID) {
-                                    examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new JsonUtils.Action("Book Now", true)));
+                                if (examPrescription.getExamType().getID().equals(integerExamID)) {
                                     found = true;
                                 }
                             }
-                            if (!found) {
-                                examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new JsonUtils.Action("Book Now", false)));
-                            }
+                            examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new JsonUtils.Action("Book Now", found)));
                         }
 
                         Gson gson = new Gson();
