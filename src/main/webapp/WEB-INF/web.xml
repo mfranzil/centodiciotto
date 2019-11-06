@@ -58,6 +58,16 @@
         <url-pattern>/restricted/user</url-pattern>
     </servlet-mapping>
 
+    <!-- Patient -->
+    <servlet>
+        <servlet-name>ExamBookingPatient</servlet-name>
+        <jsp-file>/jsp/patient/exam_booking-p.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ExamBookingPatient</servlet-name>
+        <url-pattern>/restricted/patient/exam_booking</url-pattern>
+    </servlet-mapping>
+
     <!-- Specialized doctor -->
     <servlet>
         <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>

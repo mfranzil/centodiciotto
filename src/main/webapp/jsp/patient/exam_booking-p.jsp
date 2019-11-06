@@ -116,20 +116,6 @@
              src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
     </div>
     <div id="main-table">
-        <!--
-        <div class="popup-window">
-                        <div class="popup animate-in">
-                            <div>
-                                <h4>Prenota presso un medico specialista</h4>
-                                <p>Io </p>
-                            </div>
-                            <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-             !-->
     </div>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
