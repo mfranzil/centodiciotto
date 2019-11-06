@@ -34,12 +34,39 @@
             }
         }
     </style>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script>
         $("document").ready(function () {
-            $('#table-select tr').click(function () {
-                $(this).find('input[type=radio]').prop('checked', true);
-                $('#submit').removeAttr("disabled");
-            });
+            const url = getContextPath() + "/restricted/general_practitioner/prescriptions";
+
+            let tableHeaders = [
+                {field: "avt", type: "photo", text: "&nbsp;"},
+                {field: "name", type: "string", text: "Name"},
+                {field: "ssn", type: "string", text: "SSN"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#patient_table").createTableHeaders(tableHeaders);
+            renderPatientsRows();
+
+            //$("#main-loading-container").slideUp();
+
+            function renderPatientsRows() {
+                console.log("here");
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        requestType: "patientList",
+                    },
+                    url: url,
+                    success: function (json) {
+                        console.log(json);
+                        $("#patient_table").insertRows(tableHeaders, json, url);
+                        enablePopup();
+                    }
+                });
+            }
         });
     </script>
 </head>
@@ -67,47 +94,46 @@
                         </button>
                     </div>
                 </form>
-                <div class="table-personal table-header">
-                    <div class="table-cell avt">&nbsp;</div>
-                    <div class="table-cell name">Name</div>
-                    <div class="table-cell ssn">SSN</div>
-                    <div class="table-cell action">&nbsp;</div>
-                </div>
-                <div class="table-personal" id="table-select">
-                    <div class="table-cell avt">
-                        <img class="avatar-small"
-                             src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                             alt="">
-                    </div>
-                    <div class="table-cell name">Matteo Franzil</div>
-                    <div class="table-cell ssn">FRNMTT98E20I452H</div>
-                    <div class="table-cell action">
-                        <button class="btn btn-block btn-personal popup-opener">
-                            Exam prescription
-                        </button>
-                        <div class="popup-window">
-                            <div class="popup animate-in">
-                                <form action="" id="form1" method="POST">
-                                    <div>
-                                        <h4>Choose a prescription...</h4>
-                                    </div>
-                                </form>
-                                <button class="btn btn-lg btn-block btn-personal" type="submit">
-                                    Confirm
-                                </button>
-                                <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
-                                    Cancel
-                                </button>
+                <div id="patient_table">
+                    <div class="table-personal" id="table-select">
+                        <!--
+                        <div class="table-cell avt">
+                            <img class="avatar-small"
+                                 src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
+                                 alt="">
+                        </div>
+                        <div class="table-cell name">Matteo Franzil</div>
+                        <div class="table-cell ssn">FRNMTT98E20I452H</div>
+                        <div class="table-cell action">
+                            <button class="btn btn-block btn-personal popup-opener">
+                                Exam prescription
+                            </button>
+                            <div class="popup-window">
+                                <div class="popup animate-in">
+                                    <form action="" id="form1" method="POST">
+                                        <div>
+                                            <h4>Choose a prescription...</h4>
+                                        </div>
+                                    </form>
+                                    <button class="btn btn-lg btn-block btn-personal" type="submit">
+                                        Confirm
+                                    </button>
+                                    <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            <button class="btn btn-block btn-personal popup-opener">
+                                Drug prescription
+                            </button>
+                            <div class="popup-window">
+                                <div class="popup animate-in">...</div>
                             </div>
                         </div>
-                        <button class="btn btn-block btn-personal popup-opener">
-                            Drug prescription
-                        </button>
-                        <div class="popup-window">
-                            <div class="popup animate-in">...</div></div>
                     </div>
-                </div>
-                <hr>
+                    <hr>
+                    !-->
+                    </div>
             </div>
         </div>
     </div>
