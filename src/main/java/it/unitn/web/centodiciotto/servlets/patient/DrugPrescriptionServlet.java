@@ -1,17 +1,18 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
+
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.services.PDFService;
-import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.centodiciotto.services.PDFService;
+import it.unitn.web.centodiciotto.services.ServiceException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.servlet.ServletException;

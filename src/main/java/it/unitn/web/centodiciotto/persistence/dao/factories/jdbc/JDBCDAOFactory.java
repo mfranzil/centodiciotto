@@ -4,12 +4,12 @@
  * Lab 08 - Commons - DAO JDBC Implementation
  * UniTN
  */
-package it.unitn.web.persistence.dao.factories.jdbc;
+package it.unitn.web.centodiciotto.persistence.dao.factories.jdbc;
 
-import it.unitn.web.persistence.dao.DAO;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
+import it.unitn.web.centodiciotto.persistence.base.DAO;
+import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 
 import java.io.IOException;
 import java.io.InputStream;

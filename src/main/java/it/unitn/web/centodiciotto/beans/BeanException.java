@@ -1,4 +1,4 @@
-package it.unitn.web.utils.exceptions;
+package it.unitn.web.centodiciotto.beans;
 
 public class BeanException extends Exception {
 

@@ -1,12 +1,11 @@
-package it.unitn.web.utils.services;
+package it.unitn.web.centodiciotto.services;
 
 import be.quodlibet.boxable.utils.PDStreamUtils;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.utils.Pair;
-import it.unitn.web.utils.QRCodeCreator;
-import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.centodiciotto.utils.Pair;
+import it.unitn.web.centodiciotto.utils.QRCodeCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;

@@ -4,7 +4,7 @@
  * Lab 08 - Commons - DAO interface
  * UniTN
  */
-package it.unitn.web.persistence.dao.exceptions;
+package it.unitn.web.centodiciotto.persistence.dao.exceptions;
 
 
 public class DAOException extends Exception {

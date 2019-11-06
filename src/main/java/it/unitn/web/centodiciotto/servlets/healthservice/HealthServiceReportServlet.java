@@ -1,15 +1,10 @@
 package it.unitn.web.centodiciotto.servlets.healthservice;
 
-import it.unitn.web.centodiciotto.persistence.dao.ChemistDAO;
-import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.ExcelService;
-import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.centodiciotto.services.ExcelService;
+import it.unitn.web.centodiciotto.services.ServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,14 +15,10 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @WebServlet("/restricted/health_service/reports")
 public class HealthServiceReportServlet extends HttpServlet {
-
-    private DrugPrescriptionDAO drugPrescriptionDAO;
-    private PatientDAO patientDAO;
-    private ChemistDAO chemistDAO;
-    private GeneralPractitionerDAO generalPractitionerDAO;
 
     @Override
     public void init() throws ServletException {
@@ -35,14 +26,10 @@ public class HealthServiceReportServlet extends HttpServlet {
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
-        try {
-            drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
-            patientDAO = daoFactory.getDAO(PatientDAO.class);
-            chemistDAO = daoFactory.getDAO(ChemistDAO.class);
-            generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
+        /*try {
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
-        }
+        }*/
     }
 
     @Override
@@ -62,11 +49,11 @@ public class HealthServiceReportServlet extends HttpServlet {
             try {
                 ExcelService excelService = ExcelService.getInstance();
 
-                boolean includeVisits = request.getParameter("includeVisits").equals("on");
-                boolean includeRecalls = request.getParameter("includeRecalls").equals("on");
-                boolean includeSpecialistExams = request.getParameter("includeSpecialistExams").equals("on");
-                boolean includeHealthServiceExams = request.getParameter("includeHealthServiceExams").equals("on");
-                boolean includePrescriptions = request.getParameter("includePrescriptions").equals("on");
+                boolean includeVisits = Objects.equals(request.getParameter("includeVisits"), "on");
+                boolean includeRecalls = Objects.equals(request.getParameter("includeRecalls"), "on");
+                boolean includeSpecialistExams = Objects.equals(request.getParameter("includeSpecialistExams"), "on");
+                boolean includeHealthServiceExams = Objects.equals(request.getParameter("includeHealthServiceExams"), "on");
+                boolean includePrescriptions = Objects.equals(request.getParameter("includePrescriptions"), "on");
 
                 Date date = new Date(new SimpleDateFormat("dd/MM/yyyy").parse(
                         request.getParameter("date")

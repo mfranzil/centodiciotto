@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" style="overflow-y: hidden">
     <div class="body-content">
         <div class="row">
             <div class="col-md" style="text-align: center; margin: auto 10vmax">

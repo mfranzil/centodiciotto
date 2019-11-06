@@ -1,6 +1,6 @@
-package it.unitn.web.persistence.dao;
+package it.unitn.web.centodiciotto.persistence.base;
 
-import it.unitn.web.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 
 import java.util.List;
 

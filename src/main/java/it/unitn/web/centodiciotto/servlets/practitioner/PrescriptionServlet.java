@@ -1,17 +1,19 @@
 package it.unitn.web.centodiciotto.servlets.practitioner;
 
+
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.HtmlElement;
-import it.unitn.web.utils.JsonUtils;
-import it.unitn.web.utils.PhotoService;
+import it.unitn.web.centodiciotto.services.PhotoService;
+import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.HtmlElement;
+import it.unitn.web.centodiciotto.utils.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -64,7 +66,7 @@ public class PrescriptionServlet extends HttpServlet {
                         List<PatientListElement> patientListElements = new ArrayList<>();
 
                         for (Patient patient : patientList) {
-                            String photoPath = PhotoService.getLastPhoto(patient.getID());
+                            String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
                             patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, new JsonUtils.Action("Patient Data", true), patient.getID()));
                         }
 
@@ -75,6 +77,8 @@ public class PrescriptionServlet extends HttpServlet {
 
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in PhotoService usage: ", e);
                     }
                     break;
                 }
@@ -82,39 +86,44 @@ public class PrescriptionServlet extends HttpServlet {
             case "detailedInfo": {
 
                 String patientID = request.getParameter("item");
-                System.out.println(patientID);
 
                 List<Object> jsonResponse = new ArrayList<>();
                 String contextPath = getServletContext().getContextPath();
 
-                String code = "            const url = getContextPath() + \"/restricted/general_practitioner/exams\";\n" +
-                        "            $(function () {\n" +
-                        "                $(\"#exam-search\")\n" +
-                        "                    .select2({\n" +
-                        "                        placeholder: \"Select an exam\",\n" +
-                        "                        allowClear: true,\n" +
-                        "                        closeOnSelect: true,\n" +
-                        "                        ajax: {\n" +
-                        "                            type: \"POST\",\n" +
-                        "                            data: function (params) {\n" +
-                        "                                return {\n" +
-                        "                                    term: params.term,\n" +
-                        "                                    requestType: 'examSearch'\n" +
-                        "                                }\n" +
-                        "                            },\n" +
-                        "                            url: url,\n" +
-                        "                            dataType: \"json\",\n" +
-                        "                        }\n" +
-                        "                    })\n" +
-                        "                    .val(null)\n" +
-                        "                    });";
+                jsonResponse.add(new HtmlElement().setElementType("form").setElementClass("exam-form").setElementFormAction(contextPath + "/restricted/general_practitioner/exams").setElementFormMethod("POST"));
 
-                jsonResponse.add(new HtmlElement().setElementType("h5").setElementContent("Select an exam from the menu below"));
-                jsonResponse.add(new HtmlElement().setElementType("select").setElementID("exam-search").setElementClass("select2-allow-clear form-control"));
+                List<HtmlElement> examForm = new ArrayList<>();
+                examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("patientID").setElementInputValue(patientID));
+                examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("requestType").setElementInputValue("examAdd"));
+                examForm.add(new HtmlElement().setElementType("h5").setElementContent("Select an exam from the menu below"));
+                examForm.add(new HtmlElement().setElementType("select").setElementClass("select2-allow-clear form-control exam-search").setElementSelectName("examID"));
+                examForm.add(new HtmlElement().setElementType("br"));
+                examForm.add(new HtmlElement().setElementType("br"));
+                examForm.add(new HtmlElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-exam").setElementButtonType("submit").setElementContent("Prescribe exam"));
+                examForm.add(new HtmlElement().setElementType("small").setElementClass("exam-prescribe-label"));
+                examForm.add(new HtmlElement().setElementType("br"));
+
+                jsonResponse.add(examForm);
+
+                jsonResponse.add(new HtmlElement().setElementType("form").setElementClass("drug-form").setElementFormAction(contextPath + "/restricted/general_practitioner/drugs").setElementFormMethod("POST"));
+
+                List<HtmlElement> drugForm = new ArrayList<>();
+
+                drugForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("patientID").setElementInputValue(patientID));
+                drugForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("requestType").setElementInputValue("drugAdd"));
+                drugForm.add(new HtmlElement().setElementType("br"));
+                drugForm.add(new HtmlElement().setElementType("h5").setElementContent("Select a drug from the menu below"));
+                drugForm.add(new HtmlElement().setElementType("select").setElementClass("select2-allow-clear form-control drug-search").setElementSelectName("drugID"));
+                drugForm.add(new HtmlElement().setElementType("br"));
+                drugForm.add(new HtmlElement().setElementType("br"));
+                drugForm.add(new HtmlElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-drug").setElementButtonType("submit").setElementContent("Prescribe drug"));
+                drugForm.add(new HtmlElement().setElementType("small").setElementClass("drug-prescribe-label"));
+                drugForm.add(new HtmlElement().setElementType("br"));
+
+                jsonResponse.add(drugForm);
                 jsonResponse.add(new HtmlElement().setElementType("br"));
 
-                jsonResponse.add(new HtmlElement().setElementType("link").setElementLinkRel("stylesheet").setElementLinkHref("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css"));
-                jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptSrc("https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js").setElementScriptType("text/javascript").setElementContent(code));
+                jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details_js.js"));
 
                 Gson gson = new Gson();
                 response.setContentType("application/json");

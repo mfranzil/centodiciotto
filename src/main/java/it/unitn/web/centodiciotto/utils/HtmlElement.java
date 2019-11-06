@@ -1,4 +1,4 @@
-package it.unitn.web.utils;
+package it.unitn.web.centodiciotto.utils;
 
 public class HtmlElement {
     private String elementType;
@@ -24,6 +24,8 @@ public class HtmlElement {
 
     private String elementLinkRel;
     private String elementLinkHref;
+
+    private String elementSelectName;
 
     public String getElementInputType() {
         return elementInputType;
@@ -175,6 +177,15 @@ public class HtmlElement {
 
     public HtmlElement setElementLinkHref(String elementLinkHref) {
         this.elementLinkHref = elementLinkHref;
+        return this;
+    }
+
+    public String getElementSelectName() {
+        return elementSelectName;
+    }
+
+    public HtmlElement setElementSelectName(String elementSelectName) {
+        this.elementSelectName = elementSelectName;
         return this;
     }
 }

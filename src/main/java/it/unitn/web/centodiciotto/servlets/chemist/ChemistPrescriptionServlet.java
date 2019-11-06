@@ -5,15 +5,15 @@ import it.unitn.web.centodiciotto.persistence.dao.ChemistDAO;
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.HtmlElement;
-import it.unitn.web.utils.JsonUtils;
-import it.unitn.web.utils.exceptions.ServiceException;
-import it.unitn.web.utils.services.PhotoService;
-import it.unitn.web.utils.services.EmailService;
+import it.unitn.web.centodiciotto.services.EmailService;
+import it.unitn.web.centodiciotto.services.PhotoService;
+import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.HtmlElement;
+import it.unitn.web.centodiciotto.utils.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -171,9 +171,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         int id = 0;
                         for (Patient patient : allPatients) {
                             results.add(new PatientSearchResult(
-                                    id++, patient.getFirstName() + " " + patient.getLastName() + " - " + patient.getSSN(),
+                                    id++, patient.toString() + " - " + patient.getSSN(),
                                     patient.getID(),
-                                    patient.getFirstName() + " " + patient.getLastName(),
+                                    patient.toString(),
                                     patient.getSSN(),
                                     photoService.getLastPhoto(patient.getID())));
                         }

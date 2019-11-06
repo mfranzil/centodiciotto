@@ -1,4 +1,4 @@
-package it.unitn.web.utils;
+package it.unitn.web.centodiciotto.utils;
 
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;

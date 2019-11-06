@@ -1,12 +1,11 @@
-package it.unitn.web.utils.services;
+package it.unitn.web.centodiciotto.services;
 
 import it.unitn.web.centodiciotto.persistence.dao.*;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Common;
-import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.centodiciotto.utils.Common;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;

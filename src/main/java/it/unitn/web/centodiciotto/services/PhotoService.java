@@ -1,12 +1,11 @@
-package it.unitn.web.utils.services;
+package it.unitn.web.centodiciotto.services;
 
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Pair;
-import it.unitn.web.utils.exceptions.ServiceException;
+import it.unitn.web.centodiciotto.utils.Pair;
 
 import javax.servlet.ServletContext;
 import java.io.File;

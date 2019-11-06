@@ -4,10 +4,10 @@
  * Lab 08 - Commons - DAO interface
  * UniTN
  */
-package it.unitn.web.persistence.dao.factories;
+package it.unitn.web.centodiciotto.persistence.dao.factories;
 
-import it.unitn.web.persistence.dao.DAO;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.base.DAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 
 public interface DAOFactory {
 

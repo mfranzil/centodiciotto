@@ -1,14 +1,14 @@
 package it.unitn.web.centodiciotto.beans;
 
+
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
+import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.persistence.dao.factories.jdbc.JDBCDAOFactory;
-import it.unitn.web.utils.exceptions.BeanException;
 
 import java.io.Serializable;
 import java.util.List;

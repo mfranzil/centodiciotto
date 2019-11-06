@@ -86,16 +86,6 @@
         <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
     </servlet-mapping>
 
-    <!-- Health Service -->
-    <servlet>
-        <servlet-name>RecallsHealthService</servlet-name>
-        <jsp-file>/jsp/health_service/recalls-hs.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RecallsHealthService</servlet-name>
-        <url-pattern>/restricted/health_service/recalls</url-pattern>
-    </servlet-mapping>
-
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
         <session-timeout>

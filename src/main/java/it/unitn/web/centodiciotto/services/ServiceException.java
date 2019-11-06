@@ -1,4 +1,4 @@
-package it.unitn.web.utils.exceptions;
+package it.unitn.web.centodiciotto.services;
 
 public class ServiceException extends Exception {
 

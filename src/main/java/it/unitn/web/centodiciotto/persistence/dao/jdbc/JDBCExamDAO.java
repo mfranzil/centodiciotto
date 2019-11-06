@@ -1,12 +1,12 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
+import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.jdbc.JDBCDAO;
 
 import java.sql.*;
 import java.util.ArrayList;

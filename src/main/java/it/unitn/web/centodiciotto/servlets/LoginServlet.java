@@ -1,12 +1,12 @@
 package it.unitn.web.centodiciotto.servlets;
 
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.Common;
-import it.unitn.web.utils.exceptions.ServiceException;
-import it.unitn.web.utils.services.CryptoService;
+import it.unitn.web.centodiciotto.services.CryptoService;
+import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.Common;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -1,15 +1,16 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
+
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.*;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
-import it.unitn.web.utils.HtmlElement;
-import it.unitn.web.utils.JsonUtils;
-import it.unitn.web.utils.exceptions.ServiceException;
-import it.unitn.web.utils.services.PhotoService;
+import it.unitn.web.centodiciotto.services.PhotoService;
+import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.HtmlElement;
+import it.unitn.web.centodiciotto.utils.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

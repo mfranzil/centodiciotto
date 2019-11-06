@@ -1,16 +1,17 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
+
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamPrescriptionDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
+import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
 import it.unitn.web.centodiciotto.persistence.entities.ExamPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.persistence.dao.exceptions.DAOException;
-import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.persistence.dao.factories.DAOFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

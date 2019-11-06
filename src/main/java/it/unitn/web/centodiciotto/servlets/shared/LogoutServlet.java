@@ -1,5 +1,6 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
+
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
 import javax.servlet.ServletException;

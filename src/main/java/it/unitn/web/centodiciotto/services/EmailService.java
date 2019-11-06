@@ -1,6 +1,4 @@
-package it.unitn.web.utils.services;
-
-import it.unitn.web.utils.exceptions.ServiceException;
+package it.unitn.web.centodiciotto.services;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
