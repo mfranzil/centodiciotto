@@ -15,4 +15,14 @@ public class JsonUtils {
 
         return res;
     }
+
+    public static class Action {
+        private String label;
+        private Boolean enable;
+
+        public Action(String label, Boolean enable) {
+            this.label = label;
+            this.enable = enable;
+        }
+    }
 }

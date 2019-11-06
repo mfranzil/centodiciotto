@@ -23,6 +23,23 @@ function buildHtmlFromJson(json, parent) {
                     htmlParagraphElement.type : element.elementInputType;
                 htmlParagraphElement.name = (typeof element.elementInputName === "undefined") ?
                     htmlParagraphElement.name : element.elementInputName;
+            } else if (element.elementType === "textarea") {
+                htmlParagraphElement.placeholder = (typeof element.elementTextAreaPlaceholder === "undefined") ?
+                    htmlParagraphElement.placeholder : element.elementTextAreaPlaceholder;
+                htmlParagraphElement.name = (typeof element.elementTextAreaName === "undefined") ?
+                    htmlParagraphElement.name : element.elementTextAreaName;
+            } else if (element.elementType === "script") {
+                if (!(typeof element.elementScriptSrc === "undefined")) {
+                    htmlParagraphElement.src = element.elementScriptSrc;
+                }
+                if (!(typeof element.elementScriptType === "undefined")) {
+                    htmlParagraphElement.type = element.elementScriptType;
+                }
+            } else if (element.elementType === "link") {
+                htmlParagraphElement.href = (typeof element.elementLinkHref === "undefined") ?
+                    htmlParagraphElement.href : element.elementLinkHref;
+                htmlParagraphElement.rel = (typeof element.elementLinkRel === "undefined") ?
+                    htmlParagraphElement.rel : element.elementLinkRel;
             }
 
             htmlParagraphElement.className = (typeof element.elementClass === "undefined") ?

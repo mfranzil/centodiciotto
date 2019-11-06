@@ -28,5 +28,10 @@ public class GeneralPractitioner extends User {
     public void setWorkingProvince(Province workingProvince) {
         this.workingProvince = workingProvince;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }
 

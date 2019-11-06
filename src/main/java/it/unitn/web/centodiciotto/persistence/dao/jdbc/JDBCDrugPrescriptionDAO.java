@@ -19,11 +19,11 @@ import java.util.List;
 public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> implements DrugPrescriptionDAO {
 
     final private String INSERT = "INSERT INTO drug_prescription" +
-            " (practitioner_id, patient_id, drug_type, date_prescripted," +
+            " (practitioner_id, patient_id, drug_type, date_prescribed," +
             " date_sold, chemist_id, ticket, ticket_paid, description)" +
             " values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE drug_prescription SET" +
-            " (practitioner_id, patient_id, drug_type, date_prescripted," +
+            " (practitioner_id, patient_id, drug_type, date_prescribed," +
             " date_sold, chemist_id, ticket, ticket_paid, description)" +
             " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE drug_prescription_id = ?;";
     final private String DELETE = "DELETE FROM drug_prescription WHERE drug_prescription_id = ?;";
@@ -33,22 +33,22 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String COUNT = "SELECT COUNT(*) FROM drug_prescription;";
 
     final private String FINDBYPATIENT = "SELECT * FROM drug_prescription " +
-            "WHERE patient_id = ? order by date_prescripted asc;";
+            "WHERE patient_id = ? order by date_prescribed asc;";
     final private String FINDBYPRACTITIONER = "SELECT * FROM drug_prescription WHERE practitioner_id = ?;";
     final private String FINDEXPIRED = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescripted + interval '1 month' >= now() " +
+            "WHERE date_prescribed + interval '1 month' >= now() " +
             "AND NOT(chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false);";
     final private String FINDVALID = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescripted + interval '1 month' < now() " +
+            "WHERE date_prescribed + interval '1 month' < now() " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
-            "order by date_prescripted asc;";
+            "order by date_prescribed asc;";
     final private String FINDVALIDBYPATIENT = "SELECT * FROM drug_prescription " +
-            "WHERE date_prescripted + interval '1 month' < now() AND patient_id = ? " +
+            "WHERE date_prescribed + interval '1 month' < now() AND patient_id = ? " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
-            "order by date_prescripted asc;";
+            "order by date_prescribed asc;";
     final private String FINDUNPAIDBYPATIENT = "SELECT * FROM drug_prescription " +
             "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = false " +
-            "order by date_prescripted asc;";
+            "order by date_prescribed asc;";
 
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -61,7 +61,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(1, drugPrescription.getPractitionerID());
             stm.setString(2, drugPrescription.getPatientID());
             stm.setInt(3, drugPrescription.getDrugType().getID());
-            stm.setTimestamp(4, drugPrescription.getDatePrescripted());
+            stm.setTimestamp(4, drugPrescription.getDatePrescribed());
             stm.setTimestamp(5, drugPrescription.getDateSold());
             stm.setString(6, drugPrescription.getChemistID());
             stm.setInt(7, drugPrescription.getTicket());
@@ -83,7 +83,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(1, drugPrescription.getPractitionerID());
             stm.setString(2, drugPrescription.getPatientID());
             stm.setInt(3, drugPrescription.getDrugType().getID());
-            stm.setTimestamp(4, drugPrescription.getDatePrescripted());
+            stm.setTimestamp(4, drugPrescription.getDatePrescribed());
             stm.setTimestamp(5, drugPrescription.getDateSold());
             stm.setString(6, drugPrescription.getChemistID());
             stm.setInt(7, drugPrescription.getTicket());
@@ -262,7 +262,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             drugPrescription.setPractitionerID(rs.getString("practitioner_id"));
             drugPrescription.setPatientID(rs.getString("patient_id"));
             drugPrescription.setDrugType(drugList);
-            drugPrescription.setDatePrescripted(rs.getTimestamp("date_prescripted"));
+            drugPrescription.setDatePrescribed(rs.getTimestamp("date_prescribed"));
             drugPrescription.setDateSold(rs.getTimestamp("date_sold"));
             drugPrescription.setChemistID(rs.getString("chemist_id"));
             drugPrescription.setTicket(rs.getInt("ticket"));

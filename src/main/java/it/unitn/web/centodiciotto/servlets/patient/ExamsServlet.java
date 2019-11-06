@@ -10,6 +10,7 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.persistence.dao.exceptions.DAOException;
 import it.unitn.web.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.persistence.dao.factories.DAOFactory;
+import it.unitn.web.utils.JsonUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,8 +22,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/restricted/patient/exams")
-public class ExamPrescriptionCreatorServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/restricted/general_practitioner/exams",
+        "/restricted/patient/exams"})
+public class ExamsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
 
@@ -78,11 +80,11 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
                         if (examID == null) {
                             for (ExamList examList : ALL_EXAMS) {
                                 if (examList.getID() == patientExamPrescriptionList.get(0).getExamType().getID()) {
-                                    examListElements.add(new ExamListElement(examList.getDescription(), new ExamAction("Book Now", true)));
+                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", true)));
                                     patientExamPrescriptionList.remove(0);
                                 } else {
                                     if (!onlyAvailable) {
-                                        examListElements.add(new ExamListElement(examList.getDescription(), new ExamAction("Book Now", false)));
+                                        examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", false)));
                                     }
                                 }
                             }
@@ -91,12 +93,12 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
                             boolean found = false;
                             for (ExamPrescription examPrescription : patientExamPrescriptionList) {
                                 if (examPrescription.getExamType().getID() == integerExamID) {
-                                    examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new ExamAction("Book Now", true)));
+                                    examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new JsonUtils.Action("Book Now", true)));
                                     found = true;
                                 }
                             }
                             if (!found) {
-                                examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new ExamAction("Book Now", false)));
+                                examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new JsonUtils.Action("Book Now", false)));
                             }
                         }
 
@@ -134,21 +136,11 @@ public class ExamPrescriptionCreatorServlet extends HttpServlet {
     }
 
 
-    private static class ExamAction {
-        private String label;
-        private Boolean enable;
-
-        ExamAction(String label, Boolean enable) {
-            this.label = label;
-            this.enable = enable;
-        }
-    }
-
     private static class ExamListElement {
         private String exam;
-        private ExamAction action;
+        private JsonUtils.Action action;
 
-        ExamListElement(String exam, ExamAction action) {
+        ExamListElement(String exam, JsonUtils.Action action) {
             this.exam = exam;
             this.action = action;
         }

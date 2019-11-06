@@ -71,11 +71,13 @@ public class VisitRequestServlet extends HttpServlet {
         if (user instanceof GeneralPractitioner) {
             String practitionerID = user.getID();
             String patientID = request.getParameter("patientID");
-            String visit_timestamp = request.getParameter("visitDate");
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm");
+            String visitDate = request.getParameter("visitDate");
+            String visitTime = request.getParameter("visitTime");
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
             try {
-                Date date = formatter.parse(visit_timestamp);
+                Date date = formatter.parse(visitDate + " " + visitTime);
+
                 Visit toBook = null;
 
                 List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);

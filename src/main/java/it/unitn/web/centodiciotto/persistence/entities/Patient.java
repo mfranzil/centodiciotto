@@ -75,4 +75,9 @@ public class Patient extends User {
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;
     }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
 }

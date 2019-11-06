@@ -14,6 +14,7 @@ public class Exam {
     private Integer ticket;
     private Integer examPrescriptionID;
     private boolean ticketPaid;
+    private boolean recall;
 
     public Integer getID() {
         return ID;
@@ -101,5 +102,13 @@ public class Exam {
 
     public void setTicketPaid(boolean ticketPaid) {
         this.ticketPaid = ticketPaid;
+    }
+
+    public boolean isRecall() {
+        return recall;
+    }
+
+    public void setRecall(boolean recall) {
+        this.recall = recall;
     }
 }

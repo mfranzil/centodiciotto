@@ -20,5 +20,9 @@ public class Chemist extends User {
         this.province = province;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }
 

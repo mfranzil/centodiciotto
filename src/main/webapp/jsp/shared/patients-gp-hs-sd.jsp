@@ -41,7 +41,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/general_practitioner/patients";
+            const url = getContextPath() + "/restricted/${sessionScope.role}/patients";
             $(function () {
                 $("#patient-search")
                     .select2({
