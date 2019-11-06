@@ -10,7 +10,7 @@ public class Exam {
     private Boolean done;
     private Timestamp date;
     private String result;
-    private Integer healthServiceID;
+    private String healthServiceID;
     private Integer ticket;
     private Integer examPrescriptionID;
     private boolean ticketPaid;
@@ -71,11 +71,11 @@ public class Exam {
         this.result = result;
     }
 
-    public Integer getHealthServiceID() {
+    public String getHealthServiceID() {
         return healthServiceID;
     }
 
-    public void setHealthServiceID(Integer healthServiceID) {
+    public void setHealthServiceID(String healthServiceID) {
         this.healthServiceID = healthServiceID;
     }
 

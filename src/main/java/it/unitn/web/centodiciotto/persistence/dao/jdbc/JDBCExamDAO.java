@@ -34,7 +34,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDBYPATIENTLASTYEAR = "select * from exam where date <= localtimestamp and " +
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
     final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
-    final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? AND ticket_paid = false";
+    final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND ticket_paid = false AND done = true";
 
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
@@ -51,7 +52,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(4, exam.getDone());
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
-            stm.setInt(7, exam.getHealthServiceID());
+            stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
@@ -74,11 +75,12 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(4, exam.getDone());
             stm.setTimestamp(5, exam.getDate());
             stm.setString(6, exam.getResult());
-            stm.setInt(7, exam.getID());
-            stm.setInt(7, exam.getHealthServiceID());
+            stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setInt(9, exam.getExamPrescriptionID());
             stm.setBoolean(10, exam.isTicketPaid());
+
+            stm.setInt(11, exam.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -222,7 +224,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setDone(rs.getBoolean("done"));
             exam.setDate(rs.getTimestamp("date"));
             exam.setResult(rs.getString("result"));
-            exam.setHealthServiceID(rs.getInt("health_service_id"));
+            exam.setHealthServiceID(rs.getString("health_service_id"));
             exam.setTicket(rs.getInt("ticket"));
             exam.setExamPrescriptionID(rs.getInt("exam_prescription_id"));
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));

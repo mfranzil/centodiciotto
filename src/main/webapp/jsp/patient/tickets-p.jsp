@@ -38,6 +38,33 @@
             }
         }
     </style>
+    <script>
+        $("document").ready(function () {
+            $("form").submit(function (e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let url = form.attr('action');
+
+                let button = form.find("button");
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    cache: false,
+                    data: form.serialize(),
+                    success: function () {
+                        button.prop("disabled", true).html("Paid");
+
+                        alert("Ticket successfully paid.");
+                    },
+                    error: function () {
+                        alert("Error while paying ticket (may already have been paid).");
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -49,7 +76,6 @@
         From this menu you can pay for your tickets.
     </p>
 </div>
-
 
 
 <div class="container">
@@ -96,15 +122,13 @@
                         <div class="table-cell amount">$${exam.ticket}
                         </div>
                         <div class="table-cell action">
-                            <form method="POST">
+                            <form method="POST" class="pay"
+                                  action="${pageContext.request.contextPath}/restricted/patient/tickets">
                                 <input type="hidden" value="${exam.ID}" type="text" name="ID">
                                 <input type="hidden" value="exam" type="text" name="type">
-                                <button type="button" class="btn btn-block btn-personal"
-                                        ${exam.ticketPaid ? "disabled" : ""}> ${exam.ticketPaid ? "Paid" : "Pay"}
+                                <button type="submit" id="btn-pay-e-${exam.ID}" class="btn btn-block btn-personal"
+                                    ${exam.ticketPaid ? "disabled" : ""}> ${exam.ticketPaid ? "Paid" : "Pay"}
                                 </button>
-                                <!--TO DO: mettere metodo doPost nel servlet (sempre ticket?)
-                                in modo che rimanga memorizzata l'informazione!
-                                -->
                             </form>
                         </div>
                     </div>
