@@ -22,8 +22,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/restricted/patient/exams")
-public class ExamPrescriptionCreatorServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/restricted/general_practitioner/exams",
+        "/restricted/patient/exams"})
+public class ExamsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
 
