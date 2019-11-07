@@ -142,6 +142,8 @@ public class ExamsServlet extends HttpServlet {
                         newExam.setPractitionerID(user.getID());
                         newExam.setBooked(false);
                         newExam.setType(examList);
+                        newExam.setDone(false);
+                        newExam.setTicket(-1);
 
                         examDAO.insert(newExam);
                     }
