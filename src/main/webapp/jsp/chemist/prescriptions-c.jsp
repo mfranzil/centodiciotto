@@ -57,7 +57,7 @@
                         dataType: "json",
                     }
                 })
-                .val(null)
+                .val("")
                 .trigger("change")
                 .on('select2:select', function (e) {
                     $("#main-loading-container").slideDown();
@@ -89,6 +89,10 @@
                         $("#test-table").insertRows(tableHeaders, json, url);
                         enablePopup();
                         $("#main-loading-container").slideUp();
+
+                        if (action === "qr") {
+                            $("#btn-${requestScope.prescription.ID}").click();
+                        }
                     }
                 });
             }
@@ -134,6 +138,19 @@
                         }
                     });
                 });
+            }
+
+
+            let action = "${requestScope.action}";
+
+            if (action === "qr") {
+                $("#main-loading-container").slideDown();
+                $("#test-table").children().not('first').remove();
+                $("#patient-name").html("${requestScope.patient}");
+                $("#patient-ssn").html("${requestScope.patient.SSN}");
+                $("#patient-avatar").prop("src", getContextPath() + "${requestScope.patientPhoto}");
+                $("#patient-info").slideDown();
+                renderPrescriptions("${requestScope.patient.ID}");
             }
         });
     </script>

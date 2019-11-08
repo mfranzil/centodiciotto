@@ -104,7 +104,7 @@ public class ExamsServlet extends HttpServlet {
                         response.getWriter().write(gson.toJson(examListElements));
                     }
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    throw new ServletException("Error in DAO usage: ", e);
                 }
                 break;
             }

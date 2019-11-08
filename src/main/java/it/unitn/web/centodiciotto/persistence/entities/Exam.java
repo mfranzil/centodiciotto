@@ -13,7 +13,7 @@ public class Exam {
     private String healthServiceID;
     private Integer ticket;
     private boolean ticketPaid;
-    private boolean recall;
+    private Integer recall;
     private String practitionerID;
     private boolean booked;
 
@@ -97,11 +97,11 @@ public class Exam {
         this.ticketPaid = ticketPaid;
     }
 
-    public boolean isRecall() {
+    public Integer getRecall() {
         return recall;
     }
 
-    public void setRecall(boolean recall) {
+    public void setRecall(Integer recall) {
         this.recall = recall;
     }
 

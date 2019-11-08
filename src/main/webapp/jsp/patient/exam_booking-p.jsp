@@ -4,7 +4,6 @@
 <head>
     <title>Book your exam - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-    <script src="${pageContext.request.contextPath}/js/ajax.js"></script>
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css">
@@ -102,20 +101,27 @@
     </p>
 </div>
 
+
 <div class="container">
-    <div class="form-group" style="display: flex; width: 100%; margin: auto">
-        <select id="exam-search" name="examSearch" class="select2-allow-clear form-control mr-1"
-                style="margin: 1em" autofocus>
-        </select>
-        <button id="my_filter" class="btn btn-personal ml-1" type="button">
-            Available Exams
-        </button>
-    </div>
-    <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
-        <img class="rotating" role="status" style="width: 64px"
-             src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
-    </div>
-    <div id="main-table">
+    <div class="body-content">
+        <div class="row">
+            <div class="col-md">
+                <div class="form-group" style="display: flex; width: 100%; margin: auto">
+                    <select id="exam-search" name="examSearch" class="select2-allow-clear form-control mr-1"
+                            style="margin: 1em" autofocus>
+                    </select>
+                    <button id="my_filter" class="btn btn-personal ml-1" type="button">
+                        Available Exams
+                    </button>
+                </div>
+                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                </div>
+                <div id="main-table">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>

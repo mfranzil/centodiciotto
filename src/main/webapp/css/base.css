@@ -13,6 +13,7 @@ body {
     margin: 0;
     padding: 4rem 0 0;
     background-color: rgb(var(--118-light));
+    display: flex;
     -ms-flex-align: center;
     -ms-flex-pack: center;
     -webkit-box-align: center;
@@ -20,9 +21,11 @@ body {
     align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
-    justify-content: center;
     max-width: 100%;
     overflow-x: hidden;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* Allineamenti delle tabelle generici, spaziature per mobile */
@@ -490,6 +493,26 @@ textarea:focus {
     -ms-animation: rotating 1s linear infinite;
     -o-animation: rotating 1s linear infinite;
     animation: rotating 1s linear infinite;
+}
+
+/* Footer */
+
+footer {
+    background-color: rgba(0, 0, 0, 0) !important;
+    background-image: -webkit-gradient(linear, right bottom, left bottom, from(rgba(var(--118-medium-dark), 0.85)),
+    to(rgba(var(--118-medium), 0.85)));
+    background-image: -o-linear-gradient(right, rgba(var(--118-medium-dark), 0.85), rgba(var(--118-medium), 0.85));
+    background-image: linear-gradient(to left, rgba(var(--118-medium-dark), 0.85), rgba(var(--118-medium), 0.85));
+    color: white;
+    text-align: center;
+    margin-top: 3rem;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+    font-weight: bold;
 }
 
 /* Timepicker */

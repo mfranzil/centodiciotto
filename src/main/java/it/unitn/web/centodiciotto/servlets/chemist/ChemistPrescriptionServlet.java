@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 @WebServlet("/restricted/chemist/prescriptions")
 public class ChemistPrescriptionServlet extends HttpServlet {
 
@@ -59,21 +60,36 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
         if (user instanceof Chemist) {
             String action = request.getParameter("action");
+            request.setAttribute("action", "none");
+
             if (action != null && action.equals("qr")) {
-                String practitionerID = request.getParameter("practitionerID");
-                int prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
-                String patientID = request.getParameter("patientID");
-
                 try {
-                    DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
-                    if (drugPrescription.getChemistID() == null
-                            && drugPrescription.getDateSold() == null
-                            && !drugPrescription.getTicketPaid()) {
-                        System.out.println("prescrizione ancora valida, carico ");
-                    }
+                    String practitionerID = request.getParameter("practitionerID");
+                    String patientID = request.getParameter("patientID");
+                    Integer prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
 
-                } catch (DAOException e) {
-                    throw new ServletException("Error in DAO usage: ", e);
+                    DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                    Patient patient = patientDAO.getByPrimaryKey(patientID);
+                    GeneralPractitioner generalPractitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
+
+                    PhotoService photoService = PhotoService.getInstance();
+
+                    if (generalPractitioner != null && patient != null && drugPrescription != null) {
+                        if (drugPrescription.getChemistID() == null
+                                && drugPrescription.getDateSold() == null
+                                && !drugPrescription.getTicketPaid()) {
+
+                            request.setAttribute("action", "qr");
+                            request.setAttribute("patient", patient);
+                            request.setAttribute("patientPhoto", photoService.getLastPhoto(patientID));
+                            request.setAttribute("practitioner", generalPractitioner);
+                            request.setAttribute("prescription", drugPrescription);
+                        }
+                    }
+                } catch (DAOException | NullPointerException | NumberFormatException e) {
+                    throw new ServletException("Malformed request (error in DAO or parameters): ", e);
+                } catch (ServiceException e) {
+                    throw new ServletException("Error in Photo path retrieval: ", e);
                 }
             }
             request.getRequestDispatcher("/jsp/chemist/prescriptions-c.jsp").forward(request, response);
@@ -161,7 +177,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         Province province = ((Chemist) user).getProvince();
 
                         List<PatientSearchResult> results = new ArrayList<>();
-                        List<Patient> allPatients = new ArrayList<>();
+                        List<Patient> allPatients;
 
                         if (userInput == null) {
                             allPatients = patientDAO.getPatientsByProvince(province.getAbbreviation());
@@ -325,7 +341,6 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             this.enable = enable;
         }
     }
-
 }
 
 

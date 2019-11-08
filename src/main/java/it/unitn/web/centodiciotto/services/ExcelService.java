@@ -104,17 +104,20 @@ public class ExcelService {
                     Entry entry;
                     Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());
 
-                    if ((exam.isRecall() && includeRecalls)
-                            || (!exam.isRecall() && exam.getHealthServiceID() == null && includeSpecialistExams)) {
+                    // TODO vedere se va
+                    boolean isRecall = exam.getRecall() != null && exam.getRecall() != 0;
+
+                    if ((isRecall && includeRecalls)
+                            || (!isRecall && exam.getHealthServiceID() == null && includeSpecialistExams)) {
                         // Recall, specialistExam
                         SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(exam.getDoctorID());
 
                         entry = new Entry(i++,
                                 patient.getID(), patient.getFirstName(), patient.getLastName(),
-                                exam.isRecall() ? "RECALL" : "SPECIALIST_EXAM",
+                                isRecall ? "RECALL" : "SPECIALIST_EXAM",
                                 specializedDoctor.getID(), specializedDoctor.getFirstName(), specializedDoctor.getLastName(),
                                 exam.getTicket());
-                    } else if (!exam.isRecall() && exam.getDoctorID() == null && includeHealthServiceExams) { // Health Service Exams
+                    } else if (!isRecall && exam.getDoctorID() == null && includeHealthServiceExams) { // Health Service Exams
                         entry = new Entry(i++,
                                 patient.getID(), patient.getFirstName(), patient.getLastName(),
                                 "HEALTH_SERVICE_EXAM",

@@ -133,6 +133,7 @@ $("document").ready(function () {
                             button.classList.add("btn-block");
                             button.classList.add("btn-personal");
                             button.classList.add("popup-opener");
+                            button.id = "btn-" + item.ID;
                             button.innerHTML = item[header.field].label;
 
                             if (!item[header.field].enable) {

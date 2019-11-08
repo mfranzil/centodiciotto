@@ -35,8 +35,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND ticket_paid = false AND done = true";
     final private String FINDBYPATIENTNOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
-
     final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
+    final private String FINDRECALLSBYHS = "SELECT * from exam where recall = true and health_service_id = ?";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -55,7 +55,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setBoolean(9, exam.isTicketPaid());
-            stm.setBoolean(10, exam.isRecall());
+            stm.setInt(10, exam.getRecall());
             stm.setString(11, exam.getPractitionerID());
             stm.setBoolean(12, exam.isBooked());
 
@@ -80,7 +80,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setBoolean(10, exam.isTicketPaid());
-            stm.setBoolean(11, exam.isRecall());
+            stm.setInt(11, exam.getRecall());
             stm.setString(11, exam.getPractitionerID());
             stm.setBoolean(12, exam.isBooked());
 
@@ -250,6 +250,24 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
+    public List<Exam> getRecallsByHealthService(String healthServiceID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDRECALLSBYHS)) {
+            stm.setString(1, healthServiceID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Exams/Recalls by Province: ", e);
+        }
+    }
+
     @Override
     protected Exam mapRowToEntity(ResultSet rs) throws DAOException {
         try {
@@ -268,7 +286,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setHealthServiceID(rs.getString("health_service_id"));
             exam.setTicket(rs.getInt("ticket"));
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));
-            exam.setRecall(rs.getBoolean("recall"));
+            exam.setRecall(rs.getInt("recall"));
             exam.setPractitionerID(rs.getString("practitioner_id"));
             exam.setBooked(rs.getBoolean("booked"));
 

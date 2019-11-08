@@ -19,4 +19,6 @@ public interface ExamDAO extends DAO<Exam, Integer> {
 
     List<Exam> getByDate(Timestamp ts) throws DAOException;
 
+    List<Exam> getRecallsByHealthService(String healthServiceID) throws DAOException;
+
 }

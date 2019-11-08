@@ -129,7 +129,7 @@ public class PhotoService {
             return avatarFolder + "default.png";
         }
 
-        return photoPath;
+        return photoPath.replace('\\', '/');
     }
 
     public String getAvatarFolder() {

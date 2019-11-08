@@ -29,28 +29,40 @@
 
             $("#generate").submit(function (e) {
                 e.preventDefault();
-                $('#submit').prop('disabled', true).html("Requesting...");
-                $("#loading-container").slideDown();
 
                 let form = $(this);
                 let url = form.attr('action');
+                let data = form.serialize();
+
+                $('#submit').prop("disabled", true).html("Requesting...");
+                $("input").prop("disabled", true);
+                $("#loading-container").slideDown();
+
+                if ($("#date").val() === "") {
+                    alert("Insert a valid date.");
+                    return;
+                }
 
                 $.ajax({
                     type: "POST",
                     url: url,
                     cache: false,
-                    data: form.serialize(),
+                    data: data,
                     success: function (result) {
                         result = JSON.parse(result);
 
                         console.log(result);
-                        $("#include").slideUp();
+                        $("#submit,#loading-container").slideUp();
                         $("#generate-new,#download").slideDown();
                         $(".datepicker").prop("disabled", true);
                         $("#download").click(function () {
                             e.preventDefault();
                             window.location.href = result.path;
                         });
+                    },
+                    error: function (result) {
+                        alert("Error while generating the report. Please try again.");
+                        location.reload();
                     }
                 });
             });
@@ -60,6 +72,19 @@
             });
         });
     </script>
+    <style>
+        .col-md {
+            text-align: center;
+            margin: auto 10vmin;
+        }
+
+        @media (min-width: 992px) {
+            .col-md {
+                margin: auto 20vmax;
+            }
+
+        }
+    </style>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -75,7 +100,7 @@
 <div class="container" style="overflow-y: hidden">
     <div class="body-content">
         <div class="row">
-            <div class="col-md" style="text-align: center; margin: auto 10vmax">
+            <div class="col-md">
                 <form method="POST" id="generate"
                       target="${pageContext.request.contextPath}/restricted/health_service/reports">
                     <p class="lead" id="choose-date">Choose a date.</p>

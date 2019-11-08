@@ -59,7 +59,6 @@ public class HealthServiceReportServlet extends HttpServlet {
                         request.getParameter("date")
                 ).getTime());
 
-
                 String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
                         includeSpecialistExams, includeHealthServiceExams, includePrescriptions);
 
