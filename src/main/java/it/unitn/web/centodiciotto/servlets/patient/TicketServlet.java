@@ -2,9 +2,11 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
+import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
+import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
@@ -19,6 +21,7 @@ import java.io.IOException;
 @WebServlet("/restricted/patient/tickets")
 public class TicketServlet extends HttpServlet {
     private ExamDAO examDAO;
+    private DrugPrescriptionDAO drugPrescriptionDAO;
 
     @Override
     public void init() throws ServletException {
@@ -29,6 +32,7 @@ public class TicketServlet extends HttpServlet {
 
         try {
             examDAO = daoFactory.getDAO(ExamDAO.class);
+            drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -57,6 +61,22 @@ public class TicketServlet extends HttpServlet {
                     } else {
                         selectedExam.setTicketPaid(true);
                         examDAO.update(selectedExam);
+                        response.setStatus(200);
+                    }
+                } catch (DAOException e) {
+                    response.setStatus(400);
+                    throw new ServletException("Error in DAO usage: ", e);
+                }
+            }
+            if (type.equals("drug_prescription")) {
+                try {
+                    DrugPrescription selectedPrescription = drugPrescriptionDAO.getByPrimaryKey(ID);
+
+                    if (selectedPrescription.getTicketPaid()) {
+                        response.setStatus(400);
+                    } else {
+                        selectedPrescription.setTicketPaid(true);
+                        drugPrescriptionDAO.update(selectedPrescription);
                         response.setStatus(200);
                     }
                 } catch (DAOException e) {

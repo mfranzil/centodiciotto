@@ -2,6 +2,7 @@ package it.unitn.web.centodiciotto.servlets.shared;
 
 
 import com.google.gson.Gson;
+import it.unitn.web.centodiciotto.persistence.dao.DoctorExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -27,6 +28,7 @@ public class ExamsServlet extends HttpServlet {
     private static List<ExamList> ALL_EXAMS = new ArrayList<>();
     private ExamListDAO examListDAO;
     private ExamDAO examDAO;
+    private DoctorExamDAO doctorExamDAO;
 
     @Override
     public void init() throws ServletException {
@@ -37,6 +39,7 @@ public class ExamsServlet extends HttpServlet {
         try {
             examListDAO = daoFactory.getDAO(ExamListDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
+            doctorExamDAO = daoFactory.getDAO(DoctorExamDAO.class);
 
             ALL_EXAMS = examListDAO.getAll();
             for (ExamList exam : ALL_EXAMS) {
@@ -74,7 +77,7 @@ public class ExamsServlet extends HttpServlet {
                         if (examID == null) {
                             if (onlyAvailable) {
                                 for (Exam exam : patientExamList) {
-                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new JsonUtils.Action("Book Now", true)));
+                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new JsonUtils.Action("Book Now", true), exam.getType().getID()));
                                 }
                             } else {
                                 List<Integer> examListIDs = new ArrayList<>();
@@ -84,7 +87,7 @@ public class ExamsServlet extends HttpServlet {
                                 }
 
                                 for (ExamList examList : ALL_EXAMS) {
-                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", examListIDs.contains(examList.getID()))));
+                                    examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", examListIDs.contains(examList.getID())), examList.getID()));
                                 }
                             }
                         } else {
@@ -96,7 +99,8 @@ public class ExamsServlet extends HttpServlet {
                                     found = true;
                                 }
                             }
-                            examListElements.add(new ExamListElement(examListDAO.getByPrimaryKey(integerExamID).getDescription(), new JsonUtils.Action("Book Now", found)));
+                            ExamList examList = examListDAO.getByPrimaryKey(integerExamID);
+                            examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", found), examList.getID()));
                         }
 
                         Gson gson = new Gson();
@@ -142,6 +146,8 @@ public class ExamsServlet extends HttpServlet {
                         newExam.setPractitionerID(user.getID());
                         newExam.setBooked(false);
                         newExam.setType(examList);
+                        newExam.setDone(false);
+                        newExam.setTicket(-1);
 
                         examDAO.insert(newExam);
                     }
@@ -152,6 +158,24 @@ public class ExamsServlet extends HttpServlet {
                 }
                 break;
             }
+            case "detailedInfo": {
+                if (user instanceof Patient) {
+                    String examID = request.getParameter("item");
+                    System.out.println(examID);
+                    if (examID != null) {
+                        ExamList examList = new ExamList();
+                        examList.setID(Integer.valueOf(examID));
+
+                        try {
+                            System.out.println(examID + doctorExamDAO.getByExamList(examList).get(0).getDoctorID());
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+                break;
+            }
         }
     }
 
@@ -159,10 +183,12 @@ public class ExamsServlet extends HttpServlet {
     private static class ExamListElement {
         private String exam;
         private JsonUtils.Action action;
+        private Integer ID;
 
-        ExamListElement(String exam, JsonUtils.Action action) {
+        public ExamListElement(String exam, JsonUtils.Action action, Integer ID) {
             this.exam = exam;
             this.action = action;
+            this.ID = ID;
         }
     }
 
