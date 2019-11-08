@@ -120,7 +120,6 @@ public class RecallsServlet extends HttpServlet {
                                     exam.setTicket(0);
                                     exam.setTicketPaid(false);
                                     exam.setBooked(false);
-                                    exam.setHealthServiceID(user.getID());
                                     exam.setRecall(recall.getID());
 
                                     System.out.println(exam);
