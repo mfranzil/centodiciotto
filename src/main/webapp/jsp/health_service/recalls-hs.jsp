@@ -80,7 +80,8 @@
                     cache: false,
                     data: form.serialize(),
                     success: function (data) {
-                        alert("Fatto.");
+                        alert("Recall inviato con successo.");
+                        location.reload();
                     }
                 });
             });
@@ -101,6 +102,31 @@
                         $(".table-cell.content.date").html(result[0].date);
                         $(".table-cell.content.age").html(result[0].age);
                         $("#exam-id").val(examID);
+                    }
+                });
+            }
+
+            let tableHeaders = [
+                {field: "exam", type: "string", text: "Exam"},
+                {field: "date", type: "string", text: "Recall date"},
+                {field: "age", type: "string", text: "Recall age"},
+            ];
+
+
+            $("#history-table").createTableHeaders(tableHeaders);
+            renderHistory();
+            $("#history-loading-container").slideUp();
+
+            function renderHistory() {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        requestType: "recallHistory",
+                    },
+                    url: url,
+                    success: function (json) {
+                        $("#history-table").insertRows(tableHeaders, json, url);
                     }
                 });
             }
@@ -186,7 +212,12 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                b
+                <div class="justify-content-center loading" id="history-loading-container" style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                </div>
+                <div id="history-table">
+                </div>
             </div>
         </div>
     </div>

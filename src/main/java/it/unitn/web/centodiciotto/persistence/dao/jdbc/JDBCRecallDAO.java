@@ -32,6 +32,8 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
 
     final private String FINDBYHSANDEXAM = "SELECT * from recall WHERE health_service_id = ?" +
             " AND exam_type = ? ORDER BY start_date desc LIMIT 1;";
+    final private String FINDBYHEALTHSERVICE = "SELECT * from recall WHERE health_service_id = ? " +
+            "ORDER BY start_date desc;";
 
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -156,6 +158,23 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
         return null;
     }
 
+    public List<Recall> getByHealthService(String healthServiceID) throws DAOException {
+        List<Recall> recalls = new ArrayList<>();
+        try {
+            PreparedStatement stm = CON.prepareStatement(FINDBYHEALTHSERVICE);
+            stm.setString(1, healthServiceID);
+
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Recall recall = mapRowToEntity(rs);
+                recalls.add(recall);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting all Recalls: ", e);
+        }
+        return recalls;
+    }
 
     @Override
     protected Recall mapRowToEntity(ResultSet rs) throws DAOException {

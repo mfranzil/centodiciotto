@@ -69,6 +69,28 @@ public class RecallsServlet extends HttpServlet {
 
         if (user instanceof HealthService) {
             switch (requestType) {
+                case "recallHistory": {
+                    try {
+                        List<Recall> recallList = recallDAO.getByHealthService(user.getID());
+
+                        List<TableExam> patientListElements = new ArrayList<>();
+                        for (Recall recall : recallList) {
+                            patientListElements.add(new TableExam(
+                                    recall.getExamType().getDescription(),
+                                    recall.getStartDate().toString(),
+                                    recall.getMinAge() + " - " + recall.getMaxAge()
+                            ));
+                        }
+
+                        Gson gson = new Gson();
+
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(patientListElements));
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
+                    }
+                    break;
+                }
                 case "newRecall": {
                     try {
                         Integer examID = Integer.valueOf(request.getParameter("examID"));
@@ -106,12 +128,16 @@ public class RecallsServlet extends HttpServlet {
                                 }
                             }
 
+                            response.setContentType("application/json");
+                            String json = "{\"output\": true}";
+                            response.getWriter().write(json);
                         }
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (NumberFormatException | NullPointerException e) {
                         throw new ServletException("Malformed input: ", e);
                     }
+                    break;
                 }
                 case "examRow": {
                     try {
