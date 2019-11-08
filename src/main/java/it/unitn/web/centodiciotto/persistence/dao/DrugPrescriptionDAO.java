@@ -21,4 +21,6 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
 
     List<DrugPrescription> getByDateSold(Timestamp ts) throws DAOException;
 
+    List<DrugPrescription> getByPatientNotPaid(String patientID) throws DAOException;
+
 }

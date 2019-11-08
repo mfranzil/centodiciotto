@@ -15,6 +15,7 @@ public class DrugPrescriptionDAOBean implements Serializable {
 
     private DrugPrescriptionDAO drugPrescriptionDAO = null;
     private String patientID = null;
+    private String drugName = null;
 
     public void setDAOFactory(String useless) {
         try {
@@ -44,6 +45,21 @@ public class DrugPrescriptionDAOBean implements Serializable {
             throw new BeanException("Error getting drugPre list in practitionerDaoBean: ", e);
         }
         return drugPrescriptions;
+    }
+
+    public List<DrugPrescription> getPatientsNotPaid() throws BeanException {
+        List<DrugPrescription> prescriptions;
+
+        if (patientID == null) {
+            throw new BeanException("Patient is null");
+        }
+
+        try {
+            prescriptions = drugPrescriptionDAO.getByPatientNotPaid(patientID);
+        } catch (DAOException e) {
+            throw new BeanException("Error getting exam list in examDaoBean: ", e);
+        }
+        return prescriptions;
     }
 
 }

@@ -267,6 +267,25 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
+    public List<DrugPrescription> getByPatientNotPaid(String patientID) throws DAOException {
+        List<DrugPrescription> res = new ArrayList<>();
+        DrugPrescription tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDUNPAIDBYPATIENT)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting not paid Drug Prescription by PatientID: ", e);
+        }
+    }
+
+    @Override
     protected DrugPrescription mapRowToEntity(ResultSet rs)throws DAOException {
         try {
             DrugPrescription drugPrescription = new DrugPrescription();
