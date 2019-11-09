@@ -1,5 +1,7 @@
 package it.unitn.web.centodiciotto.utils;
 
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
+
 import java.util.ArrayList;
 import java.util.List;
 

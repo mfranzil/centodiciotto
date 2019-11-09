@@ -6,7 +6,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.entities.DoctorExam;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
-import it.unitn.web.centodiciotto.utils.Pair;
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

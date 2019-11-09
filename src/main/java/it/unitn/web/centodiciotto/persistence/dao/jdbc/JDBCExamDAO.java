@@ -37,6 +37,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND booked IS FALSE";
     final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
     final private String FINDRECALLSBYHS = "SELECT * from exam where recall = true and health_service_id = ?";
+    final private String FINDPENDINGBYIDS = "select * from exam where done = false and exam_type = ? " +
+            "and health_service_id = ? and patient_id = ?;";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -267,6 +269,35 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             throw new DAOException("Error getting Exams/Recalls by Province: ", e);
         }
     }
+
+    public Exam getPendingRecall(Integer examType, String healthServiceID, String patientID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDPENDINGBYIDS)) {
+            stm.setInt(1, examType);
+            stm.setString(2, healthServiceID);
+            stm.setString(3, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+
+                if (res.size() == 1) {
+                    return res.get(0);
+                } else if (res.size() == 0) {
+                    return null;
+                } else {
+                    throw new DAOException("More than one pending Recall found" +
+                            " (e=" + examType + ",hs=" + healthServiceID + ",p=" + patientID);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending Recalls: ", e);
+        }
+    }
+
 
     @Override
     protected Exam mapRowToEntity(ResultSet rs) throws DAOException {

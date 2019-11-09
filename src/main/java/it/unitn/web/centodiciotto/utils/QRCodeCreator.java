@@ -1,5 +1,6 @@
 package it.unitn.web.centodiciotto.utils;
 
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 

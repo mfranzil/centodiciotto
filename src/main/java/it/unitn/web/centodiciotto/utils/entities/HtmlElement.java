@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.utils;
+package it.unitn.web.centodiciotto.utils.entities;
 
 public class HtmlElement {
     private String elementType;

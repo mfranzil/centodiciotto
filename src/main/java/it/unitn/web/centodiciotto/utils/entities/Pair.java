@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.utils;
+package it.unitn.web.centodiciotto.utils.entities;
 
 import java.util.Objects;
 

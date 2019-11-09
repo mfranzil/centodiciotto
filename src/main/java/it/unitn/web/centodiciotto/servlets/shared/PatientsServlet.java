@@ -9,7 +9,7 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.HtmlElement;
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
 
 import javax.servlet.ServletException;
@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/patients",
         "/restricted/health_service/patients",
@@ -200,11 +201,9 @@ public class PatientsServlet extends HttpServlet {
                         }
 
                         if (userInput != null) {
-                            List<PatientSearchResult> tmpResults = new ArrayList<>();
-                            results.stream().filter(patientSearchResult
+                            results = results.stream().filter(patientSearchResult
                                     -> (patientSearchResult.getText().toLowerCase().contains(
-                                    userInput.toLowerCase()))).forEach(tmpResults::add);
-                            results = tmpResults;
+                                    userInput.toLowerCase()))).collect(Collectors.toList());
                         }
 
                         Gson gson = new Gson();

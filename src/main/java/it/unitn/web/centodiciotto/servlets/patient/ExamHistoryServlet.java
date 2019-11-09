@@ -9,7 +9,7 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.centodiciotto.utils.Pair;
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

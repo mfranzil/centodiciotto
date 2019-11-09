@@ -13,7 +13,7 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.HtmlElement;
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
 
 import javax.servlet.ServletException;

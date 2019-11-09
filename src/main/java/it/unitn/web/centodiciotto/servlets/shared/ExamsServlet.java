@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/exams",
         "/restricted/patient/exams"})
@@ -71,7 +72,7 @@ public class ExamsServlet extends HttpServlet {
                         String examID = request.getParameter("examID");
 
                         List<ExamListElement> examListElements = new ArrayList<>();
-                        
+
                         List<Exam> patientExamList = examDAO.getByPatientNotBooked(user.getID());
 
                         if (examID == null) {
@@ -100,7 +101,8 @@ public class ExamsServlet extends HttpServlet {
                                 }
                             }
                             ExamList examList = examListDAO.getByPrimaryKey(integerExamID);
-                            examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", found), examList.getID()));
+                            examListElements.add(new ExamListElement(examList.getDescription(),
+                                    new JsonUtils.Action("Book Now", found), examList.getID()));
                         }
 
                         Gson gson = new Gson();
@@ -121,10 +123,9 @@ public class ExamsServlet extends HttpServlet {
                     if (userInput == null) {
                         results = ALL_INTERNAL_EXAMS;
                     } else {
-                        List<ExamSearchResult> tmpResults = new ArrayList<>();
-                        ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
-                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
-                        results = tmpResults;
+                        results = ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
+                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase())))
+                                .collect(Collectors.toList());
                     }
 
                     Gson gson = new Gson();
@@ -161,7 +162,6 @@ public class ExamsServlet extends HttpServlet {
             case "detailedInfo": {
                 if (user instanceof Patient) {
                     String examID = request.getParameter("item");
-                    System.out.println(examID);
                     if (examID != null) {
                         ExamList examList = new ExamList();
                         examList.setID(Integer.valueOf(examID));

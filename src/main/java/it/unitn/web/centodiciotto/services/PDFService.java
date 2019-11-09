@@ -4,7 +4,7 @@ import be.quodlibet.boxable.utils.PDStreamUtils;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.utils.Pair;
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 import it.unitn.web.centodiciotto.utils.QRCodeCreator;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;

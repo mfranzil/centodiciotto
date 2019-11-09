@@ -21,11 +21,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet("/restricted/health_service/recalls")
 public class RecallsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
-    private static List<ExamList> ALL_EXAMS = new ArrayList<>();
 
     private ExamDAO examDAO;
     private ExamListDAO examListDAO;
@@ -44,8 +44,8 @@ public class RecallsServlet extends HttpServlet {
             recallDAO = daoFactory.getDAO(RecallDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
 
-            ALL_EXAMS = examListDAO.getAll();
-            for (ExamList exam : ALL_EXAMS) {
+            List<ExamList> allExams = examListDAO.getAll();
+            for (ExamList exam : allExams) {
                 ALL_INTERNAL_EXAMS.add(new ExamSearchResult(exam.getID(), exam.getDescription()));
             }
         } catch (DAOFactoryException | DAOException e) {
@@ -97,7 +97,7 @@ public class RecallsServlet extends HttpServlet {
                         Integer minAge = Integer.valueOf(request.getParameter("minAge"));
                         Integer maxAge = Integer.valueOf(request.getParameter("maxAge"));
 
-                        if (minAge < maxAge) {
+                        if (minAge < maxAge && minAge >= 0 && maxAge <= 130) {
                             ExamList examType = examListDAO.getByPrimaryKey(examID);
                             Recall recall = new Recall();
 
@@ -109,22 +109,25 @@ public class RecallsServlet extends HttpServlet {
 
                             recallDAO.insert(recall);
 
-                            List<Patient> allPatients = patientDAO.getPatientsByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
+                            List<Patient> allPatients = patientDAO.getPatientsByProvince(
+                                    ((HealthService) user).getOperatingProvince().getAbbreviation());
 
                             for (Patient patient : allPatients) {
                                 if (Common.isWithinAgeRange(patient.getBirthDate(), minAge, maxAge)) {
-                                    Exam exam = new Exam();
-                                    exam.setPatientID(patient.getID());
-                                    exam.setType(examType);
-                                    exam.setDone(false);
-                                    exam.setTicket(0);
-                                    exam.setTicketPaid(false);
-                                    exam.setBooked(false);
-                                    exam.setHealthServiceID(user.getID());
-                                    exam.setRecall(recall.getID());
+                                    Exam pending = examDAO.getPendingRecall(
+                                            examType.getID(), user.getID(), patient.getID());
 
-                                    System.out.println(exam);
-                                    examDAO.insert(exam);
+                                    if (pending != null) {
+                                        Exam exam = new Exam();
+                                        exam.setPatientID(patient.getID());
+                                        exam.setType(examType);
+                                        exam.setDone(false);
+                                        exam.setTicket(0);
+                                        exam.setTicketPaid(false);
+                                        exam.setBooked(false);
+                                        exam.setHealthServiceID(user.getID());
+                                        exam.setRecall(recall.getID());
+                                    }
                                 }
                             }
 
@@ -178,11 +181,9 @@ public class RecallsServlet extends HttpServlet {
                     if (userInput == null) {
                         results = ALL_INTERNAL_EXAMS;
                     } else {
-                        List<ExamSearchResult> tmpResults = new ArrayList<>();
-                        ALL_INTERNAL_EXAMS.stream().filter(examSearchResult
-                                -> (examSearchResult.getText().toLowerCase().contains(userInput.toLowerCase())))
-                                .forEach(tmpResults::add);
-                        results = tmpResults;
+                        results = ALL_INTERNAL_EXAMS.stream().filter(examSearchResult
+                                -> examSearchResult.getText().toLowerCase().contains(userInput.toLowerCase()))
+                                .collect(Collectors.toList());
                     }
 
                     Gson gson = new Gson();

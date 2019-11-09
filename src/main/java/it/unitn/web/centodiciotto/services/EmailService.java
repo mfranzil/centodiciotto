@@ -18,7 +18,6 @@ public class EmailService {
 
     private EmailService() throws ServiceException {
         Properties data = new Properties();
-
         InputStream stream = EmailService.class.getClassLoader().getResourceAsStream("email.properties");
 
         if (stream == null) {
@@ -71,7 +70,7 @@ public class EmailService {
         return instance;
     }
 
-    public void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
+    public synchronized void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
         var throwableWrapper = new Object() {
             Throwable tr = null;
         };
@@ -93,7 +92,7 @@ public class EmailService {
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")
-    private void process(String recipient, String message, String subject)
+    private synchronized void process(String recipient, String message, String subject)
             throws MessagingException, UnsupportedEncodingException {
         StringBuilder plainTextMessageBuilder = new StringBuilder();
         plainTextMessageBuilder.append(message).append("\n");

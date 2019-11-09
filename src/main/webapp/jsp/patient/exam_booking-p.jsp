@@ -5,8 +5,8 @@
     <title>Book your exam - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css">
+    <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
     <style>
         @media (min-width: 992px) {
             .table-cell.exam {

@@ -5,8 +5,8 @@
     <title>Recalls - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/css/select2.min.css">
+    <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
     <style>
         @media (min-width: 992px) {
             .table-cell.exam {
@@ -30,7 +30,16 @@
     <script>
         $("document").ready(function () {
             const url = getContextPath() + "/restricted/health_service/recalls";
-            $("#main-table,#main-loading-container,#send-recall-div").hide();
+            $("#main-table,#main-loading-container,#history-loading-container,#send-recall-div").hide();
+
+            let tableHeaders = [
+                {field: "exam", type: "string", text: "Exam"},
+                {field: "date", type: "string", text: "Recall date"},
+                {field: "age", type: "string", text: "Recall age"},
+            ];
+
+            $("#history-table").createTableHeaders(tableHeaders);
+            renderHistory();
 
             $("#new-recall").click(function () {
                 $("#send-recall-div").slideDown();
@@ -60,33 +69,53 @@
                 })
                 .on('select2:unselect', function (e) {
                     renderExam();
+                    $("#main-table").slideUp();
                 });
 
 
             $("#send-recall").submit(function (e) {
                 e.preventDefault();
 
-                $("#main-loading-container").slideDown();
+                let maxAge = parseInt($("#max-age").val());
+                let minAge = parseInt($("#min.age").val());
 
-                $('#submit-recall').prop('disabled', true);
-                $('#main-table').slideUp();
+                if ((typeof maxAge !== "number") || (typeof minAge !== "number") ||
+                    (minAge < 0) || (maxAge > 130) || (minAge >= maxAge)) {
+                    $("#max-age,#min-age").css("background", "rgba(255, 0, 0, 0.2)").css("outline", "none");
+
+                    setTimeout(function () {
+                        $("#max-age,#min-age").css("background", "").css("outline", "");
+                    }, 2000);
+
+                    return;
+                }
 
                 let form = $(this);
                 let url = form.attr('action');
+                let data = form.serialize();
+
+                $("#main-loading-container").slideDown();
+                $('#submit-recall').prop('disabled', true);
+                $('#main-table').slideUp();
+                $('#min-age,#max-age').prop("disabled", true);
 
                 $.ajax({
                     type: "POST",
                     url: url,
                     cache: false,
-                    data: form.serialize(),
+                    data: data,
                     success: function (data) {
-                        alert("Recall inviato con successo.");
-                        location.reload();
+                        $("#submit-recall").html("Recall inviato con successo.");
+                        setTimeout(function () {
+                            renderExam();
+                            renderHistory();
+                        }, 2000);
                     }
                 });
             });
 
             function renderExam(examID) {
+                $("main-loading-container").slideDown();
                 $("#main-table").slideDown();
 
                 $.ajax({
@@ -98,26 +127,24 @@
                     },
                     url: url,
                     success: function (result) {
-                        $(".table-cell.content.exam").html(result[0].exam);
-                        $(".table-cell.content.date").html(result[0].date);
-                        $(".table-cell.content.age").html(result[0].age);
-                        $("#exam-id").val(examID);
+                        if (!examID) {
+                            $("#exam-id").val("");
+                            $("#main-table,#main-loading-container,#send-recall-div").slideUp();
+                        } else {
+                            $(".table-cell.content.exam").html(result[0].exam);
+                            $(".table-cell.content.date").html(result[0].date);
+                            $(".table-cell.content.age").html(result[0].age);
+                            $("#exam-id").val(examID);
+                            $("main-loading-container,#send-recall-div").slideUp();
+                        }
                     }
                 });
             }
 
-            let tableHeaders = [
-                {field: "exam", type: "string", text: "Exam"},
-                {field: "date", type: "string", text: "Recall date"},
-                {field: "age", type: "string", text: "Recall age"},
-            ];
-
-
-            $("#history-table").createTableHeaders(tableHeaders);
-            renderHistory();
-            $("#history-loading-container").slideUp();
-
             function renderHistory() {
+                $("#history-loading-container").slideDown();
+                $("#history-table").children().not('first').remove();
+
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -127,6 +154,7 @@
                     url: url,
                     success: function (json) {
                         $("#history-table").insertRows(tableHeaders, json, url);
+                        $("#history-loading-container").slideUp();
                     }
                 });
             }
@@ -153,7 +181,8 @@
                             style="margin: 1em" autofocus>
                     </select>
                 </div>
-                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                <div class="justify-content-center loading mt-2" id="main-loading-container"
+                     style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>
@@ -190,7 +219,8 @@
                         <input class="mr-2" type="hidden" id="exam-id" name="examID" value=""/>
                         <br>
                         <button type="submit" class="btn btn-block btn-personal mt-2"
-                                id="submit-recall" style="width: 50%">Start new recall</button>
+                                id="submit-recall" style="width: 50%">Start new recall
+                        </button>
                     </div>
                 </form>
             </div>

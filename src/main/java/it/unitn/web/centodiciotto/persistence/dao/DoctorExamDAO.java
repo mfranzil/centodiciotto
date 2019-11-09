@@ -4,7 +4,7 @@ import it.unitn.web.centodiciotto.persistence.base.DAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.entities.DoctorExam;
 import it.unitn.web.centodiciotto.persistence.entities.ExamList;
-import it.unitn.web.centodiciotto.utils.Pair;
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import java.util.List;
 
