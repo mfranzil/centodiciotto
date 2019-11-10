@@ -32,15 +32,15 @@ $("document").ready(function () {
 
 function enablePopup() {
     $(".popup-opener").click(function () {
-        $(this).next().show();
+        $(this).next().fadeIn();
     });
     $(".popup-closer").click(function (e) {
         e.preventDefault();
-        $(".popup-window").hide();
+        $(".popup-window").fadeOut();
     });
     $(".popup-window").click(function (e) {
         if ($(this).is(e.target)) {
-            $(this).hide();
+            $(this).fadeOut();
         }
     });
 }

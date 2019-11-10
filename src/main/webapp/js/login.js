@@ -9,7 +9,7 @@ $("document").ready(function () {
         let id = this.id;
         let role = getNameFromID(id);
         $('#form-image').attr('src', getContextPath() + "/img/classes/" + id + ".png");
-        $('#form-name').html("Logging in as " + role);
+        $('#form-name').html("Log in as " + role);
         $('#form-window').show();
         $('#role').val(id);
     });
@@ -33,6 +33,8 @@ $("document").ready(function () {
         let form = $(this);
         let url = form.attr('action');
 
+        let oldButtonName = $("#form-name").html();
+
         $.ajax({
             type: "POST",
             url: url,
@@ -45,13 +47,17 @@ $("document").ready(function () {
                 window.location = result.url;
             },
             error: function (data) {
-                $("#form-name").html("Incorrect email or password.").css("color", "rgba(135, 0, 0, 1)");
+                $(".mini-icon").css("border", "2px solid rgba(135, 0, 0, 0.75) !important");
+                $("#form-name").html("Incorrect email or password.").css("color", "rgba(135, 0, 0, 1)")
+                    .css("background-color", "rgba(255, 55, 55, 0.6)");
                 $('#user-id-login,#password-login').css("background", "rgba(255, 0, 0, 0.2)")
                     .css("border-color", "red");
 
                 setTimeout(function () {
+                    $(".mini-icon").css("border", "");
                     $('#user-id-login,#password-login').css("background", "").css("border-color", "");
-                    $("#form-name").html("Logging in as...").css("color", "rgba(0, 0, 0, 1)");
+                    $("#form-name").html(oldButtonName).css("color", "")
+                        .css("background-color", "");
                 }, 4000);
 
                 $("#login").slideDown();

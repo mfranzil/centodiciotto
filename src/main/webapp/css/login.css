@@ -1,25 +1,91 @@
 /* Bottoni dei vari utenti */
 
+@media (min-width: 992px) {
+    .icon-container {
+        place-content: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    .hover-button {
+        margin: 2vw;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .icon-container {
+        place-content: center;
+        margin-left: 2em;
+        margin-right: 2em;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    .hover-button {
+        margin: 2vw;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .icon-container {
+        place-content: center;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    .hover-button {
+        margin: 2vw;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .icon-container {
+        display: block;
+    }
+
+    .hover-button {
+        margin: 4vw;
+    }
+}
+
+.icon-container {
+    text-align: center;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 .hover-button {
     cursor: pointer;
-    -webkit-box-flex: 20%;
-    -ms-flex: 20%;
-    flex: 20%;
-    padding: 3vw;
 }
 
-.focused {
-    background-color: transparent;
-}
-
-.focused:hover {
-    background-color: rgba(var(--118-medium-light), 0.5);
-    border-radius: 10px;
+.hover-button:hover {
+    font-weight: bold;
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .icon {
     width: 128px;
     height: 128px;
+    border-radius: 100px;
+    border: 4px solid rgba(var(--118-dark), 0.75) !important;
+}
+
+.mini-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 100px;
+    border: 2px solid rgba(var(--118-dark), 0.75) !important;
 }
 
 .form-label-group {

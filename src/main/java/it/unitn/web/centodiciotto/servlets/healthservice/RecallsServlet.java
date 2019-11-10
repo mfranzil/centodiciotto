@@ -9,7 +9,6 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
-import it.unitn.web.centodiciotto.utils.Common;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -113,7 +115,7 @@ public class RecallsServlet extends HttpServlet {
                                     ((HealthService) user).getOperatingProvince().getAbbreviation());
 
                             for (Patient patient : allPatients) {
-                                if (Common.isWithinAgeRange(patient.getBirthDate(), minAge, maxAge)) {
+                                if (isWithinAgeRange(patient.getBirthDate(), minAge, maxAge)) {
                                     Exam pending = examDAO.getPendingRecall(
                                             examType.getID(), user.getID(), patient.getID());
 
@@ -195,6 +197,16 @@ public class RecallsServlet extends HttpServlet {
                 break;
             }
         }
+    }
+
+    private boolean isWithinAgeRange(Date date, Integer minAge, Integer maxAge) {
+        ZoneId zoneId = ZoneId.systemDefault();
+
+        long minAgeLong = LocalDate.now().minusYears(minAge).atStartOfDay(zoneId).toEpochSecond();
+        long maxAgeLong = LocalDate.now().minusYears(maxAge).atStartOfDay(zoneId).toEpochSecond();
+        long dateLong = date.getTime() / 1000;
+
+        return dateLong <= minAgeLong && dateLong >= maxAgeLong;
     }
 
     private static class TableExam {

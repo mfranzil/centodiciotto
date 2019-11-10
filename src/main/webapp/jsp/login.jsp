@@ -15,28 +15,28 @@
     <div class="jumbotron mt-4">
         <h1>Login as...</h1>
     </div>
-    <div class="flex-wrap">
-        <div class="hover-button focused" id="patient">
+    <div class="icon-container">
+        <div class="hover-button" id="patient">
             <img alt="Patient" class="mb-2 icon"
                  src="${pageContext.request.contextPath}/img/classes/patient.png">
             <br>Patient
         </div>
-        <div class="hover-button focused" id="general_practitioner">
+        <div class="hover-button" id="general_practitioner">
             <img alt="General practitioner" class="mb-2 icon"
                  src="${pageContext.request.contextPath}/img/classes/general_practitioner.png">
-            <br>General practitioner
+            <br>General<br>practitioner
         </div>
-        <div class="hover-button focused" id="specialized_doctor">
+        <div class="hover-button" id="specialized_doctor">
             <img alt="Specialized doctor" class="mb-2 icon"
                  src="${pageContext.request.contextPath}/img/classes/specialized_doctor.png">
-            <br>Specialized doctor
+            <br>Specialized<br>doctor
         </div>
-        <div class="hover-button focused" id="chemist">
+        <div class="hover-button" id="chemist">
             <img alt="Chemist's" class="mb-2 icon"
                  src="${pageContext.request.contextPath}/img/classes/chemist.png">
             <br>Chemist's
         </div>
-        <div class="hover-button focused" id="health_service">
+        <div class="hover-button" id="health_service">
             <img alt="Health Service" class="mb-2 icon"
                  src="${pageContext.request.contextPath}/img/classes/health_service.png">
             <br>Health Service
@@ -45,40 +45,40 @@
 </div>
 <div class="popup-window" id="form-window">
     <div class="popup animate-in">
-        <div class="justify-content-center loading" id="loading-container" style="text-align: center; display: none !important">
+        <div class="justify-content-center loading" id="loading-container"
+             style="text-align: center; display: none !important">
             <img class="rotating" role="status" style="width: 64px"
                  src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
         </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
-            <div class="center-100">
-                <img id="form-image" style="width: 32px" src="" alt="...">
+            <div style="display: flex">
+                <img id="form-image" class="mini-icon mr-2" style="place-self: center" src="" alt="...">
+                <div style="width: 100%">
+                    <div class="form-label-group mb-2">
+                        <input autofocus class="form-control" id="user-id-login" name="userID"
+                               placeholder="Email" required type="email">
+                        <label for="user-id-login">Email</label>
+                    </div>
+                    <div class="form-label-group" style="margin: 0">
+                        <input class="form-control" id="password-login" name="password"
+                               placeholder="Password" required type="password">
+                        <label for="password-login">Password</label>
+                    </div>
+                </div>
             </div>
-            <div class="mb-2 center-100" id="form-name">
-                Logging in as...
-            </div>
-            <input name="role" id="role" type="hidden" value="none">
-            <input name="referrer" id="referrer" type="hidden" value="${pageContext.request.getParameter('referrer')}">
-            <div class="form-label-group">
-                <input autofocus class="form-control" id="user-id-login" name="userID"
-                       placeholder="Email" required type="email">
-                <label for="user-id-login">Email</label>
-            </div>
-            <div class="form-label-group">
-                <input class="form-control" id="password-login" name="password"
-                       placeholder="Password" required type="password">
-                <label for="password-login">Password</label>
-            </div>
-            <div class="mb-2" style="display: flex">
+            <div class="my-2" style="display: flex; margin-left: 72px">
                 <div class="checkbox" style="flex: 50%;">
                     <label>
-                        <input id="remember-me" name="rememberMe" type="checkbox">Remember me
+                        <input id="remember-me" name="rememberMe" type="checkbox">&nbsp;Remember me
                     </label>
                 </div>
                 <div style="text-align: right; flex: 50%">
                     <a href="#" id="to-recovery">Forgot your password?</a>
                 </div>
             </div>
-            <button class="btn btn-lg btn-block btn-personal" type="submit">Login</button>
+            <input name="role" id="role" type="hidden" value="none">
+            <input name="referrer" id="referrer" type="hidden" value="${param.referrer}">
+            <button class="btn btn-lg btn-block btn-personal" id="form-name" type="submit">Login</button>
             <button class="btn btn-lg btn-block btn-secondary" type="button" id="close-form">Cancel</button>
         </form>
         <form action="${pageContext.request.contextPath}/request_password_reset"

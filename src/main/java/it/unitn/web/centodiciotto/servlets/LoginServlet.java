@@ -3,10 +3,9 @@ package it.unitn.web.centodiciotto.servlets;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
-import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.CryptoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.Common;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -80,7 +79,7 @@ public class LoginServlet extends HttpServlet {
 
                     request.getSession().setAttribute("user", user);
                     request.getSession().setAttribute("role", role);
-                    request.getSession().setAttribute("displayName", Common.getDisplayName(user));
+                    request.getSession().setAttribute("displayName", getDisplayName(user));
 
                     response.setStatus(200);
                     if (!Objects.equals(referrer, "")
@@ -100,5 +99,23 @@ public class LoginServlet extends HttpServlet {
                 throw new ServletException("Failed to authenticate user: ", e);
             }
         }
+    }
+
+    private String getDisplayName(User user) {
+        String displayName;
+        if (user instanceof Patient) {
+            displayName = ((Patient) user).getFirstName();
+        } else if (user instanceof GeneralPractitioner) {
+            displayName = ((GeneralPractitioner) user).getFirstName();
+        } else if (user instanceof SpecializedDoctor) {
+            displayName = ((SpecializedDoctor) user).getFirstName();
+        } else if (user instanceof Chemist) {
+            displayName = ((Chemist) user).getName();
+        } else if (user instanceof HealthService) {
+            displayName = ((HealthService) user).getOperatingProvince().getName() + " HS";
+        } else {
+            displayName = "default";
+        }
+        return displayName;
     }
 }

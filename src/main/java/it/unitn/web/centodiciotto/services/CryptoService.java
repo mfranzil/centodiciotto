@@ -5,7 +5,6 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.centodiciotto.utils.Common;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -18,8 +17,10 @@ import java.util.Random;
 
 public class CryptoService {
     private static CryptoService instance;
+
     private transient final int ITERATIONS = 10000;
     private transient final int KEY_LENGTH = 512;
+
     private transient Random RANDOM;
     private transient UserDAO userDAO;
     private transient PatientDAO patientDAO;
@@ -120,7 +121,9 @@ public class CryptoService {
 
         String[] roles = {"patient", "general_practitioner", "specialized_doctor", "chemist", "health_service"};
 
-        if (!Common.containsItemFromArray(role, roles)) {
+        boolean roleValid = Arrays.stream(roles).anyMatch(role::contains);
+
+        if (!roleValid) {
             throw new ServiceException("Invalid role name.");
         }
 
@@ -146,7 +149,7 @@ public class CryptoService {
                 return null;
             }
         } catch (DAOException e) {
-            throw new ServiceException("Error in authentication method." + e.getMessage());
+            throw new ServiceException("Error while authenticating: ", e);
         }
     }
 
@@ -166,20 +169,20 @@ public class CryptoService {
         try {
             userDAO.update(user);
         } catch (DAOException e) {
-            throw new ServiceException("Error in Password " + e.getMessage());
+            throw new ServiceException("Error while changing password: ", e);
         }
     }
 
     public boolean isCurrentPassword(String ID, String password) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {
-            throw new ServiceException("Email or password are null.");
+            throw new ServiceException("Email or password (or both) are null.");
         }
 
         try {
             User user = userDAO.getByPrimaryKey(ID);
             return isExpectedPassword(password, user.getSalt(), user.getHash());
         } catch (DAOException e) {
-            throw new ServiceException("Error in authentication method." + e.getMessage());
+            throw new ServiceException("Error while checking for password match: ", e);
         }
     }
 }

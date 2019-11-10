@@ -7,24 +7,33 @@
     --118-medium-dark: 0, 153, 230;
     --118-dark: 0, 119, 179;
     --118-darkest: 0, 32, 48;
+    --118-intermediate: 0, 207, 192;
+    --118-emerald: 0, 214, 143;
 }
 
+/*noinspection CssOverwrittenProperties*/
 body {
     margin: 0;
     padding: 4rem 0 0;
     background-color: rgb(var(--118-light));
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
     -ms-flex-pack: center;
     -webkit-box-align: center;
-    -webkit-align-items: center;
     align-items: center;
     -webkit-box-pack: center;
     -webkit-justify-content: center;
     max-width: 100%;
     overflow-x: hidden;
     min-height: 100vh;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
 }
 
@@ -42,6 +51,7 @@ body {
     overflow-wrap: break-word;
 }
 
+/*noinspection CssFloatPxLength*/
 @media (max-width: 991.8px) {
     .table {
         width: 100%;
@@ -62,16 +72,15 @@ body {
 }
 
 /* Visual */
+
+/*noinspection CssUnknownProperty*/
 .flex-wrap {
     text-align: center;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    -webkit-flex-flow: wrap;
     -ms-flex-flow: wrap;
     flex-flow: wrap;
 }
@@ -148,6 +157,7 @@ body {
     }
 }
 
+/*noinspection CssFloatPxLength*/
 @media (max-width: 991.8px) {
     .landscape-logo {
         display: none;
@@ -185,6 +195,7 @@ body {
 
 /* Bottone logo della navbar */
 
+/*noinspection CssOverwrittenProperties*/
 .navbar-logo, .landscape-logo {
     height: 38px;
     -webkit-transition: -webkit-transform .6s ease-in-out;
@@ -318,6 +329,7 @@ body {
     }
 }
 
+/*noinspection CssFloatPxLength*/
 @media (max-width: 991.8px) {
     .popup {
         width: 100%;
@@ -360,17 +372,23 @@ body {
 .ls-search {
     margin: auto;
     display: -webkit-box;
-    display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
     -webkit-box-pack: center;
-    -webkit-justify-content: center;
     -ms-flex-pack: center;
     justify-content: center;
 }
 
 .ls-search > #input {
     width: 100%;
+}
+
+.table-header {
+    font-weight: bold;
+}
+
+.table-header:hover {
+    background: none !important;
 }
 
 @media (min-width: 992px) {
@@ -384,16 +402,9 @@ body {
         vertical-align: middle;
     }
 
-    .table-header {
-        font-weight: bold;
-    }
-
-    .table-header:hover {
-        background: none !important;
-    }
-
 }
 
+/*noinspection CssFloatPxLength*/
 @media (max-width: 991.8px) {
     .table-personal {
         display: block;
@@ -408,11 +419,6 @@ body {
     .table-cell > div {
         text-align: left;
     }
-
-    .table-header {
-        display: none;
-    }
-
 }
 
 .table-personal {
@@ -425,6 +431,7 @@ body {
     background-color: rgba(0, 0, 0, .075);
 }
 
+/*noinspection CssFloatPxLength*/
 hr {
     display: block;
     position: relative;
@@ -459,44 +466,39 @@ textarea:focus {
 
 /* Rotazioni */
 
-@-webkit-keyframes rotating /* Safari and Chrome */ {
+@-webkit-keyframes rotating /* Safari and Chrome */
+{
     from {
         -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
         transform: rotate(0deg);
     }
     to {
         -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
 }
+
 @keyframes rotating {
     from {
         -ms-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
         -webkit-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
         transform: rotate(0deg);
     }
     to {
         -ms-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
         -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
         transform: rotate(360deg);
     }
 }
+
 .rotating {
     -webkit-animation: rotating 1s linear infinite;
-    -moz-animation: rotating 1s linear infinite;
-    -ms-animation: rotating 1s linear infinite;
-    -o-animation: rotating 1s linear infinite;
     animation: rotating 1s linear infinite;
 }
 
 /* Footer */
 
+/*noinspection CssUnknownProperty*/
 footer {
     background-color: rgba(0, 0, 0, 0) !important;
     background-image: -webkit-gradient(linear, right bottom, left bottom, from(rgba(var(--118-medium-dark), 0.85)),
@@ -506,6 +508,7 @@ footer {
     color: white;
     text-align: center;
     margin-top: 3rem;
+    -ms-flex-negative: 0;
     flex-shrink: 0;
     width: 100%;
 }
@@ -534,6 +537,7 @@ footer a {
 .text-personal {
     color: rgb(var(--118-medium-dark));
 }
+
 /* Sfondi */
 
 .chosen-practitioner {
