@@ -12,8 +12,8 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,16 +60,24 @@ public class PrescriptionServlet extends HttpServlet {
             case "patientList": {
                 if (user instanceof GeneralPractitioner) {
                     try {
-
-                        List<Patient> patientList = patientDAO.getPatientsByPractitioner(user.getID());
+                        String patientID = request.getParameter("patientID");
 
                         List<PatientListElement> patientListElements = new ArrayList<>();
 
-                        for (Patient patient : patientList) {
-                            String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
-                            patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, new JsonUtils.Action("Patient Data", true), patient.getID()));
-                        }
+                        if (patientID == null) {
+                            List<Patient> patientList = patientDAO.getPatientsByPractitioner(user.getID());
 
+                            for (Patient patient : patientList) {
+                                String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
+                                patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, new JsonUtils.Action("Prescribe Exam or Drug", true), patient.getID()));
+                            }
+                        } else {
+                            Patient patient = patientDAO.getByPrimaryKey(patientID);
+                            if (patient.getPractitionerID().equals(user.getID())) {
+                                String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
+                                patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, new JsonUtils.Action("Prescribe Exam or Drug", true), patient.getID()));
+                            }
+                        }
                         Gson gson = new Gson();
 
                         response.setContentType("application/json");

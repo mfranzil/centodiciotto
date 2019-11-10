@@ -41,6 +41,34 @@
         $("document").ready(function () {
             const url = getContextPath() + "/restricted/general_practitioner/prescriptions";
 
+            $("#patient-search")
+                .select2({
+                    placeholder: "Select a patient",
+                    allowClear: true,
+                    closeOnSelect: true,
+                    ajax: {
+                        type: "POST",
+                        data: function (params) {
+                            return {
+                                term: params.term,
+                                requestType: 'patientSearch'
+                            }
+                        },
+                        url: getContextPath() + "/restricted/general_practitioner/patients",
+                        dataType: "json",
+                    }
+                })
+                .val(null)
+                .trigger("change")
+                .on('select2:select', function (e) {
+                    $("#patient_table").children().not('first').remove();
+                    renderPatientsRows(e.params.data.patientID);
+                })
+                .on('select2:unselect', function (e) {
+                    $("#patient_table").children().not('first').remove();
+                    renderPatientsRows();
+                });
+
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},
                 {field: "name", type: "string", text: "Name"},
@@ -53,12 +81,13 @@
 
             //$("#main-loading-container").slideUp();
 
-            function renderPatientsRows() {
+            function renderPatientsRows(patientID) {
                 $.ajax({
                     type: "POST",
                     dataType: "json",
                     data: {
                         requestType: "patientList",
+                        patientID: patientID
                     },
                     url: url,
                     success: function (json) {
@@ -88,11 +117,9 @@
                 <form action="search_patient" method="POST">
                     <!--TODO SIMONE BARRA DI RICERCA: tutti i pazienti di un medico -->
                     <div class="form-label-group my-4 mx-4 ls-search">
-                        <input class="form-control mx-2" id="query" name="query"
-                               placeholder="Search..." required type="text">
-                        <button id="message" class="btn btn-personal" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
+                        <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control"
+                                autofocus>
+                        </select>
                     </div>
                 </form>
                 <div id="patient_table">
