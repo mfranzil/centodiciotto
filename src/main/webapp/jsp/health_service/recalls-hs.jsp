@@ -7,6 +7,7 @@
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2-bootstrap.min.css">
     <style>
         @media (min-width: 992px) {
             .table-cell.exam {

@@ -117,7 +117,7 @@ public class RecallsServlet extends HttpServlet {
                                     Exam pending = examDAO.getPendingRecall(
                                             examType.getID(), user.getID(), patient.getID());
 
-                                    if (pending != null) {
+                                    if (pending == null) {
                                         Exam exam = new Exam();
                                         exam.setPatientID(patient.getID());
                                         exam.setType(examType);
@@ -127,6 +127,8 @@ public class RecallsServlet extends HttpServlet {
                                         exam.setBooked(false);
                                         exam.setHealthServiceID(user.getID());
                                         exam.setRecall(recall.getID());
+
+                                        examDAO.insert(exam);
                                     }
                                 }
                             }

@@ -9,6 +9,7 @@
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2-bootstrap.min.css">
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
@@ -63,11 +64,11 @@
                     .val(null)
                     .trigger("change")
                     .on('select2:select', function (e) {
-                        $("#test-table").children().not('first').remove();
+                        $("#main-table").children().not('first').remove();
                         renderPatientsRows(e.params.data.patientID);
                     })
                     .on('select2:unselect', function (e) {
-                        $("#test-table").children().not('first').remove();
+                        $("#main-table").children().not('first').remove();
                         renderPatientsRows();
                     });
             });
@@ -79,11 +80,12 @@
                 {field: "action", type: "button", text: "&nbsp;"}
             ];
 
-            $("#test-table").createTableHeaders(tableHeaders);
+            $("#main-table").createTableHeaders(tableHeaders);
             renderPatientsRows();
-            $("#main-loading-container").slideUp();
 
             function renderPatientsRows(patientID) {
+                $("#main-loading-container").slideDown();
+
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -93,7 +95,8 @@
                     },
                     url: url,
                     success: function (json) {
-                        $("#test-table").insertRows(tableHeaders, json, url);
+                        $("#main-table").insertRows(tableHeaders, json, url);
+                        $("#main-loading-container").slideUp();
                         enablePopup();
                     }
                 });
@@ -120,11 +123,11 @@
                             autofocus>
                     </select>
                 </div>
+                <div id="main-table"></div>
                 <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>
-                <div id="test-table"></div>
             </div>
         </div>
     </div>

@@ -100,6 +100,8 @@ $("document").ready(function () {
         return this;
     };
 
+    $.fn.select2.defaults.set("theme", "bootstrap");
+
     $.fn.insertRows = function (headers, data, url) {
         let mainTable = this;
 

@@ -16,10 +16,10 @@ import java.util.List;
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
     final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, ticket_paid, recall, practitioner_id, booked) " +
+            " result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) " +
             "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE exam SET (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, ticket_paid, recall, practitioner_id, booked) " +
+            " result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) " +
             "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
     final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
 
@@ -57,9 +57,9 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
             stm.setBoolean(9, exam.isTicketPaid());
-            stm.setInt(10, exam.getRecall());
-            stm.setString(11, exam.getPractitionerID());
-            stm.setBoolean(12, exam.isBooked());
+            stm.setString(10, exam.getPractitionerID());
+            stm.setBoolean(11, exam.isBooked());
+            stm.setInt(12, exam.getRecall());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -317,9 +317,9 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setHealthServiceID(rs.getString("health_service_id"));
             exam.setTicket(rs.getInt("ticket"));
             exam.setTicketPaid(rs.getBoolean("ticket_paid"));
-            exam.setRecall(rs.getInt("recall"));
             exam.setPractitionerID(rs.getString("practitioner_id"));
             exam.setBooked(rs.getBoolean("booked"));
+            exam.setRecall(rs.getInt("recall"));
 
             return exam;
         } catch (SQLException | DAOFactoryException e) {

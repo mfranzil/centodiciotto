@@ -7,6 +7,7 @@
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2-bootstrap.min.css">
     <style>
         @media (min-width: 992px) {
             .table-cell.exam {
@@ -61,9 +62,13 @@
 
             $("#main-table").createTableHeaders(tableHeaders);
             renderExamsRows();
-            $("#main-loading-container").slideUp();
+
+            $(".table-header > .table-cell.action").html("<button id=\"exam-filter\" class=\"btn btn-personal btn-block\"" +
+                " type=\"button\" style=\"background-color: rgb(var(--118-darkest))\">Show all exams</button>");
 
             function renderExamsRows(examID, onlyAvailable = true) {
+                $("#main-loading-container").slideDown();
+
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -75,17 +80,22 @@
                     url: url,
                     success: function (json) {
                         $("#main-table").insertRows(tableHeaders, json, url);
+                        $("#main-loading-container").slideUp();
                         enablePopup();
                     }
                 });
             }
 
-            $("#my_filter").click(() => {
+            $("#exam-filter").click(() => {
                 $("#main-table").children().slice(1).remove();
-                $("#main-loading-container").show();
                 renderExamsRows(undefined, !availableExamFilter);
-                $("#main-loading-container").slideUp();
                 availableExamFilter = !availableExamFilter;
+
+                if (availableExamFilter) {
+                    $("#exam-filter").html("Show all exams");
+                } else {
+                    $("#exam-filter").html("Show available exams");
+                }
             });
 
         });
@@ -106,19 +116,15 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <div class="form-group" style="display: flex; width: 100%; margin: auto">
+                <div class="form-group" style="width: 100%; margin: auto">
                     <select id="exam-search" name="examSearch" class="select2-allow-clear form-control mr-1"
                             style="margin: 1em" autofocus>
                     </select>
-                    <button id="my_filter" class="btn btn-personal ml-1" type="button">
-                        Available Exams
-                    </button>
                 </div>
-                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                <div id="main-table" class="mt-2"></div>
+                <div class="justify-content-center loading mt-2" id="main-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
-                </div>
-                <div id="main-table">
                 </div>
             </div>
         </div>
