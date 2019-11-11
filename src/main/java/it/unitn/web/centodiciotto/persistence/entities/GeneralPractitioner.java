@@ -4,6 +4,7 @@ public class GeneralPractitioner extends User {
     private String firstName;
     private String lastName;
     private Province workingProvince;
+    private String workingPlace;
 
     public String getFirstName() {
         return firstName;
@@ -27,6 +28,14 @@ public class GeneralPractitioner extends User {
 
     public void setWorkingProvince(Province workingProvince) {
         this.workingProvince = workingProvince;
+    }
+
+    public String getWorkingPlace() {
+        return workingPlace;
+    }
+
+    public void setWorkingPlace(String workingPlace) {
+        this.workingPlace = workingPlace;
     }
 
     @Override

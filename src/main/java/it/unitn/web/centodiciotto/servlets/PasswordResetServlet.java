@@ -7,6 +7,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.centodiciotto.services.CryptoService;
+import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.concurrent.TimeUnit;
 
 @WebServlet("/password_reset")
 public class PasswordResetServlet extends HttpServlet {
@@ -63,28 +65,81 @@ public class PasswordResetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
-            String contextPath = getServletContext().getContextPath();
-            if (!contextPath.endsWith("/")) {
-                contextPath += "/";
-            }
+        String contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
+        }
 
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
         } else {
+            String requestType = request.getParameter("requestType");
             String userID = request.getParameter("userID");
-            String newPassword = request.getParameter("newPassword");
+
+            CryptoService cryptoService;
+            EmailService emailService;
 
             try {
-                CryptoService.getInstance().changePassword(userID, newPassword);
-                prDAO.delete(prDAO.getByPrimaryKey(userID));
-
-                response.setStatus(200);
-            } catch (DAOException e) {
-                response.setStatus(400);
-                throw new ServletException("Error in DAO usage: ", e);
+                cryptoService = CryptoService.getInstance();
+                emailService = EmailService.getInstance();
             } catch (ServiceException e) {
                 response.setStatus(400);
-                throw new ServletException("Error in CryptoService while changing password: ", e);
+                throw new ServletException("Error in initializing CryptoService or EmailService: ", e);
+            }
+
+            switch (requestType) {
+                case "confirm": {
+                    String newPassword = request.getParameter("newPassword");
+
+                    try {
+                        cryptoService.changePassword(userID, newPassword);
+                        prDAO.delete(prDAO.getByPrimaryKey(userID));
+
+                        response.setStatus(200);
+                    } catch (DAOException e) {
+                        response.setStatus(400);
+                        throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        response.setStatus(400);
+                        throw new ServletException("Error in CryptoService while changing password: ", e);
+                    }
+                    break;
+                }
+                case "request": {
+                    try {
+
+                        PasswordReset pr = new PasswordReset();
+                        pr.setUserID(userID);
+                        pr.setToken(cryptoService.getNextBase64Token());
+                        pr.setExpiringDate(new Timestamp(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1)));
+
+                        if (prDAO.getByPrimaryKey(userID) == null) {
+                            prDAO.insert(pr);
+                        } else {
+                            prDAO.update(pr);
+                        }
+
+                        String url = "http://localhost:8080" + contextPath + "password_reset?token=" + pr.getToken();
+                        String message =
+                                "Somebody (hopefully you) requested a new password for Centodiciotto for "
+                                        + userID + ". No changes have been done to your account, yet.\n\n" +
+                                        "You can reset your password by clicking here:\n" + url + "\n\n" +
+                                        "This link is valid for 24 hours and can only be used once.\n" +
+                                        "If you didn't ask for this, you can safely ignore this email.\n\n" +
+                                        "Yours,\nThe CentoDiciotto team.\n";
+                        String subject = "CentoDiciotto - reset your password";
+
+                        emailService.sendEmail(userID, message, subject);
+
+                        response.setStatus(200);
+                    } catch (DAOException e) {
+                        response.setStatus(400);
+                        throw new ServletException("Error in DAO usage. ", e);
+                    } catch (ServiceException e) {
+                        response.setStatus(400);
+                        throw new ServletException("Error in mail sending or CryptoService: ", e);
+                    }
+                }
             }
         }
     }

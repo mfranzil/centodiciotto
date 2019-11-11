@@ -66,7 +66,11 @@
                                                     value="${sessionScope.user.birthDate}"/></td>
                             </tr>
                             <tr>
-                                <th>Current province</th>
+                                <th>Living place</th>
+                                <td>${sessionScope.user.livingPlace}</td>
+                            </tr>
+                            <tr>
+                                <th>Living province</th>
                                 <td>${sessionScope.user.livingProvince}</td>
                             </tr>
                             <tr>
@@ -92,6 +96,10 @@
                                 <td>${sessionScope.user.ID}</td>
                             </tr>
                             <tr>
+                                <th>Working place</th>
+                                <td>${sessionScope.user.workingPlace}</td>
+                            </tr>
+                            <tr>
                                 <th>Working province</th>
                                 <td>${sessionScope.user.workingProvince}</td>
                             </tr>
@@ -109,7 +117,10 @@
                                 <th>E-mail</th>
                                 <td>${sessionScope.user.ID}</td>
                             </tr>
-
+                            <tr>
+                                <th>Working place</th>
+                                <td>${sessionScope.user.workingPlace}</td>
+                            </tr>
                         </c:when>
                         <c:when test="${sessionScope.role eq 'health_service'}">
                             <tr>
@@ -131,6 +142,10 @@
                                 <th>E-mail</th>
                                 <td>${sessionScope.user.ID} </td>
                             </tr>
+                            <tr>
+                                <th>Working place</th>
+                                <td>${sessionScope.user.workingPlace}</td>
+                            </tr>
                         </c:when>
                         <c:otherwise>
                             <tr>
@@ -145,7 +160,7 @@
                 <h3 class="my-4">
                     Change your password
                 </h3>
-                <form action="${pageContext.request.contextPath}/restricted/change_password"
+                <form action="${pageContext.request.contextPath}/restricted/user"
                       id="password-change" method="POST">
                     <div class="form-label-group">
                         <input class="form-control mb-2" id="old-password" name="oldPassword"
@@ -157,6 +172,7 @@
                         <input class="form-control mb-2" id="new-password-confirm" name="newPasswordConfirm"
                                placeholder="Confirm your new password"
                                required type="password">
+                        <input type="hidden" name="requestType" value="request">
                     </div>
                     <button id="password-change-button" class="btn btn-block mt-4 btn-personal" disabled type="submit">
                         Change password
@@ -167,13 +183,14 @@
                     Change your profile picture
                 </h3>
                 <div class="input-group">
-                    <form action="${pageContext.request.contextPath}/restricted/patient/upload_photo"
+                    <form action="${pageContext.request.contextPath}/restricted/user"
                           id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
                         <div class="custom-file" style="z-index: 0;">
                             <input type="file" class="custom-file-input"
                                    name="avatarSelect" id="avatar-select" accept="image/png, image/jpeg">
                             <label class="custom-file-label" for="avatar-select">Choose file</label>
                             <input id="extension" type="hidden" name="extension" value="none">
+                            <input type="hidden" name="requestType" value="uploadPhoto">
                         </div>
                         <button class="btn btn-block mt-4 btn-personal" type="submit">
                             Upload

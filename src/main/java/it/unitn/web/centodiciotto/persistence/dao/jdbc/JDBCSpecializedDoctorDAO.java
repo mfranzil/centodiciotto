@@ -16,9 +16,9 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String> implements SpecializedDoctorDAO {
 
-    final private String INSERT = "INSERT INTO specialized_doctor (doctor_id, first_name, last_name)" +
-            " values (?, ?, ?);";
-    final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name) = (?, ?)" +
+    final private String INSERT = "INSERT INTO specialized_doctor (doctor_id, first_name, last_name, working_place)" +
+            " values (?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE specialized_doctor SET (first_name, last_name, working_place) = (?, ?, ?)" +
             " WHERE doctor_id = ?;";
     final private String DELETE = "DELETE FROM specialized_doctor WHERE doctor_id = ?;";
 
@@ -37,6 +37,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(1, specializedDoctor.getID());
             stm.setString(2, specializedDoctor.getFirstName());
             stm.setString(3, specializedDoctor.getLastName());
+            stm.setString(4, specializedDoctor.getWorkingPlace());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -52,7 +53,9 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, specializedDoctor.getFirstName());
             stm.setString(2, specializedDoctor.getLastName());
-            stm.setString(3, specializedDoctor.getID());
+            stm.setString(3, specializedDoctor.getWorkingPlace());
+            stm.setString(4, specializedDoctor.getID());
+
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -131,6 +134,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             specializedDoctor.setID(rs.getString("doctor_id"));
             specializedDoctor.setFirstName(rs.getString("first_name"));
             specializedDoctor.setLastName(rs.getString("last_name"));
+            specializedDoctor.setWorkingPlace(rs.getString("working_place"));
 
             return specializedDoctor;
         } catch (SQLException e) {

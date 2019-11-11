@@ -62,6 +62,7 @@
                     <input class="form-control mb-2" id="new-password-confirm" name="newPasswordConfirm"
                            placeholder="Confirm your new password" required type="password">
                 </div>
+                <input type="hidden" name="requestType" value="confirm">
                 <button id="password-change-button"
                         class="btn btn-lg btn-block mt-4 btn-personal" type="submit">Reset password
                 </button>

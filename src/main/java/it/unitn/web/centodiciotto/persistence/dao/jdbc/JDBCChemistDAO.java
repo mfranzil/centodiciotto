@@ -18,8 +18,8 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistDAO {
 
-    final private String INSERT = "INSERT INTO chemist (chemist_id, name, chemist_province) values (?, ?, ?);";
-    final private String UPDATE = "UPDATE chemist SET (name, chemist_province) = (?, ?) WHERE chemist_id = ?;";
+    final private String INSERT = "INSERT INTO chemist (chemist_id, name, chemist_province, working_place) values (?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE chemist SET (name, chemist_province, working_place) = (?, ?, ?) WHERE chemist_id = ?;";
     final private String DELETE = "DELETE FROM chemist WHERE chemist_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM chemist WHERE chemist_id = ?;";
@@ -39,6 +39,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             stm.setString(1, chemist.getID());
             stm.setString(2, chemist.getName());
             stm.setString(3, chemist.getProvince().getAbbreviation());
+            stm.setString(4, chemist.getWorkingPlace());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -54,7 +55,8 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, chemist.getName());
             stm.setString(2, chemist.getProvince().getAbbreviation());
-            stm.setString(3, chemist.getID());
+            stm.setString(3, chemist.getWorkingPlace());
+            stm.setString(4, chemist.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -155,6 +157,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             chemist.setID(rs.getString("chemist_id"));
             chemist.setName(rs.getString("name"));
             chemist.setProvince(province);
+            chemist.setWorkingPlace(rs.getString("working_place"));
 
             return chemist;
         } catch (SQLException | DAOFactoryException e) {

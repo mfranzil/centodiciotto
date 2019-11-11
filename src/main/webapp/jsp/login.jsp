@@ -81,7 +81,7 @@
             <button class="btn btn-lg btn-block btn-personal" id="form-name" type="submit">Login</button>
             <button class="btn btn-lg btn-block btn-secondary" type="button" id="close-form">Cancel</button>
         </form>
-        <form action="${pageContext.request.contextPath}/request_password_reset"
+        <form action="${pageContext.request.contextPath}/password_reset"
               id="recovery" method="POST" style="display: none">
             <div id="message" class="center-100 mb-2">
                 Insert your email.<br>We will send you a link to reset your password.
@@ -91,6 +91,7 @@
                 <input autofocus class="form-control" id="user-id-recovery" name="userID"
                        placeholder="Insert your e-mail" required type="email">
             </div>
+            <input type="hidden" name="requestType" value="request">
             <button class="btn btn-lg btn-block btn-personal" type="submit" id="submit-recovery">Reset password</button>
             <button class="btn btn-lg btn-block btn-secondary" type="button" id="to-login">Back</button>
         </form>

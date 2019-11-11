@@ -49,15 +49,6 @@
         <url-pattern>/privacy</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>UserServlet</servlet-name>
-        <jsp-file>/jsp/shared/user.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>UserServlet</servlet-name>
-        <url-pattern>/restricted/user</url-pattern>
-    </servlet-mapping>
-
     <!-- Patient -->
     <servlet>
         <servlet-name>ExamBookingPatient</servlet-name>

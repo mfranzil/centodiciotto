@@ -19,9 +19,9 @@ import java.util.List;
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
 
     final private String INSERT = "INSERT INTO general_practitioner " +
-            "(practitioner_id, first_name, last_name, working_province) values (?, ?, ?, ?);";
-    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province) =" +
-            " (?, ?, ?) WHERE practitioner_id = ?;";
+            "(practitioner_id, first_name, last_name, working_province, working_place) values (?, ?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province, working_place) =" +
+            " (?, ?, ?, ?) WHERE practitioner_id = ?;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE practitioner_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
@@ -42,6 +42,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(2, generalPractitioner.getFirstName());
             stm.setString(3, generalPractitioner.getLastName());
             stm.setString(4, generalPractitioner.getWorkingProvince().getAbbreviation());
+            stm.setString(5, generalPractitioner.getWorkingPlace());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -58,7 +59,8 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(1, generalPractitioner.getFirstName());
             stm.setString(2, generalPractitioner.getLastName());
             stm.setString(3, generalPractitioner.getWorkingProvince().getAbbreviation());
-            stm.setString(4, generalPractitioner.getID());
+            stm.setString(4, generalPractitioner.getWorkingPlace());
+            stm.setString(5, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -161,6 +163,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             generalPractitioner.setFirstName(rs.getString("first_name"));
             generalPractitioner.setLastName(rs.getString("last_name"));
             generalPractitioner.setWorkingProvince(province);
+            generalPractitioner.setWorkingPlace(rs.getString("working_place"));
 
             return generalPractitioner;
         } catch (SQLException | DAOFactoryException e) {

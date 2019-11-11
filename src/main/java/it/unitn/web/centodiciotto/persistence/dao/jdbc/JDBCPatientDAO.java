@@ -20,11 +20,11 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
 
     final private String INSERT = "INSERT INTO patient" +
             "(patient_id, first_name, last_name, birth_date, birth_place, " +
-            "ssn, gender, practitioner_id, living_province)" +
-            " values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            "ssn, gender, practitioner_id, living_province, living_place)" +
+            " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE patient SET" +
             " (first_name, last_name, birth_date, birth_place," +
-            " ssn, gender, practitioner_id, living_province)" +
+            " ssn, gender, practitioner_id, living_province, living_place)" +
             " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
 
@@ -54,6 +54,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(7, String.valueOf(patient.getGender()));
             stm.setString(8, patient.getPractitionerID());
             stm.setString(9, patient.getLivingProvince().getAbbreviation());
+            stm.setString(10, patient.getLivingPlace());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -75,6 +76,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(6, String.valueOf(patient.getGender()));
             stm.setString(7, patient.getPractitionerID());
             stm.setString(8, patient.getLivingProvince().getAbbreviation());
+            stm.setString(9, patient.getLivingPlace());
             stm.setString(10, patient.getID());
 
             int row = stm.executeUpdate();
@@ -215,6 +217,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             patient.setGender(rs.getString("gender").charAt(0));
             patient.setPractitionerID(rs.getString("practitioner_id"));
             patient.setLivingProvince(province);
+            patient.setLivingPlace(rs.getString("living_place"));
 
             return patient;
         } catch (SQLException | DAOFactoryException e) {

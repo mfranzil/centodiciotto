@@ -59,7 +59,12 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(9, exam.isTicketPaid());
             stm.setString(10, exam.getPractitionerID());
             stm.setBoolean(11, exam.isBooked());
-            stm.setInt(12, exam.getRecall());
+
+            if (exam.getRecall() == null) {
+                stm.setNull(12, Types.INTEGER);
+            } else {
+                stm.setInt(12, exam.getRecall());
+            }
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
