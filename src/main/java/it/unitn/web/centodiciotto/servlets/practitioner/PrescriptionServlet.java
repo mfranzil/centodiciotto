@@ -106,7 +106,6 @@ public class PrescriptionServlet extends HttpServlet {
                 examForm.add(new HtmlElement().setElementType("h5").setElementContent("Select an exam from the menu below"));
                 examForm.add(new HtmlElement().setElementType("select").setElementClass("select2-allow-clear form-control exam-search").setElementSelectName("examID"));
                 examForm.add(new HtmlElement().setElementType("br"));
-                examForm.add(new HtmlElement().setElementType("br"));
                 examForm.add(new HtmlElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-exam").setElementButtonType("submit").setElementContent("Prescribe exam"));
                 examForm.add(new HtmlElement().setElementType("small").setElementClass("exam-prescribe-label"));
                 examForm.add(new HtmlElement().setElementType("br"));
@@ -123,7 +122,6 @@ public class PrescriptionServlet extends HttpServlet {
                 drugForm.add(new HtmlElement().setElementType("h5").setElementContent("Select a drug from the menu below"));
                 drugForm.add(new HtmlElement().setElementType("select").setElementClass("select2-allow-clear form-control drug-search").setElementSelectName("drugID"));
                 drugForm.add(new HtmlElement().setElementType("br"));
-                drugForm.add(new HtmlElement().setElementType("br"));
                 drugForm.add(new HtmlElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-drug").setElementButtonType("submit").setElementContent("Prescribe drug"));
                 drugForm.add(new HtmlElement().setElementType("small").setElementClass("drug-prescribe-label"));
                 drugForm.add(new HtmlElement().setElementType("br"));
@@ -131,7 +129,7 @@ public class PrescriptionServlet extends HttpServlet {
                 jsonResponse.add(drugForm);
                 jsonResponse.add(new HtmlElement().setElementType("br"));
 
-                jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details_js.js"));
+                jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details_js/prescription.js"));
 
                 Gson gson = new Gson();
                 response.setContentType("application/json");
