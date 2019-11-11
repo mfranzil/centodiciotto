@@ -1,12 +1,12 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
 import com.google.gson.Gson;
+import it.unitn.web.centodiciotto.persistence.dao.DoctorExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
+import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
-import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.centodiciotto.utils.JsonUtils;
+import it.unitn.web.centodiciotto.persistence.entities.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +21,7 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/restricted/patient/doctors"})
 public class DoctorServlet extends HttpServlet {
     private SpecializedDoctorDAO specializedDoctorDAO;
+    private DoctorExamDAO doctorExamDAO;
 
     @Override
     public void init() throws ServletException {
@@ -30,6 +31,7 @@ public class DoctorServlet extends HttpServlet {
         }
         try {
             specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
+            doctorExamDAO = daoFactory.getDAO(DoctorExamDAO.class);
 
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
@@ -55,42 +57,44 @@ public class DoctorServlet extends HttpServlet {
                     String userInput = request.getParameter("term");
                     String examID = request.getParameter("examID");
 
-                    List<DoctorSearchResult> results = new ArrayList<>();
-                    /*
-                    if (userInput == null) {
-                        results = ALL_INTERNAL_EXAMS;
-                    } else {
-                        List<ExamSearchResult> tmpResults = new ArrayList<>();
-                        ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
-                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
-                        results = tmpResults;
+                    if (examID != null) {
+                        ExamList examList = new ExamList();
+                        examList.setID(Integer.valueOf(examID));
+
+                        try {
+                            List<DoctorSearchResult> results = new ArrayList<>();
+                            List<DoctorExam> doctorExamList = doctorExamDAO.getByExamList(examList);
+
+                            for (DoctorExam doctorExam : doctorExamList) {
+                                SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(doctorExam.getDoctorID());
+                                results.add(new DoctorSearchResult(doctorExam.getDoctorID(), specializedDoctor.toString()));
+                            }
+
+                            if (userInput != null) {
+                                List<DoctorSearchResult> tmpResults = new ArrayList<>();
+                                results.stream().filter(exam_SearchResult_
+                                        -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                                results = tmpResults;
+                            }
+
+                            Gson gson = new Gson();
+                            response.setContentType("application/json");
+                            response.getWriter().write(gson.toJson(new Results(results.toArray(new DoctorSearchResult[0]))));
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    */
-                    Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new Results(results.toArray(new ExamSearchResult[0]))));
                 }
                 break;
             }
         }
     }
 
-
-    private static class DoctorSearchResult {
-        private String doctor;
-        private JsonUtils.Action action;
-
-        DoctorSearchResult(String doctor, JsonUtils.Action action) {
-            this.doctor = doctor;
-            this.action = action;
-        }
-    }
-
-    private static class ExamSearchResult implements Serializable {
-        private Integer id;
+    private static class DoctorSearchResult implements Serializable {
+        private String id;
         private String text;
 
-        ExamSearchResult(Integer id, String text) {
+        public DoctorSearchResult(String id, String text) {
             this.id = id;
             this.text = text;
         }
@@ -102,9 +106,9 @@ public class DoctorServlet extends HttpServlet {
     }
 
     private static class Results implements Serializable {
-        private ExamSearchResult[] results;
+        private DoctorSearchResult[] results;
 
-        Results(ExamSearchResult[] results) {
+        Results(DoctorSearchResult[] results) {
             this.results = results;
         }
     }

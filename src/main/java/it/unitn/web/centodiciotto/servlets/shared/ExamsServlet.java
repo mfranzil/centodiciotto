@@ -10,6 +10,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +21,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/exams",
         "/restricted/patient/exams"})
@@ -101,8 +101,7 @@ public class ExamsServlet extends HttpServlet {
                                 }
                             }
                             ExamList examList = examListDAO.getByPrimaryKey(integerExamID);
-                            examListElements.add(new ExamListElement(examList.getDescription(),
-                                    new JsonUtils.Action("Book Now", found), examList.getID()));
+                            examListElements.add(new ExamListElement(examList.getDescription(), new JsonUtils.Action("Book Now", found), examList.getID()));
                         }
 
                         Gson gson = new Gson();
@@ -123,9 +122,10 @@ public class ExamsServlet extends HttpServlet {
                     if (userInput == null) {
                         results = ALL_INTERNAL_EXAMS;
                     } else {
-                        results = ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
-                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase())))
-                                .collect(Collectors.toList());
+                        List<ExamSearchResult> tmpResults = new ArrayList<>();
+                        ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
+                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                        results = tmpResults;
                     }
 
                     Gson gson = new Gson();
@@ -159,20 +159,63 @@ public class ExamsServlet extends HttpServlet {
                 }
                 break;
             }
+            case "doctorExamBook": {
+                try {
+                    if (user instanceof Patient) {
+                        String examID = request.getParameter("examID");
+                        String doctorID = request.getParameter("doctorID");
+
+                        ExamList examList = new ExamList();
+
+                        if (examID != null) {
+                            examList.setID(Integer.valueOf(examID));
+                        }
+
+                        Exam newExam = new Exam();
+                        newExam.setPatientID(user.getID());
+                        newExam.setDoctorID(doctorID);
+                        newExam.setBooked(false);
+                        newExam.setType(examList);
+                        newExam.setDone(false);
+                        newExam.setTicket(-1);
+
+                        examDAO.insert(newExam);
+
+                    }
+                } catch (NumberFormatException e) {
+                    throw new ServletException("Error ExamID is null", e);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
             case "detailedInfo": {
                 if (user instanceof Patient) {
                     String examID = request.getParameter("item");
-                    if (examID != null) {
-                        ExamList examList = new ExamList();
-                        examList.setID(Integer.valueOf(examID));
 
-                        try {
-                            System.out.println(examID + doctorExamDAO.getByExamList(examList).get(0).getDoctorID());
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                    List<Object> jsonResponse = new ArrayList<>();
+                    String contextPath = getServletContext().getContextPath();
 
+                    jsonResponse.add(new HtmlElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exams").setElementFormMethod("POST"));
+
+                    List<HtmlElement> examForm = new ArrayList<>();
+                    examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("examID").setElementInputValue(examID));
+                    examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("requestType").setElementInputValue("doctorExamBook"));
+                    examForm.add(new HtmlElement().setElementType("h5").setElementContent("Select a Specialized Doctor from the menu below"));
+                    examForm.add(new HtmlElement().setElementType("select").setElementClass("select2-allow-clear form-control doctor-search").setElementSelectName("doctorID"));
+                    examForm.add(new HtmlElement().setElementType("br"));
+                    examForm.add(new HtmlElement().setElementType("br"));
+                    examForm.add(new HtmlElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-exam").setElementButtonType("submit").setElementContent("Book exam"));
+                    examForm.add(new HtmlElement().setElementType("small").setElementClass("doctor-label"));
+                    examForm.add(new HtmlElement().setElementType("br"));
+
+                    jsonResponse.add(examForm);
+
+                    jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details_js/doctorExam.js"));
+
+                    Gson gson = new Gson();
+                    response.setContentType("application/json");
+                    response.getWriter().write(gson.toJson(jsonResponse));
                 }
                 break;
             }
