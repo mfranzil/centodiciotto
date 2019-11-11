@@ -42,7 +42,7 @@ public class PhotoService {
     public static PhotoService getInstance() throws ServiceException {
         if (instance == null) {
             throw new ServiceException("PhotoService not yet configured. " +
-                    "Call EmaiLService.configure() before use the class");
+                    "Call PhotoService.configure() before use the class");
         }
         return instance;
     }
