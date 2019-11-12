@@ -58,12 +58,12 @@ public class DoctorServlet extends HttpServlet {
                     String examID = request.getParameter("examID");
 
                     if (examID != null) {
-                        ExamList examList = new ExamList();
-                        examList.setID(Integer.valueOf(examID));
+                        ExamType examType = new ExamType();
+                        examType.setID(Integer.valueOf(examID));
 
                         try {
                             List<DoctorSearchResult> results = new ArrayList<>();
-                            List<DoctorExam> doctorExamList = doctorExamDAO.getByExamList(examList);
+                            List<DoctorExam> doctorExamList = doctorExamDAO.getByExamList(examType);
 
                             for (DoctorExam doctorExam : doctorExamList) {
                                 SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(doctorExam.getDoctorID());

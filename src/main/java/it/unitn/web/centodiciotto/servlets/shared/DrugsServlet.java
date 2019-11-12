@@ -2,7 +2,7 @@ package it.unitn.web.centodiciotto.servlets.shared;
 
 
 import com.google.gson.Gson;
-import it.unitn.web.centodiciotto.persistence.dao.DrugListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.DrugTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -23,13 +23,13 @@ import java.util.List;
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/drugs"})
 public class DrugsServlet extends HttpServlet {
     private static final List<DrugSearchResult> ALL_INTERNAL_DRUGS = new ArrayList<>();
-    private static List<DrugList> ALL_DRUGS = new ArrayList<>();
+    private static List<DrugType> ALL_DRUGS = new ArrayList<>();
 
     /*
     TODO It's still testing time, please do not pay attention
      */
     private DrugPrescriptionDAO drugPrescriptionDAO;
-    private DrugListDAO drugListDAO;
+    private DrugTypeDAO drugTypeDAO;
 
     @Override
     public void init() throws ServletException {
@@ -38,12 +38,12 @@ public class DrugsServlet extends HttpServlet {
             throw new ServletException("DAOFactory is null.");
         }
         try {
-            drugListDAO = daoFactory.getDAO(DrugListDAO.class);
+            drugTypeDAO = daoFactory.getDAO(DrugTypeDAO.class);
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
 
-            ALL_DRUGS = drugListDAO.getAll();
-            for (DrugList drugList : ALL_DRUGS) {
-                ALL_INTERNAL_DRUGS.add(new DrugSearchResult(drugList.getID(), drugList.getDescription()));
+            ALL_DRUGS = drugTypeDAO.getAll();
+            for (DrugType drugType : ALL_DRUGS) {
+                ALL_INTERNAL_DRUGS.add(new DrugSearchResult(drugType.getID(), drugType.getDescription()));
             }
         } catch (DAOFactoryException | DAOException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
@@ -91,13 +91,13 @@ public class DrugsServlet extends HttpServlet {
                         String drugID = request.getParameter("drugID");
                         String patientID = request.getParameter("patientID");
 
-                        DrugList drugList = drugListDAO.getByPrimaryKey(Integer.valueOf(drugID));
+                        DrugType drugType = drugTypeDAO.getByPrimaryKey(Integer.valueOf(drugID));
 
                         DrugPrescription newPrescription = new DrugPrescription();
 
                         newPrescription.setPractitionerID(user.getID());
                         newPrescription.setPatientID(patientID);
-                        newPrescription.setDrugType(drugList);
+                        newPrescription.setDrugType(drugType);
                         newPrescription.setDatePrescribed(new Timestamp(System.currentTimeMillis()));
                         newPrescription.setTicket(3);
                         newPrescription.setTicketPaid(false);

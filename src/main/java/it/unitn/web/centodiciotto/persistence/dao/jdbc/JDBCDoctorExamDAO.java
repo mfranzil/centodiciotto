@@ -5,7 +5,7 @@ import it.unitn.web.centodiciotto.persistence.dao.DoctorExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.entities.DoctorExam;
-import it.unitn.web.centodiciotto.persistence.entities.ExamList;
+import it.unitn.web.centodiciotto.persistence.entities.ExamType;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import java.sql.Connection;
@@ -109,11 +109,11 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
     }
 
     @Override
-    public List<DoctorExam> getByExamList(ExamList examList) throws DAOException {
+    public List<DoctorExam> getByExamList(ExamType examType) throws DAOException {
         List<DoctorExam> res = new ArrayList<>();
         DoctorExam tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYEXAMLIST)) {
-            stm.setInt(1, examList.getID());
+            stm.setInt(1, examType.getID());
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -123,7 +123,7 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
                 return res;
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting DoctorExam by examList: ", e);
+            throw new DAOException("Error getting DoctorExam by examType: ", e);
         }
     }
 }

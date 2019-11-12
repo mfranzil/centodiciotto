@@ -1,11 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
-import it.unitn.web.centodiciotto.persistence.dao.DrugListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.DrugTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.centodiciotto.persistence.entities.DrugList;
+import it.unitn.web.centodiciotto.persistence.entities.DrugType;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 
 import java.sql.*;
@@ -291,13 +291,13 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             DrugPrescription drugPrescription = new DrugPrescription();
 
 
-            DrugListDAO drugListDAO = DAOFACTORY.getDAO(DrugListDAO.class);
-            DrugList drugList = drugListDAO.getByPrimaryKey(rs.getInt("drug_type"));
+            DrugTypeDAO drugTypeDAO = DAOFACTORY.getDAO(DrugTypeDAO.class);
+            DrugType drugType = drugTypeDAO.getByPrimaryKey(rs.getInt("drug_type"));
 
             drugPrescription.setID(rs.getInt("drug_prescription_id"));
             drugPrescription.setPractitionerID(rs.getString("practitioner_id"));
             drugPrescription.setPatientID(rs.getString("patient_id"));
-            drugPrescription.setDrugType(drugList);
+            drugPrescription.setDrugType(drugType);
             drugPrescription.setDatePrescribed(rs.getTimestamp("date_prescribed"));
             drugPrescription.setDateSold(rs.getTimestamp("date_sold"));
             drugPrescription.setChemistID(rs.getString("chemist_id"));

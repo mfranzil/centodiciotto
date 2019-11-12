@@ -68,12 +68,25 @@
                     <div class="table-cell ssn">SSN</div>
                     <div class="table-cell action">&nbsp;</div>
                 </div>
-                <c:forEach items="${requestScope.pending_patients}" var="patient">
+
+                <jsp:useBean id="generalPractitionerDAO"
+                             class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                                 value="${sessionScope.user.ID}"/>
+                <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+
+                <c:forEach items="${generalPractitionerDAO.pendingVisits}" var="pendingVisit">
+                    <jsp:useBean id="patientDAO"
+                                 class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
+                        <jsp:setProperty name="patientDAO" property="patientID"
+                                         value="${pendingVisit.patientID}"/>
+                        <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+                    </jsp:useBean>
+
+                    <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">
                         <div class="table-cell image">
-                            <img class="avatar-small"
-                                 src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                                 alt="">
+                            <img class="avatar-small" alt="" src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
                         </div>
                         <div class="table-cell patient">${patient.firstName} ${patient.lastName}
                         </div>

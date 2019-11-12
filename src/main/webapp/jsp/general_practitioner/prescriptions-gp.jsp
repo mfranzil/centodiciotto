@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My patients - CentoDiciotto</title>
+    <title>Prescription - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>

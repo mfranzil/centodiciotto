@@ -1,6 +1,6 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-public class ExamList {
+public class ExamType {
     private Integer ID;
     private String description;
 

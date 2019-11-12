@@ -6,7 +6,7 @@ public class DrugPrescription {
     private Integer ID;
     private String practitionerID;
     private String patientID;
-    private DrugList drugType;
+    private DrugType drugType;
     private Timestamp datePrescribed;
     private Timestamp dateSold;
     private String chemistID;
@@ -38,11 +38,11 @@ public class DrugPrescription {
         this.patientID = patientID;
     }
 
-    public DrugList getDrugType() {
+    public DrugType getDrugType() {
         return drugType;
     }
 
-    public void setDrugType(DrugList drugType) {
+    public void setDrugType(DrugType drugType) {
         this.drugType = drugType;
     }
 

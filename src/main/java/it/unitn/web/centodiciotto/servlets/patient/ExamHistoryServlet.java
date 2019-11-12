@@ -2,7 +2,7 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
@@ -24,7 +24,7 @@ import java.util.List;
 public class ExamHistoryServlet extends HttpServlet {
 
     private ExamDAO examDAO;
-    private ExamListDAO examListDAO;
+    private ExamTypeDAO examTypeDAO;
 
     @Override
     public void init() throws ServletException {
@@ -34,7 +34,7 @@ public class ExamHistoryServlet extends HttpServlet {
         }
         try {
             examDAO = daoFactory.getDAO(ExamDAO.class);
-            examListDAO = daoFactory.getDAO(ExamListDAO.class);
+            examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -52,7 +52,7 @@ public class ExamHistoryServlet extends HttpServlet {
                 for (Exam exam : exams_history) {
                     try {
                         to_be_sent.add(Pair.makePair(exam,
-                                examListDAO.getByPrimaryKey(exam.getType().getID()).getDescription()));
+                                examTypeDAO.getByPrimaryKey(exam.getType().getID()).getDescription()));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }

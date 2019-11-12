@@ -1,6 +1,6 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-public class DrugList {
+public class DrugType {
     private Integer ID;
     private String description;
 

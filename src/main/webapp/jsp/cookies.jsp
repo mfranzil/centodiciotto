@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My patients - CentoDiciotto</title>
+    <title>Cookies - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
 </head>
 <body>

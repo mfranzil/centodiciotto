@@ -2,7 +2,7 @@ package it.unitn.web.centodiciotto.servlets.healthservice;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.RecallDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -30,7 +30,7 @@ public class RecallsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
 
     private ExamDAO examDAO;
-    private ExamListDAO examListDAO;
+    private ExamTypeDAO examTypeDAO;
     private RecallDAO recallDAO;
     private PatientDAO patientDAO;
 
@@ -41,13 +41,13 @@ public class RecallsServlet extends HttpServlet {
             throw new ServletException("DAOFactory is null.");
         }
         try {
-            examListDAO = daoFactory.getDAO(ExamListDAO.class);
+            examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
             recallDAO = daoFactory.getDAO(RecallDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
 
-            List<ExamList> allExams = examListDAO.getAll();
-            for (ExamList exam : allExams) {
+            List<ExamType> allExams = examTypeDAO.getAll();
+            for (ExamType exam : allExams) {
                 ALL_INTERNAL_EXAMS.add(new ExamSearchResult(exam.getID(), exam.getDescription()));
             }
         } catch (DAOFactoryException | DAOException e) {
@@ -100,7 +100,7 @@ public class RecallsServlet extends HttpServlet {
                         Integer maxAge = Integer.valueOf(request.getParameter("maxAge"));
 
                         if (minAge < maxAge && minAge >= 0 && maxAge <= 130) {
-                            ExamList examType = examListDAO.getByPrimaryKey(examID);
+                            ExamType examType = examTypeDAO.getByPrimaryKey(examID);
                             Recall recall = new Recall();
 
                             recall.setExamType(examType);
@@ -159,7 +159,7 @@ public class RecallsServlet extends HttpServlet {
 
                             if (lastRecall == null) {
                                 tableExams.add(new TableExam(
-                                        examListDAO.getByPrimaryKey(integerExamID).getDescription(),
+                                        examTypeDAO.getByPrimaryKey(integerExamID).getDescription(),
                                         "Not done yet", "Not done yet"));
                             } else {
                                 tableExams.add(new TableExam(

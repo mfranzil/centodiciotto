@@ -67,8 +67,7 @@ public class TicketServlet extends HttpServlet {
                     response.setStatus(400);
                     throw new ServletException("Error in DAO usage: ", e);
                 }
-            }
-            if (type.equals("drug_prescription")) {
+            } else if (type.equals("drug")) {
                 try {
                     DrugPrescription selectedPrescription = drugPrescriptionDAO.getByPrimaryKey(ID);
 
@@ -83,6 +82,8 @@ public class TicketServlet extends HttpServlet {
                     response.setStatus(400);
                     throw new ServletException("Error in DAO usage: ", e);
                 }
+            } else {
+                throw new ServletException("Malformed input (type must be drug or exam)");
             }
         }
     }

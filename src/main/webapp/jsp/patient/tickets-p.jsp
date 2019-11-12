@@ -34,7 +34,6 @@
             }
 
             /* Farmaci */
-
             .table-cell.practitioner {
                 width: 15%;
             }
@@ -238,8 +237,8 @@
                         <div class="table-cell drug-action">
                             <form method="POST" class="pay"
                                   action="${pageContext.request.contextPath}/restricted/patient/tickets">
-                                <input type="hidden" value="${drugPrescription.ID}" type="text" name="ID">
-                                <input type="hidden" value="prescription" type="text" name="type">
+                                <input type="hidden" value="${drugPrescription.ID}" name="ID">
+                                <input type="hidden" value="drug" name="type">
                                 <button type="submit" id="btn-pay-e-${drugPrescription.ID}"
                                         class="btn btn-block btn-personal"
                                     ${drugPrescription.ticketPaid ? "disabled" : ""}>

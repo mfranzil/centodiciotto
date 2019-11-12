@@ -73,7 +73,7 @@
                     type: "POST",
                     dataType: "json",
                     data: {
-                        requestType: "examList",
+                        requestType: "examType",
                         examID: examID,
                         onlyAvailable: onlyAvailable
                     },

@@ -1,11 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.RecallDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.centodiciotto.persistence.entities.ExamList;
+import it.unitn.web.centodiciotto.persistence.entities.ExamType;
 import it.unitn.web.centodiciotto.persistence.entities.Recall;
 
 import java.sql.Connection;
@@ -181,11 +181,11 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
         try {
             Recall recall = new Recall();
 
-            ExamListDAO examListDAO = DAOFACTORY.getDAO(ExamListDAO.class);
-            ExamList examList = examListDAO.getByPrimaryKey(rs.getInt("exam_type"));
+            ExamTypeDAO examTypeDAO = DAOFACTORY.getDAO(ExamTypeDAO.class);
+            ExamType examType = examTypeDAO.getByPrimaryKey(rs.getInt("exam_type"));
 
             recall.setID(rs.getInt("recall_id"));
-            recall.setExamType(examList);
+            recall.setExamType(examType);
             recall.setMinAge(rs.getInt("min_age"));
             recall.setMaxAge(rs.getInt("max_age"));
             recall.setStartDate(rs.getTimestamp("start_date"));

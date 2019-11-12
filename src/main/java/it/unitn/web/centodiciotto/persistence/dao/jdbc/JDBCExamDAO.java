@@ -2,11 +2,11 @@ package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
-import it.unitn.web.centodiciotto.persistence.entities.ExamList;
+import it.unitn.web.centodiciotto.persistence.entities.ExamType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(9, exam.isTicketPaid());
             stm.setString(10, exam.getPractitionerID());
             stm.setBoolean(11, exam.isBooked());
-            
+
             if (exam.getRecall() == null) {
                 stm.setNull(12, Types.INTEGER);
             } else {
@@ -309,13 +309,13 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         try {
             Exam exam = new Exam();
 
-            ExamListDAO examListDAO = DAOFACTORY.getDAO(ExamListDAO.class);
-            ExamList examList = examListDAO.getByPrimaryKey(rs.getInt("exam_type"));
+            ExamTypeDAO examTypeDAO = DAOFACTORY.getDAO(ExamTypeDAO.class);
+            ExamType examType = examTypeDAO.getByPrimaryKey(rs.getInt("exam_type"));
 
             exam.setID(rs.getInt("exam_id"));
             exam.setPatientID(rs.getString("patient_id"));
             exam.setDoctorID(rs.getString("doctor_id"));
-            exam.setType(examList);
+            exam.setType(examType);
             exam.setDone(rs.getBoolean("done"));
             exam.setDate(rs.getTimestamp("date"));
             exam.setResult(rs.getString("result"));

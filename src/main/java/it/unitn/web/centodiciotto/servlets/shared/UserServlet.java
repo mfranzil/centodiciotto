@@ -46,7 +46,7 @@ public class UserServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user != null) {
-            request.getRequestDispatcher("/restricted/shared/user.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/shared/user.jsp").forward(request, response);
         }
     }
 

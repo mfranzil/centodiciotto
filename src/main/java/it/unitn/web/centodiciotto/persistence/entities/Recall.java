@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class Recall {
     private Integer ID;
-    private ExamList examType;
+    private ExamType examType;
     private Integer minAge;
     private Integer maxAge;
     private Timestamp startDate;
@@ -18,11 +18,11 @@ public class Recall {
         this.ID = ID;
     }
 
-    public ExamList getExamType() {
+    public ExamType getExamType() {
         return examType;
     }
 
-    public void setExamType(ExamList examType) {
+    public void setExamType(ExamType examType) {
         this.examType = examType;
     }
 

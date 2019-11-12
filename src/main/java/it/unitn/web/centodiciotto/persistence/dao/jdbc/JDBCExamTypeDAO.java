@@ -1,10 +1,10 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamListDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.centodiciotto.persistence.entities.ExamList;
+import it.unitn.web.centodiciotto.persistence.entities.ExamType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,35 +14,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
-public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamListDAO {
+public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamTypeDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM exam_list WHERE exam_id = ?;";
-    final private String FINDNAMEBYPRIMARYKEY = "SELECT description FROM exam_list WHERE exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM exam_list;";
-    final private String COUNT = "SELECT COUNT(*) FROM exam_list;";
+    final private String FINDBYPRIMARYKEY = "SELECT * FROM exam_type WHERE exam_id = ?;";
+    final private String FINDNAMEBYPRIMARYKEY = "SELECT description FROM exam_type WHERE exam_id = ?;";
+    final private String SELECTALL = "SELECT * FROM exam_type order by exam_description asc;";
+    final private String COUNT = "SELECT COUNT(*) FROM exam_type;";
 
-    public JDBCExamListDAO(Connection con) throws DAOFactoryException {
+    public JDBCExamTypeDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
 
     @Override
-    public void insert(ExamList examList) throws DAOException {
-        throw new DAOException("The ExamList table is read-only.");
+    public void insert(ExamType examType) throws DAOException {
+        throw new DAOException("The ExamType table is read-only.");
     }
 
     @Override
-    public void update(ExamList examList) throws DAOException {
-        throw new DAOException("The ExamList table is read-only.");
+    public void update(ExamType examType) throws DAOException {
+        throw new DAOException("The ExamType table is read-only.");
     }
 
     @Override
-    public void delete(ExamList examList) throws DAOException {
-        throw new DAOException("The ExamList table is read-only.");
+    public void delete(ExamType examType) throws DAOException {
+        throw new DAOException("The ExamType table is read-only.");
     }
 
     @Override
-    public ExamList getByPrimaryKey(Integer ExamID) throws DAOException {
-        ExamList res;
+    public ExamType getByPrimaryKey(Integer ExamID) throws DAOException {
+        ExamType res;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
             stm.setInt(1, ExamID);
 
@@ -53,15 +53,15 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting ExamList by primary key: ", e);
+            throw new DAOException("Error getting ExamType by primary key: ", e);
         }
         return null;
     }
 
     @Override
-    public List<ExamList> getAll() throws DAOException {
-        List<ExamList> res = new ArrayList<>();
-        ExamList tmp;
+    public List<ExamType> getAll() throws DAOException {
+        List<ExamType> res = new ArrayList<>();
+        ExamType tmp;
         try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -90,16 +90,16 @@ public class JDBCExamListDAO extends JDBCDAO<ExamList, Integer> implements ExamL
     }
 
     @Override
-    protected ExamList mapRowToEntity(ResultSet rs) throws DAOException {
+    protected ExamType mapRowToEntity(ResultSet rs) throws DAOException {
         try {
-            ExamList examList = new ExamList();
+            ExamType examType = new ExamType();
 
-            examList.setDescription(rs.getString("exam_description"));
-            examList.setID(rs.getInt("exam_id"));
+            examType.setDescription(rs.getString("exam_description"));
+            examType.setID(rs.getInt("exam_id"));
 
-            return examList;
+            return examType;
         } catch (SQLException e) {
-            throw new DAOException("Error mapping row to ExamList: ", e);
+            throw new DAOException("Error mapping row to ExamType: ", e);
         }
     }
 }

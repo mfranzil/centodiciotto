@@ -29,12 +29,12 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             " and booked = true order by visit_date desc;";
     final private String FINDBYPRACTITIONER = "SELECT * FROM visit WHERE practitioner_id = ? order by visit_date desc;";
     final private String GETLASTPATIENTVISIT = "SELECT * from visit where patient_id = " +
-            "? and visit_date <= localtimestamp order by visit_date desc limit 1";
+            "? and visit_date <= localtimestamp order by visit_date desc limit 1;";
     final private String PENDINGBYPRACTITIONERPATIENT = "SELECT * FROM visit " +
-            "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE";
+            "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE;";
     final private String PENDINGBYPRACTITIONER = "SELECT * FROM visit WHERE " +
-            "practitioner_id = ? AND booked = FALSE order by visit_date desc";
-    final private String FINDBYDATE = "SELECT * from visit where visit_date::date = ?::date";
+            "practitioner_id = ? AND booked = FALSE;";
+    final private String FINDBYDATE = "SELECT * from visit where visit_date::date = ?::date;";
 
 
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {

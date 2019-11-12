@@ -6,7 +6,7 @@ public class Exam {
     private Integer ID;
     private String patientID;
     private String doctorID;
-    private ExamList type;
+    private ExamType type;
     private Boolean done;
     private Timestamp date;
     private String result;
@@ -41,11 +41,11 @@ public class Exam {
         this.doctorID = doctorID;
     }
 
-    public ExamList getType() {
+    public ExamType getType() {
         return type;
     }
 
-    public void setType(ExamList type) {
+    public void setType(ExamType type) {
         this.type = type;
     }
 
