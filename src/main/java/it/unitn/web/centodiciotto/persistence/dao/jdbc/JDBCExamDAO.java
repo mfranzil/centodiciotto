@@ -33,8 +33,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
     final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND ticket_paid = false AND done = true";
-    final private String FINDBYPATIENTNOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String FINDBYPATIENT_PENDING_NOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
+    final private String FINDBYPATIENT_PENDING_DOCTORNOTSELECTED = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND doctor_id IS NULL";
     final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
     final private String FINDRECALLSBYHS = "SELECT * from exam where recall = true and health_service_id = ?";
     final private String FINDPENDINGBYIDS = "select * from exam where done = false and exam_type = ? " +
@@ -219,10 +221,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getByPatientNotBooked(String patientID) throws DAOException {
+    public List<Exam> getPendingByPatientNotBooked(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTBOOKED)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_NOTBOOKED)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -233,7 +235,26 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
                 return res;
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting not booked Exams by PatientID: ", e);
+            throw new DAOException("Error getting pending and not booked Exams by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public List<Exam> getPendingByPatientDoctorNotSelected(String patientID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_DOCTORNOTSELECTED)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending Exams with no doctor selected by PatientID: ", e);
         }
     }
 

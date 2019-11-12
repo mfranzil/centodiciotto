@@ -15,7 +15,9 @@ public interface ExamDAO extends DAO<Exam, Integer> {
 
     List<Exam> getByPatientNotPaid(String patientID) throws DAOException;
 
-    List<Exam> getByPatientNotBooked(String patientID) throws DAOException;
+    List<Exam> getPendingByPatientNotBooked(String patientID) throws DAOException;
+
+    List<Exam> getPendingByPatientDoctorNotSelected(String patientID) throws DAOException;
 
     List<Exam> getByDate(Timestamp ts) throws DAOException;
 
