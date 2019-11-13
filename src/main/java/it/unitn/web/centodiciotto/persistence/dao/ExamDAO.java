@@ -13,17 +13,15 @@ public interface ExamDAO extends DAO<Exam, Integer> {
 
     List<Exam> getByPatientLastYear(String patientID) throws DAOException;
 
-    List<Exam> getByPatientNotPaid(String patientID) throws DAOException;
+    List<Exam> getUnpaidByPatient(String patientID) throws DAOException;
 
-    List<Exam> getByPatientBooked(String patientID) throws DAOException;
+    List<Exam> getBookedByPatient(String patientID) throws DAOException;
 
-    List<Exam> getPendingByPatientNotBooked(String patientID) throws DAOException;
+    List<Exam> getPendingByPatient(String patientID) throws DAOException;
 
-    List<Exam> getPendingByPatientDoctorNotSelected(String patientID) throws DAOException;
+    List<Exam> getPendingByPatientDoctorUnselected(String patientID) throws DAOException;
 
     List<Exam> getByDate(Timestamp ts) throws DAOException;
-
-    List<Exam> getRecallsByHealthService(String healthServiceID) throws DAOException;
 
     Exam getPendingRecall(Integer examType, String healthServiceID, String patientID) throws DAOException;
 }

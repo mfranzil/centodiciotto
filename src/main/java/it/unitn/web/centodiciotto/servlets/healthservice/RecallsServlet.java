@@ -111,7 +111,7 @@ public class RecallsServlet extends HttpServlet {
 
                             recallDAO.insert(recall);
 
-                            List<Patient> allPatients = patientDAO.getPatientsByProvince(
+                            List<Patient> allPatients = patientDAO.getByProvince(
                                     ((HealthService) user).getOperatingProvince().getAbbreviation());
 
                             for (Patient patient : allPatients) {
@@ -154,7 +154,7 @@ public class RecallsServlet extends HttpServlet {
 
                         if (examID != null) {
                             Integer integerExamID = Integer.valueOf(examID);
-                            Recall lastRecall = recallDAO.getLastByHealthServiceAndExam(
+                            Recall lastRecall = recallDAO.getLastByHealthServiceAndExamType(
                                     user.getID(), integerExamID);
 
                             if (lastRecall == null) {

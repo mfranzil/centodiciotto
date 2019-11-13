@@ -47,7 +47,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
         }
 
         try {
-            patients = patientDAO.getPatientsByPractitioner(practitionerID);
+            patients = patientDAO.getByPractitioner(practitionerID);
         } catch (DAOException e) {
             throw new BeanException("Error getting patients list in practitionerDaoBean: ", e);
         }

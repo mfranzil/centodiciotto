@@ -18,12 +18,11 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>> implements DoctorExamDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM doctor_exams WHERE doctor_id = ? AND exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM doctor_exams;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM doctor_exams WHERE doctor_id = ? AND exam_id = ?;";
+    final private String GET_ALL = "SELECT * FROM doctor_exams;";
     final private String COUNT = "SELECT COUNT(*) FROM doctor_exams;";
 
-    final private String FINDBYEXAMLIST = "SELECT * FROM doctor_exams WHERE exam_id = ?;";
-
+    final private String GET_BY_EXAM_TYPE = "SELECT * FROM doctor_exams WHERE exam_id = ?;";
 
     public JDBCDoctorExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -47,7 +46,7 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
     @Override
     public DoctorExam getByPrimaryKey(Pair<String, Integer> DoctorExamID) throws DAOException {
         DoctorExam res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, DoctorExamID.getFirst());
             stm.setInt(1, DoctorExamID.getSecond());
 
@@ -67,7 +66,7 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
     public List<DoctorExam> getAll() throws DAOException {
         List<DoctorExam> res = new ArrayList<>();
         DoctorExam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -95,24 +94,10 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
     }
 
     @Override
-    protected DoctorExam mapRowToEntity(ResultSet rs) throws DAOException {
-        try {
-            DoctorExam doctorExam = new DoctorExam();
-
-            doctorExam.setDoctorID(rs.getString("doctor_id"));
-            doctorExam.setExamListID(rs.getInt("exam_id"));
-
-            return doctorExam;
-        } catch (SQLException e) {
-            throw new DAOException("Error mapping row to DoctorExam: ", e);
-        }
-    }
-
-    @Override
-    public List<DoctorExam> getByExamList(ExamType examType) throws DAOException {
+    public List<DoctorExam> getByExamType(ExamType examType) throws DAOException {
         List<DoctorExam> res = new ArrayList<>();
         DoctorExam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYEXAMLIST)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_EXAM_TYPE)) {
             stm.setInt(1, examType.getID());
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -124,6 +109,20 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting DoctorExam by examType: ", e);
+        }
+    }
+
+    @Override
+    protected DoctorExam mapRowToEntity(ResultSet rs) throws DAOException {
+        try {
+            DoctorExam doctorExam = new DoctorExam();
+
+            doctorExam.setDoctorID(rs.getString("doctor_id"));
+            doctorExam.setExamListID(rs.getInt("exam_id"));
+
+            return doctorExam;
+        } catch (SQLException e) {
+            throw new DAOException("Error mapping row to DoctorExam: ", e);
         }
     }
 }

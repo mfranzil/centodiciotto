@@ -24,8 +24,8 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             "WHERE health_service_id = ?;";
     final private String DELETE = "DELETE FROM health_service WHERE health_service_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM health_service WHERE health_service_id = ?;";
-    final private String SELECTALL = "SELECT * FROM health_service;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM health_service WHERE health_service_id = ?;";
+    final private String GET_ALL = "SELECT * FROM health_service;";
     final private String COUNT = "SELECT COUNT(*) FROM health_service;";
 
     public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
@@ -77,7 +77,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     @Override
     public HealthService getByPrimaryKey(String primaryKey) throws DAOException {
         HealthService res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -96,7 +96,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     public List<HealthService> getAll() throws DAOException {
         List<HealthService> res = new ArrayList<>();
         HealthService tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);

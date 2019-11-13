@@ -26,13 +26,13 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             " (?, ?, ?, ?, ?) WHERE recall_id = ?;";
     final private String DELETE = "DELETE FROM recall WHERE recall_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM recall WHERE recall_id = ?;";
-    final private String SELECTALL = "SELECT * FROM recall;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM recall WHERE recall_id = ?;";
+    final private String GET_ALL = "SELECT * FROM recall;";
     final private String COUNT = "SELECT COUNT(*) FROM recall;";
 
-    final private String FINDBYHSANDEXAM = "SELECT * from recall WHERE health_service_id = ?" +
+    final private String GET_LAST_BY_HS_AND_EXAM_TYPE = "SELECT * from recall WHERE health_service_id = ?" +
             " AND exam_type = ? ORDER BY start_date desc LIMIT 1;";
-    final private String FINDBYHEALTHSERVICE = "SELECT * from recall WHERE health_service_id = ? " +
+    final private String GET_BY_HS = "SELECT * from recall WHERE health_service_id = ? " +
             "ORDER BY start_date desc;";
 
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
@@ -94,7 +94,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
     @Override
     public Recall getByPrimaryKey(Integer primaryKey) throws DAOException {
         Recall res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -113,7 +113,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
     public List<Recall> getAll() throws DAOException {
         List<Recall> res = new ArrayList<>();
         Recall tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -140,9 +140,9 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
         return -1L;
     }
 
-    public Recall getLastByHealthServiceAndExam(String healthServiceID, Integer examID) throws DAOException {
+    public Recall getLastByHealthServiceAndExamType(String healthServiceID, Integer examID) throws DAOException {
         Recall res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYHSANDEXAM)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_LAST_BY_HS_AND_EXAM_TYPE)) {
             stm.setString(1, healthServiceID);
             stm.setInt(2, examID);
 
@@ -161,7 +161,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
     public List<Recall> getByHealthService(String healthServiceID) throws DAOException {
         List<Recall> recalls = new ArrayList<>();
         try {
-            PreparedStatement stm = CON.prepareStatement(FINDBYHEALTHSERVICE);
+            PreparedStatement stm = CON.prepareStatement(GET_BY_HS);
             stm.setString(1, healthServiceID);
 
             ResultSet rs = stm.executeQuery();

@@ -18,15 +18,17 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistDAO {
 
-    final private String INSERT = "INSERT INTO chemist (chemist_id, name, chemist_province, working_place) values (?, ?, ?, ?);";
-    final private String UPDATE = "UPDATE chemist SET (name, chemist_province, working_place) = (?, ?, ?) WHERE chemist_id = ?;";
+    final private String INSERT = "INSERT INTO chemist (chemist_id, name, chemist_province, working_place) " +
+            "values (?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE chemist SET (name, chemist_province, working_place) = (?, ?, ?) " +
+            "WHERE chemist_id = ?;";
     final private String DELETE = "DELETE FROM chemist WHERE chemist_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM chemist WHERE chemist_id = ?;";
-    final private String SELECTALL = "SELECT * FROM chemist;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM chemist WHERE chemist_id = ?;";
+    final private String GET_ALL = "SELECT * FROM chemist;";
     final private String COUNT = "SELECT COUNT(*) FROM chemist;";
 
-    final private String FINDBYPROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
+    final private String GET_BY_PROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
 
     public JDBCChemistDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -81,7 +83,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     @Override
     public Chemist getByPrimaryKey(String chemist_id) throws DAOException {
         Chemist res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, chemist_id);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -100,7 +102,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     public List<Chemist> getAll() throws DAOException {
         List<Chemist> res = new ArrayList<>();
         Chemist tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -131,7 +133,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     public List<Chemist> getByProvince(String province_abbreviation) throws DAOException {
         List<Chemist> res = new ArrayList<>();
         Chemist tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
             stm.setString(1, province_abbreviation);
 
             try (ResultSet rs = stm.executeQuery()) {

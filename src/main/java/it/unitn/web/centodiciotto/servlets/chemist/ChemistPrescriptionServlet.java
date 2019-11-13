@@ -179,7 +179,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         Province province = ((Chemist) user).getProvince();
 
                         List<PatientSearchResult> results = new ArrayList<>();
-                        List<Patient> allPatients = patientDAO.getPatientsByProvince(province.getAbbreviation());
+                        List<Patient> allPatients = patientDAO.getByProvince(province.getAbbreviation());
 
                         if (userInput != null) {
                             allPatients = allPatients.stream().filter(patient

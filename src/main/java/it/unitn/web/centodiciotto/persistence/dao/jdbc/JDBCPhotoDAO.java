@@ -21,16 +21,16 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
     final private String DELETE = "DELETE from photo WHERE photo_id = ?";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM photo WHERE photo_id = ?;";
-    final private String SELECTALL = "SELECT * FROM photo;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM photo WHERE photo_id = ?;";
+    final private String GET_ALL = "SELECT * FROM photo;";
     final private String COUNT = "SELECT COUNT(*) FROM photo;";
 
-    final private String GETCURRENTPHOTO = "SELECT * " +
+    final private String GET_CURRENT_BY_PATIENT = "SELECT * " +
             "FROM photo " +
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC " +
             "LIMIT 1;";
-    final private String GETALLPHOTOS = "SELECT * " +
+    final private String GET_ALL_BY_PATIENT = "SELECT * " +
             "FROM photo " +
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC;";
@@ -86,7 +86,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     @Override
     public Photo getByPrimaryKey(Integer primaryKey) throws DAOException {
         Photo photo = null;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -104,7 +104,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     public List<Photo> getAll() throws DAOException {
         List<Photo> photos = new ArrayList<>();
         Photo tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -132,10 +132,10 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    public Photo getCurrentPhoto(String patientID) throws DAOException {
+    public Photo getCurrentByPatient(String patientID) throws DAOException {
         Photo photo = null;
         try {
-            PreparedStatement stm = CON.prepareStatement(GETCURRENTPHOTO);
+            PreparedStatement stm = CON.prepareStatement(GET_CURRENT_BY_PATIENT);
             stm.setString(1, patientID);
 
             ResultSet rs = stm.executeQuery();
@@ -150,10 +150,10 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     }
 
     @Override
-    public List<Photo> getAllPhotos(String patientID) throws DAOException {
+    public List<Photo> getAllByPatient(String patientID) throws DAOException {
         List<Photo> photos = new ArrayList<>();
         try {
-            PreparedStatement stm = CON.prepareStatement(GETALLPHOTOS);
+            PreparedStatement stm = CON.prepareStatement(GET_ALL_BY_PATIENT);
             stm.setString(1, patientID);
 
             ResultSet rs = stm.executeQuery();

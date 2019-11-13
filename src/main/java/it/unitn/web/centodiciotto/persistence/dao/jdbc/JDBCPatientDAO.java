@@ -28,13 +28,13 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
-    final private String SELECTALL = "SELECT * FROM patient order by last_name asc;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
+    final private String GET_ALL = "SELECT * FROM patient order by last_name asc;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
 
-    final private String PATIENTSBYPRACTITIONER = "SELECT * FROM patient " +
+    final private String GET_BY_PRACTITIONER = "SELECT * FROM patient " +
             "WHERE practitioner_id = ? order by last_name asc;";
-    final private String PATIENTSBYPROVINCE = "SELECT * FROM patient " +
+    final private String GET_BY_PROVINCE = "SELECT * FROM patient " +
             "WHERE living_province = ? order by last_name asc;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
@@ -103,7 +103,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     public Patient getByPrimaryKey(String primaryKey) throws DAOException {
         Patient patient = null;
         try {
-            PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY);
+            PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY);
             stm.setString(1, primaryKey);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
@@ -119,7 +119,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     public List<Patient> getAll() throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -146,10 +146,10 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         return -1L;
     }
 
-    public List<Patient> getPatientsByPractitioner(String practitionerID) throws DAOException {
+    public List<Patient> getByPractitioner(String practitionerID) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYPRACTITIONER)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRACTITIONER)) {
             stm.setString(1, practitionerID);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -163,10 +163,10 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
         }
     }
 
-    public List<Patient> getPatientsByProvince(String provinceAbbreviation) throws DAOException {
+    public List<Patient> getByProvince(String provinceAbbreviation) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PATIENTSBYPROVINCE)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
             stm.setString(1, provinceAbbreviation);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

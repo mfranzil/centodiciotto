@@ -9,5 +9,5 @@ import it.unitn.web.centodiciotto.utils.entities.Pair;
 import java.util.List;
 
 public interface DoctorExamDAO extends DAO<DoctorExam, Pair<String, Integer>> {
-    List<DoctorExam> getByExamList(ExamType examType) throws DAOException;
+    List<DoctorExam> getByExamType(ExamType examType) throws DAOException;
 }

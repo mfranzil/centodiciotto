@@ -16,8 +16,8 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCDrugTypeDAO extends JDBCDAO<DrugType, Integer> implements DrugTypeDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM drug_type WHERE drug_id = ?;";
-    final private String SELECTALL = "SELECT * FROM drug_type;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM drug_type WHERE drug_id = ?;";
+    final private String GET_ALL = "SELECT * FROM drug_type;";
     final private String COUNT = "SELECT COUNT(*) FROM drug_type;";
 
     public JDBCDrugTypeDAO(Connection con) throws DAOFactoryException {
@@ -42,7 +42,7 @@ public class JDBCDrugTypeDAO extends JDBCDAO<DrugType, Integer> implements DrugT
     @Override
     public DrugType getByPrimaryKey(Integer primaryKey) throws DAOException {
         DrugType drugType = null;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -60,7 +60,7 @@ public class JDBCDrugTypeDAO extends JDBCDAO<DrugType, Integer> implements DrugT
     public List<DrugType> getAll() throws DAOException {
         List<DrugType> drugTypes = new ArrayList<>();
         DrugType tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);

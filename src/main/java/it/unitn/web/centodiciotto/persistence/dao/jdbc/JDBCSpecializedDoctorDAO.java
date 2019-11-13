@@ -22,8 +22,8 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             " WHERE doctor_id = ?;";
     final private String DELETE = "DELETE FROM specialized_doctor WHERE doctor_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM specialized_doctor WHERE doctor_id = ?;";
-    final private String SELECTALL = "SELECT * FROM specialized_doctor;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM specialized_doctor WHERE doctor_id = ?;";
+    final private String GET_ALL = "SELECT * FROM specialized_doctor order by last_name asc;";
     final private String COUNT = "SELECT COUNT(*) FROM specialized_doctor;";
 
     public JDBCSpecializedDoctorDAO(Connection con) throws DAOFactoryException {
@@ -80,7 +80,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     @Override
     public SpecializedDoctor getByPrimaryKey(String primaryKey) throws DAOException {
         SpecializedDoctor res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -99,7 +99,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     public List<SpecializedDoctor> getAll() throws DAOException {
         List<SpecializedDoctor> res = new ArrayList<>();
         SpecializedDoctor tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);

@@ -73,7 +73,7 @@ public class ExamsServlet extends HttpServlet {
 
                         List<ExamListElement> examListElements = new ArrayList<>();
 
-                        List<Exam> patientExamList = examDAO.getPendingByPatientDoctorNotSelected(user.getID());
+                        List<Exam> patientExamList = examDAO.getPendingByPatientDoctorUnselected(user.getID());
 
                         if (examID == null) {
                             if (onlyAvailable) {
@@ -171,7 +171,7 @@ public class ExamsServlet extends HttpServlet {
                             examType.setID(Integer.valueOf(examID));
                         }
                         //TODO implement more efficient function
-                        List<Exam> toDelete = examDAO.getPendingByPatientNotBooked(user.getID());
+                        List<Exam> toDelete = examDAO.getPendingByPatient(user.getID());
                         for (Exam exam : toDelete) {
                             if (exam.getType().getID() == Integer.valueOf(examID)) {
                                 examDAO.delete(exam);

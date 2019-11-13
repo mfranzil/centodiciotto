@@ -55,7 +55,7 @@ public class PhotoService {
         }
 
         try {
-            photo = photoDAO.getCurrentPhoto(patientID);
+            photo = photoDAO.getCurrentByPatient(patientID);
         } catch (DAOException e) {
             throw new ServiceException("Error in DAO usage: ", e);
         }
@@ -73,7 +73,7 @@ public class PhotoService {
         }
 
         try {
-            photos = photoDAO.getAllPhotos(patientID);
+            photos = photoDAO.getAllByPatient(patientID);
         } catch (DAOException e) {
             throw new ServiceException("Error in DAO usage: ", e);
         }
@@ -95,7 +95,7 @@ public class PhotoService {
         }
 
         try {
-            photos = photoDAO.getAllPhotos(patientID);
+            photos = photoDAO.getAllByPatient(patientID);
         } catch (DAOException e) {
             throw new ServiceException("Error in DAO usage: ", e);
         }

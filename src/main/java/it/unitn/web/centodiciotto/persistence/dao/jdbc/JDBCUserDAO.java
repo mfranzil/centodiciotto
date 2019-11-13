@@ -20,8 +20,8 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     final private String UPDATE = "UPDATE user_ SET hash = ? AND salt = ? WHERE user_id = ?;";
     final private String DELETE = "DELETE FROM user_ WHERE user_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM user_ WHERE user_id = ?;";
-    final private String SELECTALL = "SELECT * FROM user_;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM user_ WHERE user_id = ?;";
+    final private String GET_ALL = "SELECT * FROM user_ ;";
     final private String COUNT = "SELECT COUNT(*) FROM user_;";
 
     public JDBCUserDAO(Connection con) throws DAOFactoryException {
@@ -75,7 +75,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     @Override
     public User getByPrimaryKey(String primaryKey) throws DAOException {
         User res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -94,7 +94,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     public List<User> getAll() throws DAOException {
         List<User> res = new ArrayList<>();
         User tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);

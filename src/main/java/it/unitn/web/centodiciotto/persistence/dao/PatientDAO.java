@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface PatientDAO extends DAO<Patient, String> {
 
-    List<Patient> getPatientsByPractitioner(String practitionerID) throws DAOException;
+    List<Patient> getByPractitioner(String practitionerID) throws DAOException;
 
-    List<Patient> getPatientsByProvince(String provinceAbbreviation) throws DAOException;
+    List<Patient> getByProvince(String provinceAbbreviation) throws DAOException;
 }
 

@@ -76,7 +76,7 @@ public class ExamHistoryServlet extends HttpServlet {
 
                 List<ExamHistoryElement> examHistoryElements = new ArrayList<>();
 
-                List<Exam> patientExamList = examDAO.getByPatientBooked(user.getID());
+                List<Exam> patientExamList = examDAO.getBookedByPatient(user.getID());
 
                 for (Exam exam : patientExamList) {
                     examHistoryElements.add(new ExamHistoryElement(exam.getType().getDescription(), exam.getDate().toString(), exam.getDone(), new JsonUtils.Action("See report", exam.getDone()), exam.getID()));

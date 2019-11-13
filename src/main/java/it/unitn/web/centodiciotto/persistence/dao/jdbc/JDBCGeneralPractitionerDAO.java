@@ -19,16 +19,19 @@ import java.util.List;
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
 
     final private String INSERT = "INSERT INTO general_practitioner " +
-            "(practitioner_id, first_name, last_name, working_province, working_place) values (?, ?, ?, ?, ?);";
-    final private String UPDATE = "UPDATE general_practitioner SET (first_name, last_name, working_province, working_place) =" +
+            "(practitioner_id, first_name, last_name, working_province, working_place) " +
+            "values (?, ?, ?, ?, ?);";
+    final private String UPDATE = "UPDATE general_practitioner SET " +
+            "(first_name, last_name, working_province, working_place) =" +
             " (?, ?, ?, ?) WHERE practitioner_id = ?;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE practitioner_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
-    final private String SELECTALL = "SELECT * FROM general_practitioner;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
+    final private String GET_ALL = "SELECT * FROM general_practitioner order by last_name asc;";
     final private String COUNT = "SELECT COUNT(*) FROM general_practitioner;";
 
-    final private String FINDBYPROVINCE = "SELECT * FROM general_practitioner WHERE working_province = ?;";
+    final private String GET_BY_PROVINCE = "SELECT * FROM general_practitioner " +
+            "WHERE working_province = ? order by last_name asc;";
 
     public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -85,7 +88,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     @Override
     public GeneralPractitioner getByPrimaryKey(String primaryKey) throws DAOException {
         GeneralPractitioner res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -104,7 +107,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     public List<GeneralPractitioner> getAll() throws DAOException {
         List<GeneralPractitioner> res = new ArrayList<>();
         GeneralPractitioner tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -135,7 +138,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     public List<GeneralPractitioner> getByProvince(String provinceAbbreviation) throws DAOException {
         List<GeneralPractitioner> res = new ArrayList<>();
         GeneralPractitioner tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPROVINCE)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
             stm.setString(1, provinceAbbreviation);
 
             try (ResultSet rs = stm.executeQuery()) {

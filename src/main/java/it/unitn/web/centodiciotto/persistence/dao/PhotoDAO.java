@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PhotoDAO extends DAO<Photo, Integer> {
 
-    Photo getCurrentPhoto(String patientID) throws DAOException;
+    Photo getCurrentByPatient(String patientID) throws DAOException;
 
-    List<Photo> getAllPhotos(String patientID) throws DAOException;
+    List<Photo> getAllByPatient(String patientID) throws DAOException;
 }

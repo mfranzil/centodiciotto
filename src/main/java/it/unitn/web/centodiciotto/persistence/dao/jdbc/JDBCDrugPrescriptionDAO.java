@@ -25,28 +25,29 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE drug_prescription_id = ?;";
     final private String DELETE = "DELETE FROM drug_prescription WHERE drug_prescription_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM drug_prescription WHERE drug_prescription_id = ?;";
-    final private String SELECTALL = "SELECT * FROM drug_prescription;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM drug_prescription WHERE drug_prescription_id = ?;";
+    final private String GET_ALL = "SELECT * FROM drug_prescription;";
     final private String COUNT = "SELECT COUNT(*) FROM drug_prescription;";
 
-    final private String FINDBYPATIENT = "SELECT * FROM drug_prescription " +
+    final private String GET_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE patient_id = ? order by date_prescribed asc;";
-    final private String FINDBYPRACTITIONER = "SELECT * FROM drug_prescription WHERE practitioner_id = ?;";
-    final private String FINDEXPIRED = "SELECT * FROM drug_prescription " +
+    final private String GET_BY_PRACTITIONER = "SELECT * FROM drug_prescription " +
+            "WHERE practitioner_id = ? order by date_prescribed asc;";
+    final private String GET_EXPIRED = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' < now() " +
             "AND NOT(chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false);";
-    final private String FINDVALID = "SELECT * FROM drug_prescription " +
+    final private String GET_VALID = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' >= now() " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
             "order by date_prescribed asc;";
-    final private String FINDVALIDBYPATIENT = "SELECT * FROM drug_prescription " +
+    final private String GET_VALID_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' >= now() AND patient_id = ? " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
             "order by date_prescribed asc;";
-    final private String FINDUNPAIDBYPATIENT = "SELECT * FROM drug_prescription " +
+    final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = false " +
             "order by date_prescribed asc;";
-    final private String FINDBYDATESOLD = "SELECT * from drug_prescription " +
+    final private String GET_BY_DATE_SOLD = "SELECT * from drug_prescription " +
             "where date_sold::date = ?::date";
 
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
@@ -113,7 +114,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     @Override
     public DrugPrescription getByPrimaryKey(Integer primaryKey)throws DAOException {
         DrugPrescription res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -132,7 +133,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     public List<DrugPrescription> getAll()throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -163,7 +164,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     public List<DrugPrescription> getByPatient(String patientID)throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -181,7 +182,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     public List<DrugPrescription> getByPractitioner(String practitionerID)throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRACTITIONER)) {
             stm.setString(1, practitionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -199,7 +200,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     public List<DrugPrescription> getExpired()throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDEXPIRED)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_EXPIRED)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -216,7 +217,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         List<DrugPrescription> res;
         res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDVALID)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_VALID)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -233,7 +234,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
 
-        try (PreparedStatement stm = CON.prepareStatement(FINDVALIDBYPATIENT)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_VALID_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -251,7 +252,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     public List<DrugPrescription> getByDateSold(Timestamp ts) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYDATESOLD)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_DATE_SOLD)) {
             stm.setTimestamp(1, ts);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -270,7 +271,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     public List<DrugPrescription> getByPatientNotPaid(String patientID) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDUNPAIDBYPATIENT)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_UNPAID_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {

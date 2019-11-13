@@ -16,11 +16,11 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements ProvinceDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM province WHERE province_id = ?;";
-    final private String SELECTALL = "SELECT * FROM province;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM province WHERE province_id = ?;";
+    final private String GET_ALL = "SELECT * FROM province;";
     final private String COUNT = "SELECT COUNT(*) FROM province;";
 
-    private final String GETBYABBREVIATION = "SELECT * FROM province WHERE province_abbreviation = ?;";
+    private final String GET_BY_ABBREVIATION = "SELECT * FROM province WHERE province_abbreviation = ?;";
 
     public JDBCProvinceDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -44,7 +44,7 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
     @Override
     public Province getByPrimaryKey(Integer primaryKey) throws DAOException {
         Province province = null;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -62,7 +62,7 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
     public List<Province> getAll() throws DAOException {
         List<Province> provinces = new ArrayList<>();
         Province tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -92,7 +92,7 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
     @Override
     public Province getByAbbreviation(String provinceAbbreviation) throws DAOException {
         Province res;
-        try (PreparedStatement stm = CON.prepareStatement(GETBYABBREVIATION)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_ABBREVIATION)) {
             stm.setString(1, provinceAbbreviation);
 
             try (ResultSet rs = stm.executeQuery()) {

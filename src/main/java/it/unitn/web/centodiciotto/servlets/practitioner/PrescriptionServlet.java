@@ -62,7 +62,7 @@ public class PrescriptionServlet extends HttpServlet {
                         List<PatientListElement> patientListElements = new ArrayList<>();
 
                         if (patientID == null) {
-                            List<Patient> patientList = patientDAO.getPatientsByPractitioner(user.getID());
+                            List<Patient> patientList = patientDAO.getByPractitioner(user.getID());
 
                             for (Patient patient : patientList) {
                                 String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());

@@ -23,25 +23,23 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
     final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM exam WHERE exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM exam;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM exam WHERE exam_id = ?;";
+    final private String GET_ALL = "SELECT * FROM exam;";
     final private String COUNT = "SELECT COUNT(*) FROM exam;";
 
-    final private String FINDBYPATIENT = "SELECT * FROM exam WHERE patient_id = ?";
-    final private String FINDBYPATIENTLASTYEAR = "select * from exam where date <= localtimestamp and " +
+    final private String GET_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ?";
+    final private String GET_BY_PATIENT_LAST_YEAR = "select * from exam where date <= localtimestamp and " +
             "date > localtimestamp - interval '1 year' and patient_id = ?;";
-    final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
-    final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND ticket_paid = false AND done = true";
-    final private String FINDBYPATIENTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String GET_BOOKED_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND date IS NOT NULL";
-    final private String FINDBYPATIENT_PENDING_NOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String GET_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
-    final private String FINDBYPATIENT_PENDING_DOCTORNOTSELECTED = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String GET_PENDING_BY_PATIENT_DOCTOR_UNSELECTED = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND doctor_id IS NULL";
-    final private String FINDBYDATE = "SELECT * from exam where date::date = ?::date";
-    final private String FINDRECALLSBYHS = "SELECT * from exam where recall = true and health_service_id = ?";
-    final private String FINDPENDINGBYIDS = "select * from exam where done = false and exam_type = ? " +
+    final private String GET_BY_DATE = "SELECT * from exam where date::date = ?::date";
+    final private String GET_PENDING_RECALL_BY_IDS = "select * from exam where done = false and exam_type = ? " +
             "and health_service_id = ? and patient_id = ?;";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
@@ -120,7 +118,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     @Override
     public Exam getByPrimaryKey(Integer examID) throws DAOException {
         Exam res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, examID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -139,7 +137,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     public List<Exam> getAll() throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -170,7 +168,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     public List<Exam> getByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -189,7 +187,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     public List<Exam> getByPatientLastYear(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTLASTYEAR)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT_LAST_YEAR)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -205,10 +203,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getByPatientNotPaid(String patientID) throws DAOException {
+    public List<Exam> getUnpaidByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTPAID)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_UNPAID_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -223,10 +221,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public List<Exam> getByPatientBooked(String patientID) throws DAOException {
+    public List<Exam> getBookedByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTBOOKED)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BOOKED_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -242,10 +240,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getPendingByPatientNotBooked(String patientID) throws DAOException {
+    public List<Exam> getPendingByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_NOTBOOKED)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -261,10 +259,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getPendingByPatientDoctorNotSelected(String patientID) throws DAOException {
+    public List<Exam> getPendingByPatientDoctorUnselected(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_DOCTORNOTSELECTED)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT_DOCTOR_UNSELECTED)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -283,7 +281,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     public List<Exam> getByDate(Timestamp ts) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYDATE)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_DATE)) {
             stm.setTimestamp(1, ts);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -298,28 +296,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public List<Exam> getRecallsByHealthService(String healthServiceID) throws DAOException {
-        List<Exam> res = new ArrayList<>();
-        Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDRECALLSBYHS)) {
-            stm.setString(1, healthServiceID);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting Exams/Recalls by Province: ", e);
-        }
-    }
-
     public Exam getPendingRecall(Integer examType, String healthServiceID, String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDPENDINGBYIDS)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_RECALL_BY_IDS)) {
             stm.setInt(1, examType);
             stm.setString(2, healthServiceID);
             stm.setString(3, patientID);

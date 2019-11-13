@@ -16,9 +16,8 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamTypeDAO {
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM exam_type WHERE exam_id = ?;";
-    final private String FINDNAMEBYPRIMARYKEY = "SELECT description FROM exam_type WHERE exam_id = ?;";
-    final private String SELECTALL = "SELECT * FROM exam_type order by exam_description asc;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM exam_type WHERE exam_id = ?;";
+    final private String GET_ALL = "SELECT * FROM exam_type order by exam_description asc;";
     final private String COUNT = "SELECT COUNT(*) FROM exam_type;";
 
     public JDBCExamTypeDAO(Connection con) throws DAOFactoryException {
@@ -41,10 +40,10 @@ public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamT
     }
 
     @Override
-    public ExamType getByPrimaryKey(Integer ExamID) throws DAOException {
+    public ExamType getByPrimaryKey(Integer primaryKey) throws DAOException {
         ExamType res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
-            stm.setInt(1, ExamID);
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
+            stm.setInt(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -62,7 +61,7 @@ public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamT
     public List<ExamType> getAll() throws DAOException {
         List<ExamType> res = new ArrayList<>();
         ExamType tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);

@@ -76,9 +76,9 @@ public class PatientsServlet extends HttpServlet {
 
                         if (patientID == null) {
                             if (user instanceof GeneralPractitioner) {
-                                patientList = patientDAO.getPatientsByPractitioner(user.getID());
+                                patientList = patientDAO.getByPractitioner(user.getID());
                             } else if (user instanceof HealthService) {
-                                patientList = patientDAO.getPatientsByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
+                                patientList = patientDAO.getByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
                             } else { // SpecializedDoctor
                                 patientList = patientDAO.getAll();
                             }
@@ -183,9 +183,9 @@ public class PatientsServlet extends HttpServlet {
 
                         List<Patient> allPatients;
                         if (user instanceof GeneralPractitioner) {
-                            allPatients = patientDAO.getPatientsByPractitioner(user.getID());
+                            allPatients = patientDAO.getByPractitioner(user.getID());
                         } else if (user instanceof HealthService) {
-                            allPatients = patientDAO.getPatientsByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
+                            allPatients = patientDAO.getByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
                         } else { // SpecializedDoctor
                             allPatients = patientDAO.getAll();
                         }

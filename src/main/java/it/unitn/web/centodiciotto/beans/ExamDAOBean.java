@@ -40,7 +40,7 @@ public class ExamDAOBean implements Serializable {
         }
 
         try {
-            exams = examDAO.getByPatientNotPaid(userID);
+            exams = examDAO.getUnpaidByPatient(userID);
         } catch (DAOException e) {
             throw new BeanException("Error getting exam list in examDaoBean: ", e);
         }

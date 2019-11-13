@@ -21,11 +21,11 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     final private String UPDATE = "UPDATE password_reset SET token = ?, expiring_date = ? WHERE user_id = ?;";
     final private String DELETE = "DELETE from password_reset WHERE user_id = ?;";
 
-    final private String FINDBYPRIMARYKEY = "SELECT * FROM password_reset WHERE user_id = ?;";
-    final private String SELECTALL = "SELECT * FROM password_reset;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM password_reset WHERE user_id = ?;";
+    final private String GET_ALL = "SELECT * FROM password_reset;";
     final private String COUNT = "SELECT COUNT(*) FROM password_reset;";
 
-    final private String FINDBYTOKEN = "SELECT * FROM password_reset WHERE token = ?;";
+    final private String GET_BY_TOKEN = "SELECT * FROM password_reset WHERE token = ?;";
 
     public JDBCPasswordResetDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -79,7 +79,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     @Override
     public PasswordReset getByPrimaryKey(String primaryKey) throws DAOException {
         PasswordReset res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRIMARYKEY)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setString(1, primaryKey);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -98,7 +98,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     public List<PasswordReset> getAll() throws DAOException {
         List<PasswordReset> res = new ArrayList<>();
         PasswordReset tmp;
-        try (PreparedStatement stm = CON.prepareStatement(SELECTALL)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -128,7 +128,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     @Override
     public PasswordReset getByToken(String token) throws DAOException {
         PasswordReset res;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYTOKEN)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_TOKEN)) {
             stm.setString(1, token);
 
             try (ResultSet rs = stm.executeQuery()) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RecallDAO extends DAO<Recall, Integer> {
 
-    Recall getLastByHealthServiceAndExam(String healthServiceID, Integer examID) throws DAOException;
+    Recall getLastByHealthServiceAndExamType(String healthServiceID, Integer examID) throws DAOException;
 
     List<Recall> getByHealthService(String healthServiceID) throws DAOException;
 }

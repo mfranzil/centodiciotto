@@ -43,7 +43,7 @@ public class SpecializedDoctorDAOBean implements Serializable {
         }
 
         try {
-            patients = patientDAO.getPatientsByPractitioner(specialistID);
+            patients = patientDAO.getByPractitioner(specialistID);
 
         } catch (DAOException e) {
             throw new BeanException("Error getting patients list in SpecializedDoctorDaoBean: ", e);

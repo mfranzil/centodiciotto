@@ -63,7 +63,7 @@ public class DoctorServlet extends HttpServlet {
 
                         try {
                             List<DoctorSearchResult> results = new ArrayList<>();
-                            List<DoctorExam> doctorExamList = doctorExamDAO.getByExamList(examType);
+                            List<DoctorExam> doctorExamList = doctorExamDAO.getByExamType(examType);
 
                             for (DoctorExam doctorExam : doctorExamList) {
                                 SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(doctorExam.getDoctorID());
