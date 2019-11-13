@@ -82,19 +82,19 @@
                 <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
+                <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
+
                 <c:forEach items="${generalPractitionerDAO.bookedVisits}" var="visit">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${visit.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
 
-                    <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
                     <jsp:setProperty name="visitDate" property="date" value="${visit.date}"/>
-
                     <div class="table-personal">
                         <div class="table-cell image">
                             <img class="avatar-small" src="${pageContext.request.contextPath}/${patientDAO.photoPath}"
                                  alt="">
                         </div>
-                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}
+                        <div class="table-cell patient">${patient}
                         </div>
                         <div class="table-cell date">${visitDate.formattedDateTime}</div>
                         <div class="table-cell action">

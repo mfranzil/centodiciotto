@@ -107,7 +107,7 @@
                             <img class="avatar-small" alt=""
                                  src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
                         </div>
-                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}</div>
+                        <div class="table-cell patient">${patient}</div>
                         <div class="table-cell ssn">${patient.SSN}</div>
                         <div class="table-cell action">
                             <button class="btn btn-block btn-personal popup-opener">

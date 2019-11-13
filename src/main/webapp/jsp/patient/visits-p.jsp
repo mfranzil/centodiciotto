@@ -39,16 +39,15 @@
 <div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
         <jsp:useBean id="patientDAO"
-                     class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
-            <jsp:setProperty name="patientDAO" property="patientID"
-                             value="${sessionScope.user.ID}"/>
-            <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
-        </jsp:useBean>
+                     class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+        <jsp:setProperty name="patientDAO" property="patientID"
+                         value="${sessionScope.user.ID}"/>
+        <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
         <c:set var="practitioner" value="${patientDAO.practitioner}"/>
         <c:set var="alreadyBooked" value="${!empty patientDAO.pendingVisit}"/>
 
-        <h3>${practitioner.firstName} ${practitioner.lastName}</h3>
+        <h3>${practitioner}</h3>
         <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book_visit" method="post">
             <button id="booknow" class="btn btn-block btn-personal" type="submit"
             ${alreadyBooked ? "disabled" : ""}> ${alreadyBooked ? "Already booked" : "Book now"}
@@ -76,32 +75,30 @@
                     <div class="table-cell action">Report</div>
                 </div>
 
+                <jsp:useBean id="generalPractitionerDAO"
+                             class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+
+                <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
+
                 <c:forEach items="${patientDAO.doneVisits}" var="visit">
                     <c:if test="${visit.practitionerID ne practitioner.ID}">
-                        <jsp:useBean id="generalPractitionerDAO"
-                                     class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
                         <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
                                          value="${visit.practitionerID}"/>
-                        <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
                         <c:set var="visitPractitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
                     </c:if>
 
-                    <jsp:useBean id="date" class="java.util.Date"/>
-                    <jsp:setProperty name="date" property="time"
-                                     value="${visit.date.time}"/>
+                    <jsp:setProperty name="visitDate" property="date" value="${visit.date}"/>
                     <div class="table-personal">
                         <div class="table-cell practitioner">
                             <c:if test="${visit.practitionerID ne practitioner.ID}">
-                                ${visitPractitioner.firstName} ${visitPractitioner.lastName}
+                                ${visitPractitioner}
                             </c:if>
                             <c:if test="${visit.practitionerID eq practitioner.ID}">
-                                ${practitioner.firstName} ${practitioner.lastName}
+                                ${practitioner}
                             </c:if>
                         </div>
-                        <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${date}"/>
-                            <fmt:formatDate pattern="HH:mm" value="${date}"/>
-                        </div>
+                        <div class="table-cell date">${visitDate.formattedDateTime}</div>
                         <div class="table-cell report-state">${visit.reportAvailable ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
                             <button type="button" class="btn btn-block btn-personal popup-opener"

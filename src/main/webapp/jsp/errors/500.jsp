@@ -6,7 +6,6 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script type="text/javascript">
         $("document").ready(function () {
-            $("#display-domain").html = document.domain;
             $("#reload").click(function () {
                 document.location.reload();
             });
@@ -18,7 +17,7 @@
 <div class="container">
     <div class="jumbotron mt-4">
         <h1>500: Internal Server Error</h1>
-        <p class="lead">The web server is returning an internal error for <em><span id="display-domain"></span></em>.
+        <p class="lead">The web server is returning an internal error for this page.
         </p>
         <a id="reload" class="btn btn-default btn-lg text-center"><span class="green">Try This Page Again</span></a>
     </div>

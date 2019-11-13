@@ -60,16 +60,15 @@
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
-<div class="container">
-    <div class="jumbotron mt-4">
-        <h1>Unhappy with your practitioner?</h1>
-        <p class="lead mt-4 mx-4">
-            No worries. You can change it, as many times as you want, as long as it's employed in the same province.
-            You can find your current practitioner first in the list, followed by all the available ones listed in
-            alphabetical order.
-        </p>
-    </div>
+<div class="jumbotron mt-4">
+    <h1>Unhappy with your practitioner?</h1>
+    <p class="lead mt-4 mx-4">
+        No worries. You can change it, as many times as you want, as long as it's employed in the same province.
+        You can find your current practitioner first in the list, followed by all the available ones listed in
+        alphabetical order.
+    </p>
 </div>
+
 <div class="container">
     <div class="body-content">
         <div class="row">
@@ -80,7 +79,7 @@
 
                 <c:set var="practitioner" value="${requestScope.practitioner}"/>
                 <div id="current-practitioner" class="table-personal chosen-practitioner">
-                    <div class="table-cell name">${practitioner.firstName} ${practitioner.lastName}</div>
+                    <div class="table-cell name">${practitioner}</div>
                     <div class="table-cell province">${practitioner.workingProvince}</div>
                     <div id="check" class="table-cell action">✔</div>
                 </div>
@@ -109,7 +108,8 @@
                                     <div class="table-cell province">${availablePractitioner.workingProvince}
                                     </div>
                                     <div class="table-cell action">
-                                        <input class="practitioner-id" type="radio" name="practitionerID" value="${availablePractitioner.ID}">
+                                        <input class="practitioner-id" type="radio" name="practitionerID"
+                                               value="${availablePractitioner.ID}">
                                     </div>
                                 </div>
                                 <hr>

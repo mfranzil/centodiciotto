@@ -39,39 +39,34 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <jsp:useBean id="drugPrescriptionDAO"
-                             class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean">
-                    <jsp:setProperty name="drugPrescriptionDAO" property="patientID"
-                                     value="${sessionScope.user.ID}"/>
-                    <jsp:setProperty name="drugPrescriptionDAO" property="DAOFactory" value=""/>
-                </jsp:useBean>
                 <div class="table-personal table-header">
                     <div class="table-cell pract">Practitioner</div>
                     <div class="table-cell date">Date</div>
                     <div class="table-cell report-state">Availability</div>
                     <div class="table-cell action">Prescription</div>
                 </div>
-                <c:forEach items="${drugPrescriptionDAO.byPatient}" var="prescription">
 
+                <jsp:useBean id="drugPrescriptionDAO"
+                             class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean"/>
+                <jsp:setProperty name="drugPrescriptionDAO" property="patientID" value="${sessionScope.user.ID}"/>
+                <jsp:setProperty name="drugPrescriptionDAO" property="DAOFactory" value=""/>
+
+                <jsp:useBean id="datePrescribed" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
+
+                <c:forEach items="${drugPrescriptionDAO.byPatient}" var="prescription">
                     <jsp:useBean id="generalPractitionerDAO"
                                  class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
                     <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
                                      value="${prescription.practitionerID}"/>
                     <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
 
-                    <jsp:useBean id="datePrescribed" class="java.util.Date"/>
-                    <jsp:setProperty name="datePrescribed" property="time"
-                                     value="${prescription.datePrescribed.time}"/>
+                    <jsp:setProperty name="datePrescribed" property="date" value="${prescription.datePrescribed}"/>
 
                     <c:set var="practitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
                     <c:set var="available" value="${empty prescription.dateSold or empty prescription.chemistID}"/>
                     <div class="table-personal">
-                        <div class="table-cell pract">${practitioner.firstName}&nbsp;${practitioner.lastName}
-                        </div>
-                        <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${datePrescribed}"/>
-                            <fmt:formatDate pattern="HH:mm" value="${datePrescribed}"/>
-                        </div>
+                        <div class="table-cell pract">${practitioner}</div>
+                        <div class="table-cell date">${datePrescribed.formattedDateTime}</div>
                         <div class="table-cell report-state">${available ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
                             <c:if test="${available}">

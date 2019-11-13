@@ -80,7 +80,7 @@
                             </tr>
                             <tr>
                                 <th>Practitioner</th>
-                                <td>${practitioner.firstName} ${practitioner.lastName}</td>
+                                <td>${practitioner}</td>
                             </tr>
                         </c:when>
                         <c:when test="${sessionScope.role eq 'general_practitioner'}">
