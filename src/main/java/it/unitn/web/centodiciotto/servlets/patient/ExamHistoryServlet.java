@@ -11,6 +11,7 @@ import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletException;
@@ -70,27 +71,51 @@ public class ExamHistoryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        String requestType = request.getParameter("requestType");
 
-        try {
-            if (user instanceof Patient) {
+        switch (requestType) {
+            case "historyList": {
+                try {
+                    if (user instanceof Patient) {
 
-                List<ExamHistoryElement> examHistoryElements = new ArrayList<>();
+                        List<ExamHistoryElement> examHistoryElements = new ArrayList<>();
 
-                List<Exam> patientExamList = examDAO.getByPatientBooked(user.getID());
+                        List<Exam> patientExamList = examDAO.getByPatientBooked(user.getID());
 
-                for (Exam exam : patientExamList) {
-                    examHistoryElements.add(new ExamHistoryElement(exam.getType().getDescription(), exam.getDate().toString(), exam.getDone(), new JsonUtils.Action("See report", exam.getDone()), exam.getID()));
+                        for (Exam exam : patientExamList) {
+                            examHistoryElements.add(new ExamHistoryElement(exam.getType().getDescription(), exam.getDate().toString(), exam.getDone(), new JsonUtils.Action("See report", exam.getDone()), exam.getID()));
+                        }
+
+                        Gson gson = new Gson();
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(examHistoryElements));
+                    }
+                } catch (DAOException e) {
+                    throw new ServletException("Error in DAO usage: ", e);
                 }
-
-                Gson gson = new Gson();
-                response.setContentType("application/json");
-                response.getWriter().write(gson.toJson(examHistoryElements));
+                break;
             }
-        } catch (DAOException e) {
-            throw new ServletException("Error in DAO usage: ", e);
+            case "detailedInfo": {
+                try {
+                    if (user instanceof Patient) {
+                        String examID = request.getParameter("item");
+
+                        List<Object> jsonResponse = new ArrayList<>();
+                        Exam currentExam = examDAO.getByPrimaryKey(Integer.valueOf(examID));
+
+                        jsonResponse.add(new HtmlElement().setElementType("h5").setElementContent("Exam Result:"));
+                        jsonResponse.add(new HtmlElement().setElementType("p").setElementContent(currentExam.getResult()));
+
+                        Gson gson = new Gson();
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(jsonResponse));
+                    }
+                } catch (DAOException e) {
+                    throw new ServletException("Error in DAO usage: ", e);
+                }
+                break;
+            }
         }
-
-
     }
 
     private static class ExamHistoryElement {

@@ -48,6 +48,9 @@
                     type: "POST",
                     dataType: "json",
                     url: url,
+                    data: {
+                        requestType: "historyList"
+                    },
                     success: function (json) {
                         console.log(json);
                         $("#main-table").insertRows(tableHeaders, json, url);
