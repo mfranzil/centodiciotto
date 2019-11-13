@@ -104,7 +104,7 @@
                             </a>
                             <div class="dropdown-menu nav-personal">
                                 <a class="dropdown-item nav-link-personal"
-                                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_request">Requests</a>
+                                   href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_requests">Requests</a>
                                 <a class="dropdown-item nav-link-personal"
                                    href="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_calendar">Calendar</a>
                                 <a class="dropdown-item nav-link-personal"
@@ -126,7 +126,7 @@
                             </a>
                             <div class="dropdown-menu nav-personal">
                                 <a class="dropdown-item nav-link-personal"
-                                   href="${pageContext.request.contextPath}/restricted/health_service/exam_request">Requests</a>
+                                   href="${pageContext.request.contextPath}/restricted/health_service/exam_requests">Requests</a>
                                 <a class="dropdown-item nav-link-personal"
                                    href="${pageContext.request.contextPath}/restricted/health_service/exam_calendar">Calendar</a>
                                 <a class="dropdown-item nav-link-personal"

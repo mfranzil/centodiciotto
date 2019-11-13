@@ -78,14 +78,6 @@
         <url-pattern>/restricted/specialized_doctor/exam_history</url-pattern>
     </servlet-mapping>
 
-    <servlet>
-        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/exam_request-sd.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamsRequestSpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/exam_request</url-pattern>
-    </servlet-mapping>
 
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>

@@ -1,12 +1,14 @@
 package it.unitn.web.centodiciotto.beans;
 
 
+import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 public class SpecializedDoctorDAOBean implements Serializable {
 
+    private ExamDAO examDAO = null;
     private PatientDAO patientDAO = null;
     private SpecializedDoctorDAO specializedDoctorDAO = null;
 
@@ -26,6 +29,8 @@ public class SpecializedDoctorDAOBean implements Serializable {
 
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
+            examDAO = daoFactory.getDAO(ExamDAO.class);
+
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error in DAO retrieval: ", e);
         }
@@ -58,5 +63,17 @@ public class SpecializedDoctorDAOBean implements Serializable {
             throw new BeanException("Error getting lastVisit in specialistDaoBean: ", e);
         }
 
+    }
+
+    public List<Exam> getPendingExams() throws BeanException {
+        if (specialistID == null) {
+            throw new BeanException("Specialist is null");
+        }
+
+        try {
+            return examDAO.getPendingByDoctorNotBooked(specialistID);
+        } catch (DAOException e) {
+            throw new BeanException("Error getting pending Exams: ", e);
+        }
     }
 }
