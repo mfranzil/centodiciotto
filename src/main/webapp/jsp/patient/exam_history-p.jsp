@@ -6,6 +6,7 @@
 <head>
     <title>Exam history - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <style>
         @media (min-width: 992px) {
             /* Tabella principale */
@@ -17,7 +18,7 @@
                 width: 20%;
             }
 
-            .table-cell.report-state {
+            .table-cell.report_state {
                 width: 15%;
             }
 
@@ -26,6 +27,37 @@
             }
         }
     </style>
+    <script>
+        $("document").ready(function () {
+            const url = getContextPath() + "/restricted/patient/exam_history";
+
+            let tableHeaders = [
+                {field: "exam", type: "string", text: "Exam"},
+                {field: "date", type: "string", text: "Date"},
+                {field: "report_state", type: "bool", text: "Report State"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#main-table").createTableHeaders(tableHeaders);
+            renderExamsRows();
+
+            function renderExamsRows(examID, onlyAvailable = true) {
+                $("#main-loading-container").slideDown();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: url,
+                    success: function (json) {
+                        console.log(json);
+                        $("#main-table").insertRows(tableHeaders, json, url);
+                        $("#main-loading-container").slideUp();
+                        enablePopup();
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -42,45 +74,47 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <div class="table-personal table-header">
-                    <div class="table-cell exam">Exam</div>
-                    <div class="table-cell date">Date</div>
-                    <div class="table-cell report-state">Report State</div>
-                    <div class="table-cell action">Report</div>
-                </div>
-                <c:forEach items="${requestScope.exams}" var="pair">
-                    <c:set var="exam" value="${pair.first}"/>
-                    <c:set var="description" value="${pair.second}"/>
+                <div id="main-table" class="mt-2">
+                    <div class="table-personal table-header">
+                        <div class="table-cell exam">Exam</div>
+                        <div class="table-cell date">Date</div>
+                        <div class="table-cell report-state">Report State</div>
+                        <div class="table-cell action">Report</div>
+                    </div>
+                    <c:forEach items="${requestScope.exams}" var="pair">
+                        <c:set var="exam" value="${pair.first}"/>
+                        <c:set var="description" value="${pair.second}"/>
 
-                    <jsp:useBean id="date" class="java.util.Date"/>
-                    <jsp:setProperty name="date" property="time"
-                                     value="${exam.date.time}"/>
-                    <div class="table-personal">
-                        <div class="table-cell exam">${description}</div>
-                        <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${date}"/>
-                            <fmt:formatDate pattern="HH:mm" value="${date}"/>
-                        </div>
-                        <div class="table-cell report-state">${exam.done ? "Available" : "Not available"}</div>
-                        <div class="table-cell action">
-                            <button type="button" ${exam.done ? "" : "disabled"}
-                                    class="btn btn-block btn-personal popup-opener">
-                                See Report
-                            </button>
-                            <div class="popup-window">
-                                <div class="popup animate-in">
-                                    <div>
-                                        <h4>Report</h4>
-                                        <br>
-                                        <p>${exam.result}</p>
+                        <jsp:useBean id="date" class="java.util.Date"/>
+                        <jsp:setProperty name="date" property="time"
+                                         value="${exam.date.time}"/>
+                        <div class="table-personal">
+                            <div class="table-cell exam">${description}</div>
+                            <div class="table-cell date">
+                                <fmt:formatDate type="date" dateStyle="long" value="${date}"/>
+                                <fmt:formatDate pattern="HH:mm" value="${date}"/>
+                            </div>
+                            <div class="table-cell report-state">${exam.done ? "Available" : "Not available"}</div>
+                            <div class="table-cell action">
+                                <button type="button" ${exam.done ? "" : "disabled"}
+                                        class="btn btn-block btn-personal popup-opener">
+                                    See Report
+                                </button>
+                                <div class="popup-window">
+                                    <div class="popup animate-in">
+                                        <div>
+                                            <h4>Report</h4>
+                                            <br>
+                                            <p>${exam.result}</p>
+                                        </div>
+                                        <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                                     </div>
-                                    <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                </c:forEach>
+                        <hr>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </div>

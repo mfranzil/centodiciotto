@@ -39,6 +39,7 @@ $("document").ready(function () {
                 data: form.serialize(),
                 success: function () {
                     label.text("Exam booked successfully")
+                    location.reload();
                 },
                 error: function () {
                     label.text("Error while booking exam")

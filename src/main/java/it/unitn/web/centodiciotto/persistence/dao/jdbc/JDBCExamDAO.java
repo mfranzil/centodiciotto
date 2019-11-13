@@ -33,6 +33,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String FINDNAMEBYID = "SELECT exam_description FROM exam_list WHERE exam_id = ?";
     final private String FINDBYPATIENTNOTPAID = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND ticket_paid = false AND done = true";
+    final private String FINDBYPATIENTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND date IS NOT NULL";
     final private String FINDBYPATIENT_PENDING_NOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
     final private String FINDBYPATIENT_PENDING_DOCTORNOTSELECTED = "SELECT * FROM exam WHERE patient_id = ? " +
@@ -207,6 +209,24 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
         try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTNOTPAID)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting not paid Exams by PatientID: ", e);
+        }
+    }
+
+    public List<Exam> getByPatientBooked(String patientID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENTBOOKED)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {

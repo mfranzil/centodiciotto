@@ -170,6 +170,14 @@ public class ExamsServlet extends HttpServlet {
                         if (examID != null) {
                             examType.setID(Integer.valueOf(examID));
                         }
+                        //TODO implement more efficient function
+                        List<Exam> toDelete = examDAO.getPendingByPatientNotBooked(user.getID());
+                        for (Exam exam : toDelete) {
+                            if (exam.getType().getID() == Integer.valueOf(examID)) {
+                                examDAO.delete(exam);
+                                break;
+                            }
+                        }
 
                         Exam newExam = new Exam();
                         newExam.setPatientID(user.getID());
@@ -185,7 +193,7 @@ public class ExamsServlet extends HttpServlet {
                 } catch (NumberFormatException e) {
                     throw new ServletException("Error ExamID is null", e);
                 } catch (DAOException e) {
-                    e.printStackTrace();
+                    throw new ServletException("DAOException while inserting doctor_exam", e);
                 }
                 break;
             }

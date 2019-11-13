@@ -100,7 +100,8 @@ $("document").ready(function () {
         return this;
     };
 
-    $.fn.select2.defaults.set("theme", "bootstrap");
+    //TODO CHANGE LOCATION OF THIS
+    //$.fn.select2.defaults.set("theme", "bootstrap");
 
     $.fn.insertRows = function (headers, data, url) {
         let mainTable = this;
@@ -116,6 +117,20 @@ $("document").ready(function () {
                 if (item.hasOwnProperty(header.field)) {
                     switch (header.type) {
                         case "string": {
+                            cell.innerHTML = item[header.field];
+                            break;
+                        }
+                        case "bool": {
+                            if (item[header.field] === true) {
+                                cell.innerHTML = "Available";
+                            } else {
+                                cell.innerHTML = "Not available";
+                            }
+                            break;
+                        }
+                        case "date": {
+                            var date = item[header.field];
+                            console.log(date.toLocaleString());
                             cell.innerHTML = item[header.field];
                             break;
                         }

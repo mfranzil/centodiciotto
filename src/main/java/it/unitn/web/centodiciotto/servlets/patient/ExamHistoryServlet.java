@@ -1,6 +1,7 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
 
+import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -9,6 +10,7 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.utils.JsonUtils;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletException;
@@ -63,6 +65,47 @@ public class ExamHistoryServlet extends HttpServlet {
                 throw new ServletException("Error in DAO usage: ", e);
             }
             // TODO Fine codice da modificare
+        }
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+
+        try {
+            if (user instanceof Patient) {
+
+                List<ExamHistoryElement> examHistoryElements = new ArrayList<>();
+
+                List<Exam> patientExamList = examDAO.getByPatientBooked(user.getID());
+
+                for (Exam exam : patientExamList) {
+                    examHistoryElements.add(new ExamHistoryElement(exam.getType().getDescription(), exam.getDate().toString(), exam.getDone(), new JsonUtils.Action("See report", exam.getDone()), exam.getID()));
+                }
+
+                Gson gson = new Gson();
+                response.setContentType("application/json");
+                response.getWriter().write(gson.toJson(examHistoryElements));
+            }
+        } catch (DAOException e) {
+            throw new ServletException("Error in DAO usage: ", e);
+        }
+
+
+    }
+
+    private static class ExamHistoryElement {
+        private String exam;
+        private String date;
+        private Boolean report_state;
+        private JsonUtils.Action action;
+        private Integer ID;
+
+        public ExamHistoryElement(String exam, String date, Boolean reportState, JsonUtils.Action action, Integer ID) {
+            this.exam = exam;
+            this.date = date;
+            this.report_state = reportState;
+            this.action = action;
+            this.ID = ID;
         }
     }
 }
