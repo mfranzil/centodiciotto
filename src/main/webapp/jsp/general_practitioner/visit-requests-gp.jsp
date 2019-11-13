@@ -25,6 +25,26 @@
     </style>
     <script>
         $("document").ready(function () {
+            $(".set-visit").submit(function (e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let url = form.attr('action');
+                let button = form.find("button.submit");
+                let data = form.serialize();
+
+                button.prop("disabled", true).html("Confirming..");
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    cache: false,
+                    data: data,
+                    success: function (data) {
+                        button.html("Confirmed");
+                    }
+                });
+            });
             $(".datepicker").datepicker({
                 dateFormat: "dd/mm/yy",
                 beforeShowDay: $.datepicker.noWeekends,
@@ -75,44 +95,41 @@
                                  value="${sessionScope.user.ID}"/>
                 <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
 
-                <c:forEach items="${generalPractitionerDAO.pendingVisits}" var="pendingVisit">
-                    <jsp:useBean id="patientDAO"
-                                 class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
-                        <jsp:setProperty name="patientDAO" property="patientID"
-                                         value="${pendingVisit.patientID}"/>
-                        <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
-                    </jsp:useBean>
+                <jsp:useBean id="patientDAO"
+                             class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
+                <c:forEach items="${generalPractitionerDAO.pendingVisits}" var="visit">
+                    <jsp:setProperty name="patientDAO" property="patientID" value="${visit.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">
                         <div class="table-cell image">
-                            <img class="avatar-small" alt="" src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
+                            <img class="avatar-small" alt=""
+                                 src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
                         </div>
-                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}
-                        </div>
-                        <div class="table-cell ssn">${patient.SSN}
-                        </div>
+                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}</div>
+                        <div class="table-cell ssn">${patient.SSN}</div>
                         <div class="table-cell action">
                             <button class="btn btn-block btn-personal popup-opener">
                                 Choose date and time
                             </button>
                             <div class="popup-window">
                                 <div class="popup animate-in">
-                                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visits"
-                                          id="set_visit" method="POST">
+                                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_requests"
+                                          class="set-visit" method="POST">
                                         Insert a date and time for the appointment, then confirm.
                                         <div style="display: flex; width: 100%;">
                                             <label style="flex: 50%" class="my-2 mr-1">
-                                                <input class="form-control datepicker" autocomplete="off"
+                                                <input class="form-control datepicker visit-date" autocomplete="off"
                                                        type="text" name="visitDate">
                                             </label>
                                             <label style="flex: 50%" class="my-2 ml-1">
-                                                <input class="form-control timepicker" autocomplete="off"
+                                                <input class="form-control timepicker visit-time" autocomplete="off"
                                                        type="text" name="visitTime">
                                             </label>
                                         </div>
                                         <input type="hidden" value="${patient.ID}" name="patientID">
-                                        <button class="btn btn-lg btn-block btn-personal" type="submit">
+                                        <button class="btn btn-lg btn-block btn-personal submit" type="submit">
                                             Confirm the appointment
                                         </button>
                                         <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">

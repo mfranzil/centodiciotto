@@ -3,7 +3,6 @@ package it.unitn.web.centodiciotto.servlets.practitioner;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
-import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
@@ -27,7 +26,6 @@ import java.util.List;
 @WebServlet("/restricted/general_practitioner/prescriptions")
 public class PrescriptionServlet extends HttpServlet {
     private PatientDAO patientDAO;
-    private VisitDAO visitDAO;
 
     @Override
     public void init() throws ServletException {
@@ -37,7 +35,6 @@ public class PrescriptionServlet extends HttpServlet {
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-            visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -69,20 +66,27 @@ public class PrescriptionServlet extends HttpServlet {
 
                             for (Patient patient : patientList) {
                                 String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
-                                patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, new JsonUtils.Action("Prescribe Exam or Drug", true), patient.getID()));
+                                patientListElements.add(new PatientListElement(patient.toString(),
+                                        patient.getSSN(),
+                                        photoPath,
+                                        new JsonUtils.Action("Prescribe Exam or Drug", true),
+                                        patient.getID()));
                             }
                         } else {
                             Patient patient = patientDAO.getByPrimaryKey(patientID);
                             if (patient.getPractitionerID().equals(user.getID())) {
                                 String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
-                                patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, new JsonUtils.Action("Prescribe Exam or Drug", true), patient.getID()));
+                                patientListElements.add(new PatientListElement(patient.toString(),
+                                        patient.getSSN(),
+                                        photoPath,
+                                        new JsonUtils.Action("Prescribe Exam or Drug", true),
+                                        patient.getID()));
                             }
                         }
                         Gson gson = new Gson();
 
                         response.setContentType("application/json");
                         response.getWriter().write(gson.toJson(patientListElements));
-
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
@@ -92,7 +96,6 @@ public class PrescriptionServlet extends HttpServlet {
                 }
             }
             case "detailedInfo": {
-
                 String patientID = request.getParameter("item");
 
                 List<Object> jsonResponse = new ArrayList<>();
@@ -129,7 +132,7 @@ public class PrescriptionServlet extends HttpServlet {
                 jsonResponse.add(drugForm);
                 jsonResponse.add(new HtmlElement().setElementType("br"));
 
-                jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details_js/prescription.js"));
+                jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details/prescription.js"));
 
                 Gson gson = new Gson();
                 response.setContentType("application/json");

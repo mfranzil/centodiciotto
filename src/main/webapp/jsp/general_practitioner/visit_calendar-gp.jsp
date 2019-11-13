@@ -7,7 +7,6 @@
 <head>
     <title>Visit calendar - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-
     <style>
         @media (min-width: 992px) {
             .table-cell.image {
@@ -19,11 +18,7 @@
             }
 
             .table-cell.date {
-                width: 15%;
-            }
-
-            .table-cell.time {
-                width: 15%;
+                width: 30%;
             }
 
             .table-cell.action {
@@ -31,7 +26,29 @@
             }
         }
     </style>
+    <script>
+        $("document").ready(function () {
+            $(".mark-completed").submit(function (e) {
+                e.preventDefault();
 
+                let form = $(this);
+                let url = form.attr('action');
+                let button = form.find("button");
+
+                button.prop("disabled", true).html("Sending..");
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    cache: false,
+                    data: form.serialize(),
+                    success: function (data) {
+                        button.html("Completed");
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -44,44 +61,55 @@
     </p>
 </div>
 
+
 <div class="container">
-    <div class="table-personal table-header">
-        <div class="table-cell image">&nbsp;</div>
-        <div class="table-cell patient">Patient</div>
-        <div class="table-cell date">Date</div>
-        <div class="table-cell time">Time</div>
-        <div class="table-cell action"></div>
-    </div>
+    <div class="body-content">
+        <div class="row">
+            <div class="col-md">
+                <div class="table-personal table-header">
+                    <div class="table-cell image">&nbsp;</div>
+                    <div class="table-cell patient">Patient</div>
+                    <div class="table-cell date">Date and time</div>
+                    <div class="table-cell action"></div>
+                </div>
 
-    <c:forEach items="${requestScope.patient_visits}" var="pair">
-        <c:set var="patient" value="${pair.first}"/>
-        <c:set var="visit" value="${pair.second}"/>
+                <jsp:useBean id="generalPractitionerDAO"
+                             class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                                 value="${sessionScope.user.ID}"/>
+                <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
 
-        <jsp:useBean id="visitDate" class="java.util.Date"/>
-        <jsp:setProperty name="visitDate" property="time" value="${visit.date.time}"/>
+                <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
-        <div class="table-personal">
-            <div class="table-cell image">
-                <img class="avatar-small"
-                     src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png" alt="">
-            </div>
-            <div class="table-cell patient">${patient.firstName} ${patient.lastName}
-            </div>
-            <div class="table-cell date">
-                <fmt:formatDate type="date" dateStyle="long" value="${visitDate}"/>
-            </div>
-            <div class="table-cell time"><fmt:formatDate pattern="HH:mm" value="${visitDate}"/>
-            </div>
-            <div class="table-cell action">
-                <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
-                      id="mark_completed" method="POST">
-                    <input type="hidden" value="${visit.ID}" name="visitID">
-                    <button type="submit" class="btn btn-block btn-personal ">Mark as completed</button>
-                </form>
+                <c:forEach items="${generalPractitionerDAO.bookedVisits}" var="visit">
+                    <jsp:setProperty name="patientDAO" property="patientID" value="${visit.patientID}"/>
+                    <c:set var="patient" value="${patientDAO.patient}"/>
+
+                    <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
+                    <jsp:setProperty name="visitDate" property="date" value="${visit.date}"/>
+
+                    <div class="table-personal">
+                        <div class="table-cell image">
+                            <img class="avatar-small" src="${pageContext.request.contextPath}/${patientDAO.photoPath}"
+                                 alt="">
+                        </div>
+                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}
+                        </div>
+                        <div class="table-cell date">${visitDate.formattedDateTime}</div>
+                        <div class="table-cell action">
+                            <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
+                                  class="mark-completed" method="POST">
+                                <input type="hidden" value="${visit.ID}" name="visitID">
+                                <button type="submit" class="btn btn-block btn-personal">Mark as completed</button>
+                            </form>
+                        </div>
+                    </div>
+                    <hr>
+                </c:forEach>
             </div>
         </div>
-        <hr>
-    </c:forEach>
+    </div>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

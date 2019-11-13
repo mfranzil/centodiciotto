@@ -75,6 +75,7 @@ function getDetails(id, url) {
 
         },
         success: function (json) {
+            console.log(json);
             buildHtmlFromJson(json, content);
             $(".loading").slideUp();
         }
@@ -100,8 +101,7 @@ $("document").ready(function () {
         return this;
     };
 
-    //TODO CHANGE LOCATION OF THIS
-    //$.fn.select2.defaults.set("theme", "bootstrap");
+    $.fn.select2.defaults.set("theme", "bootstrap");
 
     $.fn.insertRows = function (headers, data, url) {
         let mainTable = this;

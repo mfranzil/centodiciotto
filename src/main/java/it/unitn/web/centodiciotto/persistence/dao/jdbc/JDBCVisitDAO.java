@@ -24,18 +24,21 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     final private String SELECTALL = "SELECT * FROM visit;";
     final private String COUNT = "SELECT COUNT(*) FROM visit;";
 
-    final private String FINDBYPATIENT = "SELECT * FROM visit WHERE patient_id = ? order by visit_date desc;";
-    final private String FINDDONEBYPATIENT = "SELECT * FROM visit WHERE patient_id = ?" +
-            " and booked = true order by visit_date desc;";
-    final private String FINDBYPRACTITIONER = "SELECT * FROM visit WHERE practitioner_id = ? order by visit_date desc;";
-    final private String GETLASTPATIENTVISIT = "SELECT * from visit where patient_id = " +
-            "? and visit_date <= localtimestamp order by visit_date desc limit 1;";
-    final private String PENDINGBYPRACTITIONERPATIENT = "SELECT * FROM visit " +
-            "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE;";
-    final private String PENDINGBYPRACTITIONER = "SELECT * FROM visit WHERE " +
+    final private String GETPENDINGBYPRACTITIONER = "SELECT * FROM visit WHERE " +
             "practitioner_id = ? AND booked = FALSE;";
-    final private String FINDBYDATE = "SELECT * from visit where visit_date::date = ?::date;";
+    final private String GETBOOKEDBYPRACTITIONER = "SELECT * FROM visit WHERE " +
+            "practitioner_id = ? AND booked = TRUE AND visit_date is not null " +
+            "and report_available = FALSE order by visit_date desc;";
+    final private String GETDONEBYPRACTITIONER = "SELECT * FROM visit WHERE " +
+            "practitioner_id = ? AND report_available = true order by visit_date desc;";
 
+    final private String GETDONEBYPATIENT = "SELECT * FROM visit WHERE patient_id = ?" +
+            " and report_available = true order by visit_date desc;";
+    final private String GETLASTBYPATIENT = "SELECT * from visit where patient_id = " +
+            "? and visit_date <= localtimestamp order by visit_date desc limit 1;";
+    final private String GETPENDINGBYPRACTITIONERPATIENT = "SELECT * FROM visit " +
+            "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE;";
+    final private String GETBYDATE = "SELECT * from visit where visit_date::date = ?::date;";
 
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -142,102 +145,10 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
-    public List<Visit> getByPatient(String patientID) throws DAOException {
+    public List<Visit> getPendingByPractitioner(String practitionerID) throws DAOException {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT)) {
-            stm.setString(1, patientID);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting Visit by PatientID: ", e);
-        }
-    }
-
-    @Override
-    public List<Visit> getDoneByPatient(String patientID) throws DAOException {
-        List<Visit> res = new ArrayList<>();
-        Visit tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDDONEBYPATIENT)) {
-            stm.setString(1, patientID);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting Visit by PatientID: ", e);
-        }
-    }
-
-    @Override
-    public List<Visit> getByPractitioner(String practitionerID) throws DAOException {
-        List<Visit> res = new ArrayList<>();
-        Visit tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPRACTITIONER)) {
-            stm.setString(1, practitionerID);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting Visit by PractitionerID: ", e);
-        }
-    }
-
-    @Override
-    public Visit getLastVisitByPatientID(String patientID) throws DAOException {
-        Visit visit = null;
-        try {
-            PreparedStatement stm = CON.prepareStatement(GETLASTPATIENTVISIT);
-            stm.setString(1, patientID);
-
-            ResultSet rs = stm.executeQuery();
-
-            if (rs.next()) {
-                visit = mapRowToEntity(rs);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting last Visit: ", e);
-        }
-        return visit;
-    }
-
-    @Override
-    public Visit getPendingVisitByPractitionerAndPatient(String practitionerID, String patientID) throws DAOException {
-        try (PreparedStatement stm = CON.prepareStatement(PENDINGBYPRACTITIONERPATIENT)) {
-            stm.setString(1, practitionerID);
-            stm.setString(2, patientID);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                if (rs.next()) {
-                    return mapRowToEntity(rs);
-                }
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting PendingVisits by practitioner and patient: ", e);
-        }
-        return null;
-    }
-
-    @Override
-    public List<Visit> getPendingVisitsByPractitioner(String practitionerID) throws DAOException {
-        List<Visit> res = new ArrayList<>();
-        Visit tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PENDINGBYPRACTITIONER)) {
+        try (PreparedStatement stm = CON.prepareStatement(GETPENDINGBYPRACTITIONER)) {
             stm.setString(1, practitionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -253,10 +164,102 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     }
 
     @Override
+    public List<Visit> getBookedByPractitioner(String practitionerID) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GETBOOKEDBYPRACTITIONER)) {
+            stm.setString(1, practitionerID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Booked Visits by practitionerID: ", e);
+        }
+    }
+
+    @Override
+    public List<Visit> getDoneByPractitioner(String practitionerID) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GETDONEBYPRACTITIONER)) {
+            stm.setString(1, practitionerID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting done Visits by practitionerID: ", e);
+        }
+    }
+
+    @Override
+    public List<Visit> getDoneByPatient(String patientID) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GETDONEBYPATIENT)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Visit by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public Visit getLastByPatient(String patientID) throws DAOException {
+        Visit visit = null;
+        try {
+            PreparedStatement stm = CON.prepareStatement(GETLASTBYPATIENT);
+            stm.setString(1, patientID);
+
+            ResultSet rs = stm.executeQuery();
+
+            if (rs.next()) {
+                visit = mapRowToEntity(rs);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting last Visit: ", e);
+        }
+        return visit;
+    }
+
+    @Override
+    public Visit getPendingByPractitionerAndPatient(String practitionerID, String patientID) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(GETPENDINGBYPRACTITIONERPATIENT)) {
+            stm.setString(1, practitionerID);
+            stm.setString(2, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return mapRowToEntity(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting PendingVisits by practitioner and patient: ", e);
+        }
+        return null;
+    }
+
+    @Override
     public List<Visit> getByDate(Timestamp ts) throws DAOException {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYDATE)) {
+        try (PreparedStatement stm = CON.prepareStatement(GETBYDATE)) {
             stm.setTimestamp(1, ts);
 
             try (ResultSet rs = stm.executeQuery()) {

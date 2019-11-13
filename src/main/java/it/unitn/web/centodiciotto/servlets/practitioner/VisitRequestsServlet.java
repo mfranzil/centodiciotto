@@ -20,10 +20,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
-@WebServlet("/restricted/general_practitioner/visits")
-public class VisitRequestServlet extends HttpServlet {
+@WebServlet("/restricted/general_practitioner/visit_requests")
+public class VisitRequestsServlet extends HttpServlet {
     private VisitDAO visitDAO;
 
     @Override
@@ -44,8 +43,7 @@ public class VisitRequestServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof GeneralPractitioner) {
-            request.getRequestDispatcher("/jsp/general_practitioner/visits-gp.jsp").forward(request, response);
-
+            request.getRequestDispatcher("/jsp/general_practitioner/visit-requests-gp.jsp").forward(request, response);
         }
     }
 
@@ -59,26 +57,21 @@ public class VisitRequestServlet extends HttpServlet {
             String visitTime = request.getParameter("visitTime");
             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
+            if (visitDate == null || visitTime == null || patientID == null
+                    || visitTime.equals("") || visitDate.equals("")) {
+                throw new ServletException("Malformed input.");
+            }
+
             try {
                 Date date = formatter.parse(visitDate + " " + visitTime);
 
-                Visit toBook = null;
+                Visit pendingVisit = visitDAO.getPendingByPractitionerAndPatient(practitionerID, patientID);
 
-                List<Visit> pendingVisits = visitDAO.getPendingVisitsByPractitioner(practitionerID);
+                if (pendingVisit != null) {
+                    pendingVisit.setDate(new Timestamp(date.getTime()));
+                    pendingVisit.setBooked(true);
 
-                for (Visit visit : pendingVisits) {
-                    if (visit.getPatientID().equals(patientID)) {
-                        toBook = visit;
-                    }
-                }
-
-                if (toBook != null) {
-                    toBook.setDate(new Timestamp(date.getTime()));
-                    toBook.setBooked(true);
-
-                    visitDAO.update(toBook);
-
-                    doGet(request, response); // TODO usare json / reload
+                    visitDAO.update(pendingVisit);
                 }
             } catch (DAOException e) {
                 throw new ServletException("Error in DAO usage: ", e);

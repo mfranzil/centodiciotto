@@ -53,6 +53,11 @@
                                 <td>${sessionScope.user.ID} </td>
                             </tr>
                             <tr>
+                                <th>Gender</th>
+                                <td>${(sessionScope.user.gender eq 'M'.charAt(0)) ? "Male" :
+                                 (sessionScope.user.gender eq 'F'.charAt(0)) ? "Female" : "Not specified"}</td>
+                            </tr>
+                            <tr>
                                 <th>SSN</th>
                                 <td>${sessionScope.user.SSN} </td>
                             </tr>
@@ -72,10 +77,6 @@
                             <tr>
                                 <th>Living province</th>
                                 <td>${sessionScope.user.livingProvince}</td>
-                            </tr>
-                            <tr>
-                                <th>Gender</th>
-                                <td>${sessionScope.user.gender}</td>
                             </tr>
                             <tr>
                                 <th>Practitioner</th>
@@ -135,16 +136,16 @@
                                 <td>${sessionScope.user.name} </td>
                             </tr>
                             <tr>
-                                <th>Province</th>
-                                <td>${sessionScope.user.province} </td>
-                            </tr>
-                            <tr>
                                 <th>E-mail</th>
                                 <td>${sessionScope.user.ID} </td>
                             </tr>
                             <tr>
                                 <th>Working place</th>
                                 <td>${sessionScope.user.workingPlace}</td>
+                            </tr>
+                            <tr>
+                                <th>Working province</th>
+                                <td>${sessionScope.user.province} </td>
                             </tr>
                         </c:when>
                         <c:otherwise>
@@ -179,30 +180,30 @@
                     </button>
                 </form>
                 <c:if test="${sessionScope.role eq 'patient'}">
-                <h3 class="my-4">
-                    Change your profile picture
-                </h3>
-                <div class="input-group">
-                    <form action="${pageContext.request.contextPath}/restricted/user"
-                          id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
-                        <div class="custom-file" style="z-index: 0;">
-                            <input type="file" class="custom-file-input"
-                                   name="avatarSelect" id="avatar-select" accept="image/png, image/jpeg">
-                            <label class="custom-file-label" for="avatar-select">Choose file</label>
-                            <input id="extension" type="hidden" name="extension" value="none">
-                            <input type="hidden" name="requestType" value="uploadPhoto">
-                        </div>
-                        <button class="btn btn-block mt-4 btn-personal" type="submit">
-                            Upload
-                        </button>
-                    </form>
-                    <form class="center-100"
-                          action="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
-                        <button class="btn btn-block mt-4 btn-personal" type="submit">
-                            See gallery
-                        </button>
-                    </form>
-                </div>
+                    <h3 class="my-4">
+                        Change your profile picture
+                    </h3>
+                    <div class="input-group">
+                        <form action="${pageContext.request.contextPath}/restricted/user"
+                              id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
+                            <div class="custom-file" style="z-index: 0;">
+                                <input type="file" class="custom-file-input"
+                                       name="avatarSelect" id="avatar-select" accept="image/png, image/jpeg">
+                                <label class="custom-file-label" for="avatar-select">Choose file</label>
+                                <input id="extension" type="hidden" name="extension" value="none">
+                                <input type="hidden" name="requestType" value="uploadPhoto">
+                            </div>
+                            <button class="btn btn-block mt-4 btn-personal" type="submit">
+                                Upload
+                            </button>
+                        </form>
+                        <form class="center-100"
+                              action="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
+                            <button class="btn btn-block mt-4 btn-personal" type="submit">
+                                See gallery
+                            </button>
+                        </form>
+                    </div>
                 </c:if>
             </div>
         </div>

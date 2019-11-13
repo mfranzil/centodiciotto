@@ -12,8 +12,9 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
+import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 
 @WebServlet("/restricted/chemist/prescriptions")
@@ -177,13 +179,15 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         Province province = ((Chemist) user).getProvince();
 
                         List<PatientSearchResult> results = new ArrayList<>();
-                        List<Patient> allPatients;
+                        List<Patient> allPatients = patientDAO.getPatientsByProvince(province.getAbbreviation());
 
-                        if (userInput == null) {
-                            allPatients = patientDAO.getPatientsByProvince(province.getAbbreviation());
-                        } else {
-                            allPatients = patientDAO.getPatientsBySSNOrPartialNameandProvince(userInput, province.getAbbreviation());
+                        if (userInput != null) {
+                            allPatients = allPatients.stream().filter(patient
+                                    -> (patient.toString() + patient.getSSN()).toLowerCase()
+                                    .contains(userInput.toLowerCase()))
+                                    .collect(Collectors.toList());
                         }
+
                         int id = 0;
                         for (Patient patient : allPatients) {
                             results.add(new PatientSearchResult(
@@ -221,7 +225,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             patientListElements.add(new PrescriptionListElement(
                                     generalPractitioner.toString(),
                                     prescription.getDrugType().getDescription(),
-                                    new Date(prescription.getDatePrescribed().getTime()),
+                                    CustomDTFormatter.formatDate(new Date(prescription.getDatePrescribed().getTime())),
                                     prescription.getID(),
                                     "Dispatch prescription"));
                         }
@@ -311,11 +315,11 @@ public class ChemistPrescriptionServlet extends HttpServlet {
     private static class PrescriptionListElement implements Serializable {
         private String pract;
         private String drug;
-        private Date date;
+        private String date;
         private ExamAction action;
         private Integer ID;
 
-        PrescriptionListElement(String pract, String drug, Date date, Integer ID, String action) {
+        PrescriptionListElement(String pract, String drug, String date, Integer ID, String action) {
             this.pract = pract;
             this.drug = drug;
             this.date = date;

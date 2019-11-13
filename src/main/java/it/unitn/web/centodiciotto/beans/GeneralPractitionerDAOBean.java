@@ -72,7 +72,19 @@ public class GeneralPractitionerDAOBean implements Serializable {
         }
 
         try {
-            return visitDAO.getPendingVisitsByPractitioner(practitionerID);
+            return visitDAO.getPendingByPractitioner(practitionerID);
+        } catch (DAOException e) {
+            throw new BeanException("Error getting pending Visits: ", e);
+        }
+    }
+
+    public List<Visit> getBookedVisits() throws BeanException {
+        if (practitionerID == null) {
+            throw new BeanException("Practitioner is null");
+        }
+
+        try {
+            return visitDAO.getBookedByPractitioner(practitionerID);
         } catch (DAOException e) {
             throw new BeanException("Error getting pending Visits: ", e);
         }

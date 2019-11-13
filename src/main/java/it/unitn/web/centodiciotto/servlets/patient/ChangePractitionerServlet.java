@@ -59,7 +59,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 ((Patient) user).setPractitionerID(newPractitionerID);
                 patientDAO.update((Patient) user);
 
-                Visit pendingVisit = visitDAO.getPendingVisitByPractitionerAndPatient(oldPract.getID(), user.getID());
+                Visit pendingVisit = visitDAO.getPendingByPractitionerAndPatient(oldPract.getID(), user.getID());
                 if (pendingVisit != null) {
                     visitDAO.delete(pendingVisit);
                 }

@@ -126,7 +126,7 @@ public class PatientsServlet extends HttpServlet {
                         jsonResponse.add(JsonUtils.createTableEntry("Practitioner", practitioner.toString()));
 
                         // Last visit
-                        Visit lastVisit = visitDAO.getLastVisitByPatientID(patientID);
+                        Visit lastVisit = visitDAO.getLastByPatient(patientID);
                         if (lastVisit != null) {
                             GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(lastVisit.getPractitionerID());
 

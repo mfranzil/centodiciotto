@@ -4,10 +4,10 @@
 <head>
     <title>Patients - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-    <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2-bootstrap.min.css">
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <style>
         @media (min-width: 992px) {
             /* Tabella principale */
@@ -62,7 +62,7 @@
                 .trigger("change")
                 .on('select2:select', function (e) {
                     $("#main-loading-container").slideDown();
-                    $("#test-table").children().not('first').remove();
+                    $("#main-table").children().not('first').remove();
                     $("#patient-name").html(e.params.data.fullName);
                     $("#patient-ssn").html(e.params.data.SSN);
                     $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
@@ -72,7 +72,7 @@
                 .on('select2:unselect', function (e) {
                     $("#main-loading-container").slideUp();
                     $("#patient-info").slideUp();
-                    $("#test-table").children().not('first').remove();
+                    $("#main-table").children().not('first').remove();
                     renderPrescriptions();
                 });
 
@@ -86,8 +86,8 @@
                     },
                     url: url,
                     success: function (json) {
-                        $("#test-table").createTableHeaders(tableHeaders);
-                        $("#test-table").insertRows(tableHeaders, json, url);
+                        $("#main-table").createTableHeaders(tableHeaders);
+                        $("#main-table").insertRows(tableHeaders, json, url);
                         enablePopup();
                         $("#main-loading-container").slideUp();
 
@@ -123,7 +123,7 @@
                             setTimeout(function () {
                                 $(".popup-window").hide();
                                 $("#main-loading-container").slideDown();
-                                $("#test-table").children().not('first').remove();
+                                $("#main-table").children().not('first').remove();
                             }, 750);
 
                             setTimeout(function () {
@@ -134,7 +134,7 @@
                             alert("Error. Prescription already served.");
                             $(".popup-window").hide();
                             $("#main-loading-container").slideDown();
-                            $("#test-table").children().not('first').remove();
+                            $("#main-table").children().not('first').remove();
                             renderPrescriptions();
                         }
                     });
@@ -146,7 +146,7 @@
 
             if (action === "qr") {
                 $("#main-loading-container").slideDown();
-                $("#test-table").children().not('first').remove();
+                $("#main-table").children().not('first').remove();
                 $("#patient-name").html("${requestScope.patient}");
                 $("#patient-ssn").html("${requestScope.patient.SSN}");
                 $("#patient-avatar").prop("src", getContextPath() + "${requestScope.patientPhoto}");
@@ -177,17 +177,15 @@
                 </div>
                 <div class="patient-info" id="patient-info" style="text-align: center">
                     <img id="patient-avatar" class="avatar-medium" src="" alt="">
-                    <div id="patient-name" class="mt-2">
-                    </div>
-                    <div id="patient-ssn" class="mb-2">
-                    </div>
+                    <div id="patient-name" class="mt-2"></div>
+                    <div id="patient-ssn" class="mb-2"></div>
                 </div>
                 <div class="justify-content-center loading mt-2" id="main-loading-container"
                      style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>
-                <div id="test-table"></div>
+                <div id="main-table"></div>
             </div>
         </div>
     </div>

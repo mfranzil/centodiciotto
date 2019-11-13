@@ -51,19 +51,19 @@ public class CryptoService {
         if (instance == null) {
             instance = new CryptoService(daoFactory);
         } else {
-            throw new ServiceException("EmailService already configured. You can call configure only one time");
+            throw new ServiceException("CryptoService already configured. You can call configure only one time");
         }
     }
 
     public static CryptoService getInstance() throws ServiceException {
         if (instance == null) {
-            throw new ServiceException("EmailService not yet configured. " +
-                    "Call EmaiLService.configure() before use the class");
+            throw new ServiceException("CryptoService not yet configured. " +
+                    "Cal CryptoService.configure() before use the class");
         }
         return instance;
     }
 
-    private String hash(String password, String salt) {
+    private String hash(String password, String salt) throws ServiceException {
         char[] passwordChar = password.toCharArray();
         PBEKeySpec spec = new PBEKeySpec(passwordChar, salt.getBytes(), ITERATIONS, KEY_LENGTH);
         Arrays.fill(passwordChar, Character.MIN_VALUE);
@@ -71,7 +71,7 @@ public class CryptoService {
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             return bytesToHex(skf.generateSecret(spec).getEncoded());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new AssertionError("Error while hashing a password: " + e.getMessage(), e);
+            throw new ServiceException("Error while hashing a password: " + e.getMessage(), e);
         } finally {
             spec.clearPassword();
         }
@@ -88,7 +88,7 @@ public class CryptoService {
         return new String(hexChars);
     }
 
-    private boolean isExpectedPassword(String password, String salt, String expectedHash) {
+    private boolean isExpectedPassword(String password, String salt, String expectedHash) throws ServiceException {
         String inputHash = hash(password, salt);
         Arrays.fill(password.toCharArray(), Character.MIN_VALUE);
         if (inputHash.length() != expectedHash.length()) {

@@ -73,7 +73,7 @@ public class PatientDAOBean implements Serializable {
 
     public Visit getLastVisit() throws BeanException {
         try {
-            return visitDAO.getLastVisitByPatientID(patientID);
+            return visitDAO.getLastByPatient(patientID);
         } catch (DAOException e) {
             throw new BeanException("Error getting lastVisit in patientDaoBean: ", e);
         }
@@ -97,7 +97,7 @@ public class PatientDAOBean implements Serializable {
 
     public Visit getPendingVisit() throws BeanException {
         try {
-            return visitDAO.getPendingVisitByPractitionerAndPatient(getPatient().getPractitionerID(), patientID);
+            return visitDAO.getPendingByPractitionerAndPatient(getPatient().getPractitionerID(), patientID);
         } catch (DAOException e) {
             throw new BeanException("Error getting exams in patientDaoBean: ", e);
         }

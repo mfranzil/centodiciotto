@@ -72,11 +72,11 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link nav-link-personal dropdown-toggle"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Visits and Request
+                                Visits and Requests
                             </a>
                             <div class="dropdown-menu nav-personal">
                                 <a class="dropdown-item nav-link-personal"
-                                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visits">Requests</a>
+                                   href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_requests">Requests</a>
                                 <a class="dropdown-item nav-link-personal"
                                    href="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar">Calendar</a>
                                 <a class="dropdown-item nav-link-personal"

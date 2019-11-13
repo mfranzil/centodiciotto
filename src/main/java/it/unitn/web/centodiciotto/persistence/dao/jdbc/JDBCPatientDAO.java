@@ -29,13 +29,13 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
 
     final private String FINDBYPRIMARYKEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
-    final private String SELECTALL = "SELECT * FROM patient;";
+    final private String SELECTALL = "SELECT * FROM patient order by last_name asc;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
 
-    final private String PATIENTSBYPRACTITIONER = "SELECT * FROM patient WHERE practitioner_id = ?;";
-    final private String PATIENTSLIKESSNORIDANDPROVINCE = "select * from patient where (LOWER(ssn) like " +
-            "LOWER(?) or LOWER(patient_id) like LOWER(?)) AND living_province = ?;";
-    final private String PATIENTSBYPROVINCE = "SELECT * FROM patient WHERE living_province = ?;";
+    final private String PATIENTSBYPRACTITIONER = "SELECT * FROM patient " +
+            "WHERE practitioner_id = ? order by last_name asc;";
+    final private String PATIENTSBYPROVINCE = "SELECT * FROM patient " +
+            "WHERE living_province = ? order by last_name asc;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -160,25 +160,6 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting Patients by primary key: ", e);
-        }
-    }
-
-    public List<Patient> getPatientsBySSNOrPartialNameandProvince(String query, String provinceAbbreviation) throws DAOException {
-        List<Patient> res = new ArrayList<>();
-        Patient tmp;
-        try (PreparedStatement stm = CON.prepareStatement(PATIENTSLIKESSNORIDANDPROVINCE)) {
-            stm.setString(1, "%" + query + "%");
-            stm.setString(2, "%" + query + "%");
-            stm.setString(3, provinceAbbreviation);
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting Patients by LIKE SSN or ID: ", e);
         }
     }
 

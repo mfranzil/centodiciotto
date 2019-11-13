@@ -9,17 +9,17 @@ import java.util.List;
 
 public interface VisitDAO extends DAO<Visit, Integer> {
 
-    List<Visit> getByPatient(String patientID) throws DAOException;
+    List<Visit> getPendingByPractitioner(String practictionerID) throws DAOException;
+
+    List<Visit> getBookedByPractitioner(String practitionerID) throws DAOException;
+
+    List<Visit> getDoneByPractitioner(String practitionerID) throws DAOException;
 
     List<Visit> getDoneByPatient(String patientID) throws DAOException;
 
-    List<Visit> getByPractitioner(String practitionerID) throws DAOException;
+    Visit getLastByPatient(String patient) throws DAOException;
 
-    Visit getLastVisitByPatientID(String patient) throws DAOException;
-
-    Visit getPendingVisitByPractitionerAndPatient(String practictionerID, String patientID) throws DAOException;
-
-    List<Visit> getPendingVisitsByPractitioner(String practictionerID) throws DAOException;
+    Visit getPendingByPractitionerAndPatient(String practictionerID, String patientID) throws DAOException;
 
     List<Visit> getByDate(Timestamp ts) throws DAOException;
 
