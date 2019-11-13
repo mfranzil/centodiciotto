@@ -73,7 +73,7 @@ public class ExamsServlet extends HttpServlet {
 
                         List<ExamListElement> examListElements = new ArrayList<>();
 
-                        List<Exam> patientExamList = examDAO.getPendingByPatientDoctorUnselected(user.getID());
+                        List<Exam> patientExamList = examDAO.getPendingByPatientDoctorHealthServiceNotSelected(user.getID());
 
                         if (examID == null) {
                             if (onlyAvailable) {
@@ -98,6 +98,7 @@ public class ExamsServlet extends HttpServlet {
                             for (Exam exam : patientExamList) {
                                 if (exam.getType().getID().equals(integerExamID)) {
                                     found = true;
+                                    break;
                                 }
                             }
                             ExamType examType = examTypeDAO.getByPrimaryKey(integerExamID);
@@ -159,36 +160,32 @@ public class ExamsServlet extends HttpServlet {
                 }
                 break;
             }
+            //TODO change location?? (book exam from patient to doctor)
             case "doctorExamBook": {
                 try {
                     if (user instanceof Patient) {
                         String examID = request.getParameter("examID");
                         String doctorID = request.getParameter("doctorID");
+                        String isHealthService = request.getParameter("isHealthService");
 
-                        ExamType examType = new ExamType();
+                        if (examID != null && doctorID != null && isHealthService != null) {
+                            ExamType examType = examTypeDAO.getByPrimaryKey(Integer.valueOf(examID));
 
-                        if (examID != null) {
-                            examType.setID(Integer.valueOf(examID));
-                        }
-                        //TODO implement more efficient function
-                        List<Exam> toDelete = examDAO.getPendingByPatient(user.getID());
-                        for (Exam exam : toDelete) {
-                            if (exam.getType().getID() == Integer.valueOf(examID)) {
-                                examDAO.delete(exam);
-                                break;
+                            Exam toUpdate = examDAO.getPendingByPatientNotBookedAndExamType(user.getID(), examType.getID());
+
+                            if (Boolean.parseBoolean(isHealthService)) {
+                                toUpdate.setHealthServiceID(doctorID);
+                                toUpdate.setTicket(50);
+                            } else {
+                                toUpdate.setDoctorID(doctorID);
+                                toUpdate.setTicket(30);
                             }
+                            toUpdate.setBooked(false);
+                            toUpdate.setType(examType);
+                            toUpdate.setDone(false);
+
+                            examDAO.update(toUpdate);
                         }
-
-                        Exam newExam = new Exam();
-                        newExam.setPatientID(user.getID());
-                        newExam.setDoctorID(doctorID);
-                        newExam.setBooked(false);
-                        newExam.setType(examType);
-                        newExam.setDone(false);
-                        newExam.setTicket(-1);
-
-                        examDAO.insert(newExam);
-
                     }
                 } catch (NumberFormatException e) {
                     throw new ServletException("Error ExamID is null", e);

@@ -36,11 +36,17 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND date IS NOT NULL";
     final private String GET_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
-    final private String GET_PENDING_BY_PATIENT_DOCTOR_UNSELECTED = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND doctor_id IS NULL";
+    final private String GET_PENDING_NOT_BOOKED_BY_PATIENT_AND_TYPE = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND exam_type = ? AND booked IS FALSE";
+    final private String GET_BY_PATIENT_NOT_DOCTOR_NOT_HS = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND doctor_id IS NULL AND health_service_id IS NULL";
+    final private String GET_PENDING_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+            "AND booked IS false";
+    final private String GET_PENDING_BY_PATIENT_AND_TYPE_AND_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+            "AND patient_id = ? AND exam_type = ? AND booked IS false";
     final private String GET_BY_DATE = "SELECT * from exam where date::date = ?::date";
     final private String GET_PENDING_RECALL_BY_IDS = "select * from exam where done = false and exam_type = ? " +
-            "and health_service_id = ? and patient_id = ?;";
+            "and health_service_id = ? and patient_id = ? and recall is not null;";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -88,12 +94,17 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(6, exam.getResult());
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
-            stm.setBoolean(10, exam.isTicketPaid());
-            stm.setInt(11, exam.getRecall());
-            stm.setString(11, exam.getPractitionerID());
-            stm.setBoolean(12, exam.isBooked());
+            stm.setBoolean(9, exam.isTicketPaid());
+            stm.setString(10, exam.getPractitionerID());
+            stm.setBoolean(11, exam.isBooked());
+            if (exam.getRecall() == null || exam.getRecall() == 0) {
+                stm.setNull(12, Types.INTEGER);
+            } else {
+                stm.setInt(12, exam.getRecall());
+            }
 
-            stm.setInt(11, exam.getID());
+
+            stm.setInt(13, exam.getID());
 
             int row = stm.executeUpdate();
             System.out.println("Rows affected: " + row);
@@ -258,11 +269,33 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    @Override
-    public List<Exam> getPendingByPatientDoctorUnselected(String patientID) throws DAOException {
+    public Exam getPendingByPatientNotBookedAndExamType(String patientID, Integer examID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT_DOCTOR_UNSELECTED)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_NOT_BOOKED_BY_PATIENT_AND_TYPE)) {
+            stm.setString(1, patientID);
+            stm.setInt(2, examID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                if (res.size() > 1) {
+                    throw new DAOException("Error getting pending and not booked Exams by PatientID: more than one pending");
+                }
+                return res.get(0);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending and not booked Exams by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public List<Exam> getPendingByPatientDoctorHealthServiceNotSelected(String patientID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT_NOT_DOCTOR_NOT_HS)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -274,6 +307,48 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting pending Exams with no doctor selected by PatientID: ", e);
+        }
+    }
+
+    public List<Exam> getPendingByDoctorNotBooked(String doctorID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_DOCTOR)) {
+            stm.setString(1, doctorID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending Exams for Doctor: ", e);
+        }
+    }
+
+    public Exam getPendingByDoctorAndPatient(String doctorID, String patientID, Integer examID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT_AND_TYPE_AND_DOCTOR)) {
+            stm.setString(1, doctorID);
+            stm.setString(2, patientID);
+            stm.setInt(3, examID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                if (res.size() > 1) {
+                    throw new DAOException("Error getting pending Exams for Doctor for given patient: multiple pending exam per patient");
+                } else {
+                    return res.get(0);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending Exams for Doctor for given patient: ", e);
         }
     }
 

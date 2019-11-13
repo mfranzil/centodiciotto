@@ -2,6 +2,7 @@ package it.unitn.web.centodiciotto.servlets.shared;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.DoctorExamDAO;
+import it.unitn.web.centodiciotto.persistence.dao.HealthServiceDAO;
 import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -22,6 +23,7 @@ import java.util.List;
 public class DoctorServlet extends HttpServlet {
     private SpecializedDoctorDAO specializedDoctorDAO;
     private DoctorExamDAO doctorExamDAO;
+    private HealthServiceDAO healthServiceDAO;
 
     @Override
     public void init() throws ServletException {
@@ -32,6 +34,7 @@ public class DoctorServlet extends HttpServlet {
         try {
             specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             doctorExamDAO = daoFactory.getDAO(DoctorExamDAO.class);
+            healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
 
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
@@ -67,8 +70,10 @@ public class DoctorServlet extends HttpServlet {
 
                             for (DoctorExam doctorExam : doctorExamList) {
                                 SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(doctorExam.getDoctorID());
-                                results.add(new DoctorSearchResult(doctorExam.getDoctorID(), specializedDoctor.toString()));
+                                results.add(new DoctorSearchResult(doctorExam.getDoctorID(), specializedDoctor.toString(), false));
                             }
+                            HealthService livingHealthService = healthServiceDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
+                            results.add(new DoctorSearchResult(livingHealthService.getID(), "Servizio Sanitario Provinciale di " + ((Patient) user).getLivingProvince().getName(), true));
 
                             if (userInput != null) {
                                 List<DoctorSearchResult> tmpResults = new ArrayList<>();
@@ -93,10 +98,12 @@ public class DoctorServlet extends HttpServlet {
     private static class DoctorSearchResult implements Serializable {
         private String id;
         private String text;
+        private Boolean healthService;
 
-        public DoctorSearchResult(String id, String text) {
+        public DoctorSearchResult(String id, String text, Boolean healthService) {
             this.id = id;
             this.text = text;
+            this.healthService = healthService;
         }
 
         public String getText() {

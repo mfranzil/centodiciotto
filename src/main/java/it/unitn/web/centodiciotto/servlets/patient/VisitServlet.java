@@ -61,6 +61,5 @@ public class VisitServlet extends HttpServlet {
                 throw new ServletException("Error in DAO usage: ", e);
             }
         }
-        doGet(request, response); // TODO Usare JSON
     }
 }

@@ -28,6 +28,8 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String GET_ALL = "SELECT * FROM health_service;";
     final private String COUNT = "SELECT COUNT(*) FROM health_service;";
 
+    final private String GET_BY_PROVINCE = "SELECT *  FROM health_service WHERE operating_province = ?;";
+
     public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
         super(con);
     }
@@ -121,6 +123,23 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             throw new DAOException("Error counting HealthServices: ", e);
         }
         return -1L;
+    }
+
+    public HealthService getByProvince(String provinceAbbreviation) throws DAOException {
+        HealthService res;
+        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
+            stm.setString(1, provinceAbbreviation);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    res = mapRowToEntity(rs);
+                    return res;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Health Service by province: ", e);
+        }
+        return null;
     }
 
     @Override

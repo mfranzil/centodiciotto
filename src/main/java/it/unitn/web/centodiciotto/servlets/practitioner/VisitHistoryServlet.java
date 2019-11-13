@@ -151,7 +151,6 @@ public class VisitHistoryServlet extends HttpServlet {
                         Visit tmp = visitDAO.getByPrimaryKey(visitID);
                         tmp.setReport(reportText);
                         visitDAO.update(tmp);
-
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
