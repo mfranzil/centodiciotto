@@ -12,7 +12,6 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
 import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
-import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,25 +46,7 @@ public class ExamHistoryServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof Patient) {
-            // TODO Inizio codice da modificare con i beans
-            try {
-                List<Pair<Exam, String>> to_be_sent = new ArrayList<>();
-                List<Exam> exams_history = examDAO.getByPatient(user.getID());
-                // Since Exam description is in another table, here I join everything together
-                for (Exam exam : exams_history) {
-                    try {
-                        to_be_sent.add(Pair.makePair(exam,
-                                examTypeDAO.getByPrimaryKey(exam.getType().getID()).getDescription()));
-                    } catch (DAOException e) {
-                        throw new ServletException("Error in DAO usage: ", e);
-                    }
-                }
-                request.setAttribute("exams", to_be_sent);
-                request.getRequestDispatcher("/jsp/patient/exam_history-p.jsp").forward(request, response);
-            } catch (DAOException e) {
-                throw new ServletException("Error in DAO usage: ", e);
-            }
-            // TODO Fine codice da modificare
+            request.getRequestDispatcher("/jsp/patient/exam_history-p.jsp").forward(request, response);
         }
     }
 

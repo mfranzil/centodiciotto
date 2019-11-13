@@ -77,46 +77,11 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <div id="main-table" class="mt-2">
-                    <div class="table-personal table-header">
-                        <div class="table-cell exam">Exam</div>
-                        <div class="table-cell date">Date</div>
-                        <div class="table-cell report-state">Report State</div>
-                        <div class="table-cell action">Report</div>
-                    </div>
-                    <c:forEach items="${requestScope.exams}" var="pair">
-                        <c:set var="exam" value="${pair.first}"/>
-                        <c:set var="description" value="${pair.second}"/>
-
-                        <jsp:useBean id="date" class="java.util.Date"/>
-                        <jsp:setProperty name="date" property="time"
-                                         value="${exam.date.time}"/>
-                        <div class="table-personal">
-                            <div class="table-cell exam">${description}</div>
-                            <div class="table-cell date">
-                                <fmt:formatDate type="date" dateStyle="long" value="${date}"/>
-                                <fmt:formatDate pattern="HH:mm" value="${date}"/>
-                            </div>
-                            <div class="table-cell report-state">${exam.done ? "Available" : "Not available"}</div>
-                            <div class="table-cell action">
-                                <button type="button" ${exam.done ? "" : "disabled"}
-                                        class="btn btn-block btn-personal popup-opener">
-                                    See Report
-                                </button>
-                                <div class="popup-window">
-                                    <div class="popup animate-in">
-                                        <div>
-                                            <h4>Report</h4>
-                                            <br>
-                                            <p>${exam.result}</p>
-                                        </div>
-                                        <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </c:forEach>
+                <div id="main-table">
+                </div>
+                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>
             </div>
         </div>
