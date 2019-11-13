@@ -1,4 +1,6 @@
 $("document").ready(function () {
+    let isHealthService = false;
+
     $(".doctor-search").select2({
         placeholder: "Select a Specialized Doctor",
         allowClear: true,
@@ -27,22 +29,28 @@ $("document").ready(function () {
         let doctor = form.find(".doctor-search");
         let label = form.find(".doctor-label");
 
+        let d = doctor.select2("data")[0].healthService;
+        console.log(d);
+
         if (doctor.val() == null) {
             label.text('Please select an exam');
         } else {
             label.text('');
 
+            let data = $(this).serializeArray();
+            data.push({name: "isHealthService", value: doctor.select2("data")[0].healthService});
+
             $.ajax({
                 type: "POST",
                 url: url,
                 cache: false,
-                data: form.serialize(),
+                data: data,
                 success: function () {
-                    label.text("Exam booked successfully")
-                    location.reload();
+                    label.text("Exam booked successfully");
+                    setTimeout(() => window.location.reload(), 750);
                 },
                 error: function () {
-                    label.text("Error while booking exam")
+                    label.text("Error while booking exam");
                 }
             });
         }

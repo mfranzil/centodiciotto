@@ -37,8 +37,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND date IS NOT NULL";
     final private String FINDBYPATIENT_PENDING_NOTBOOKED = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
-    final private String FINDBYPATIENT_PENDING_DOCTORNOTSELECTED = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND doctor_id IS NULL";
+    final private String FINDBYPATIENT_PENDING_NOTBOOKED_AND_EXAMTYPE = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND exam_type = ? AND booked IS FALSE";
+    final private String FINDBYPATIENT_PENDING_NOT_DOCTOR_NOT_HEALTHSERVICE = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND doctor_id IS NULL AND health_service_id IS NULL";
     final private String FINDBYDOCTOR_PENDING = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND booked IS false";
     final private String FINDBYDOCTORANDPATIENT_PENDING_BY_EXAM = "SELECT * FROM exam WHERE doctor_id = ? " +
@@ -269,11 +271,33 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    @Override
-    public List<Exam> getPendingByPatientDoctorNotSelected(String patientID) throws DAOException {
+    public Exam getPendingByPatientNotBookedAndExamType(String patientID, Integer examID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_DOCTORNOTSELECTED)) {
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_NOTBOOKED_AND_EXAMTYPE)) {
+            stm.setString(1, patientID);
+            stm.setInt(2, examID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                if (res.size() > 1) {
+                    throw new DAOException("Error getting pending and not booked Exams by PatientID: more than one pending");
+                }
+                return res.get(0);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending and not booked Exams by PatientID: ", e);
+        }
+    }
+
+    @Override
+    public List<Exam> getPendingByPatientDoctorHealthServiceNotSelected(String patientID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(FINDBYPATIENT_PENDING_NOT_DOCTOR_NOT_HEALTHSERVICE)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
