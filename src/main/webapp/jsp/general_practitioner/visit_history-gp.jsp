@@ -38,7 +38,7 @@
                 {field: "avt", type: "photo", text: "&nbsp;"},
                 {field: "name", type: "string", text: "Name"},
                 {field: "ssn", type: "string", text: "SSN"},
-                {field: "date", type: "date", text: "Date"},
+                {field: "date", type: "string", text: "Date"},
                 {field: "action", type: "button", text: "&nbsp;"}
             ];
 

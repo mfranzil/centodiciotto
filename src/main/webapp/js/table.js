@@ -132,12 +132,6 @@ $("document").ready(function () {
                             }
                             break;
                         }
-                        case "date": {
-                            var date = item[header.field];
-                            console.log(date.toLocaleString());
-                            cell.innerHTML = item[header.field];
-                            break;
-                        }
                         case "photo" : {
                             let img = document.createElement("img");
                             img.className = "avatar-small";
