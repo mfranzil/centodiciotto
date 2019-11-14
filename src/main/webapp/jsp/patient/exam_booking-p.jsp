@@ -107,7 +107,7 @@
     <h1>Book Your Exam</h1>
     <p class="lead mt-4 mx-4">
         You can search for the exam you need via the appropriate search menu.
-        The exam date will be established by the specialist doctor.
+        The exam date will be established by the specialized doctor.
     </p>
 </div>
 
@@ -116,7 +116,7 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <div class="form-group" style="width: 100%; margin: auto">
+                <div class="form-group width-100" style="margin: auto">
                     <select id="exam-search" name="examSearch" class="select2-allow-clear form-control mr-1"
                             style="margin: 1em" autofocus>
                     </select>

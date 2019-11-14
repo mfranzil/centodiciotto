@@ -9,6 +9,8 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -192,7 +194,7 @@ public class RecallsServlet extends HttpServlet {
 
                     Gson gson = new Gson();
                     response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new Results(results.toArray(new ExamSearchResult[0]))));
+                    response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
                 }
                 break;
             }
@@ -209,7 +211,7 @@ public class RecallsServlet extends HttpServlet {
         return dateLong <= minAgeLong && dateLong >= maxAgeLong;
     }
 
-    private static class TableExam {
+    private static class TableExam implements Serializable {
         private String exam;
         private String date;
         private String age;
@@ -218,29 +220,6 @@ public class RecallsServlet extends HttpServlet {
             this.exam = exam;
             this.date = date;
             this.age = age;
-        }
-    }
-
-    private static class ExamSearchResult implements Serializable {
-        private Integer id;
-        private String text;
-
-        ExamSearchResult(Integer id, String text) {
-            this.id = id;
-            this.text = text;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-    }
-
-    private static class Results implements Serializable {
-        private ExamSearchResult[] results;
-
-        Results(ExamSearchResult[] results) {
-            this.results = results;
         }
     }
 }

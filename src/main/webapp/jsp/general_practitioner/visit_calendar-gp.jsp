@@ -72,22 +72,22 @@
                     <div class="table-cell action"></div>
                 </div>
 
-                <jsp:useBean id="generalPractitionerDAO"
+                <jsp:useBean id="practitionerID"
                              class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
-                <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                <jsp:setProperty name="practitionerID" property="practitionerID"
                                  value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerID" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${generalPractitionerDAO.bookedVisits}" var="exam">
+                <c:forEach items="${practitionerID.bookedVisits}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
 
-                    <jsp:setProperty name="visitDate" property="date" value="${exam.date}"/>
+                    <jsp:setProperty name="visitDate" property="date" value="${exam.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell avt">
                             <img class="avatar-small" src="${pageContext.request.contextPath}/${patientDAO.photoPath}"

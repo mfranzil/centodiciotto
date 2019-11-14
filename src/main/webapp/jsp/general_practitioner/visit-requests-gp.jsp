@@ -89,17 +89,17 @@
                     <div class="table-cell action">&nbsp;</div>
                 </div>
 
-                <jsp:useBean id="generalPractitionerDAO"
+                <jsp:useBean id="practitionerDAO"
                              class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
-                <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                  value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="patientDAO"
                              class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
-                <c:forEach items="${generalPractitionerDAO.pendingVisits}" var="exam">
+                <c:forEach items="${practitionerDAO.pendingVisits}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">

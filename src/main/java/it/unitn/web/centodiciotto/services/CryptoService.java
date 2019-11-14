@@ -25,7 +25,7 @@ public class CryptoService {
     private transient UserDAO userDAO;
     private transient PatientDAO patientDAO;
     private transient GeneralPractitionerDAO practitionerDAO;
-    private transient SpecializedDoctorDAO specializedDoctorDAO;
+    private transient SpecializedDoctorDAO doctorDAO;
     private transient ChemistDAO chemistDAO;
     private transient HealthServiceDAO healthServiceDAO;
 
@@ -39,7 +39,7 @@ public class CryptoService {
 
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
-            specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
+            doctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             chemistDAO = daoFactory.getDAO(ChemistDAO.class);
             healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
         } catch (DAOFactoryException e) {
@@ -137,7 +137,7 @@ public class CryptoService {
                     case "general_practitioner":
                         return practitionerDAO.getByPrimaryKey(ID);
                     case "specialized_doctor":
-                        return specializedDoctorDAO.getByPrimaryKey(ID);
+                        return doctorDAO.getByPrimaryKey(ID);
                     case "chemist":
                         return chemistDAO.getByPrimaryKey(ID);
                     case "health_service":

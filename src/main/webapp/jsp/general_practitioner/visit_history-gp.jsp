@@ -63,6 +63,35 @@
                     }
                 });
             }
+
+            $(document).ajaxSuccess(function () {
+                activateForm();
+            });
+
+            function activateForm() {
+                $(".submit-report").submit(function (e) {
+                    e.preventDefault();
+
+                    let form = $(this);
+                    let url = form.attr('action');
+                    let button = form.find("button.submit-button");
+
+                    button.prop("disabled", true).html("Sending..");
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        cache: false,
+                        data: form.serialize(),
+                        success: function (data) {
+                            button.html("Report updated");
+                            setTimeout(function() {
+                                button.prop("disabled", false).html("Submit report");
+                            }, 2000);
+                        }
+                    });
+                });
+            }
         });
     </script>
 </head>

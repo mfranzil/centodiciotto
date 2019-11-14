@@ -48,7 +48,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(1, patient.getID());
             stm.setString(2, patient.getFirstName());
             stm.setString(3, patient.getLastName());
-            stm.setDate(4, patient.getBirthDate());
+            stm.setTimestamp(4, patient.getBirthDate());
             stm.setString(5, patient.getBirthPlace());
             stm.setString(6, patient.getSSN());
             stm.setString(7, String.valueOf(patient.getGender()));
@@ -70,7 +70,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, patient.getFirstName());
             stm.setString(2, patient.getLastName());
-            stm.setDate(3, patient.getBirthDate());
+            stm.setTimestamp(3, patient.getBirthDate());
             stm.setString(4, patient.getBirthPlace());
             stm.setString(5, patient.getSSN());
             stm.setString(6, String.valueOf(patient.getGender()));
@@ -192,7 +192,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             patient.setID(rs.getString("patient_id"));
             patient.setFirstName(rs.getString("first_name"));
             patient.setLastName(rs.getString("last_name"));
-            patient.setBirthDate(rs.getDate("birth_date"));
+            patient.setBirthDate(rs.getTimestamp("birth_date"));
             patient.setBirthPlace(rs.getString("birth_place"));
             patient.setSSN(rs.getString("ssn"));
             patient.setGender(rs.getString("gender").charAt(0));

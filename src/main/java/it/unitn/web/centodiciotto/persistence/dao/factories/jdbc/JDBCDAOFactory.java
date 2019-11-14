@@ -87,16 +87,16 @@ public class JDBCDAOFactory implements DAOFactory {
 
     @Override
     public void shutdown() throws DAOFactoryException {
-            Enumeration<Driver> drivers = DriverManager.getDrivers();
-            while (drivers.hasMoreElements()) {
-                Driver driver = drivers.nextElement();
-                try {
-                    DriverManager.deregisterDriver(driver);
-                } catch (SQLException e) {
-                    throw new DAOFactoryException("Error deregistering driver " + driver + ": ", e);
-                }
-
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
+            try {
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException e) {
+                throw new DAOFactoryException("Error deregistering driver " + driver + ": ", e);
             }
+
+        }
     }
 
     @Override

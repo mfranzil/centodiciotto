@@ -45,23 +45,22 @@
                     <div class="table-cell action">Prescription</div>
                 </div>
 
-                <jsp:useBean id="drugPrescriptionDAO"
-                             class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean"/>
-                <jsp:setProperty name="drugPrescriptionDAO" property="patientID" value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="drugPrescriptionDAO" property="DAOFactory" value=""/>
+                <jsp:useBean id="prescriptionDAO" class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean"/>
+                <jsp:setProperty name="prescriptionDAO" property="patientID" value="${sessionScope.user.ID}"/>
+                <jsp:setProperty name="prescriptionDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="datePrescribed" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${drugPrescriptionDAO.byPatient}" var="prescription">
-                    <jsp:useBean id="generalPractitionerDAO"
+                <c:forEach items="${prescriptionDAO.byPatient}" var="prescription">
+                    <jsp:useBean id="practitionerDAO"
                                  class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
-                    <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                    <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                      value="${prescription.practitionerID}"/>
-                    <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                    <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
 
-                    <jsp:setProperty name="datePrescribed" property="date" value="${prescription.datePrescribed}"/>
+                    <jsp:setProperty name="datePrescribed" property="date" value="${prescription.datePrescribed.time}"/>
 
-                    <c:set var="practitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
+                    <c:set var="practitioner" value="${practitionerDAO.practitioner}"/>
                     <c:set var="available" value="${empty prescription.dateSold or empty prescription.chemistID}"/>
                     <div class="table-personal">
                         <div class="table-cell pract">${practitioner}</div>

@@ -32,7 +32,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/specialized_doctor/exam_history";
+            const url = window.location.href;
 
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},
@@ -63,6 +63,34 @@
                     }
                 });
             }
+
+            $(document).ajaxSuccess(function () {
+                activateForm();
+            });
+
+            function activateForm() {
+                $(".submit-result").submit(function (e) {
+                    e.preventDefault();
+
+                    let form = $(this);
+                    let button = form.find("button.submit-button");
+
+                    button.prop("disabled", true).html("Sending..");
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        cache: false,
+                        data: form.serialize(),
+                        success: function (data) {
+                            button.html("Result updated");
+                            setTimeout(function () {
+                                button.prop("disabled", false).html("Submit result");
+                            }, 2000);
+                        }
+                    });
+                });
+            }
         });
     </script>
 </head>
@@ -73,7 +101,7 @@
     <h1>Exam History</h1>
     <p class="lead mt-4 mx-4">
         In this section you can see all the exams already done.
-        You can add or modify a report.
+        You can add or modify each exam's result.
     </p>
 </div>
 

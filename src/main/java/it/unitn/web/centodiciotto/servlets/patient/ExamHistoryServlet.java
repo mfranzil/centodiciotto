@@ -10,8 +10,8 @@ import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.JsonUtils;
-import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,14 +59,14 @@ public class ExamHistoryServlet extends HttpServlet {
                     if (user instanceof Patient) {
                         List<ExamHistoryElement> examHistoryElements = new ArrayList<>();
 
-                        List<Exam> patientExamList = examDAO.getBookedByPatient(user.getID());
+                        List<Exam> patientExamList = examDAO.getNotPendingByPatient(user.getID());
 
                         for (Exam exam : patientExamList) {
                             examHistoryElements.add(new ExamHistoryElement(
                                     exam.getType().getDescription(),
                                     CustomDTFormatter.formatDateTime(exam.getDate()),
                                     exam.getDone(),
-                                    new JsonUtils.Action("See report", exam.getDone()),
+                                    new Action("See report", exam.getDone()),
                                     exam.getID()));
                         }
 
@@ -86,8 +87,8 @@ public class ExamHistoryServlet extends HttpServlet {
                         List<Object> jsonResponse = new ArrayList<>();
                         Exam currentExam = examDAO.getByPrimaryKey(Integer.valueOf(examID));
 
-                        jsonResponse.add(new HtmlElement().setElementType("h5").setElementContent("Exam Result:"));
-                        jsonResponse.add(new HtmlElement().setElementType("p").setElementContent(currentExam.getResult()));
+                        jsonResponse.add(new HTMLElement().setElementType("h5").setElementContent("Exam Result:"));
+                        jsonResponse.add(new HTMLElement().setElementType("p").setElementContent(currentExam.getResult()));
 
                         Gson gson = new Gson();
                         response.setContentType("application/json");
@@ -101,14 +102,14 @@ public class ExamHistoryServlet extends HttpServlet {
         }
     }
 
-    private static class ExamHistoryElement {
+    private static class ExamHistoryElement implements Serializable {
         private String exam;
         private String date;
         private Boolean report_state;
-        private JsonUtils.Action action;
+        private Action action;
         private Integer ID;
 
-        public ExamHistoryElement(String exam, String date, Boolean reportState, JsonUtils.Action action, Integer ID) {
+        public ExamHistoryElement(String exam, String date, Boolean reportState, Action action, Integer ID) {
             this.exam = exam;
             this.date = date;
             this.report_state = reportState;

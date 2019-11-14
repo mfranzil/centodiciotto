@@ -24,6 +24,29 @@
             }
         }
     </style>
+    <script>
+        $("document").ready(function () {
+            $("#book-visit").submit(function (e) {
+                e.preventDefault();
+
+                let form = $(this);
+                let url = form.attr('action');
+                let button = form.find("button");
+
+                button.prop("disabled", true).html("Requesting..");
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    cache: false,
+                    data: form.serialize(),
+                    success: function (data) {
+                        button.html("Successfully booked");
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -47,8 +70,8 @@
         <c:set var="alreadyBooked" value="${!empty patientDAO.pendingVisit}"/>
 
         <h3>${practitioner}</h3>
-        <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book_visit" method="post">
-            <button id="booknow" class="btn btn-block btn-personal" type="submit"
+        <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book-visit" method="post">
+            <button class="btn btn-block btn-personal" type="submit"
             ${alreadyBooked ? "disabled" : ""}> ${alreadyBooked ? "Already booked" : "Book now"}
             </button>
         </form>
@@ -74,20 +97,20 @@
                     <div class="table-cell action">Report</div>
                 </div>
 
-                <jsp:useBean id="generalPractitionerDAO"
+                <jsp:useBean id="practitionerDAO"
                              class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
-                <jsp:setProperty name="generalPractitionerDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
                 <c:forEach items="${patientDAO.doneVisits}" var="exam">
                     <c:if test="${exam.practitionerID ne practitioner.ID}">
-                        <jsp:setProperty name="generalPractitionerDAO" property="practitionerID"
+                        <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                          value="${exam.practitionerID}"/>
-                        <c:set var="visitPractitioner" value="${generalPractitionerDAO.generalPractitioner}"/>
+                        <c:set var="visitPractitioner" value="${practitionerDAO.practitioner}"/>
                     </c:if>
 
-                    <jsp:setProperty name="visitDate" property="date" value="${exam.date}"/>
+                    <jsp:setProperty name="visitDate" property="date" value="${exam.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell practitioner">
                             <c:if test="${exam.practitionerID ne practitioner.ID}">
@@ -107,7 +130,6 @@
                                 <div class="popup animate-in">
                                     <div>
                                         <h5>Visit report:</h5>
-                                        <br>
                                         <p>${exam.report}</p>
                                     </div>
                                     <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>

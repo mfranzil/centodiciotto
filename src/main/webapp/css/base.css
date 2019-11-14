@@ -98,6 +98,10 @@ body {
     text-align: center;
 }
 
+.width-100 {
+    width: 100% !important;
+}
+
 /* Navbar */
 
 .nav-personal {

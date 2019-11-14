@@ -111,8 +111,8 @@
                                       name="includeVisits">
                             Include visits
                         </label><br>
-                        <label><input type="checkbox" id="include-specialist-exams"
-                                      name="includeSpecialistExams">
+                        <label><input type="checkbox" id="include-doctor-exams"
+                                      name="includeDoctorExams">
                             Include exams made by Specialized Doctors
                         </label><br>
                         <label><input type="checkbox" id="include-health-service-exams"

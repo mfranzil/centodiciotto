@@ -24,7 +24,7 @@ public class ExcelService {
 
     private transient PatientDAO patientDAO;
     private transient GeneralPractitionerDAO practitionerDAO;
-    private transient SpecializedDoctorDAO specializedDoctorDAO;
+    private transient SpecializedDoctorDAO doctorDAO;
     private transient ChemistDAO chemistDAO;
     private transient HealthServiceDAO healthServiceDAO;
 
@@ -40,7 +40,7 @@ public class ExcelService {
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
-            specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
+            doctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             chemistDAO = daoFactory.getDAO(ChemistDAO.class);
             healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
 
@@ -69,7 +69,7 @@ public class ExcelService {
     }
 
     public String createReport(String healthServiceID, Date date, boolean includeVisits, boolean includeRecalls,
-                               boolean includeSpecialistExams, boolean includeHealthServiceExams,
+                               boolean includeDoctorExams, boolean includeHealthServiceExams,
                                boolean includePrescriptions) throws ServiceException {
         try {
             HealthService healthService = healthServiceDAO.getByPrimaryKey(healthServiceID);
@@ -86,45 +86,44 @@ public class ExcelService {
 
                 for (Visit visit : visits) {
                     Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
-                    GeneralPractitioner generalPractitioner = practitionerDAO.getByPrimaryKey(visit.getPractitionerID());
+                    GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(visit.getPractitionerID());
 
                     Entry entry = new Entry(++i,
                             patient.getID(), patient.getFirstName(), patient.getLastName(),
                             "VISIT",
-                            generalPractitioner.getID(), generalPractitioner.getFirstName(), generalPractitioner.getLastName(),
+                            practitioner.getID(), practitioner.getFirstName(), practitioner.getLastName(),
                             0);
                     entries.add(entry);
                 }
             }
 
-            if (includeSpecialistExams || includeHealthServiceExams || includeRecalls) {
+            if (includeDoctorExams || includeHealthServiceExams || includeRecalls) {
                 List<Exam> exams = examDAO.getByDate(new Timestamp(date.getTime()));
 
                 for (Exam exam : exams) {
                     Entry entry;
                     Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());
 
-                    // TODO vedere se va
                     boolean isRecall = exam.getRecall() != null && exam.getRecall() != 0;
 
                     if ((isRecall && includeRecalls)
-                            || (!isRecall && exam.getHealthServiceID() == null && includeSpecialistExams)) {
-                        // Recall, specialistExam
-                        SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(exam.getDoctorID());
+                            || (!isRecall && exam.getHealthServiceID() == null && includeDoctorExams)) {
+                        // Recall, doctorExam
+                        SpecializedDoctor doctor = doctorDAO.getByPrimaryKey(exam.getDoctorID());
 
                         entry = new Entry(i++,
                                 patient.getID(), patient.getFirstName(), patient.getLastName(),
-                                isRecall ? "RECALL" : "SPECIALIST_EXAM",
-                                specializedDoctor.getID(), specializedDoctor.getFirstName(), specializedDoctor.getLastName(),
+                                isRecall ? "RECALL" : "DOCTOR_EXAM",
+                                doctor.getID(), doctor.getFirstName(), doctor.getLastName(),
                                 exam.getTicket());
-                    } else if (!isRecall && exam.getDoctorID() == null && includeHealthServiceExams) { // Health Service Exams
+                    } else if (!isRecall && exam.getDoctorID() == null && includeHealthServiceExams) {
+                        // Health Service Exams
                         entry = new Entry(i++,
                                 patient.getID(), patient.getFirstName(), patient.getLastName(),
                                 "HEALTH_SERVICE_EXAM",
                                 healthServiceID, "", "",
                                 exam.getTicket());
                     } else {
-                        //System.out.println("Dropping Exam ID " + exam.getID());
                         continue;
                     }
                     entries.add(entry);
@@ -134,14 +133,14 @@ public class ExcelService {
             if (includePrescriptions) {
                 List<DrugPrescription> drugPrescriptions = drugPrescriptionDAO.getByDateSold(new Timestamp(date.getTime()));
 
-                for (DrugPrescription drugPrescription : drugPrescriptions) {
-                    Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
-                    Chemist chemist = chemistDAO.getByPrimaryKey(drugPrescription.getChemistID());
+                for (DrugPrescription prescription : drugPrescriptions) {
+                    Patient patient = patientDAO.getByPrimaryKey(prescription.getPatientID());
+                    Chemist chemist = chemistDAO.getByPrimaryKey(prescription.getChemistID());
                     Entry entry = new Entry(i++,
                             patient.getID(), patient.getFirstName(), patient.getLastName(),
                             "PRESCRIPTION",
                             chemist.getID(), chemist.getName(), "",
-                            drugPrescription.getTicket());
+                            prescription.getTicket());
                     entries.add(entry);
                 }
             }

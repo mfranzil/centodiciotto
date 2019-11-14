@@ -1,11 +1,11 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Patient extends User {
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private Timestamp birthDate;
     private String birthPlace;
     private String SSN;
     private Character gender;
@@ -29,11 +29,11 @@ public class Patient extends User {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public Timestamp getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Timestamp birthDate) {
         this.birthDate = birthDate;
     }
 

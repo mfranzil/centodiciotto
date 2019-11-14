@@ -15,7 +15,7 @@
                 width: 30%;
             }
 
-            .table-cell.ssn {
+            .table-cell.exam {
                 width: 30%;
             }
 
@@ -26,11 +26,12 @@
     </style>
     <script>
         $("document").ready(function () {
-            $(".set-visit").submit(function (e) {
+            const url = window.location.href;
+
+            $(".set-exam").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let button = form.find("button.submit");
                 let data = form.serialize();
 
@@ -46,6 +47,7 @@
                     }
                 });
             });
+
             $(".datepicker").datepicker({
                 dateFormat: "dd/mm/yy",
                 beforeShowDay: $.datepicker.noWeekends,
@@ -56,6 +58,7 @@
                 changeYear: true,
                 showButtonPanel: true,
             });
+
             $('input.timepicker').timepicker({
                 timeFormat: 'HH:mm',
                 interval: 15,
@@ -73,9 +76,9 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="container">
     <div class="jumbotron mt-4">
-        <h1>Requests for visits</h1>
+        <h1>Requests for exams</h1>
         <p class="lead mt-4 mx-4">
-            For each pending visit, you can pick a date and time and confirm it.
+            For each pending exam, you can pick a date and time and confirm it.
         </p>
     </div>
 </div>
@@ -86,20 +89,37 @@
                 <div class="table-personal table-header">
                     <div class="table-cell avt">&nbsp;</div>
                     <div class="table-cell patient">Patient</div>
-                    <div class="table-cell ssn">SSN</div>
+                    <div class="table-cell exam">SSN</div>
                     <div class="table-cell action">&nbsp;</div>
                 </div>
-                <jsp:useBean id="specialistDAOBean"
-                             class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
-                <jsp:setProperty name="specialistDAOBean" property="specialistID"
-                                 value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="specialistDAOBean" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="patientDAO"
                              class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
-                <c:forEach items="${specialistDAOBean.pendingExams}" var="exam">
+                <c:choose>
+                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                        <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
+                        <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
+                        <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'health_service'}">
+                        <jsp:useBean id="healthServiceDAO" class="it.unitn.web.centodiciotto.beans.HealthServiceDAOBean"/>
+                        <jsp:setProperty name="healthServiceDAO" property="healthServiceID" value="${sessionScope.user.ID}"/>
+                        <jsp:setProperty name="healthServiceDAO" property="DAOFactory" value=""/>
+                    </c:when>
+                </c:choose>
+
+                <c:choose>
+                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                        <c:set var="chosenDAO" value="${doctorDAO}"/>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'health_service'}">
+                        <c:set var="chosenDAO" value="${healthServiceDAO}"/>
+                    </c:when>
+                </c:choose>
+
+                <c:forEach items="${chosenDAO.pendingExams}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">
@@ -108,23 +128,22 @@
                                  src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
                         </div>
                         <div class="table-cell patient">${patient.firstName} ${patient.lastName}</div>
-                        <div class="table-cell ssn">${patient.SSN}</div>
+                        <div class="table-cell exam">${exam.type.description}</div>
                         <div class="table-cell action">
                             <button class="btn btn-block btn-personal popup-opener">
                                 Choose date and time
                             </button>
                             <div class="popup-window">
                                 <div class="popup animate-in">
-                                    <form action="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_requests"
-                                          class="set-visit" method="POST">
+                                    <form class="set-exam" method="POST">
                                         Insert a date and time for the appointment, then confirm.
                                         <div style="display: flex; width: 100%;">
                                             <label style="flex: 50%" class="my-2 mr-1">
-                                                <input class="form-control datepicker visit-date" autocomplete="off"
+                                                <input class="form-control datepicker exam-date" autocomplete="off"
                                                        type="text" name="examDate">
                                             </label>
                                             <label style="flex: 50%" class="my-2 ml-1">
-                                                <input class="form-control timepicker visit-time" autocomplete="off"
+                                                <input class="form-control timepicker exam-time" autocomplete="off"
                                                        type="text" name="examTime">
                                             </label>
                                         </div>

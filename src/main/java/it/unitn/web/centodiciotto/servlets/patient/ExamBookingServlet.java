@@ -1,16 +1,15 @@
-package it.unitn.web.centodiciotto.servlets.shared;
-
+package it.unitn.web.centodiciotto.servlets.patient;
 
 import com.google.gson.Gson;
-import it.unitn.web.centodiciotto.persistence.dao.DoctorExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
+import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
-import it.unitn.web.centodiciotto.utils.JsonUtils;
-import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,14 +21,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(urlPatterns = {"/restricted/general_practitioner/exams",
-        "/restricted/patient/exam_booking"})
-public class ExamsServlet extends HttpServlet {
+@WebServlet("/restricted/patient/exam_booking")
+public class ExamBookingServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamType> ALL_EXAMS = new ArrayList<>();
+
     private ExamTypeDAO examTypeDAO;
     private ExamDAO examDAO;
     private DoctorExamDAO doctorExamDAO;
+    private HealthServiceDAO healthServiceDAO;
+    private SpecializedDoctorDAO specializedDoctorDAO;
 
     @Override
     public void init() throws ServletException {
@@ -41,6 +42,8 @@ public class ExamsServlet extends HttpServlet {
             examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
             doctorExamDAO = daoFactory.getDAO(DoctorExamDAO.class);
+            healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
+            specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
 
             ALL_EXAMS = examTypeDAO.getAll();
             for (ExamType exam : ALL_EXAMS) {
@@ -78,7 +81,7 @@ public class ExamsServlet extends HttpServlet {
                         if (examID == null) {
                             if (onlyAvailable) {
                                 for (Exam exam : patientExamList) {
-                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new JsonUtils.Action("Book Now", true), exam.getType().getID()));
+                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new Action("Book Now", true), exam.getType().getID()));
                                 }
                             } else {
                                 List<Integer> examListIDs = new ArrayList<>();
@@ -88,7 +91,7 @@ public class ExamsServlet extends HttpServlet {
                                 }
 
                                 for (ExamType examType : ALL_EXAMS) {
-                                    examListElements.add(new ExamListElement(examType.getDescription(), new JsonUtils.Action("Book Now", examListIDs.contains(examType.getID())), examType.getID()));
+                                    examListElements.add(new ExamListElement(examType.getDescription(), new Action("Book Now", examListIDs.contains(examType.getID())), examType.getID()));
                                 }
                             }
                         } else {
@@ -102,7 +105,7 @@ public class ExamsServlet extends HttpServlet {
                                 }
                             }
                             ExamType examType = examTypeDAO.getByPrimaryKey(integerExamID);
-                            examListElements.add(new ExamListElement(examType.getDescription(), new JsonUtils.Action("Book Now", found), examType.getID()));
+                            examListElements.add(new ExamListElement(examType.getDescription(), new Action("Book Now", found), examType.getID()));
                         }
 
                         Gson gson = new Gson();
@@ -115,7 +118,7 @@ public class ExamsServlet extends HttpServlet {
                 break;
             }
             case "examSearch": {
-                if (user instanceof Patient || user instanceof GeneralPractitioner) {
+                if (user instanceof Patient) {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -131,36 +134,47 @@ public class ExamsServlet extends HttpServlet {
 
                     Gson gson = new Gson();
                     response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new Results(results.toArray(new ExamSearchResult[0]))));
+                    response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
                 }
                 break;
             }
-            case "examAdd": {
-                try {
-                    if (user instanceof GeneralPractitioner) {
-                        String examID = request.getParameter("examID");
-                        String patientID = request.getParameter("patientID");
+            case "doctorSearch": {
+                if (user instanceof Patient) {
+                    String userInput = request.getParameter("term");
+                    String examID = request.getParameter("examID");
 
-                        ExamType examType = examTypeDAO.getByPrimaryKey(Integer.valueOf(examID));
+                    if (examID != null) {
+                        ExamType examType = new ExamType();
+                        examType.setID(Integer.valueOf(examID));
 
-                        Exam newExam = new Exam();
-                        newExam.setPatientID(patientID);
-                        newExam.setPractitionerID(user.getID());
-                        newExam.setBooked(false);
-                        newExam.setType(examType);
-                        newExam.setDone(false);
-                        newExam.setTicket(-1);
+                        try {
+                            List<DoctorSearchResult> results = new ArrayList<>();
+                            List<DoctorExam> doctorExamList = doctorExamDAO.getByExamType(examType);
 
-                        examDAO.insert(newExam);
+                            for (DoctorExam doctorExam : doctorExamList) {
+                                SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(doctorExam.getDoctorID());
+                                results.add(new DoctorSearchResult(doctorExam.getDoctorID(), specializedDoctor.toString(), false));
+                            }
+                            HealthService livingHealthService = healthServiceDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
+                            results.add(new DoctorSearchResult(livingHealthService.getID(), "Servizio Sanitario Provinciale di " + ((Patient) user).getLivingProvince().getName(), true));
+
+                            if (userInput != null) {
+                                List<DoctorSearchResult> tmpResults = new ArrayList<>();
+                                results.stream().filter(exam_SearchResult_
+                                        -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                                results = tmpResults;
+                            }
+
+                            Gson gson = new Gson();
+                            response.setContentType("application/json");
+                            response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new DoctorSearchResult[0]))));
+                        } catch (DAOException e) {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (DAOException e) {
-                    throw new ServletException("Error with DAOs in ExamsServlet", e);
-                } catch (NumberFormatException e) {
-                    throw new ServletException("Error ExamID is null", e);
                 }
                 break;
             }
-            //TODO change location?? (book exam from patient to doctor)
             case "doctorExamBook": {
                 try {
                     if (user instanceof Patient) {
@@ -175,10 +189,10 @@ public class ExamsServlet extends HttpServlet {
 
                             if (Boolean.parseBoolean(isHealthService)) {
                                 toUpdate.setHealthServiceID(doctorID);
-                                toUpdate.setTicket(50);
+                                toUpdate.setTicket(11);
                             } else {
                                 toUpdate.setDoctorID(doctorID);
-                                toUpdate.setTicket(30);
+                                toUpdate.setTicket(50);
                             }
                             toUpdate.setBooked(false);
                             toUpdate.setType(examType);
@@ -190,7 +204,7 @@ public class ExamsServlet extends HttpServlet {
                 } catch (NumberFormatException e) {
                     throw new ServletException("Error ExamID is null", e);
                 } catch (DAOException e) {
-                    throw new ServletException("DAOException while inserting doctor_exam", e);
+                    throw new ServletException("DAOException while inserting doctorExam", e);
                 }
                 break;
             }
@@ -201,22 +215,19 @@ public class ExamsServlet extends HttpServlet {
                     List<Object> jsonResponse = new ArrayList<>();
                     String contextPath = getServletContext().getContextPath();
 
-                    jsonResponse.add(new HtmlElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exam_booking").setElementFormMethod("POST"));
+                    jsonResponse.add(new HTMLElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exam_booking").setElementFormMethod("POST"));
 
-                    List<HtmlElement> examForm = new ArrayList<>();
-                    examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("examID").setElementInputValue(examID));
-                    examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("requestType").setElementInputValue("doctorExamBook"));
-                    examForm.add(new HtmlElement().setElementType("h5").setElementContent("Select a Specialized Doctor from the menu below"));
-                    examForm.add(new HtmlElement().setElementType("select").setElementClass("select2-allow-clear form-control doctor-search").setElementSelectName("doctorID"));
-                    examForm.add(new HtmlElement().setElementType("br"));
-                    examForm.add(new HtmlElement().setElementType("br"));
-                    examForm.add(new HtmlElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-exam").setElementButtonType("submit").setElementContent("Book exam"));
-                    examForm.add(new HtmlElement().setElementType("small").setElementClass("doctor-label"));
-                    examForm.add(new HtmlElement().setElementType("br"));
+                    List<HTMLElement> examForm = new ArrayList<>();
+                    examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden").setElementInputName("examID").setElementInputValue(examID));
+                    examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden").setElementInputName("requestType").setElementInputValue("doctorExamBook"));
+                    examForm.add(new HTMLElement().setElementType("h5").setElementContent("Select a Specialized Doctor from the menu below"));
+                    examForm.add(new HTMLElement().setElementType("select").setElementClass("select2-allow-clear form-control doctor-search mt-2").setElementSelectName("doctorID"));
+                    examForm.add(new HTMLElement().setElementType("button").setElementClass("btn btn-lg btn-block btn-personal prescribe-exam mt-2").setElementButtonType("submit").setElementContent("Book exam"));
+                    examForm.add(new HTMLElement().setElementType("small").setElementClass("doctor-label"));
 
                     jsonResponse.add(examForm);
 
-                    jsonResponse.add(new HtmlElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details/doctorExam.js"));
+                    jsonResponse.add(new HTMLElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details/doctorExam.js"));
 
                     Gson gson = new Gson();
                     response.setContentType("application/json");
@@ -224,42 +235,38 @@ public class ExamsServlet extends HttpServlet {
                 }
                 break;
             }
+
         }
     }
 
 
-    private static class ExamListElement {
+    private static class ExamListElement implements Serializable {
         private String exam;
-        private JsonUtils.Action action;
+        private Action action;
         private Integer ID;
 
-        public ExamListElement(String exam, JsonUtils.Action action, Integer ID) {
+        public ExamListElement(String exam, Action action, Integer ID) {
             this.exam = exam;
             this.action = action;
             this.ID = ID;
         }
     }
 
-    private static class ExamSearchResult implements Serializable {
-        private Integer id;
-        private String text;
 
-        ExamSearchResult(Integer id, String text) {
+    private static class DoctorSearchResult implements Serializable {
+        private String id;
+        private String text;
+        private Boolean healthService;
+
+        public DoctorSearchResult(String id, String text, Boolean healthService) {
             this.id = id;
             this.text = text;
+            this.healthService = healthService;
         }
 
         public String getText() {
             return text;
         }
 
-    }
-
-    private static class Results implements Serializable {
-        private ExamSearchResult[] results;
-
-        Results(ExamSearchResult[] results) {
-            this.results = results;
-        }
     }
 }

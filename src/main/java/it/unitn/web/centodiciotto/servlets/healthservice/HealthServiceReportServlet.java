@@ -51,7 +51,7 @@ public class HealthServiceReportServlet extends HttpServlet {
 
                 boolean includeVisits = Objects.equals(request.getParameter("includeVisits"), "on");
                 boolean includeRecalls = Objects.equals(request.getParameter("includeRecalls"), "on");
-                boolean includeSpecialistExams = Objects.equals(request.getParameter("includeSpecialistExams"), "on");
+                boolean includeDoctorExams = Objects.equals(request.getParameter("includeDoctorExams"), "on");
                 boolean includeHealthServiceExams = Objects.equals(request.getParameter("includeHealthServiceExams"), "on");
                 boolean includePrescriptions = Objects.equals(request.getParameter("includePrescriptions"), "on");
 
@@ -60,7 +60,7 @@ public class HealthServiceReportServlet extends HttpServlet {
                 ).getTime());
 
                 String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
-                        includeSpecialistExams, includeHealthServiceExams, includePrescriptions);
+                        includeDoctorExams, includeHealthServiceExams, includePrescriptions);
 
                 String json = "{\"path\": \"" + reportPath.replace("\\", "\\\\") + "\"}";
                 response.getWriter().write(json);

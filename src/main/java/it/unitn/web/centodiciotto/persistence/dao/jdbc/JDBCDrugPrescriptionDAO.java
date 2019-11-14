@@ -1,12 +1,12 @@
 package it.unitn.web.centodiciotto.persistence.dao.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.base.jdbc.JDBCDAO;
-import it.unitn.web.centodiciotto.persistence.dao.DrugTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
+import it.unitn.web.centodiciotto.persistence.dao.DrugTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
-import it.unitn.web.centodiciotto.persistence.entities.DrugType;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
+import it.unitn.web.centodiciotto.persistence.entities.DrugType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public void insert(DrugPrescription drugPrescription)throws DAOException {
+    public void insert(DrugPrescription drugPrescription) throws DAOException {
         try {
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, drugPrescription.getPractitionerID());
@@ -77,7 +77,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public void update(DrugPrescription drugPrescription)throws DAOException {
+    public void update(DrugPrescription drugPrescription) throws DAOException {
         try {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, drugPrescription.getPractitionerID());
@@ -100,7 +100,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public void delete(DrugPrescription drugPrescription)throws DAOException {
+    public void delete(DrugPrescription drugPrescription) throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(DELETE)) {
             stm.setInt(1, drugPrescription.getID());
 
@@ -112,7 +112,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public DrugPrescription getByPrimaryKey(Integer primaryKey)throws DAOException {
+    public DrugPrescription getByPrimaryKey(Integer primaryKey) throws DAOException {
         DrugPrescription res;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRIMARY_KEY)) {
             stm.setInt(1, primaryKey);
@@ -130,7 +130,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public List<DrugPrescription> getAll()throws DAOException {
+    public List<DrugPrescription> getAll() throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_ALL)) {
@@ -147,7 +147,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public Long getCount()throws DAOException {
+    public Long getCount() throws DAOException {
         try (PreparedStatement stm = CON.prepareStatement(COUNT)) {
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
@@ -161,7 +161,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    public List<DrugPrescription> getByPatient(String patientID)throws DAOException {
+    public List<DrugPrescription> getByPatient(String patientID) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT)) {
@@ -179,7 +179,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         }
     }
 
-    public List<DrugPrescription> getByPractitioner(String practitionerID)throws DAOException {
+    public List<DrugPrescription> getByPractitioner(String practitionerID) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PRACTITIONER)) {
@@ -197,7 +197,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         }
     }
 
-    public List<DrugPrescription> getExpired()throws DAOException {
+    public List<DrugPrescription> getExpired() throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_EXPIRED)) {
@@ -213,7 +213,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         }
     }
 
-    public List<DrugPrescription> getValid()throws DAOException {
+    public List<DrugPrescription> getValid() throws DAOException {
         List<DrugPrescription> res;
         res = new ArrayList<>();
         DrugPrescription tmp;
@@ -230,7 +230,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         }
     }
 
-    public List<DrugPrescription> getValidByPatient(String patientID)throws DAOException {
+    public List<DrugPrescription> getValidByPatient(String patientID) throws DAOException {
         List<DrugPrescription> res = new ArrayList<>();
         DrugPrescription tmp;
 
@@ -287,7 +287,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     }
 
     @Override
-    protected DrugPrescription mapRowToEntity(ResultSet rs)throws DAOException {
+    protected DrugPrescription mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             DrugPrescription drugPrescription = new DrugPrescription();
 

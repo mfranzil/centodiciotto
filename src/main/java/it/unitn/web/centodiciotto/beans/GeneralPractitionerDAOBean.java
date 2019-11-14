@@ -54,7 +54,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
         return patients;
     }
 
-    public GeneralPractitioner getGeneralPractitioner() throws BeanException {
+    public GeneralPractitioner getPractitioner() throws BeanException {
         if (practitionerID == null) {
             throw new BeanException("Practitioner is null");
         }

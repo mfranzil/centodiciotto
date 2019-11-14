@@ -34,7 +34,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND ticket_paid = false AND done = true";
     final private String GET_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
-    final private String GET_BOOKED_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String GET_NOT_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND date IS NOT NULL";
     final private String GET_PENDING_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND booked IS false";
@@ -42,12 +42,19 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND date IS NOT NULL AND done = false AND booked = true";
     final private String GET_DONE_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND done = true";
-
+    final private String GET_PENDING_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
+            "AND booked IS false";
+    final private String GET_BOOKED_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
+            "AND date IS NOT NULL AND done = false AND booked = true";
+    final private String GET_DONE_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
+            "AND done = true";
     final private String GET_PENDING_BY_PATIENT_AND_TYPE = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND exam_type = ? AND booked IS FALSE";
     final private String GET_BY_PATIENT_NOT_DOCTOR_NOT_HS = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND doctor_id IS NULL AND health_service_id IS NULL";
     final private String GET_PENDING_BY_PATIENT_AND_TYPE_AND_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+            "AND patient_id = ? AND exam_type = ? AND booked IS false";
+    final private String GET_PENDING_BY_HS_AND_TYPE_AND_DOCTOR = "SELECT * FROM exam WHERE health_service_id = ? " +
             "AND patient_id = ? AND exam_type = ? AND booked IS false";
     final private String GET_BY_DATE = "SELECT * FROM exam WHERE date::date = ?::date";
     final private String GET_PENDING_RECALL_BY_IDS = "SELECT * FROM exam WHERE done = false AND exam_type = ? " +
@@ -237,10 +244,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public List<Exam> getBookedByPatient(String patientID) throws DAOException {
+    public List<Exam> getNotPendingByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_BOOKED_BY_PATIENT)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_NOT_PENDING_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -369,6 +376,61 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
+
+    public List<Exam> getPendingByHS(String healthServiceID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_HS)) {
+            stm.setString(1, healthServiceID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending Exams for HS: ", e);
+        }
+    }
+
+    public List<Exam> getBookedByHS(String healthServiceID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_BOOKED_BY_HS)) {
+            stm.setString(1, healthServiceID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting booked Exams by HS: ", e);
+        }
+    }
+
+    public List<Exam> getDoneByHS(String healthServiceID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_DONE_BY_HS)) {
+            stm.setString(1, healthServiceID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting done Exams by HS: ", e);
+        }
+    }
+
     public Exam getPendingByDoctorAndPatient(String doctorID, String patientID, Integer examID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
@@ -384,6 +446,31 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
                 }
                 if (res.size() > 1) {
                     throw new DAOException("Error getting pending Exams for Doctor for given patient: multiple pending exam per patient");
+                } else {
+                    return res.get(0);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting pending Exams for Doctor for given patient: ", e);
+        }
+    }
+
+    public Exam getPendingByHSAndPatient(String healthServiceID, String patientID, Integer examID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_HS_AND_TYPE_AND_DOCTOR)) {
+            stm.setString(1, healthServiceID);
+            stm.setString(2, patientID);
+            stm.setInt(3, examID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                if (res.size() > 1) {
+                    throw new DAOException("Error getting pending Exams for HS for given patient: " +
+                            "multiple pending exam per patient");
                 } else {
                     return res.get(0);
                 }

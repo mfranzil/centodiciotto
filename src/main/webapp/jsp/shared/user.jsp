@@ -19,8 +19,8 @@
         <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
         <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
-        <jsp:useBean id="birthDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
-        <jsp:setProperty name="birthDate" property="date" value="${sessionScope.user.birthDate}"/>
+        <jsp:useBean id="birth" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
+        <jsp:setProperty name="birth" property="date" value="${sessionScope.user.birthDate.time}"/>
 
         <c:set var="practitioner" value="${patientDAO.practitioner}"/>
         <img class="avatar" src="${pageContext.request.contextPath}/${patientDAO.photoPath}" alt="">
@@ -67,7 +67,7 @@
                             </tr>
                             <tr>
                                 <th>Birthdate</th>
-                                <td>${birthDate.formattedDate}</td>
+                                <td>${birth.formattedDate}</td>
                             </tr>
                             <tr>
                                 <th>Living place</th>

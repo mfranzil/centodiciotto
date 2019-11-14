@@ -13,8 +13,10 @@ import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.JsonUtils;
-import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
+import it.unitn.web.centodiciotto.utils.JSONUtils;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -70,22 +72,22 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     String patientID = request.getParameter("patientID");
                     Integer prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
 
-                    DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                    DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
-                    GeneralPractitioner generalPractitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
+                    GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
 
                     PhotoService photoService = PhotoService.getInstance();
 
-                    if (generalPractitioner != null && patient != null && drugPrescription != null) {
-                        if (drugPrescription.getChemistID() == null
-                                && drugPrescription.getDateSold() == null
-                                && !drugPrescription.getTicketPaid()) {
+                    if (practitioner != null && patient != null && prescription != null) {
+                        if (prescription.getChemistID() == null
+                                && prescription.getDateSold() == null
+                                && !prescription.getTicketPaid()) {
 
                             request.setAttribute("action", "qr");
                             request.setAttribute("patient", patient);
                             request.setAttribute("patientPhoto", photoService.getLastPhoto(patientID));
-                            request.setAttribute("practitioner", generalPractitioner);
-                            request.setAttribute("prescription", drugPrescription);
+                            request.setAttribute("practitioner", practitioner);
+                            request.setAttribute("prescription", prescription);
                         }
                     }
                 } catch (DAOException | NullPointerException | NumberFormatException e) {
@@ -124,33 +126,33 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     Integer prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
 
                     try {
-                        DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                        DrugPrescription dp = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
 
-                        if (!drugPrescription.getTicketPaid() && drugPrescription.getChemistID() == null && drugPrescription.getDateSold() == null) {
-                            drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
-                            drugPrescription.setChemistID(user.getID());
-                            drugPrescriptionDAO.update(drugPrescription);
+                        if (!dp.getTicketPaid() && dp.getChemistID() == null && dp.getDateSold() == null) {
+                            dp.setDateSold(new Timestamp(System.currentTimeMillis()));
+                            dp.setChemistID(user.getID());
+                            drugPrescriptionDAO.update(dp);
 
                             Logger.getLogger("SCE").log(Level.INFO,
                                     "Succesfully activated prescription with ID " + prescriptionID);
 
-                            Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
-                            Chemist chemist = chemistDAO.getByPrimaryKey(drugPrescription.getChemistID());
-                            GeneralPractitioner generalPractitioner =
-                                    generalPractitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
+                            Patient patient = patientDAO.getByPrimaryKey(dp.getPatientID());
+                            Chemist chemist = chemistDAO.getByPrimaryKey(dp.getChemistID());
+                            GeneralPractitioner practitioner =
+                                    generalPractitionerDAO.getByPrimaryKey(dp.getPractitionerID());
 
                             String recipient = patient.getID();
                             String message = "Dear " + patient.toString() + ",\n\n" +
                                     "a drug prescription was just dispatched to you. Here are the details:\n" +
                                     "\n" +
-                                    "Drug: " + drugPrescription.getDrugType().getDescription() + "\n" +
-                                    "Prescription: " + drugPrescription.getDescription() + "\n" +
+                                    "Drug: " + dp.getDrugType().getDescription() + "\n" +
+                                    "Prescription: " + dp.getDescription() + "\n" +
                                     "\n" +
-                                    "General practitioner: " + generalPractitioner.toString() + "\n" +
+                                    "General practitioner: " + practitioner.toString() + "\n" +
                                     "Chemist's: " + chemist.toString() + "\n" +
                                     "\n" +
-                                    "Prescription date: " + drugPrescription.getDatePrescribed() + "\n" +
-                                    "Dispatch date: " + drugPrescription.getDateSold() + "\n\n" +
+                                    "Prescription date: " + dp.getDatePrescribed() + "\n" +
+                                    "Dispatch date: " + dp.getDateSold() + "\n\n" +
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
                             String subject = "CentoDiciotto - Patient change notification";
 
@@ -158,7 +160,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             emailService.sendEmail(recipient, message, subject);
 
                             response.setStatus(200);
-                            response.getWriter().write("{\"patientID\": \"" + drugPrescription.getPatientID() + "\"}");
+                            response.getWriter().write("{\"patientID\": \"" + dp.getPatientID() + "\"}");
                         } else {
                             response.setStatus(400);
                             response.getWriter().write("{\"patientID\": \"\"}");
@@ -200,7 +202,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         Gson gson = new Gson();
                         response.setContentType("application/json");
                         response.getWriter().write(gson.toJson(
-                                new Results(results.toArray(new PatientSearchResult[0]))));
+                                new JSONResults<>(results.toArray(new PatientSearchResult[0]))));
 
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
@@ -212,7 +214,6 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             break;
             case "prescriptions": {
                 if (user instanceof Chemist) {
-
                     try {
                         String patientID = request.getParameter("patientID");
 
@@ -220,10 +221,10 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
                         List<PrescriptionListElement> patientListElements = new ArrayList<>();
                         for (DrugPrescription prescription : prescriptionList) {
-                            GeneralPractitioner generalPractitioner =
+                            GeneralPractitioner practitioner =
                                     generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
                             patientListElements.add(new PrescriptionListElement(
-                                    generalPractitioner.toString(),
+                                    practitioner.toString(),
                                     prescription.getDrugType().getDescription(),
                                     CustomDTFormatter.formatDate(new Date(prescription.getDatePrescribed().getTime())),
                                     prescription.getID(),
@@ -245,38 +246,38 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     List<Object> jsonResponse = new ArrayList<>();
 
                     try {
-                        DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
-                        Patient patient = patientDAO.getByPrimaryKey(drugPrescription.getPatientID());
-                        GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
+                        DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                        Patient patient = patientDAO.getByPrimaryKey(prescription.getPatientID());
+                        GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
 
-                        jsonResponse.add(new HtmlElement().setElementType("h4").setElementClass("").setElementContent("Dispatch this prescription"));
+                        jsonResponse.add(new HTMLElement().setElementType("h4").setElementClass("").setElementContent("Dispatch this prescription"));
 
-                        jsonResponse.add(new HtmlElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
-                        jsonResponse.add(JsonUtils.createTableEntry("Patient name", patient.toString()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Patient SSN", patient.getSSN()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Practitioner name", practitioner.toString()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Prescription ID", drugPrescription.getID().toString()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Prescription drug", drugPrescription.getDrugType().getDescription()));
-                        jsonResponse.add(JsonUtils.createTableEntry("Description",
-                                drugPrescription.getDescription() == null ? "" : drugPrescription.getDescription()));
+                        jsonResponse.add(new HTMLElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
+                        jsonResponse.add(JSONUtils.createTableEntry("Patient name", patient.toString()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Patient SSN", patient.getSSN()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Practitioner name", practitioner.toString()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Prescription ID", prescription.getID().toString()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Prescription drug", prescription.getDrugType().getDescription()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Description",
+                                prescription.getDescription() == null ? "" : prescription.getDescription()));
 
-                        jsonResponse.add(new HtmlElement().setElementType("form")
+                        jsonResponse.add(new HTMLElement().setElementType("form")
                                 .setElementClass("serve-prescription")
                                 .setElementFormAction(contextPath + "restricted/chemist/prescriptions")
                                 .setElementFormMethod("POST"));
 
-                        List<HtmlElement> form = new ArrayList<>();
-                        form.add(new HtmlElement().setElementType("input")
+                        List<HTMLElement> form = new ArrayList<>();
+                        form.add(new HTMLElement().setElementType("input")
                                 .setElementInputType("hidden")
                                 .setElementInputName("requestType")
                                 .setElementInputValue("serve"));
-                        form.add(new HtmlElement().setElementType("input")
+                        form.add(new HTMLElement().setElementType("input")
                                 .setElementInputType("hidden")
                                 .setElementInputName("prescriptionID")
                                 .setElementInputValue(prescriptionID.toString()));
-                        form.add(new HtmlElement().setElementType("button")
-                                .setElementClass("btn btn-lg btn-block btn-personal mb-2 submit-serve")
+                        form.add(new HTMLElement().setElementType("button")
+                                .setElementClass("btn btn-lg btn-block btn-personal mt-2 submit-serve")
                                 .setElementContent("Dispatch")
                                 .setElementButtonType("submit"));
                         jsonResponse.add(form);
@@ -316,7 +317,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private String pract;
         private String drug;
         private String date;
-        private ExamAction action;
+        private Action action;
         private Integer ID;
 
         PrescriptionListElement(String pract, String drug, String date, Integer ID, String action) {
@@ -324,25 +325,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             this.drug = drug;
             this.date = date;
             this.ID = ID;
-            this.action = new ExamAction(action, true);
-        }
-    }
-
-    private static class Results implements Serializable {
-        private PatientSearchResult[] results;
-
-        Results(PatientSearchResult[] results) {
-            this.results = results;
-        }
-    }
-
-    private static class ExamAction {
-        private String label;
-        private Boolean enable;
-
-        ExamAction(String label, Boolean enable) {
-            this.label = label;
-            this.enable = enable;
+            this.action = new Action(action, true);
         }
     }
 }

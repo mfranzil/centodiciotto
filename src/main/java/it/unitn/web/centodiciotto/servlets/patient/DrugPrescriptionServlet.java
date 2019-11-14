@@ -65,10 +65,10 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
             try {
                 GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(practitionerID);
-                DrugPrescription drugPrescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
                 Patient patient = patientDAO.getByPrimaryKey(patientID);
 
-                drugPrescription.setDateSold(new Timestamp(System.currentTimeMillis()));
+                prescription.setDateSold(new Timestamp(System.currentTimeMillis()));
 
                 // Inserisco l'indirizzo corrente, possibile soltanto a livello di richiesta
                 // in modo da aggiungerlo al codice QR
@@ -79,7 +79,7 @@ public class DrugPrescriptionServlet extends HttpServlet {
                                 ? "" : ":" + request.getServerPort());
 
                 PDDocument prescriptionDoc = PDFService.getInstance().createDrugPrescription(
-                        drugPrescription, patient, practitioner, qrCodeURL);
+                        prescription, patient, practitioner, qrCodeURL);
 
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "inline; filename='prescription.pdf'");

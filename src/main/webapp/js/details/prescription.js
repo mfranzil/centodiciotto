@@ -12,7 +12,7 @@ $("document").ready(function () {
                     requestType: 'examSearch'
                 }
             },
-            url: getContextPath() + "/restricted/general_practitioner/exams",
+            url: getContextPath() + "/restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
     }).val(null);
@@ -30,7 +30,7 @@ $("document").ready(function () {
                     requestType: 'drugSearch'
                 }
             },
-            url: getContextPath() + "/restricted/general_practitioner/drugs",
+            url: getContextPath() + "/restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
     }).val(null);
@@ -106,7 +106,7 @@ $("document").ready(function () {
                     requestType: 'drugSearch'
                 }
             },
-            url: getContextPath() + "/restricted/general_practitioner/drugs",
+            url: getContextPath() + "/restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
     }).val(null);
@@ -120,7 +120,7 @@ $("document").ready(function () {
         else{
             $(".exam-prescribe-label").text('');
             $.ajax({
-                url: getContextPath() + "/restricted/general_practitioner/exams",
+                url: getContextPath() + "/restricted/general_practitioner/prescriptions",
                 type: "POST",
                 data: {
                     examID : $(".exam-search").val(),
@@ -143,7 +143,7 @@ $("document").ready(function () {
         else{
             $(".drug-prescribe-label").text('');
             $.ajax({
-                url: getContextPath() + "/restricted/general_practitioner/drugs",
+                url: getContextPath() + "/restricted/general_practitioner/prescriptions",
                 type: "POST",
                 data:$('#myForm').serialize(),
                 success:function(){

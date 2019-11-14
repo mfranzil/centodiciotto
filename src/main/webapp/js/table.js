@@ -170,7 +170,7 @@ $("document").ready(function () {
                             popupAnimate.classList.add("animate-in");
 
                             let exitButton = document.createElement("button");
-                            exitButton.className = "btn btn-lg btn-block btn-secondary popup-closer";
+                            exitButton.className = "btn btn-lg btn-block btn-secondary popup-closer mt-2";
                             exitButton.innerText = "Exit";
 
                             popupWindow.appendChild(popupAnimate);

@@ -14,8 +14,8 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.JsonUtils;
-import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
+import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,9 +71,9 @@ public class VisitHistoryServlet extends HttpServlet {
                         for (Visit visit : visitList) {
                             Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            JsonUtils.Action action = ((visit.getReport() == null)
-                                    ? new JsonUtils.Action("Insert report", true)
-                                    : new JsonUtils.Action("Edit report", true));
+                            Action action = ((visit.getReport() == null)
+                                    ? new Action("Insert report", true)
+                                    : new Action("Edit report", true));
                             visitListElements.add(new VisitListElement(
                                     patient.toString(), patient.getSSN(),
                                     photoPath, CustomDTFormatter.formatDateTime(visit.getDate()),
@@ -99,40 +100,38 @@ public class VisitHistoryServlet extends HttpServlet {
 
                     Visit currentVisit = visitDAO.getByPrimaryKey(Integer.valueOf(visitID));
 
-                    jsonResponse.add(new HtmlElement()
+                    jsonResponse.add(new HTMLElement()
                             .setElementType("form")
+                            .setElementClass("submit-report")
                             .setElementFormAction(contextPath + "/restricted/general_practitioner/visit_history")
                             .setElementFormMethod("POST"));
 
-                    List<HtmlElement> form = new ArrayList<>();
-
-                    form.add(new HtmlElement()
-                            .setElementType("h5")
-                            .setElementContent("Please enter the report in the form below, " +
-                                    "then click on submit to set it."));
+                    List<HTMLElement> form = new ArrayList<>();
 
                     if (currentVisit.getReport() != null) {
-                        form.add(new HtmlElement().setElementType("h7").setElementContent("Old report:"));
-                        form.add(new HtmlElement().setElementType("p").setElementContent(currentVisit.getReport()));
-                        form.add(new HtmlElement().setElementType("br"));
+                        form.add(new HTMLElement().setElementType("h5").setElementContent("Old report:"));
+                        form.add(new HTMLElement().setElementType("p").setElementContent(currentVisit.getReport()));
                     }
-                    form.add(new HtmlElement().setElementType("input")
+
+                    form.add(new HTMLElement().setElementType("h5").setElementContent("Please enter the report in the form below, " +
+                            "then click on submit to set it."));
+
+                    form.add(new HTMLElement().setElementType("input")
                             .setElementInputType("hidden")
                             .setElementInputValue(visitID)
                             .setElementInputName("visitID"));
-                    form.add(new HtmlElement().setElementType("input")
+                    form.add(new HTMLElement().setElementType("input")
                             .setElementInputType("hidden")
                             .setElementInputValue("setReport")
                             .setElementInputName("requestType"));
-                    form.add(new HtmlElement().setElementType("textarea")
+                    form.add(new HTMLElement().setElementType("textarea")
                             .setElementTextAreaPlaceholder("Click to start typing...")
                             .setElementTextAreaName("reportText"));
-                    form.add(new HtmlElement().setElementType("button")
-                            .setElementClass("btn btn-lg btn-block btn-personal")
+                    form.add(new HTMLElement().setElementType("button")
+                            .setElementClass("btn btn-lg btn-block btn-personal submit-button mt-2")
                             .setElementButtonType("submit")
                             .setElementContent("Submit report"));
                     jsonResponse.add(form);
-                    jsonResponse.add(new HtmlElement().setElementType("br"));
 
                     Gson gson = new Gson();
                     response.setContentType("application/json");
@@ -160,15 +159,15 @@ public class VisitHistoryServlet extends HttpServlet {
         }
     }
 
-    private static class VisitListElement {
+    private static class VisitListElement implements Serializable {
         private String name;
         private String ssn;
         private String avt;
         private String date;
-        private JsonUtils.Action action;
+        private Action action;
         private String ID;
 
-        public VisitListElement(String name, String ssn, String avt, String date, JsonUtils.Action action, String ID) {
+        public VisitListElement(String name, String ssn, String avt, String date, Action action, String ID) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;

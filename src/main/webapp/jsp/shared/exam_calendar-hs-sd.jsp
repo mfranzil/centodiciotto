@@ -31,11 +31,12 @@
     </style>
     <script>
         $("document").ready(function () {
+            const url = window.location.href;
+
             $(".mark-completed").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let button = form.find("button");
 
                 button.prop("disabled", true).html("Sending..");
@@ -76,22 +77,40 @@
                     <div class="table-cell action"></div>
                 </div>
 
-                <jsp:useBean id="specialistDoctorDAO"
-                             class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
-                <jsp:setProperty name="specialistDoctorDAO" property="specialistID"
-                                 value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="specialistDoctorDAO" property="DAOFactory" value=""/>
-
                 <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
+                <c:choose>
+                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                        <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
+                        <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
+                        <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'health_service'}">
+                        <jsp:useBean id="healthServiceDAO"
+                                     class="it.unitn.web.centodiciotto.beans.HealthServiceDAOBean"/>
+                        <jsp:setProperty name="healthServiceDAO" property="healthServiceID"
+                                         value="${sessionScope.user.ID}"/>
+                        <jsp:setProperty name="healthServiceDAO" property="DAOFactory" value=""/>
+                    </c:when>
+                </c:choose>
+
+                <c:choose>
+                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                        <c:set var="chosenDAO" value="${doctorDAO}"/>
+                    </c:when>
+                    <c:when test="${sessionScope.role eq 'health_service'}">
+                        <c:set var="chosenDAO" value="${healthServiceDAO}"/>
+                    </c:when>
+                </c:choose>
+
                 <jsp:useBean id="examDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${specialistDoctorDAO.bookedExams}" var="exam">
+                <c:forEach items="${chosenDAO.bookedExams}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
 
-                    <jsp:setProperty name="examDate" property="date" value="${exam.date}"/>
+                    <jsp:setProperty name="examDate" property="date" value="${exam.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell avt">
                             <img class="avatar-small" src="${pageContext.request.contextPath}/${patientDAO.photoPath}"
@@ -101,8 +120,7 @@
                         <div class="table-cell patient">${exam.type.description}</div>
                         <div class="table-cell date">${examDate.formattedDateTime}</div>
                         <div class="table-cell action">
-                            <form action="${pageContext.request.contextPath}/restricted/specialized_doctor/exam_calendar"
-                                  class="mark-completed" method="POST">
+                            <form class="mark-completed" method="POST">
                                 <input type="hidden" value="${exam.ID}" name="examID">
                                 <button type="submit" class="btn btn-block btn-personal">Mark as completed</button>
                             </form>

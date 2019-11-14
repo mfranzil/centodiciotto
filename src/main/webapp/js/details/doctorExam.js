@@ -15,7 +15,7 @@ $("document").ready(function () {
                     requestType: 'doctorSearch'
                 }
             },
-            url: getContextPath() + "/restricted/patient/doctors",
+            url: getContextPath() + "/restricted/patient/exam_booking",
             dataType: "json",
         },
     }).val(null);
@@ -50,7 +50,7 @@ $("document").ready(function () {
                     setTimeout(() => window.location.reload(), 750);
                 },
                 error: function () {
-                    label.text("Error while booking exam");
+                    label.text("Error while booking exam. Patient may already have a pending exam");
                 }
             });
         }

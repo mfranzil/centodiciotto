@@ -15,7 +15,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
 
     List<Exam> getUnpaidByPatient(String patientID) throws DAOException;
 
-    List<Exam> getBookedByPatient(String patientID) throws DAOException;
+    List<Exam> getNotPendingByPatient(String patientID) throws DAOException;
 
     List<Exam> getPendingByPatient(String patientID) throws DAOException;
 
@@ -29,7 +29,15 @@ public interface ExamDAO extends DAO<Exam, Integer> {
 
     List<Exam> getDoneByDoctor(String doctorID) throws DAOException;
 
+    List<Exam> getPendingByHS(String healthServiceID) throws DAOException;
+
+    List<Exam> getBookedByHS(String healthServiceID) throws DAOException;
+
+    List<Exam> getDoneByHS(String healthServiceID) throws DAOException;
+
     Exam getPendingByDoctorAndPatient(String doctorID, String patientID, Integer examID) throws DAOException;
+
+    Exam getPendingByHSAndPatient(String healthServiceID, String patientID, Integer examID) throws DAOException;
 
     List<Exam> getByDate(Timestamp ts) throws DAOException;
 

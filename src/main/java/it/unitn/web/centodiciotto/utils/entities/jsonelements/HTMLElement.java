@@ -1,6 +1,6 @@
-package it.unitn.web.centodiciotto.utils.entities;
+package it.unitn.web.centodiciotto.utils.entities.jsonelements;
 
-public class HtmlElement {
+public class HTMLElement {
     private String elementType;
     private String elementClass;
     private String elementContent;
@@ -31,7 +31,7 @@ public class HtmlElement {
         return elementInputType;
     }
 
-    public HtmlElement setElementInputType(String elementInputType) {
+    public HTMLElement setElementInputType(String elementInputType) {
         this.elementInputType = elementInputType;
         return this;
     }
@@ -40,7 +40,7 @@ public class HtmlElement {
         return elementInputName;
     }
 
-    public HtmlElement setElementInputName(String elementInputName) {
+    public HTMLElement setElementInputName(String elementInputName) {
         this.elementInputName = elementInputName;
         return this;
     }
@@ -49,7 +49,7 @@ public class HtmlElement {
         return elementInputValue;
     }
 
-    public HtmlElement setElementInputValue(String elementInputValue) {
+    public HTMLElement setElementInputValue(String elementInputValue) {
         this.elementInputValue = elementInputValue;
         return this;
     }
@@ -58,7 +58,7 @@ public class HtmlElement {
         return elementType;
     }
 
-    public HtmlElement setElementType(String elementType) {
+    public HTMLElement setElementType(String elementType) {
         this.elementType = elementType;
         return this;
     }
@@ -67,7 +67,7 @@ public class HtmlElement {
         return elementClass;
     }
 
-    public HtmlElement setElementClass(String elementClass) {
+    public HTMLElement setElementClass(String elementClass) {
         this.elementClass = elementClass;
         return this;
     }
@@ -76,7 +76,7 @@ public class HtmlElement {
         return elementContent;
     }
 
-    public HtmlElement setElementContent(String elementContent) {
+    public HTMLElement setElementContent(String elementContent) {
         this.elementContent = elementContent;
         return this;
     }
@@ -85,7 +85,7 @@ public class HtmlElement {
         return elementID;
     }
 
-    public HtmlElement setElementID(String elementID) {
+    public HTMLElement setElementID(String elementID) {
         this.elementID = elementID;
         return this;
     }
@@ -94,7 +94,7 @@ public class HtmlElement {
         return elementButtonType;
     }
 
-    public HtmlElement setElementButtonType(String elementButtonType) {
+    public HTMLElement setElementButtonType(String elementButtonType) {
         this.elementButtonType = elementButtonType;
         return this;
     }
@@ -103,7 +103,7 @@ public class HtmlElement {
         return elementFormAction;
     }
 
-    public HtmlElement setElementFormAction(String elementFormAction) {
+    public HTMLElement setElementFormAction(String elementFormAction) {
         this.elementFormAction = elementFormAction;
         return this;
     }
@@ -112,7 +112,7 @@ public class HtmlElement {
         return elementFormTarget;
     }
 
-    public HtmlElement setElementFormTarget(String elementFormTarget) {
+    public HTMLElement setElementFormTarget(String elementFormTarget) {
         this.elementFormTarget = elementFormTarget;
         return this;
     }
@@ -121,7 +121,7 @@ public class HtmlElement {
         return elementFormMethod;
     }
 
-    public HtmlElement setElementFormMethod(String elementFormMethod) {
+    public HTMLElement setElementFormMethod(String elementFormMethod) {
         this.elementFormMethod = elementFormMethod;
         return this;
     }
@@ -130,7 +130,7 @@ public class HtmlElement {
         return elementTextAreaPlaceholder;
     }
 
-    public HtmlElement setElementTextAreaPlaceholder(String elementTextAreaPlaceholder) {
+    public HTMLElement setElementTextAreaPlaceholder(String elementTextAreaPlaceholder) {
         this.elementTextAreaPlaceholder = elementTextAreaPlaceholder;
         return this;
     }
@@ -139,7 +139,7 @@ public class HtmlElement {
         return elementTextAreaName;
     }
 
-    public HtmlElement setElementTextAreaName(String elementTextAreaName) {
+    public HTMLElement setElementTextAreaName(String elementTextAreaName) {
         this.elementTextAreaName = elementTextAreaName;
         return this;
     }
@@ -148,7 +148,7 @@ public class HtmlElement {
         return elementScriptType;
     }
 
-    public HtmlElement setElementScriptType(String elementScriptType) {
+    public HTMLElement setElementScriptType(String elementScriptType) {
         this.elementScriptType = elementScriptType;
         return this;
     }
@@ -157,7 +157,7 @@ public class HtmlElement {
         return elementScriptSrc;
     }
 
-    public HtmlElement setElementScriptSrc(String elementScriptSrc) {
+    public HTMLElement setElementScriptSrc(String elementScriptSrc) {
         this.elementScriptSrc = elementScriptSrc;
         return this;
     }
@@ -166,7 +166,7 @@ public class HtmlElement {
         return elementLinkRel;
     }
 
-    public HtmlElement setElementLinkRel(String elementLinkRel) {
+    public HTMLElement setElementLinkRel(String elementLinkRel) {
         this.elementLinkRel = elementLinkRel;
         return this;
     }
@@ -175,7 +175,7 @@ public class HtmlElement {
         return elementLinkHref;
     }
 
-    public HtmlElement setElementLinkHref(String elementLinkHref) {
+    public HTMLElement setElementLinkHref(String elementLinkHref) {
         this.elementLinkHref = elementLinkHref;
         return this;
     }
@@ -184,7 +184,7 @@ public class HtmlElement {
         return elementSelectName;
     }
 
-    public HtmlElement setElementSelectName(String elementSelectName) {
+    public HTMLElement setElementSelectName(String elementSelectName) {
         this.elementSelectName = elementSelectName;
         return this;
     }
