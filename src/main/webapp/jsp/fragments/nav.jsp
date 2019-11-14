@@ -161,7 +161,7 @@
                 <%--suppress XmlDuplicatedId --%>
             <div id="nav-log" class="nav-item" style="display: flex; align-items: center;">
                 <a class="nav-link nav-link-personal " href="${pageContext.request.contextPath}/restricted/user">
-                    Hi <c:out value="${sessionScope.displayName}"/>!
+                    Hi ${sessionScope.displayName}!
                 </a>
                 <a class="nav-link nav-link-personal"
                    href="${pageContext.request.contextPath}/restricted/logout_handler">

@@ -14,12 +14,16 @@ public class CustomDTFormatterBean implements Serializable {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(java.util.Date date) {
         this.date = date;
     }
 
     public void setDate(Timestamp ts) {
         this.date = new Date(ts.getTime());
+    }
+
+    public void setDate(java.sql.Date date) {
+        this.date = new Date(date.getTime());
     }
 
     public String getFormattedDate() {

@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/exams",
-        "/restricted/patient/exams"})
+        "/restricted/patient/exam_booking"})
 public class ExamsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static List<ExamType> ALL_EXAMS = new ArrayList<>();
@@ -56,7 +56,7 @@ public class ExamsServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof Patient) {
-            doPost(request, response);
+            request.getRequestDispatcher("/jsp/patient/exam_booking-p.jsp").forward(request, response);
         }
     }
 
@@ -171,7 +171,7 @@ public class ExamsServlet extends HttpServlet {
                         if (examID != null && doctorID != null && isHealthService != null) {
                             ExamType examType = examTypeDAO.getByPrimaryKey(Integer.valueOf(examID));
 
-                            Exam toUpdate = examDAO.getPendingByPatientNotBookedAndExamType(user.getID(), examType.getID());
+                            Exam toUpdate = examDAO.getPendingByPatientAndExamType(user.getID(), examType.getID());
 
                             if (Boolean.parseBoolean(isHealthService)) {
                                 toUpdate.setHealthServiceID(doctorID);
@@ -201,7 +201,7 @@ public class ExamsServlet extends HttpServlet {
                     List<Object> jsonResponse = new ArrayList<>();
                     String contextPath = getServletContext().getContextPath();
 
-                    jsonResponse.add(new HtmlElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exams").setElementFormMethod("POST"));
+                    jsonResponse.add(new HtmlElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exam_booking").setElementFormMethod("POST"));
 
                     List<HtmlElement> examForm = new ArrayList<>();
                     examForm.add(new HtmlElement().setElementType("input").setElementInputType("hidden").setElementInputName("examID").setElementInputValue(examID));

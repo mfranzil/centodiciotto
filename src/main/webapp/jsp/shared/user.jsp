@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +12,16 @@
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="jumbotron">
     <h2 class="my-4">
-        Welcome, <c:out value="${sessionScope.displayName}"/>.
+        Welcome, ${sessionScope.displayName}.
     </h2>
     <c:if test="${sessionScope.role eq 'patient'}">
-        <jsp:useBean id="patientDAO"
-                     class="it.unitn.web.centodiciotto.beans.PatientDAOBean">
-            <jsp:setProperty name="patientDAO" property="patientID"
-                             value="${sessionScope.user.ID}"/>
-            <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
-        </jsp:useBean>
+        <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+        <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
+        <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+
+        <jsp:useBean id="birthDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
+        <jsp:setProperty name="birthDate" property="date" value="${sessionScope.user.birthDate}"/>
+
         <c:set var="practitioner" value="${patientDAO.practitioner}"/>
         <img class="avatar" src="${pageContext.request.contextPath}/${patientDAO.photoPath}" alt="">
     </c:if>
@@ -55,7 +55,7 @@
                             <tr>
                                 <th>Gender</th>
                                 <td>${(sessionScope.user.gender eq 'M'.charAt(0)) ? "Male" :
-                                 (sessionScope.user.gender eq 'F'.charAt(0)) ? "Female" : "Not specified"}</td>
+                                        (sessionScope.user.gender eq 'F'.charAt(0)) ? "Female" : "Not specified"}</td>
                             </tr>
                             <tr>
                                 <th>SSN</th>
@@ -67,8 +67,7 @@
                             </tr>
                             <tr>
                                 <th>Birthdate</th>
-                                <td><fmt:formatDate type="date" dateStyle="long"
-                                                    value="${sessionScope.user.birthDate}"/></td>
+                                <td>${birthDate.formattedDate}</td>
                             </tr>
                             <tr>
                                 <th>Living place</th>

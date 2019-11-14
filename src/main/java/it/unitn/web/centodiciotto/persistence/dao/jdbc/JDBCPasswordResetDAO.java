@@ -19,7 +19,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
     final private String INSERT = "INSERT INTO password_reset (user_id, token, expiring_date) " +
             "values (?, ?, ?);";
     final private String UPDATE = "UPDATE password_reset SET token = ?, expiring_date = ? WHERE user_id = ?;";
-    final private String DELETE = "DELETE from password_reset WHERE user_id = ?;";
+    final private String DELETE = "DELETE FROM password_reset WHERE user_id = ?;";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM password_reset WHERE user_id = ?;";
     final private String GET_ALL = "SELECT * FROM password_reset;";

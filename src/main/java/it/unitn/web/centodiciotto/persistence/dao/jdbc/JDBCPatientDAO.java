@@ -29,13 +29,13 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
-    final private String GET_ALL = "SELECT * FROM patient order by last_name asc;";
+    final private String GET_ALL = "SELECT * FROM patient ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
 
     final private String GET_BY_PRACTITIONER = "SELECT * FROM patient " +
-            "WHERE practitioner_id = ? order by last_name asc;";
+            "WHERE practitioner_id = ? ORDER BY last_name ASC;";
     final private String GET_BY_PROVINCE = "SELECT * FROM patient " +
-            "WHERE living_province = ? order by last_name asc;";
+            "WHERE living_province = ? ORDER BY last_name ASC;";
 
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);

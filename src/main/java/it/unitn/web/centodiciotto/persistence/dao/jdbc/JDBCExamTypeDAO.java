@@ -17,7 +17,7 @@ import java.util.List;
 public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamTypeDAO {
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM exam_type WHERE exam_id = ?;";
-    final private String GET_ALL = "SELECT * FROM exam_type order by exam_description asc;";
+    final private String GET_ALL = "SELECT * FROM exam_type ORDER BY exam_description ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM exam_type;";
 
     public JDBCExamTypeDAO(Connection con) throws DAOFactoryException {

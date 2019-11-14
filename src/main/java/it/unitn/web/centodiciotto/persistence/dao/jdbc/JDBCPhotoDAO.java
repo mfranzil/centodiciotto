@@ -19,7 +19,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     final private String INSERT = "INSERT INTO photo (patient_id, upload_date) values (?, ?) " +
             "RETURNING photo_id;";
     final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
-    final private String DELETE = "DELETE from photo WHERE photo_id = ?";
+    final private String DELETE = "DELETE FROM photo WHERE photo_id = ?";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM photo WHERE photo_id = ?;";
     final private String GET_ALL = "SELECT * FROM photo;";

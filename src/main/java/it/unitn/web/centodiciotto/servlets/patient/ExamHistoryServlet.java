@@ -3,13 +3,13 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamTypeDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.JsonUtils;
 import it.unitn.web.centodiciotto.utils.entities.HtmlElement;
 
@@ -26,7 +26,6 @@ import java.util.List;
 public class ExamHistoryServlet extends HttpServlet {
 
     private ExamDAO examDAO;
-    private ExamTypeDAO examTypeDAO;
 
     @Override
     public void init() throws ServletException {
@@ -36,7 +35,6 @@ public class ExamHistoryServlet extends HttpServlet {
         }
         try {
             examDAO = daoFactory.getDAO(ExamDAO.class);
-            examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -63,7 +61,12 @@ public class ExamHistoryServlet extends HttpServlet {
                         List<Exam> patientExamList = examDAO.getBookedByPatient(user.getID());
 
                         for (Exam exam : patientExamList) {
-                            examHistoryElements.add(new ExamHistoryElement(exam.getType().getDescription(), exam.getDate().toString(), exam.getDone(), new JsonUtils.Action("See report", exam.getDone()), exam.getID()));
+                            examHistoryElements.add(new ExamHistoryElement(
+                                    exam.getType().getDescription(),
+                                    CustomDTFormatter.formatDateTime(exam.getDate()),
+                                    exam.getDone(),
+                                    new JsonUtils.Action("See report", exam.getDone()),
+                                    exam.getID()));
                         }
 
                         Gson gson = new Gson();

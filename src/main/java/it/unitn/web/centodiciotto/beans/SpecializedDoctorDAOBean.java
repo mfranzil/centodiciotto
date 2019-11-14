@@ -71,9 +71,23 @@ public class SpecializedDoctorDAOBean implements Serializable {
         }
 
         try {
-            return examDAO.getPendingByDoctorNotBooked(specialistID);
+            return examDAO.getPendingByDoctor(specialistID);
         } catch (DAOException e) {
             throw new BeanException("Error getting pending Exams: ", e);
         }
     }
+
+    public List<Exam> getBookedExams() throws BeanException {
+        if (specialistID == null) {
+            throw new BeanException("Practitioner is null");
+        }
+
+        try {
+            return examDAO.getBookedByDoctor(specialistID);
+        } catch (DAOException e) {
+            throw new BeanException("Error getting pending Visits: ", e);
+        }
+    }
+
+
 }

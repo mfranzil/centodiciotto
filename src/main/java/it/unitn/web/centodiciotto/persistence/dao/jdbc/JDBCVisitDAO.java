@@ -27,17 +27,17 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     final private String GET_PENDING_BY_PRACTITIONER = "SELECT * FROM visit WHERE " +
             "practitioner_id = ? AND booked = FALSE;";
     final private String GET_BOOKED_BY_PRACTITIONER = "SELECT * FROM visit WHERE " +
-            "practitioner_id = ? AND booked = TRUE AND visit_date is not null " +
-            "and report_available = FALSE order by visit_date desc;";
+            "practitioner_id = ? AND booked = TRUE AND visit_date IS NOT null " +
+            "AND report_available = FALSE ORDER BY visit_date DESC;";
     final private String GET_DONE_BY_PRACTITIONER = "SELECT * FROM visit WHERE " +
-            "practitioner_id = ? AND report_available = true order by visit_date desc;";
+            "practitioner_id = ? AND report_available = true ORDER BY visit_date DESC;";
     final private String GET_DONE_BY_PATIENT = "SELECT * FROM visit WHERE patient_id = ?" +
-            " and report_available = true order by visit_date desc;";
-    final private String GET_LAST_BY_PATIENT = "SELECT * from visit where patient_id = " +
-            "? and visit_date <= localtimestamp order by visit_date desc limit 1;";
+            " AND report_available = true ORDER BY visit_date DESC;";
+    final private String GET_LAST_BY_PATIENT = "SELECT * FROM visit WHERE patient_id = " +
+            "? AND visit_date <= localtimestamp ORDER BY visit_date DESC limit 1;";
     final private String GET_PENDING_BY_PRACTITIONER_AND_PATIENT = "SELECT * FROM visit " +
             "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE;";
-    final private String GET_BY_DATE = "SELECT * from visit where visit_date::date = ?::date;";
+    final private String GET_BY_DATE = "SELECT * FROM visit WHERE visit_date::date = ?::date;";
 
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);

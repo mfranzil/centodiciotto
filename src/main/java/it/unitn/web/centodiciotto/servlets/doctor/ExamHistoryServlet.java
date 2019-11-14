@@ -1,16 +1,16 @@
-package it.unitn.web.centodiciotto.servlets.practitioner;
+package it.unitn.web.centodiciotto.servlets.doctor;
 
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
-import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
+import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
-import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
+import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.centodiciotto.persistence.entities.Visit;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
@@ -26,10 +26,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/restricted/general_practitioner/visit_history")
-public class VisitHistoryServlet extends HttpServlet {
+@WebServlet("/restricted/specialized_doctor/exam_history")
+public class ExamHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
-    private VisitDAO visitDAO;
+    private ExamDAO examDAO;
 
     @Override
     public void init() throws ServletException {
@@ -39,7 +39,7 @@ public class VisitHistoryServlet extends HttpServlet {
         }
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-            visitDAO = daoFactory.getDAO(VisitDAO.class);
+            examDAO = daoFactory.getDAO(ExamDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -49,8 +49,8 @@ public class VisitHistoryServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
 
-        if (user instanceof GeneralPractitioner) {
-            request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
+        if (user instanceof SpecializedDoctor) {
+            request.getRequestDispatcher("/jsp/specialized_doctor/exam_history-sd.jsp").forward(request, response);
         }
     }
 
@@ -59,29 +59,29 @@ public class VisitHistoryServlet extends HttpServlet {
         String ajax_type = request.getParameter("requestType");
 
         switch (ajax_type) {
-            case "visitList": {
-                if (user instanceof GeneralPractitioner) {
+            case "examList": {
+                if (user instanceof SpecializedDoctor) {
                     try {
                         PhotoService photoService = PhotoService.getInstance();
 
-                        List<Visit> visitList = visitDAO.getDoneByPractitioner(user.getID());
-                        List<VisitListElement> visitListElements = new ArrayList<>();
+                        List<Exam> examList = examDAO.getDoneByDoctor(user.getID());
+                        List<ExamListElement> examListElements = new ArrayList<>();
 
-                        for (Visit visit : visitList) {
-                            Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
+                        for (Exam exam : examList) {
+                            Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            JsonUtils.Action action = ((visit.getReport() == null)
-                                    ? new JsonUtils.Action("Insert report", true)
-                                    : new JsonUtils.Action("Edit report", true));
-                            visitListElements.add(new VisitListElement(
-                                    patient.toString(), patient.getSSN(),
-                                    photoPath, CustomDTFormatter.formatDateTime(visit.getDate()),
-                                    action, visit.getID().toString()));
+                            JsonUtils.Action action = ((exam.getResult() == null)
+                                    ? new JsonUtils.Action("Insert result", true)
+                                    : new JsonUtils.Action("Edit result", true));
+                            examListElements.add(new ExamListElement(
+                                    patient.toString(), exam.getType().getDescription(),
+                                    photoPath, CustomDTFormatter.formatDateTime(exam.getDate()),
+                                    action, exam.getID().toString()));
                         }
 
                         Gson gson = new Gson();
                         response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(visitListElements));
+                        response.getWriter().write(gson.toJson(examListElements));
 
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
@@ -93,44 +93,44 @@ public class VisitHistoryServlet extends HttpServlet {
             }
             case "detailedInfo": {
                 try {
-                    String visitID = request.getParameter("item");
+                    String examID = request.getParameter("item");
                     List<Object> jsonResponse = new ArrayList<>();
                     String contextPath = getServletContext().getContextPath();
 
-                    Visit currentVisit = visitDAO.getByPrimaryKey(Integer.valueOf(visitID));
+                    Exam currentExam = examDAO.getByPrimaryKey(Integer.valueOf(examID));
 
                     jsonResponse.add(new HtmlElement()
                             .setElementType("form")
-                            .setElementFormAction(contextPath + "/restricted/general_practitioner/visit_history")
+                            .setElementFormAction(contextPath + "/restricted/specialized_doctor/exam_history")
                             .setElementFormMethod("POST"));
 
                     List<HtmlElement> form = new ArrayList<>();
 
                     form.add(new HtmlElement()
                             .setElementType("h5")
-                            .setElementContent("Please enter the report in the form below, " +
+                            .setElementContent("Please enter the result in the form below, " +
                                     "then click on submit to set it."));
 
-                    if (currentVisit.getReport() != null) {
-                        form.add(new HtmlElement().setElementType("h7").setElementContent("Old report:"));
-                        form.add(new HtmlElement().setElementType("p").setElementContent(currentVisit.getReport()));
+                    if (currentExam.getResult() != null) {
+                        form.add(new HtmlElement().setElementType("h7").setElementContent("Old result:"));
+                        form.add(new HtmlElement().setElementType("p").setElementContent(currentExam.getResult()));
                         form.add(new HtmlElement().setElementType("br"));
                     }
                     form.add(new HtmlElement().setElementType("input")
                             .setElementInputType("hidden")
-                            .setElementInputValue(visitID)
-                            .setElementInputName("visitID"));
+                            .setElementInputValue(examID)
+                            .setElementInputName("examID"));
                     form.add(new HtmlElement().setElementType("input")
                             .setElementInputType("hidden")
-                            .setElementInputValue("setReport")
+                            .setElementInputValue("setResult")
                             .setElementInputName("requestType"));
                     form.add(new HtmlElement().setElementType("textarea")
                             .setElementTextAreaPlaceholder("Click to start typing...")
-                            .setElementTextAreaName("reportText"));
+                            .setElementTextAreaName("resultText"));
                     form.add(new HtmlElement().setElementType("button")
                             .setElementClass("btn btn-lg btn-block btn-personal")
                             .setElementButtonType("submit")
-                            .setElementContent("Submit report"));
+                            .setElementContent("Submit result"));
                     jsonResponse.add(form);
                     jsonResponse.add(new HtmlElement().setElementType("br"));
 
@@ -142,35 +142,35 @@ public class VisitHistoryServlet extends HttpServlet {
                 }
                 break;
             }
-            case "setReport": {
-                if (user instanceof GeneralPractitioner) {
-                    Integer visitID = Integer.valueOf(request.getParameter("visitID"));
-                    String reportText = request.getParameter("reportText");
+            case "setResult": {
+                if (user instanceof SpecializedDoctor) {
+                    Integer examID = Integer.valueOf(request.getParameter("examID"));
+                    String resultText = request.getParameter("resultText");
 
                     try {
-                        Visit tmp = visitDAO.getByPrimaryKey(visitID);
-                        tmp.setReport(reportText);
-                        visitDAO.update(tmp);
+                        Exam tmp = examDAO.getByPrimaryKey(examID);
+                        tmp.setResult(resultText);
+                        examDAO.update(tmp);
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
-                    request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
+                    request.getRequestDispatcher("/jsp/specialized_doctor/exam_history-gp.jsp").forward(request, response);
                 }
             }
         }
     }
 
-    private static class VisitListElement {
+    private static class ExamListElement {
         private String name;
-        private String ssn;
+        private String exam;
         private String avt;
         private String date;
         private JsonUtils.Action action;
         private String ID;
 
-        public VisitListElement(String name, String ssn, String avt, String date, JsonUtils.Action action, String ID) {
+        public ExamListElement(String name, String exam, String avt, String date, JsonUtils.Action action, String ID) {
             this.name = name;
-            this.ssn = ssn;
+            this.exam = exam;
             this.avt = avt;
             this.date = date;
             this.action = action;

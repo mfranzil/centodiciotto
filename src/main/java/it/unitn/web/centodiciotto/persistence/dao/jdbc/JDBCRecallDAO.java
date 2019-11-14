@@ -30,10 +30,10 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
     final private String GET_ALL = "SELECT * FROM recall;";
     final private String COUNT = "SELECT COUNT(*) FROM recall;";
 
-    final private String GET_LAST_BY_HS_AND_EXAM_TYPE = "SELECT * from recall WHERE health_service_id = ?" +
-            " AND exam_type = ? ORDER BY start_date desc LIMIT 1;";
-    final private String GET_BY_HS = "SELECT * from recall WHERE health_service_id = ? " +
-            "ORDER BY start_date desc;";
+    final private String GET_LAST_BY_HS_AND_EXAM_TYPE = "SELECT * FROM recall WHERE health_service_id = ?" +
+            " AND exam_type = ? ORDER BY start_date DESC LIMIT 1;";
+    final private String GET_BY_HS = "SELECT * FROM recall WHERE health_service_id = ? " +
+            "ORDER BY start_date DESC;";
 
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @WebServlet("/restricted/specialized_doctor/exam_requests")
-public class VisitRequestsServlet extends HttpServlet {
+public class ExamRequestsServlet extends HttpServlet {
     private ExamDAO examDAO;
 
     @Override

@@ -49,36 +49,6 @@
         <url-pattern>/privacy</url-pattern>
     </servlet-mapping>
 
-    <!-- Patient -->
-    <servlet>
-        <servlet-name>ExamBookingPatient</servlet-name>
-        <jsp-file>/jsp/patient/exam_booking-p.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamBookingPatient</servlet-name>
-        <url-pattern>/restricted/patient/exam_booking</url-pattern>
-    </servlet-mapping>
-
-    <!-- Specialized doctor -->
-    <servlet>
-        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/exam_calendar-sd.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamsCalendarSpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/exam_calendar</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
-        <jsp-file>/jsp/specialized_doctor/exam_history-sd.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ExamsHistorySpecializedDoctor</servlet-name>
-        <url-pattern>/restricted/specialized_doctor/exam_history</url-pattern>
-    </servlet-mapping>
-
-
     <!-- Config aggiuntive e pagine di errore -->
     <session-config>
         <session-timeout>

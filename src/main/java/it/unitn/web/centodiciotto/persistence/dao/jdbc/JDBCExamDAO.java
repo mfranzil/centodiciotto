@@ -28,25 +28,30 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String COUNT = "SELECT COUNT(*) FROM exam;";
 
     final private String GET_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ?";
-    final private String GET_BY_PATIENT_LAST_YEAR = "select * from exam where date <= localtimestamp and " +
-            "date > localtimestamp - interval '1 year' and patient_id = ?;";
+    final private String GET_BY_PATIENT_LAST_YEAR = "SELECT * FROM exam WHERE date <= localtimestamp AND " +
+            "date > localtimestamp - interval '1 year' AND patient_id = ?;";
     final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND ticket_paid = false AND done = true";
-    final private String GET_BOOKED_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND date IS NOT NULL";
     final private String GET_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND booked IS FALSE";
-    final private String GET_PENDING_NOT_BOOKED_BY_PATIENT_AND_TYPE = "SELECT * FROM exam WHERE patient_id = ? " +
+    final private String GET_BOOKED_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND date IS NOT NULL";
+    final private String GET_PENDING_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+            "AND booked IS false";
+    final private String GET_BOOKED_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+            "AND date IS NOT NULL AND done = false AND booked = true";
+    final private String GET_DONE_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+            "AND done = true";
+
+    final private String GET_PENDING_BY_PATIENT_AND_TYPE = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND exam_type = ? AND booked IS FALSE";
     final private String GET_BY_PATIENT_NOT_DOCTOR_NOT_HS = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND doctor_id IS NULL AND health_service_id IS NULL";
-    final private String GET_PENDING_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
-            "AND booked IS false";
     final private String GET_PENDING_BY_PATIENT_AND_TYPE_AND_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND patient_id = ? AND exam_type = ? AND booked IS false";
-    final private String GET_BY_DATE = "SELECT * from exam where date::date = ?::date";
-    final private String GET_PENDING_RECALL_BY_IDS = "select * from exam where done = false and exam_type = ? " +
-            "and health_service_id = ? and patient_id = ? and recall is not null;";
+    final private String GET_BY_DATE = "SELECT * FROM exam WHERE date::date = ?::date";
+    final private String GET_PENDING_RECALL_BY_IDS = "SELECT * FROM exam WHERE done = false AND exam_type = ? " +
+            "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null;";
 
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
@@ -269,10 +274,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public Exam getPendingByPatientNotBookedAndExamType(String patientID, Integer examID) throws DAOException {
+    public Exam getPendingByPatientAndExamType(String patientID, Integer examID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_NOT_BOOKED_BY_PATIENT_AND_TYPE)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT_AND_TYPE)) {
             stm.setString(1, patientID);
             stm.setInt(2, examID);
 
@@ -310,7 +315,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public List<Exam> getPendingByDoctorNotBooked(String doctorID) throws DAOException {
+    public List<Exam> getPendingByDoctor(String doctorID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_DOCTOR)) {
@@ -325,6 +330,42 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting pending Exams for Doctor: ", e);
+        }
+    }
+
+    public List<Exam> getBookedByDoctor(String doctorID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_BOOKED_BY_DOCTOR)) {
+            stm.setString(1, doctorID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting booked Exams by Doctor: ", e);
+        }
+    }
+
+    public List<Exam> getDoneByDoctor(String doctorID) throws DAOException {
+        List<Exam> res = new ArrayList<>();
+        Exam tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_DONE_BY_DOCTOR)) {
+            stm.setString(1, doctorID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting done Exams by Doctor: ", e);
         }
     }
 

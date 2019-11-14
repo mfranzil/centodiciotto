@@ -1,9 +1,70 @@
+<%--suppress ELValidationInJSP --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Exam history - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
+    <style>
+        @media (min-width: 992px) {
+            .table-cell.avt {
+                width: 10%;
+            }
+
+            .table-cell.name {
+                width: 25%;
+            }
+
+            .table-cell.exam {
+                width: 20%;
+            }
+
+            .table-cell.date {
+                width: 25%;
+            }
+
+            .table-cell.action {
+                width: 20%;
+            }
+        }
+    </style>
+    <script>
+        $("document").ready(function () {
+            const url = getContextPath() + "/restricted/specialized_doctor/exam_history";
+
+            let tableHeaders = [
+                {field: "avt", type: "photo", text: "&nbsp;"},
+                {field: "name", type: "string", text: "Name"},
+                {field: "exam", type: "string", text: "Exam"},
+                {field: "date", type: "date", text: "Date"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#history-table").createTableHeaders(tableHeaders);
+            renderPatientsRows();
+
+            function renderPatientsRows() {
+                $("#main-loading-container").slideDown();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        requestType: "examList",
+                    },
+                    url: url,
+                    success: function (json) {
+                        console.log(json);
+                        $("#history-table").insertRows(tableHeaders, json, url);
+                        $("#main-loading-container").slideUp();
+                        enablePopup();
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -17,43 +78,17 @@
 </div>
 
 <div class="container">
-    <table class="table table-hover" style="margin: auto; overflow-wrap: break-word">
-        <thead>
-        <tr>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">Patient</th>
-            <th scope="col">Exam</th>
-            <th scope="col">Date</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                     alt="">
-            </td>
-            <th scope="row">Renato Lo Cigno</th>
-            <td>ECG</td>
-            <td>20/07/2019</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">Insert Report</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img class="avatar-small" src="${pageContext.request.contextPath}/${initParam['avatar-folder']}/default.png"
-                     alt="">
-            </td>
-            <th scope="row">Anneliese De Franceschi</th>
-            <td>ECG</td>
-            <td>18/07/2019</td>
-            <td>
-                <button type="button" class="btn btn-block btn-personal">Modify Report</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="body-content">
+        <div class="row">
+            <div class="col-md">
+                <div id="history-table"></div>
+                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>

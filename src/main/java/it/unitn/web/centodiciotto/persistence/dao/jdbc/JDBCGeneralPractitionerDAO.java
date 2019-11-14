@@ -27,11 +27,11 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     final private String DELETE = "DELETE FROM general_practitioner WHERE practitioner_id = ?;";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
-    final private String GET_ALL = "SELECT * FROM general_practitioner order by last_name asc;";
+    final private String GET_ALL = "SELECT * FROM general_practitioner ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM general_practitioner;";
 
     final private String GET_BY_PROVINCE = "SELECT * FROM general_practitioner " +
-            "WHERE working_province = ? order by last_name asc;";
+            "WHERE working_province = ? ORDER BY last_name ASC;";
 
     public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);

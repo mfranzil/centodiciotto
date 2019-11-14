@@ -2,12 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Visits - CentoDiciotto</title>
+    <title>Exam requests - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <style>
         @media (min-width: 992px) {
-            .table-cell.image {
+            .table-cell.avt {
                 width: 10%;
             }
 
@@ -61,7 +61,7 @@
                 interval: 15,
                 minTime: '8:30',
                 maxTime: '19:00',
-                defaultTime: '14:00',
+                defaultTime: '8:30',
                 startTime: '8:30',
                 dropdown: true,
                 scrollbar: true
@@ -84,7 +84,7 @@
         <div class="row">
             <div class="col-md">
                 <div class="table-personal table-header">
-                    <div class="table-cell image">&nbsp;</div>
+                    <div class="table-cell avt">&nbsp;</div>
                     <div class="table-cell patient">Patient</div>
                     <div class="table-cell ssn">SSN</div>
                     <div class="table-cell action">&nbsp;</div>
@@ -99,12 +99,11 @@
                              class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
-
                 <c:forEach items="${specialistDAOBean.pendingExams}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">
-                        <div class="table-cell image">
+                        <div class="table-cell avt">
                             <img class="avatar-small" alt=""
                                  src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
                         </div>

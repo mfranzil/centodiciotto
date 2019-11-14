@@ -1,4 +1,3 @@
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,7 +76,6 @@
 
                 let form = $(this);
                 let url = form.attr('action');
-
                 let button = form.find("button");
 
                 $.ajax({
@@ -87,7 +85,6 @@
                     data: form.serialize(),
                     success: function () {
                         button.prop("disabled", true).html("Paid");
-
                         alert("Ticket successfully paid.");
                     },
                     error: function () {
@@ -118,43 +115,30 @@
                     <div class="table-cell exam-amount">Amount</div>
                     <div class="table-cell exam-action">Ticket</div>
                 </div>
+                <jsp:useBean id="examDAOBean" class="it.unitn.web.centodiciotto.beans.ExamDAOBean"/>
+                <jsp:setProperty name="examDAOBean" property="userID" value="${sessionScope.user.ID}"/>
+                <jsp:setProperty name="examDAOBean" property="DAOFactory" value=""/>
 
-                <jsp:useBean id="examDAOBean"
-                             class="it.unitn.web.centodiciotto.beans.ExamDAOBean">
-                    <jsp:setProperty name="examDAOBean" property="userID"
-                                     value="${sessionScope.user.ID}"/>
-                    <jsp:setProperty name="examDAOBean" property="DAOFactory" value=""/>
-                </jsp:useBean>
+                <jsp:useBean id="specialistDAOBean" class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
+                <jsp:setProperty name="specialistDAOBean" property="DAOFactory" value=""/>
+
+                <jsp:useBean id="examDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
                 <c:forEach items="${examDAOBean.patientsNotPaid}" var="exam">
-                    <jsp:useBean id="specialistDAOBean"
-                                 class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean">
-                        <jsp:setProperty name="specialistDAOBean" property="specialistID"
-                                         value="${exam.doctorID}"/>
-                        <jsp:setProperty name="specialistDAOBean" property="DAOFactory"
-                                         value=""/>
-                    </jsp:useBean>
+                    <jsp:setProperty name="examDate" property="date" value="${exam.date}"/>
+                    <jsp:setProperty name="specialistDAOBean" property="specialistID" value="${exam.doctorID}"/>
+
                     <c:set var="specialist" value="${specialistDAOBean.specializedDoctorByID}"/>
-
-                    <jsp:useBean id="examDate" class="java.util.Date"/>
-                    <jsp:setProperty name="examDate" property="time"
-                                     value="${exam.date.time}"/>
-
                     <div class="table-personal">
-                        <div class="table-cell specialized-doctor">${specialist}
-                        </div>
-                        <div class="table-cell exam">${exam.type.description}
-                        </div>
-                        <div class="table-cell date">
-                            <fmt:formatDate type="date" dateStyle="long" value="${examDate}"/>
-                        </div>
-                        <div class="table-cell exam-amount">$${exam.ticket}
-                        </div>
+                        <div class="table-cell specialized-doctor">${specialist}</div>
+                        <div class="table-cell exam">${exam.type.description}</div>
+                        <div class="table-cell date">${examDate.formattedDateTime}</div>
+                        <div class="table-cell exam-amount">$${exam.ticket}</div>
                         <div class="table-cell exam-action">
                             <form method="POST" class="pay"
                                   action="${pageContext.request.contextPath}/restricted/patient/tickets">
-                                <input type="hidden" value="${exam.ID}" type="text" name="ID">
-                                <input type="hidden" value="exam" type="text" name="type">
+                                <input type="hidden" value="${exam.ID}" name="ID">
+                                <input type="hidden" value="exam" name="type">
                                 <button type="submit" id="btn-pay-e-${exam.ID}" class="btn btn-block btn-personal"
                                     ${exam.ticketPaid ? "disabled" : ""}> ${exam.ticketPaid ? "Paid" : "Pay"}
                                 </button>
@@ -204,15 +188,12 @@
                     <jsp:setProperty name="generalPractitionerDAOBean" property="practitionerID"
                                      value="${drugPrescription.practitionerID}"/>
                     <jsp:setProperty name="chemistDAOBean" property="chemistID" value="${drugPrescription.chemistID}"/>
+                    <jsp:setProperty name="drugEmissionDate" property="date"
+                                     value="${drugPrescription.datePrescribed}"/>
+                    <jsp:setProperty name="drugSoldDate" property="date" value="${drugPrescription.dateSold}"/>
 
                     <c:set var="practitioner" value="${generalPractitionerDAOBean.generalPractitioner}"/>
                     <c:set var="chemist" value="${chemistDAOBean.chemist}"/>
-
-                    <jsp:setProperty name="drugEmissionDate" property="date"
-                                     value="${drugPrescription.datePrescribed}"/>
-
-                    <jsp:setProperty name="drugSoldDate" property="date"
-                                     value="${drugPrescription.dateSold}"/>
 
                     <div class="table-personal">
                         <div class="table-cell practitioner">${practitioner}</div>

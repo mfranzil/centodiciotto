@@ -23,7 +23,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String DELETE = "DELETE FROM specialized_doctor WHERE doctor_id = ?;";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM specialized_doctor WHERE doctor_id = ?;";
-    final private String GET_ALL = "SELECT * FROM specialized_doctor order by last_name asc;";
+    final private String GET_ALL = "SELECT * FROM specialized_doctor ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM specialized_doctor;";
 
     public JDBCSpecializedDoctorDAO(Connection con) throws DAOFactoryException {

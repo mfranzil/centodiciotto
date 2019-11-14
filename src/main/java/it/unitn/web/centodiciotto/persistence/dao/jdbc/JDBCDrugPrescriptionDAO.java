@@ -30,25 +30,25 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String COUNT = "SELECT COUNT(*) FROM drug_prescription;";
 
     final private String GET_BY_PATIENT = "SELECT * FROM drug_prescription " +
-            "WHERE patient_id = ? order by date_prescribed asc;";
+            "WHERE patient_id = ? ORDER BY date_prescribed ASC;";
     final private String GET_BY_PRACTITIONER = "SELECT * FROM drug_prescription " +
-            "WHERE practitioner_id = ? order by date_prescribed asc;";
+            "WHERE practitioner_id = ? ORDER BY date_prescribed ASC;";
     final private String GET_EXPIRED = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' < now() " +
             "AND NOT(chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false);";
     final private String GET_VALID = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' >= now() " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
-            "order by date_prescribed asc;";
+            "ORDER BY date_prescribed ASC;";
     final private String GET_VALID_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' >= now() AND patient_id = ? " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
-            "order by date_prescribed asc;";
+            "ORDER BY date_prescribed ASC;";
     final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = false " +
-            "order by date_prescribed asc;";
-    final private String GET_BY_DATE_SOLD = "SELECT * from drug_prescription " +
-            "where date_sold::date = ?::date";
+            "ORDER BY date_prescribed ASC;";
+    final private String GET_BY_DATE_SOLD = "SELECT * FROM drug_prescription " +
+            "WHERE date_sold::date = ?::date";
 
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
