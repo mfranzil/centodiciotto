@@ -101,7 +101,11 @@ $("document").ready(function () {
         return this;
     };
 
-    //$.fn.select2.defaults.set("theme", "bootstrap");
+    try {
+        $.fn.select2.defaults.set("theme", "bootstrap");
+    } catch (TypeError) {
+        console.log("Select2 not present in the page, skipping CSS load");
+    }
 
     $.fn.insertRows = function (headers, data, url) {
         let mainTable = this;
