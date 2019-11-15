@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc exam type dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamTypeDAO {
 
@@ -20,6 +23,12 @@ public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamT
     final private String GET_ALL = "SELECT * FROM exam_type ORDER BY exam_description ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM exam_type;";
 
+    /**
+     * Instantiates a new Jdbc exam type dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCExamTypeDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

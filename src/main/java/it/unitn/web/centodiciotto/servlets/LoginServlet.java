@@ -15,7 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ * The type Login servlet.
+ */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
@@ -89,7 +93,7 @@ public class LoginServlet extends HttpServlet {
                         json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
                     }
 
-                    java.util.logging.Logger.getLogger("SCE").log(Level.INFO,
+                    .log(Level.INFO,
                             "User " + userID + " logged in with role "
                                     + role + " - redirected with JSON " + json);
                 }

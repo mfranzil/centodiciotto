@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc doctor exam dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>> implements DoctorExamDAO {
 
@@ -24,6 +27,12 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
 
     final private String GET_BY_EXAM_TYPE = "SELECT * FROM doctor_exams WHERE exam_id = ?;";
 
+    /**
+     * Instantiates a new Jdbc doctor exam dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCDoctorExamDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

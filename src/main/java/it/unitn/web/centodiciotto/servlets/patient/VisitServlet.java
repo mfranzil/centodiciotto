@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Visit servlet.
+ */
 @WebServlet("/restricted/patient/visits")
 public class VisitServlet extends HttpServlet {
     private VisitDAO visitDAO;

@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc recall dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO {
 
@@ -35,6 +38,12 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
     final private String GET_BY_HS = "SELECT * FROM recall WHERE health_service_id = ? " +
             "ORDER BY start_date DESC;";
 
+    /**
+     * Instantiates a new Jdbc recall dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

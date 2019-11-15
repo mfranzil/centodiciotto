@@ -18,6 +18,9 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The type Patient dao bean.
+ */
 public class PatientDAOBean implements Serializable {
 
     private VisitDAO visitDAO = null;
@@ -27,6 +30,11 @@ public class PatientDAOBean implements Serializable {
 
     private String patientID = null;
 
+    /**
+     * Sets dao factory.
+     *
+     * @param useless the useless
+     */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -41,14 +49,30 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets patient id.
+     *
+     * @return the patient id
+     */
     public String getPatientID() {
         return patientID;
     }
 
+    /**
+     * Sets patient id.
+     *
+     * @param patientID the patient id
+     */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
+    /**
+     * Gets patient.
+     *
+     * @return the patient
+     * @throws BeanException the bean exception
+     */
     public Patient getPatient() throws BeanException {
         if (patientID == null) {
             throw new BeanException("PatientID is null");
@@ -63,6 +87,12 @@ public class PatientDAOBean implements Serializable {
         return res;
     }
 
+    /**
+     * Gets photo path.
+     *
+     * @return the photo path
+     * @throws BeanException the bean exception
+     */
     public String getPhotoPath() throws BeanException {
         try {
             return PhotoService.getInstance().getLastPhoto(patientID);
@@ -71,6 +101,12 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets last visit.
+     *
+     * @return the last visit
+     * @throws BeanException the bean exception
+     */
     public Visit getLastVisit() throws BeanException {
         try {
             return visitDAO.getLastByPatient(patientID);
@@ -79,6 +115,12 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets exams.
+     *
+     * @return the exams
+     * @throws BeanException the bean exception
+     */
     public List<Exam> getExams() throws BeanException {
         try {
             return examDAO.getByPatient(patientID);
@@ -87,6 +129,12 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets done visits.
+     *
+     * @return the done visits
+     * @throws BeanException the bean exception
+     */
     public List<Visit> getDoneVisits() throws BeanException {
         try {
             return visitDAO.getDoneByPatient(patientID);
@@ -95,6 +143,12 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets pending visit.
+     *
+     * @return the pending visit
+     * @throws BeanException the bean exception
+     */
     public Visit getPendingVisit() throws BeanException {
         try {
             return visitDAO.getPendingByPractitionerAndPatient(getPatient().getPractitionerID(), patientID);
@@ -103,6 +157,12 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets practitioner.
+     *
+     * @return the practitioner
+     * @throws BeanException the bean exception
+     */
     public GeneralPractitioner getPractitioner() throws BeanException {
         try {
             return practitionerDAO.getByPrimaryKey(getPatient().getPractitionerID());

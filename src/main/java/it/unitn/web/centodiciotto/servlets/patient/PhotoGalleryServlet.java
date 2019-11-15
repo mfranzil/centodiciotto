@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * The type Photo gallery servlet.
+ */
 @WebServlet("/restricted/patient/photo_gallery")
 public class PhotoGalleryServlet extends HttpServlet {
 

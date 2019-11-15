@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * The type Health service report servlet.
+ */
 @WebServlet("/restricted/health_service/reports")
 public class HealthServiceReportServlet extends HttpServlet {
 

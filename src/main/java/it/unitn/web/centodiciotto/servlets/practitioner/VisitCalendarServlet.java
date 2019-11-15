@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Visit calendar servlet.
+ */
 @WebServlet("/restricted/general_practitioner/visit_calendar")
 public class VisitCalendarServlet extends HttpServlet {
     private PatientDAO patientDAO;

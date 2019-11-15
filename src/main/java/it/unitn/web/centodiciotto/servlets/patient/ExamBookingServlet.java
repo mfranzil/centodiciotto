@@ -21,6 +21,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Exam booking servlet.
+ */
 @WebServlet("/restricted/patient/exam_booking")
 public class ExamBookingServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
@@ -245,6 +248,13 @@ public class ExamBookingServlet extends HttpServlet {
         private Action action;
         private Integer ID;
 
+        /**
+         * Instantiates a new Exam list element.
+         *
+         * @param exam   the exam
+         * @param action the action
+         * @param ID     the id
+         */
         public ExamListElement(String exam, Action action, Integer ID) {
             this.exam = exam;
             this.action = action;
@@ -258,12 +268,24 @@ public class ExamBookingServlet extends HttpServlet {
         private String text;
         private Boolean healthService;
 
+        /**
+         * Instantiates a new Doctor search result.
+         *
+         * @param id            the id
+         * @param text          the text
+         * @param healthService the health service
+         */
         public DoctorSearchResult(String id, String text, Boolean healthService) {
             this.id = id;
             this.text = text;
             this.healthService = healthService;
         }
 
+        /**
+         * Gets text.
+         *
+         * @return the text
+         */
         public String getText() {
             return text;
         }

@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Recalls servlet.
+ */
 @WebServlet("/restricted/health_service/recalls")
 public class RecallsServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
@@ -216,6 +219,13 @@ public class RecallsServlet extends HttpServlet {
         private String date;
         private String age;
 
+        /**
+         * Instantiates a new Table exam.
+         *
+         * @param exam the exam
+         * @param date the date
+         * @param age  the age
+         */
         public TableExam(String exam, String date, String age) {
             this.exam = exam;
             this.date = date;

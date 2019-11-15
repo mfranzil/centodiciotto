@@ -14,6 +14,9 @@ import it.unitn.web.centodiciotto.persistence.entities.SpecializedDoctor;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The type Specialized doctor dao bean.
+ */
 public class SpecializedDoctorDAOBean implements Serializable {
 
     private ExamDAO examDAO = null;
@@ -22,6 +25,11 @@ public class SpecializedDoctorDAOBean implements Serializable {
 
     private String doctorID = null;
 
+    /**
+     * Sets dao factory.
+     *
+     * @param useless the useless
+     */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -35,10 +43,21 @@ public class SpecializedDoctorDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Sets doctor id.
+     *
+     * @param doctorID the doctor id
+     */
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
 
+    /**
+     * Gets doctor.
+     *
+     * @return the doctor
+     * @throws BeanException the bean exception
+     */
     public SpecializedDoctor getDoctor() throws BeanException {
         try {
             return doctorDAO.getByPrimaryKey(doctorID);
@@ -48,6 +67,12 @@ public class SpecializedDoctorDAOBean implements Serializable {
 
     }
 
+    /**
+     * Gets pending exams.
+     *
+     * @return the pending exams
+     * @throws BeanException the bean exception
+     */
     public List<Exam> getPendingExams() throws BeanException {
         if (doctorID == null) {
             throw new BeanException("DoctorID is null");
@@ -60,6 +85,12 @@ public class SpecializedDoctorDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets booked exams.
+     *
+     * @return the booked exams
+     * @throws BeanException the bean exception
+     */
     public List<Exam> getBookedExams() throws BeanException {
         if (doctorID == null) {
             throw new BeanException("DoctorID is null");

@@ -12,6 +12,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc exam dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
@@ -60,6 +63,12 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String GET_PENDING_RECALL_BY_IDS = "SELECT * FROM exam WHERE done = false AND exam_type = ? " +
             "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null;";
 
+    /**
+     * Instantiates a new Jdbc exam dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

@@ -23,6 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
 
+/**
+ * The type User servlet.
+ */
 @WebServlet("/restricted/user")
 public class UserServlet extends HttpServlet {
 

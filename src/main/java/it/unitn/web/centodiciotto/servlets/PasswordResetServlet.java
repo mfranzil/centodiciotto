@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The type Password reset servlet.
+ */
 @WebServlet("/password_reset")
 public class PasswordResetServlet extends HttpServlet {
 

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * The type Logout servlet.
+ */
 @WebServlet("/restricted/logout_handler")
 public class LogoutServlet extends HttpServlet {
 

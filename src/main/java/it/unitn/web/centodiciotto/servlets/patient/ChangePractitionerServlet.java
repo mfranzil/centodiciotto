@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * The type Change practitioner servlet.
+ */
 @WebServlet("/restricted/patient/change_practitioner")
 public class ChangePractitionerServlet extends HttpServlet {
 

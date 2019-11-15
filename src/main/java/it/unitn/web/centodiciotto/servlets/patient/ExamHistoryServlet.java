@@ -23,6 +23,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Exam history servlet.
+ */
 @WebServlet("/restricted/patient/exam_history")
 public class ExamHistoryServlet extends HttpServlet {
 
@@ -109,6 +112,15 @@ public class ExamHistoryServlet extends HttpServlet {
         private Action action;
         private Integer ID;
 
+        /**
+         * Instantiates a new Exam history element.
+         *
+         * @param exam        the exam
+         * @param date        the date
+         * @param reportState the report state
+         * @param action      the action
+         * @param ID          the id
+         */
         public ExamHistoryElement(String exam, String date, Boolean reportState, Action action, Integer ID) {
             this.exam = exam;
             this.date = date;

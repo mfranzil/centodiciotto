@@ -22,6 +22,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * The type Exam requests servlet.
+ */
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_requests", "/restricted/health_service/exam_requests"})
 public class ExamRequestsServlet extends HttpServlet {
     private ExamDAO examDAO;

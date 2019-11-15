@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc general practitioner dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
 
@@ -33,6 +36,12 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     final private String GET_BY_PROVINCE = "SELECT * FROM general_practitioner " +
             "WHERE working_province = ? ORDER BY last_name ASC;";
 
+    /**
+     * Instantiates a new Jdbc general practitioner dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc chemist dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistDAO {
 
@@ -30,6 +33,12 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
 
     final private String GET_BY_PROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
 
+    /**
+     * Instantiates a new Jdbc chemist dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCChemistDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

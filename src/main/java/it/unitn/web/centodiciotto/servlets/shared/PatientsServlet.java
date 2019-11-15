@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * The type Patients servlet.
+ */
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/patients",
         "/restricted/health_service/patients",
         "/restricted/specialized_doctor/patients"})
@@ -231,6 +234,15 @@ public class PatientsServlet extends HttpServlet {
         private Action action;
         private String ID;
 
+        /**
+         * Instantiates a new Patient list element.
+         *
+         * @param name   the name
+         * @param ssn    the ssn
+         * @param avt    the avt
+         * @param ID     the id
+         * @param action the action
+         */
         public PatientListElement(String name, String ssn, String avt, String ID, Action action) {
             this.name = name;
             this.ssn = ssn;
@@ -245,12 +257,24 @@ public class PatientsServlet extends HttpServlet {
         private String text;
         private String patientID;
 
+        /**
+         * Instantiates a new Patient search result.
+         *
+         * @param id        the id
+         * @param text      the text
+         * @param patientID the patient id
+         */
         public PatientSearchResult(Integer id, String text, String patientID) {
             this.id = id;
             this.text = text;
             this.patientID = patientID;
         }
 
+        /**
+         * Gets text.
+         *
+         * @return the text
+         */
         public String getText() {
             return text;
         }

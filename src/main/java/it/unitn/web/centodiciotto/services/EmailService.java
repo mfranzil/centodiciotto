@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+/**
+ * The type Email service.
+ */
 public class EmailService {
     private static EmailService instance;
 
@@ -54,6 +57,11 @@ public class EmailService {
         }
     }
 
+    /**
+     * Configure.
+     *
+     * @throws ServiceException the service exception
+     */
     public static void configure() throws ServiceException {
         if (instance == null) {
             instance = new EmailService();
@@ -62,6 +70,12 @@ public class EmailService {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws ServiceException the service exception
+     */
     public static EmailService getInstance() throws ServiceException {
         if (instance == null) {
             throw new ServiceException("EmailService not yet configured. " +
@@ -70,6 +84,14 @@ public class EmailService {
         return instance;
     }
 
+    /**
+     * Send email.
+     *
+     * @param recipient the recipient
+     * @param message   the message
+     * @param subject   the subject
+     * @throws ServiceException the service exception
+     */
     public synchronized void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
         var throwableWrapper = new Object() {
             Throwable tr = null;

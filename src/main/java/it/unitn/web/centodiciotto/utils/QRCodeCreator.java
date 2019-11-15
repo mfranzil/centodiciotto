@@ -6,7 +6,19 @@ import net.glxn.qrgen.image.ImageType;
 
 import java.util.List;
 
+/**
+ * The type Qr code creator.
+ */
 public class QRCodeCreator {
+    /**
+     * Create qr code url qr code.
+     *
+     * @param url        the url
+     * @param parameters the parameters
+     * @param width      the width
+     * @param height     the height
+     * @return the qr code
+     */
     public static QRCode createQRCodeURL(String url, List<Pair<String, Object>> parameters, int width, int height) {
         StringBuilder QRcontent = new StringBuilder();
         QRcontent.append(url);

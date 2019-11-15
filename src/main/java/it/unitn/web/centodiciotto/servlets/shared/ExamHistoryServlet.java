@@ -24,6 +24,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Exam history servlet.
+ */
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_history", "/restricted/health_service/exam_history"})
 public class ExamHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
@@ -168,6 +171,16 @@ public class ExamHistoryServlet extends HttpServlet {
         private Action action;
         private String ID;
 
+        /**
+         * Instantiates a new Exam list element.
+         *
+         * @param name   the name
+         * @param exam   the exam
+         * @param avt    the avt
+         * @param date   the date
+         * @param action the action
+         * @param ID     the id
+         */
         public ExamListElement(String name, String exam, String avt, String date, Action action, String ID) {
             this.name = name;
             this.exam = exam;

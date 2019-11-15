@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc specialized doctor dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String> implements SpecializedDoctorDAO {
 
@@ -26,6 +29,12 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
     final private String GET_ALL = "SELECT * FROM specialized_doctor ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM specialized_doctor;";
 
+    /**
+     * Instantiates a new Jdbc specialized doctor dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCSpecializedDoctorDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

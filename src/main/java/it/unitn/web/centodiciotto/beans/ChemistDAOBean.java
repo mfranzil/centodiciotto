@@ -9,12 +9,20 @@ import it.unitn.web.centodiciotto.persistence.entities.Chemist;
 
 import java.io.Serializable;
 
+/**
+ * The type Chemist dao bean.
+ */
 public class ChemistDAOBean implements Serializable {
 
     private ChemistDAO chemistDAO = null;
 
     private String chemistID = null;
 
+    /**
+     * Sets dao factory.
+     *
+     * @param useless the useless
+     */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -26,14 +34,30 @@ public class ChemistDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets chemist id.
+     *
+     * @return the chemist id
+     */
     public String getChemistID() {
         return chemistID;
     }
 
+    /**
+     * Sets chemist id.
+     *
+     * @param patientID the patient id
+     */
     public void setChemistID(String patientID) {
         this.chemistID = patientID;
     }
 
+    /**
+     * Gets chemist.
+     *
+     * @return the chemist
+     * @throws BeanException the bean exception
+     */
     public Chemist getChemist() throws BeanException {
         if (chemistID == null) {
             throw new BeanException("ChemistID is null");

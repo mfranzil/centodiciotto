@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc user dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
@@ -24,6 +27,12 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     final private String GET_ALL = "SELECT * FROM user_ ;";
     final private String COUNT = "SELECT COUNT(*) FROM user_;";
 
+    /**
+     * Instantiates a new Jdbc user dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCUserDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

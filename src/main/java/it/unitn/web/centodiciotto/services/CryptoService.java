@@ -15,6 +15,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
 
+/**
+ * The type Crypto service.
+ */
 public class CryptoService {
     private static CryptoService instance;
 
@@ -47,6 +50,12 @@ public class CryptoService {
         }
     }
 
+    /**
+     * Configure.
+     *
+     * @param daoFactory the dao factory
+     * @throws ServiceException the service exception
+     */
     public static void configure(DAOFactory daoFactory) throws ServiceException {
         if (instance == null) {
             instance = new CryptoService(daoFactory);
@@ -55,6 +64,12 @@ public class CryptoService {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws ServiceException the service exception
+     */
     public static CryptoService getInstance() throws ServiceException {
         if (instance == null) {
             throw new ServiceException("CryptoService not yet configured. " +
@@ -108,12 +123,26 @@ public class CryptoService {
         return bytesToHex(salt);
     }
 
+    /**
+     * Gets next base 64 token.
+     *
+     * @return the next base 64 token
+     */
     public String getNextBase64Token() {
         byte[] token = new byte[32];
         RANDOM.nextBytes(token);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(token);
     }
 
+    /**
+     * Authenticate user.
+     *
+     * @param ID       the id
+     * @param password the password
+     * @param role     the role
+     * @return the user
+     * @throws ServiceException the service exception
+     */
     public User authenticate(String ID, String password, String role) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {
             throw new ServiceException("Email or password are null.");
@@ -153,6 +182,13 @@ public class CryptoService {
         }
     }
 
+    /**
+     * Change password.
+     *
+     * @param ID          the id
+     * @param newPassword the new password
+     * @throws ServiceException the service exception
+     */
     public void changePassword(String ID, String newPassword) throws ServiceException {
         if (ID == null || newPassword == null || ID.equals("") || newPassword.equals("")) {
             throw new ServiceException("Email or password are null.");
@@ -173,6 +209,14 @@ public class CryptoService {
         }
     }
 
+    /**
+     * Is current password boolean.
+     *
+     * @param ID       the id
+     * @param password the password
+     * @return the boolean
+     * @throws ServiceException the service exception
+     */
     public boolean isCurrentPassword(String ID, String password) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {
             throw new ServiceException("Email or password (or both) are null.");

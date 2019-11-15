@@ -14,6 +14,9 @@ import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * The type Health service dao bean.
+ */
 public class HealthServiceDAOBean implements Serializable {
 
     private ExamDAO examDAO = null;
@@ -22,6 +25,11 @@ public class HealthServiceDAOBean implements Serializable {
 
     private String healthServiceID = null;
 
+    /**
+     * Sets dao factory.
+     *
+     * @param useless the useless
+     */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -35,9 +43,21 @@ public class HealthServiceDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Sets health service id.
+     *
+     * @param healthServiceID the health service id
+     */
     public void setHealthServiceID(String healthServiceID) {
         this.healthServiceID = healthServiceID;
     }
+
+    /**
+     * Gets health service.
+     *
+     * @return the health service
+     * @throws BeanException the bean exception
+     */
     public HealthService getHealthService() throws BeanException {
         try {
             return healthServiceDAO.getByPrimaryKey(healthServiceID);
@@ -47,6 +67,12 @@ public class HealthServiceDAOBean implements Serializable {
 
     }
 
+    /**
+     * Gets pending exams.
+     *
+     * @return the pending exams
+     * @throws BeanException the bean exception
+     */
     public List<Exam> getPendingExams() throws BeanException {
         if (healthServiceID == null) {
             throw new BeanException("HealthServiceID is null");
@@ -59,6 +85,12 @@ public class HealthServiceDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets booked exams.
+     *
+     * @return the booked exams
+     * @throws BeanException the bean exception
+     */
     public List<Exam> getBookedExams() throws BeanException {
         if (healthServiceID == null) {
             throw new BeanException("HealthServiceID is null");

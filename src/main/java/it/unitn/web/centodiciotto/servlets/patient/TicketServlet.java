@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Ticket servlet.
+ */
 @WebServlet("/restricted/patient/tickets")
 public class TicketServlet extends HttpServlet {
     private ExamDAO examDAO;

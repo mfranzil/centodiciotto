@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc photo dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
@@ -35,6 +38,12 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             "WHERE patient_id = ? " +
             "ORDER BY upload_date DESC;";
 
+    /**
+     * Instantiates a new Jdbc photo dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCPhotoDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

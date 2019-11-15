@@ -11,12 +11,20 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type Drug prescription dao bean.
+ */
 public class DrugPrescriptionDAOBean implements Serializable {
 
     private DrugPrescriptionDAO drugPrescriptionDAO = null;
     private String patientID = null;
     private String drugName = null;
 
+    /**
+     * Sets dao factory.
+     *
+     * @param useless the useless
+     */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -27,10 +35,21 @@ public class DrugPrescriptionDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Sets patient id.
+     *
+     * @param patientID the patient id
+     */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
+    /**
+     * Gets by patient.
+     *
+     * @return the by patient
+     * @throws BeanException the bean exception
+     */
     public List<DrugPrescription> getByPatient() throws BeanException {
         List<DrugPrescription> drugPrescriptions = Collections.emptyList();
 
@@ -47,6 +66,12 @@ public class DrugPrescriptionDAOBean implements Serializable {
         return drugPrescriptions;
     }
 
+    /**
+     * Gets patients not paid.
+     *
+     * @return the patients not paid
+     * @throws BeanException the bean exception
+     */
     public List<DrugPrescription> getPatientsNotPaid() throws BeanException {
         List<DrugPrescription> prescriptions;
 

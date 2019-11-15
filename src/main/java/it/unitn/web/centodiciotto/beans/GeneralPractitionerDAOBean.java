@@ -15,6 +15,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The type General practitioner dao bean.
+ */
 public class GeneralPractitionerDAOBean implements Serializable {
 
     private VisitDAO visitDAO = null;
@@ -22,6 +25,11 @@ public class GeneralPractitionerDAOBean implements Serializable {
     private GeneralPractitionerDAO generalPractitionerDAO = null;
     private String practitionerID = null;
 
+    /**
+     * Sets dao factory.
+     *
+     * @param useless the useless
+     */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
@@ -35,10 +43,21 @@ public class GeneralPractitionerDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Sets practitioner id.
+     *
+     * @param practitionerID the practitioner id
+     */
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;
     }
 
+    /**
+     * Gets patients list.
+     *
+     * @return the patients list
+     * @throws BeanException the bean exception
+     */
     public List<Patient> getPatientsList() throws BeanException {
         List<Patient> patients = Collections.emptyList();
 
@@ -54,6 +73,12 @@ public class GeneralPractitionerDAOBean implements Serializable {
         return patients;
     }
 
+    /**
+     * Gets practitioner.
+     *
+     * @return the practitioner
+     * @throws BeanException the bean exception
+     */
     public GeneralPractitioner getPractitioner() throws BeanException {
         if (practitionerID == null) {
             throw new BeanException("Practitioner is null");
@@ -66,6 +91,12 @@ public class GeneralPractitionerDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets pending visits.
+     *
+     * @return the pending visits
+     * @throws BeanException the bean exception
+     */
     public List<Visit> getPendingVisits() throws BeanException {
         if (practitionerID == null) {
             throw new BeanException("Practitioner is null");
@@ -78,6 +109,12 @@ public class GeneralPractitionerDAOBean implements Serializable {
         }
     }
 
+    /**
+     * Gets booked visits.
+     *
+     * @return the booked visits
+     * @throws BeanException the bean exception
+     */
     public List<Visit> getBookedVisits() throws BeanException {
         if (practitionerID == null) {
             throw new BeanException("Practitioner is null");

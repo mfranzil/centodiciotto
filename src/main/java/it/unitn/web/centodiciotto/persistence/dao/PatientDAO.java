@@ -6,10 +6,27 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 
 import java.util.List;
 
+/**
+ * The interface Patient dao.
+ */
 public interface PatientDAO extends DAO<Patient, String> {
 
+    /**
+     * Gets by practitioner.
+     *
+     * @param practitionerID the practitioner id
+     * @return the by practitioner
+     * @throws DAOException the dao exception
+     */
     List<Patient> getByPractitioner(String practitionerID) throws DAOException;
 
+    /**
+     * Gets by province.
+     *
+     * @param provinceAbbreviation the province abbreviation
+     * @return the by province
+     * @throws DAOException the dao exception
+     */
     List<Patient> getByProvince(String provinceAbbreviation) throws DAOException;
 }
 

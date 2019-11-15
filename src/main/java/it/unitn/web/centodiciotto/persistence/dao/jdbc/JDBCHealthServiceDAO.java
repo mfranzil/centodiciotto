@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc health service dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> implements HealthServiceDAO {
 
@@ -30,6 +33,12 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
 
     final private String GET_BY_PROVINCE = "SELECT *  FROM health_service WHERE operating_province = ?;";
 
+    /**
+     * Instantiates a new Jdbc health service dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

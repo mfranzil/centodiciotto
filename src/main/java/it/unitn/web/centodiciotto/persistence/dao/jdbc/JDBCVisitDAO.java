@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc visit dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
 
@@ -39,6 +42,12 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             "WHERE practitioner_id = ? AND patient_id = ? AND booked = FALSE;";
     final private String GET_BY_DATE = "SELECT * FROM visit WHERE visit_date::date = ?::date;";
 
+    /**
+     * Instantiates a new Jdbc visit dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

@@ -27,6 +27,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Visit history servlet.
+ */
 @WebServlet("/restricted/general_practitioner/visit_history")
 public class VisitHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
@@ -167,6 +170,16 @@ public class VisitHistoryServlet extends HttpServlet {
         private Action action;
         private String ID;
 
+        /**
+         * Instantiates a new Visit list element.
+         *
+         * @param name   the name
+         * @param ssn    the ssn
+         * @param avt    the avt
+         * @param date   the date
+         * @param action the action
+         * @param ID     the id
+         */
         public VisitListElement(String name, String ssn, String avt, String date, Action action, String ID) {
             this.name = name;
             this.ssn = ssn;

@@ -12,6 +12,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Photo service.
+ */
 public class PhotoService {
     private static PhotoService instance;
 
@@ -31,6 +34,13 @@ public class PhotoService {
         }
     }
 
+    /**
+     * Configure.
+     *
+     * @param daoFactory     the dao factory
+     * @param servletContext the servlet context
+     * @throws ServiceException the service exception
+     */
     public static void configure(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         if (instance == null) {
             instance = new PhotoService(daoFactory, servletContext);
@@ -39,6 +49,12 @@ public class PhotoService {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws ServiceException the service exception
+     */
     public static PhotoService getInstance() throws ServiceException {
         if (instance == null) {
             throw new ServiceException("PhotoService not yet configured. " +
@@ -47,6 +63,13 @@ public class PhotoService {
         return instance;
     }
 
+    /**
+     * Gets last photo.
+     *
+     * @param patientID the patient id
+     * @return the last photo
+     * @throws ServiceException the service exception
+     */
     public String getLastPhoto(String patientID) throws ServiceException {
         Photo photo;
 
@@ -63,6 +86,13 @@ public class PhotoService {
         return getPhotoPath(photo);
     }
 
+    /**
+     * Gets all photos.
+     *
+     * @param patientID the patient id
+     * @return the all photos
+     * @throws ServiceException the service exception
+     */
     public List<String> getAllPhotos(String patientID) throws ServiceException {
         int id;
         List<Photo> photos = null;
@@ -86,6 +116,13 @@ public class PhotoService {
     }
 
 
+    /**
+     * Gets all photos with id.
+     *
+     * @param patientID the patient id
+     * @return the all photos with id
+     * @throws ServiceException the service exception
+     */
     public List<Pair<String, Integer>> getAllPhotosWithID(String patientID) throws ServiceException {
         List<Photo> photos;
         List<Pair<String, Integer>> photo_paths = new ArrayList<>();
@@ -132,10 +169,21 @@ public class PhotoService {
         return photoPath.replace('\\', '/');
     }
 
+    /**
+     * Gets avatar folder.
+     *
+     * @return the avatar folder
+     */
     public String getAvatarFolder() {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator;
     }
 
+    /**
+     * Gets patient avatar folder.
+     *
+     * @param patientID the patient id
+     * @return the patient avatar folder
+     */
     public String getPatientAvatarFolder(String patientID) {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;
     }

@@ -25,6 +25,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Prescription servlet.
+ */
 @WebServlet("/restricted/general_practitioner/prescriptions")
 public class PrescriptionServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
@@ -297,6 +300,15 @@ public class PrescriptionServlet extends HttpServlet {
         private Action action;
         private String ID;
 
+        /**
+         * Instantiates a new Patient list element.
+         *
+         * @param name   the name
+         * @param ssn    the ssn
+         * @param avt    the avt
+         * @param action the action
+         * @param ID     the id
+         */
         public PatientListElement(String name, String ssn, String avt, Action action, String ID) {
             this.name = name;
             this.ssn = ssn;
@@ -310,11 +322,22 @@ public class PrescriptionServlet extends HttpServlet {
         private Integer id;
         private String text;
 
+        /**
+         * Instantiates a new Drug search result.
+         *
+         * @param id   the id
+         * @param text the text
+         */
         DrugSearchResult(Integer id, String text) {
             this.id = id;
             this.text = text;
         }
 
+        /**
+         * Gets text.
+         *
+         * @return the text
+         */
         public String getText() {
             return text;
         }

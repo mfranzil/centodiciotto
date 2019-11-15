@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc password reset dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> implements PasswordResetDAO {
 
@@ -27,6 +30,12 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
     final private String GET_BY_TOKEN = "SELECT * FROM password_reset WHERE token = ?;";
 
+    /**
+     * Instantiates a new Jdbc password reset dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCPasswordResetDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 
+/**
+ * The type Drug prescription servlet.
+ */
 @WebServlet("/restricted/patient/prescriptions")
 public class DrugPrescriptionServlet extends HttpServlet {
 

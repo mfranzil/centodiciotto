@@ -23,6 +23,9 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
 
+/**
+ * The type Jdbcdao factory.
+ */
 public class JDBCDAOFactory implements DAOFactory {
     private static JDBCDAOFactory instance;
     private final transient Connection CON;
@@ -69,6 +72,11 @@ public class JDBCDAOFactory implements DAOFactory {
         DAO_CACHE = new HashMap<>();
     }
 
+    /**
+     * Configure.
+     *
+     * @throws DAOFactoryException the dao factory exception
+     */
     public static void configure() throws DAOFactoryException {
         if (instance == null) {
             instance = new JDBCDAOFactory();
@@ -77,6 +85,12 @@ public class JDBCDAOFactory implements DAOFactory {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws DAOFactoryException the dao factory exception
+     */
     public static JDBCDAOFactory getInstance() throws DAOFactoryException {
         if (instance == null) {
             throw new DAOFactoryException("DAOFactory not yet configured. " +

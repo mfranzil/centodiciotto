@@ -25,6 +25,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Pdf service.
+ */
 @SuppressWarnings("SameParameterValue")
 public class PDFService {
 
@@ -35,6 +38,12 @@ public class PDFService {
         sc = servletContext;
     }
 
+    /**
+     * Configure.
+     *
+     * @param servletContext the servlet context
+     * @throws ServiceException the service exception
+     */
     public static void configure(ServletContext servletContext) throws ServiceException {
         if (instance == null) {
             instance = new PDFService(servletContext);
@@ -43,6 +52,12 @@ public class PDFService {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws ServiceException the service exception
+     */
     public static PDFService getInstance() throws ServiceException {
         if (instance == null) {
             throw new ServiceException("PDFService not yet configured. " +
@@ -75,6 +90,16 @@ public class PDFService {
                 .withZone(ZoneId.systemDefault()).format(ts.toInstant()), 3);
     }
 
+    /**
+     * Create drug prescription pd document.
+     *
+     * @param dp        the dp
+     * @param pat       the pat
+     * @param pra       the pra
+     * @param qrCodeURL the qr code url
+     * @return the pd document
+     * @throws ServiceException the service exception
+     */
     public PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra, String qrCodeURL)
             throws ServiceException {
 

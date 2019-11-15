@@ -21,6 +21,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * The type Visit requests servlet.
+ */
 @WebServlet("/restricted/general_practitioner/visit_requests")
 public class VisitRequestsServlet extends HttpServlet {
     private VisitDAO visitDAO;

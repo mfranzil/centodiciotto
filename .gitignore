@@ -3,7 +3,7 @@
 .settings/
 target/
 out/
-docs/
+etc/
 
 *.iml
 .DS_Store

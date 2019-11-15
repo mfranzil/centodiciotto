@@ -34,6 +34,9 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
+/**
+ * The type Chemist prescription servlet.
+ */
 @WebServlet("/restricted/chemist/prescriptions")
 public class ChemistPrescriptionServlet extends HttpServlet {
 
@@ -302,6 +305,16 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private String SSN;
         private String photoPath;
 
+        /**
+         * Instantiates a new Patient search result.
+         *
+         * @param id        the id
+         * @param text      the text
+         * @param patientID the patient id
+         * @param fullName  the full name
+         * @param SSN       the ssn
+         * @param photoPath the photo path
+         */
         PatientSearchResult(Integer id, String text, String patientID,
                             String fullName, String SSN, String photoPath) {
             this.id = id;
@@ -320,6 +333,15 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private Action action;
         private Integer ID;
 
+        /**
+         * Instantiates a new Prescription list element.
+         *
+         * @param pract  the pract
+         * @param drug   the drug
+         * @param date   the date
+         * @param ID     the id
+         * @param action the action
+         */
         PrescriptionListElement(String pract, String drug, String date, Integer ID, String action) {
             this.pract = pract;
             this.drug = drug;

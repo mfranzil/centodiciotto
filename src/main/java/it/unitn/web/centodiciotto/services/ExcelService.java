@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The type Excel service.
+ */
 public class ExcelService {
 
     private static ExcelService instance;
@@ -52,6 +55,13 @@ public class ExcelService {
         }
     }
 
+    /**
+     * Configure.
+     *
+     * @param daoFactory     the dao factory
+     * @param servletContext the servlet context
+     * @throws ServiceException the service exception
+     */
     public static void configure(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         if (instance == null) {
             instance = new ExcelService(daoFactory, servletContext);
@@ -60,6 +70,12 @@ public class ExcelService {
         }
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     * @throws ServiceException the service exception
+     */
     public static ExcelService getInstance() throws ServiceException {
         if (instance == null) {
             throw new ServiceException("ExcelService not yet configured. " +
@@ -68,6 +84,19 @@ public class ExcelService {
         return instance;
     }
 
+    /**
+     * Create report string.
+     *
+     * @param healthServiceID           the health service id
+     * @param date                      the date
+     * @param includeVisits             the include visits
+     * @param includeRecalls            the include recalls
+     * @param includeDoctorExams        the include doctor exams
+     * @param includeHealthServiceExams the include health service exams
+     * @param includePrescriptions      the include prescriptions
+     * @return the string
+     * @throws ServiceException the service exception
+     */
     public String createReport(String healthServiceID, Date date, boolean includeVisits, boolean includeRecalls,
                                boolean includeDoctorExams, boolean includeHealthServiceExams,
                                boolean includePrescriptions) throws ServiceException {
@@ -166,11 +195,30 @@ public class ExcelService {
     }
 
 
+    /**
+     * The type Report.
+     */
     public static class Report {
+        /**
+         * The Region.
+         */
         public String region;
+        /**
+         * The Province.
+         */
         public String province;
+        /**
+         * The Day.
+         */
         public String day;
 
+        /**
+         * Instantiates a new Report.
+         *
+         * @param region   the region
+         * @param province the province
+         * @param day      the day
+         */
         Report(String region, String province, String day) {
             this.region = region;
             this.province = province;
@@ -178,17 +226,60 @@ public class ExcelService {
         }
     }
 
+    /**
+     * The type Entry.
+     */
     public static class Entry {
+        /**
+         * The Id.
+         */
         public int ID;
+        /**
+         * The Patient id.
+         */
         public String patientID;
+        /**
+         * The Patient first name.
+         */
         public String patientFirstName;
+        /**
+         * The Patient last name.
+         */
         public String patientLastName;
+        /**
+         * The Type.
+         */
         public String type;
+        /**
+         * The Dispatcher id.
+         */
         public String dispatcherID;
+        /**
+         * The Dispatcher first name.
+         */
         public String dispatcherFirstName;
+        /**
+         * The Dispatcher last name.
+         */
         public String dispatcherLastName;
+        /**
+         * The Ticket.
+         */
         public int ticket;
 
+        /**
+         * Instantiates a new Entry.
+         *
+         * @param ID                  the id
+         * @param patientID           the patient id
+         * @param patientFirstName    the patient first name
+         * @param patientLastName     the patient last name
+         * @param type                the type
+         * @param dispatcherID        the dispatcher id
+         * @param dispatcherFirstName the dispatcher first name
+         * @param dispatcherLastName  the dispatcher last name
+         * @param ticket              the ticket
+         */
         Entry(int ID, String patientID, String patientFirstName, String patientLastName,
               String type, String dispatcherID, String dispatcherFirstName, String dispatcherLastName,
               int ticket) {

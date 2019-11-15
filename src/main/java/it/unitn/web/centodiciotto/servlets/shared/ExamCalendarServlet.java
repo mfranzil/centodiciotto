@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * The type Exam calendar servlet.
+ */
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_calendar", "/restricted/health_service/exam_calendar"})
 public class ExamCalendarServlet extends HttpServlet {
     private ExamDAO examDAO;

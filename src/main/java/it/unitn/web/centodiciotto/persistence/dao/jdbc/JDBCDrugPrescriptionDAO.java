@@ -12,6 +12,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc drug prescription dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> implements DrugPrescriptionDAO {
 
@@ -50,6 +53,12 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     final private String GET_BY_DATE_SOLD = "SELECT * FROM drug_prescription " +
             "WHERE date_sold::date = ?::date";
 
+    /**
+     * Instantiates a new Jdbc drug prescription dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

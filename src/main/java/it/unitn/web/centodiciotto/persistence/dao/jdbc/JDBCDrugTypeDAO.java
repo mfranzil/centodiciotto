@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc drug type dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCDrugTypeDAO extends JDBCDAO<DrugType, Integer> implements DrugTypeDAO {
 
@@ -20,6 +23,12 @@ public class JDBCDrugTypeDAO extends JDBCDAO<DrugType, Integer> implements DrugT
     final private String GET_ALL = "SELECT * FROM drug_type;";
     final private String COUNT = "SELECT COUNT(*) FROM drug_type;";
 
+    /**
+     * Instantiates a new Jdbc drug type dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCDrugTypeDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

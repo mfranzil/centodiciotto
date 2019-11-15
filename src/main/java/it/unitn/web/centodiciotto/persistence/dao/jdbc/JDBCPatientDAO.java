@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Jdbc patient dao.
+ */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
 
@@ -37,6 +40,12 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     final private String GET_BY_PROVINCE = "SELECT * FROM patient " +
             "WHERE living_province = ? ORDER BY last_name ASC;";
 
+    /**
+     * Instantiates a new Jdbc patient dao.
+     *
+     * @param con the con
+     * @throws DAOFactoryException the dao factory exception
+     */
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
     }

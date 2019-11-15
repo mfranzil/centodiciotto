@@ -9,7 +9,11 @@ import it.unitn.web.centodiciotto.services.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.logging.Logger;
 
+/**
+ * The type Web app context listener.
+ */
 public class WebAppContextListener implements ServletContextListener {
 
     @Override
@@ -26,7 +30,6 @@ public class WebAppContextListener implements ServletContextListener {
             ExcelService.configure(daoFactory, sc);
             PDFService.configure(sc);
 
-            sc.setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException | ServiceException e) {
             throw new RuntimeException(e);
         }
