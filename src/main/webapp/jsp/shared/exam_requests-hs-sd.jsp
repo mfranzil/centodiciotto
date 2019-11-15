@@ -5,6 +5,7 @@
     <title>Exam requests - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
@@ -28,12 +29,42 @@
         $("document").ready(function () {
             const url = window.location.href;
 
+            let tableHeaders = [
+                {field: "avt", type: "photo", text: "&nbsp;"},
+                {field: "patient", type: "string", text: "Patient"},
+                {field: "exam", type: "string", text: "Exam"},
+                {field: "action", type: "button", text: "&nbsp;"}
+            ];
+
+            $("#requests-table").createTableHeaders(tableHeaders);
+            renderRequestRows();
+
+            function renderRequestRows() {
+                $("#main-loading-container").slideDown();
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        requestType: "requestList"
+                    },
+                    url: url,
+                    success: function (json) {
+                        $("#requests-table").insertRows(tableHeaders, json, url);
+                        $("#main-loading-container").slideUp();
+                        enablePopup();
+                    }
+                });
+            }
+
             $(".set-exam").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
                 let button = form.find("button.submit");
-                let data = form.serialize();
+
+                let data = form.serializeArray();
+                data.push({name: "requestType", value: "requestBook"});
 
                 button.prop("disabled", true).html("Confirming..");
 
@@ -86,82 +117,88 @@
     <div class="body-content">
         <div class="row">
             <div class="col-md">
-                <div class="table-personal table-header">
-                    <div class="table-cell avt">&nbsp;</div>
-                    <div class="table-cell patient">Patient</div>
-                    <div class="table-cell exam">SSN</div>
-                    <div class="table-cell action">&nbsp;</div>
-                </div>
+                <div id="requests-table">
+                    <div class="table-personal table-header">
+                        <div class="table-cell avt">&nbsp;</div>
+                        <div class="table-cell patient">Patient</div>
+                        <div class="table-cell exam">Exam</div>
+                        <div class="table-cell action">&nbsp;</div>
+                    </div>
 
-                <jsp:useBean id="patientDAO"
-                             class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
-                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+                    <jsp:useBean id="patientDAO"
+                                 class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+                    <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
-                <c:choose>
-                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
-                        <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
-                        <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
-                        <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
-                    </c:when>
-                    <c:when test="${sessionScope.role eq 'health_service'}">
-                        <jsp:useBean id="healthServiceDAO" class="it.unitn.web.centodiciotto.beans.HealthServiceDAOBean"/>
-                        <jsp:setProperty name="healthServiceDAO" property="healthServiceID" value="${sessionScope.user.ID}"/>
-                        <jsp:setProperty name="healthServiceDAO" property="DAOFactory" value=""/>
-                    </c:when>
-                </c:choose>
+                    <c:choose>
+                        <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                            <jsp:useBean id="doctorDAO"
+                                         class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
+                            <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
+                            <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
+                        </c:when>
+                        <c:when test="${sessionScope.role eq 'health_service'}">
+                            <jsp:useBean id="healthServiceDAO"
+                                         class="it.unitn.web.centodiciotto.beans.HealthServiceDAOBean"/>
+                            <jsp:setProperty name="healthServiceDAO" property="healthServiceID"
+                                             value="${sessionScope.user.ID}"/>
+                            <jsp:setProperty name="healthServiceDAO" property="DAOFactory" value=""/>
+                        </c:when>
+                    </c:choose>
 
-                <c:choose>
-                    <c:when test="${sessionScope.role eq 'specialized_doctor'}">
-                        <c:set var="chosenDAO" value="${doctorDAO}"/>
-                    </c:when>
-                    <c:when test="${sessionScope.role eq 'health_service'}">
-                        <c:set var="chosenDAO" value="${healthServiceDAO}"/>
-                    </c:when>
-                </c:choose>
+                    <c:choose>
+                        <c:when test="${sessionScope.role eq 'specialized_doctor'}">
+                            <c:set var="chosenDAO" value="${doctorDAO}"/>
+                        </c:when>
+                        <c:when test="${sessionScope.role eq 'health_service'}">
+                            <c:set var="chosenDAO" value="${healthServiceDAO}"/>
+                        </c:when>
+                    </c:choose>
 
-                <c:forEach items="${chosenDAO.pendingExams}" var="exam">
-                    <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
-                    <c:set var="patient" value="${patientDAO.patient}"/>
-                    <div class="table-personal">
-                        <div class="table-cell avt">
-                            <img class="avatar-small" alt=""
-                                 src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
-                        </div>
-                        <div class="table-cell patient">${patient.firstName} ${patient.lastName}</div>
-                        <div class="table-cell exam">${exam.type.description}</div>
-                        <div class="table-cell action">
-                            <button class="btn btn-block btn-personal popup-opener">
-                                Choose date and time
-                            </button>
-                            <div class="popup-window">
-                                <div class="popup animate-in">
-                                    <form class="set-exam" method="POST">
-                                        Insert a date and time for the appointment, then confirm.
-                                        <div style="display: flex; width: 100%;">
-                                            <label style="flex: 50%" class="my-2 mr-1">
-                                                <input class="form-control datepicker exam-date" autocomplete="off"
-                                                       type="text" name="examDate">
-                                            </label>
-                                            <label style="flex: 50%" class="my-2 ml-1">
-                                                <input class="form-control timepicker exam-time" autocomplete="off"
-                                                       type="text" name="examTime">
-                                            </label>
-                                        </div>
-                                        <input type="hidden" value="${patient.ID}" name="patientID">
-                                        <input type="hidden" value="${exam.type.ID}" name="examID">
-                                        <button class="btn btn-lg btn-block btn-personal submit" type="submit">
-                                            Confirm the appointment
-                                        </button>
-                                        <button class="btn btn-lg btn-block popup-closer btn-secondary" type="button">
-                                            Cancel
-                                        </button>
-                                    </form>
+                    <c:forEach items="${chosenDAO.pendingExams}" var="exam">
+                        <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
+                        <c:set var="patient" value="${patientDAO.patient}"/>
+                        <div class="table-personal">
+                            <div class="table-cell avt">
+                                <img class="avatar-small" alt=""
+                                     src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
+                            </div>
+                            <div class="table-cell patient">${patient.firstName} ${patient.lastName}</div>
+                            <div class="table-cell exam">${exam.type.description}</div>
+                            <div class="table-cell action">
+                                <button class="btn btn-block btn-personal popup-opener">
+                                    Choose date and time
+                                </button>
+                                <div class="popup-window">
+                                    <div class="popup animate-in">
+                                        <form class="set-exam" method="POST">
+                                            Insert a date and time for the appointment, then confirm.
+                                            <div style="display: flex; width: 100%;">
+                                                <label style="flex: 50%" class="my-2 mr-1">
+                                                    <input class="form-control datepicker exam-date" autocomplete="off"
+                                                           type="text" name="examDate">
+                                                </label>
+                                                <label style="flex: 50%" class="my-2 ml-1">
+                                                    <input class="form-control timepicker exam-time" autocomplete="off"
+                                                           type="text" name="examTime">
+                                                </label>
+                                            </div>
+                                            <input type="hidden" value="${patient.ID}" name="patientID">
+                                            <input type="hidden" value="${exam.type.ID}" name="examID">
+                                            <button class="btn btn-lg btn-block btn-personal submit" type="submit">
+                                                Confirm the appointment
+                                            </button>
+                                            <button class="btn btn-lg btn-block popup-closer btn-secondary"
+                                                    type="button">
+                                                Cancel
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                </c:forEach>
+                        <hr>
+                    </c:forEach>
+                </div>
             </div>
         </div>
     </div>

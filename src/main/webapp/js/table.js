@@ -23,6 +23,8 @@ function buildHtmlFromJson(json, parent) {
                     htmlParagraphElement.type : element.elementInputType;
                 htmlParagraphElement.name = (typeof element.elementInputName === "undefined") ?
                     htmlParagraphElement.name : element.elementInputName;
+                htmlParagraphElement.autocomplete = (typeof element.elementInputAutocomplete === "undefined") ?
+                    htmlParagraphElement.autocomplete : element.elementInputAutocomplete;
             } else if (element.elementType === "textarea") {
                 htmlParagraphElement.placeholder = (typeof element.elementTextAreaPlaceholder === "undefined") ?
                     htmlParagraphElement.placeholder : element.elementTextAreaPlaceholder;
@@ -48,11 +50,15 @@ function buildHtmlFromJson(json, parent) {
             htmlParagraphElement.className = (typeof element.elementClass === "undefined") ?
                 htmlParagraphElement.className : element.elementClass;
 
+            htmlParagraphElement.style = (typeof element.elementStyle === "undefined") ?
+                htmlParagraphElement.style : element.elementStyle;
+
             htmlParagraphElement.id = (typeof element.elementID === "undefined") ?
                 htmlParagraphElement.id : element.elementID;
 
             htmlParagraphElement.innerHTML = (typeof element.elementContent === "undefined") ?
                 htmlParagraphElement.innerHTML : element.elementContent;
+
 
             parent.appendChild(htmlParagraphElement);
             lastElement = htmlParagraphElement;

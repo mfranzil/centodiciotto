@@ -4,6 +4,7 @@ public class HTMLElement {
     private String elementType;
     private String elementClass;
     private String elementContent;
+    private String elementStyle;
     private String elementID;
 
     private String elementButtonType;
@@ -11,6 +12,7 @@ public class HTMLElement {
     private String elementInputType;
     private String elementInputName;
     private String elementInputValue;
+    private String elementInputAutocomplete;
 
     private String elementFormAction;
     private String elementFormTarget;
@@ -54,6 +56,15 @@ public class HTMLElement {
         return this;
     }
 
+    public String getElementInputAutocomplete() {
+        return elementInputAutocomplete;
+    }
+
+    public HTMLElement setElementInputAutocomplete(String elementInputAutocomplete) {
+        this.elementInputAutocomplete = elementInputAutocomplete;
+        return this;
+    }
+
     public String getElementType() {
         return elementType;
     }
@@ -78,6 +89,15 @@ public class HTMLElement {
 
     public HTMLElement setElementContent(String elementContent) {
         this.elementContent = elementContent;
+        return this;
+    }
+
+    public String getElementStyle() {
+        return elementStyle;
+    }
+
+    public HTMLElement setElementStyle(String elementStyle) {
+        this.elementStyle = elementStyle;
         return this;
     }
 
