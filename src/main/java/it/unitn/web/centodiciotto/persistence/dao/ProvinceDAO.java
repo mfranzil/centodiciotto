@@ -10,10 +10,10 @@ import it.unitn.web.centodiciotto.persistence.entities.Province;
 public interface ProvinceDAO extends DAO<Province, Integer> {
 
     /**
-     * Gets by abbreviation.
+     * Returns the {@link Province} indexed by this {@code provinceAbbreviation}.
      *
-     * @param provinceAbbreviation the province abbreviation
-     * @return the by abbreviation
+     * @param provinceAbbreviation the {@code provinceAbbreviation}
+     * @return the {@link Province} indexed by this {@code provinceAbbreviation}
      * @throws DAOException in case of a malformed input or query
      */
     Province getByAbbreviation(String provinceAbbreviation) throws DAOException;

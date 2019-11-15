@@ -1,13 +1,14 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Health service.
+ * HealthService entity. Represents the "health_service" user class.
+ * Subclasses {@link User} for authentication purposes.
  */
 public class HealthService extends User {
     private Province operatingProvince;
 
     /**
-     * Gets operating province.
+     * Gets the operating province.
      *
      * @return the operating province
      */
@@ -16,7 +17,7 @@ public class HealthService extends User {
     }
 
     /**
-     * Sets operating province.
+     * Sets the operating province.
      *
      * @param operatingProvince the operating province
      */

@@ -79,7 +79,7 @@ public class ExamBookingServlet extends HttpServlet {
 
                         List<ExamListElement> examListElements = new ArrayList<>();
 
-                        List<Exam> patientExamList = examDAO.getPendingByPatientDoctorHealthServiceNotSelected(user.getID());
+                        List<Exam> patientExamList = examDAO.getUnassignedByPatient(user.getID());
 
                         if (examID == null) {
                             if (onlyAvailable) {

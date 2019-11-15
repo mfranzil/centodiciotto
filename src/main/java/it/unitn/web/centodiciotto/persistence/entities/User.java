@@ -1,18 +1,23 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type User.
+ * User entity.
+ * <p>
+ * This entity exists only to be subclassed by other classes, specializing it into a proper account type.
+ * <p>
+ * This entity implements hash and salt fields instead of the classic password field, to be used in conjunction
+ * with a proper hash+salt method.
  */
 public class User {
     /**
-     * The Id.
+     * The userID, represented by his/her e-mail in a {@link String} form.
      */
     protected String ID;
     private String hash;
     private String salt;
 
     /**
-     * Gets salt.
+     * Gets the salt.
      *
      * @return the salt
      */
@@ -21,7 +26,7 @@ public class User {
     }
 
     /**
-     * Sets salt.
+     * Sets the salt.
      *
      * @param salt the salt
      */
@@ -30,25 +35,25 @@ public class User {
     }
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public String getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(String ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets hash.
+     * Gets the hash.
      *
      * @return the hash
      */
@@ -57,7 +62,7 @@ public class User {
     }
 
     /**
-     * Sets hash.
+     * Sets the hash.
      *
      * @param hash the hash
      */

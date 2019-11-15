@@ -6,14 +6,14 @@ package it.unitn.web.centodiciotto.services;
 public class ServiceException extends Exception {
 
     /**
-     * Instantiates a new Service exception.
+     * Instantiates a new Service exception with an empty message.
      */
     public ServiceException() {
         super();
     }
 
     /**
-     * Instantiates a new Service exception.
+     * Instantiates a new Service exception with a {@link String} as a message.
      *
      * @param message the message
      */
@@ -22,7 +22,7 @@ public class ServiceException extends Exception {
     }
 
     /**
-     * Instantiates a new Service exception.
+     * Instantiates a new Service exception wrapping a {@link Throwable}.
      *
      * @param cause the cause
      */
@@ -31,7 +31,7 @@ public class ServiceException extends Exception {
     }
 
     /**
-     * Instantiates a new Service exception.
+     * Instantiates a new Service exception wrapping a {@link Throwable} with a {@link String} as a message.
      *
      * @param message the message
      * @param cause   the cause

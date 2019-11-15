@@ -41,28 +41,35 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND booked IS FALSE";
     final private String GET_NOT_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND date IS NOT NULL";
+
     final private String GET_PENDING_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND booked IS false";
     final private String GET_BOOKED_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND date IS NOT NULL AND done = false AND booked = true";
     final private String GET_DONE_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND done = true";
+
     final private String GET_PENDING_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
             "AND booked IS false";
     final private String GET_BOOKED_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
             "AND date IS NOT NULL AND done = false AND booked = true";
     final private String GET_DONE_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
             "AND done = true";
+
     final private String GET_PENDING_BY_PATIENT_AND_TYPE = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND exam_type = ? AND booked IS FALSE";
-    final private String GET_BY_PATIENT_NOT_DOCTOR_NOT_HS = "SELECT * FROM exam WHERE patient_id = ? " +
+
+    final private String GET_UNASSIGNED_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND doctor_id IS NULL AND health_service_id IS NULL";
-    final private String GET_PENDING_BY_PATIENT_AND_TYPE_AND_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
+
+    final private String GET_PENDING_BY_DOCTOR_PATIENT_TYPE = "SELECT * FROM exam WHERE doctor_id = ? " +
             "AND patient_id = ? AND exam_type = ? AND booked IS false";
-    final private String GET_PENDING_BY_HS_AND_TYPE_AND_DOCTOR = "SELECT * FROM exam WHERE health_service_id = ? " +
+    final private String GET_PENDING_BY_HS_PATIENT_TYPE = "SELECT * FROM exam WHERE health_service_id = ? " +
             "AND patient_id = ? AND exam_type = ? AND booked IS false";
+
     final private String GET_BY_DATE = "SELECT * FROM exam WHERE date::date = ?::date";
-    final private String GET_PENDING_RECALL_BY_IDS = "SELECT * FROM exam WHERE done = false AND exam_type = ? " +
+
+    final private String GET_PENDING_RECALL_BY_HS_PATIENT_TYPE = "SELECT * FROM exam WHERE done = false AND exam_type = ? " +
             "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null;";
 
     /**
@@ -98,7 +105,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             }
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"ExamDAO::insert affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "ExamDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Exam: ", e);
         }
@@ -129,7 +136,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(13, exam.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"ExamDAO::update affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "ExamDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating Exam: ", e);
@@ -142,7 +149,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(1, exam.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"ExamDAO::delete affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "ExamDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Exam: ", e);
         }
@@ -314,10 +321,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getPendingByPatientDoctorHealthServiceNotSelected(String patientID) throws DAOException {
+    public List<Exam> getUnassignedByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT_NOT_DOCTOR_NOT_HS)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_UNASSIGNED_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -441,13 +448,13 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public Exam getPendingByDoctorAndPatient(String doctorID, String patientID, Integer examID) throws DAOException {
+    public Exam getPendingByDoctorPatientType(String doctorID, String patientID, Integer examType) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT_AND_TYPE_AND_DOCTOR)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_DOCTOR_PATIENT_TYPE)) {
             stm.setString(1, doctorID);
             stm.setString(2, patientID);
-            stm.setInt(3, examID);
+            stm.setInt(3, examType);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -465,13 +472,13 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public Exam getPendingByHSAndPatient(String healthServiceID, String patientID, Integer examID) throws DAOException {
+    public Exam getPendingByHSPatientType(String healthServiceID, String patientID, Integer examType) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_HS_AND_TYPE_AND_DOCTOR)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_HS_PATIENT_TYPE)) {
             stm.setString(1, healthServiceID);
             stm.setString(2, patientID);
-            stm.setInt(3, examID);
+            stm.setInt(3, examType);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
@@ -509,10 +516,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public Exam getPendingRecall(Integer examType, String healthServiceID, String patientID) throws DAOException {
+    public Exam getPendingRecallByHSPatientType(String healthServiceID, String patientID, Integer examType) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_RECALL_BY_IDS)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_RECALL_BY_HS_PATIENT_TYPE)) {
             stm.setInt(1, examType);
             stm.setString(2, healthServiceID);
             stm.setString(3, patientID);

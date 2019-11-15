@@ -26,7 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Pdf service.
+ * PDFService service class, used to generate PDF prescriptions.
+ * <p>
+ * The service implements the Singleton pattern.
+ * <p>
+ * The service requires a servletContext for retrieving the system path and storing files.
  */
 @SuppressWarnings("SameParameterValue")
 public class PDFService {
@@ -39,10 +43,10 @@ public class PDFService {
     }
 
     /**
-     * Configure.
+     * Configuration method for the service.
      *
-     * @param servletContext the servlet context
-     * @throws ServiceException the service exception
+     * @param servletContext the servletContext
+     * @throws ServiceException in case of error during processing
      */
     public static void configure(ServletContext servletContext) throws ServiceException {
         if (instance == null) {
@@ -53,10 +57,10 @@ public class PDFService {
     }
 
     /**
-     * Gets instance.
+     * Instance retriever for the service.
      *
      * @return the instance
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public static PDFService getInstance() throws ServiceException {
         if (instance == null) {
@@ -66,6 +70,13 @@ public class PDFService {
         return instance;
     }
 
+    /**
+     * Util method for evenly spacing characters in the PDF.
+     *
+     * @param string the string to be spaced out
+     * @param spaces the number of spaces to be inserted
+     * @return an evenly spaced string
+     */
     private String insertSpaces(String string, int spaces) {
         StringBuilder res = new StringBuilder();
 
@@ -77,6 +88,18 @@ public class PDFService {
         return res.toString();
     }
 
+    /**
+     * Wrapper method that inserts line breaks in a string and prints it to the PDF.
+     *
+     * @param stream   the PDPageContentStream
+     * @param text     the text to be inserted
+     * @param font     the font to be used
+     * @param fontSize the fontSize to be used
+     * @param x        the x coordinate on the pdf for printing
+     * @param y        the y coordinate on the pdf for printing
+     * @param color    the color to be used
+     * @param split    the number of character for splitting the {@code text}
+     */
     private void splitWrite(PDPageContentStream stream, String text,
                             PDFont font, float fontSize, float x, float y, Color color, int split) {
         String[] arr = text.split("(?<=\\G.{" + split + "})");
@@ -91,14 +114,14 @@ public class PDFService {
     }
 
     /**
-     * Create drug prescription pd document.
+     * Create a new PDF prescription.
      *
-     * @param dp        the dp
-     * @param pat       the pat
-     * @param pra       the pra
-     * @param qrCodeURL the qr code url
-     * @return the pd document
-     * @throws ServiceException the service exception
+     * @param dp        the {@link DrugPrescription}
+     * @param pat       the {@link Patient} associated to this prescription
+     * @param pra       the {@link GeneralPractitioner} associated to this prescription
+     * @param qrCodeURL the url to be inserted as a base for the QR code
+     * @return the {@link PDDocument} freshly generated
+     * @throws ServiceException in case of error during processing
      */
     public PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra, String qrCodeURL)
             throws ServiceException {

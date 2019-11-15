@@ -7,16 +7,16 @@ import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import java.util.List;
 
 /**
- * DAO interface for a {@link General practitioner} entity.
+ * DAO interface for a {@link GeneralPractitioner} entity.
  */
 public interface GeneralPractitionerDAO extends DAO<GeneralPractitioner, String> {
 
     /**
-     * Gets by province.
+     * Returns a {@link List} of {@link GeneralPractitioner}s from a given {@code provinceAbbreviation}.
      *
-     * @param province_abbreviation the province abbreviation
-     * @return the by province
+     * @param provinceAbbreviation the {@code provinceAbbreviation}
+     * @return a {@link List} of {@link GeneralPractitioner}s from a given {@code provinceAbbreviation}
      * @throws DAOException in case of a malformed input or query
      */
-    List<GeneralPractitioner> getByProvince(String province_abbreviation) throws DAOException;
+    List<GeneralPractitioner> getByProvince(String provinceAbbreviation) throws DAOException;
 }

@@ -11,43 +11,43 @@ public class Photo {
     private Timestamp uploadDate;
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(int ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets patient id.
+     * Gets the patientID.
      *
-     * @return the patient id
+     * @return the patientID
      */
     public String getPatientID() {
         return patientID;
     }
 
     /**
-     * Sets patient id.
+     * Sets the patientID.
      *
-     * @param patientID the patient id
+     * @param patientID the patientID
      */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
     /**
-     * Gets upload date.
+     * Gets the upload date.
      *
      * @return the upload date
      */
@@ -56,7 +56,7 @@ public class Photo {
     }
 
     /**
-     * Sets upload date.
+     * Sets the upload date.
      *
      * @param uploadDate the upload date
      */

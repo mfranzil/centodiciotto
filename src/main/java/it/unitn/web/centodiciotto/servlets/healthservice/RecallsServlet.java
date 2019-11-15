@@ -121,8 +121,8 @@ public class RecallsServlet extends HttpServlet {
 
                             for (Patient patient : allPatients) {
                                 if (isWithinAgeRange(patient.getBirthDate(), minAge, maxAge)) {
-                                    Exam pending = examDAO.getPendingRecall(
-                                            examType.getID(), user.getID(), patient.getID());
+                                    Exam pending = examDAO.getPendingRecallByHSPatientType(
+                                            user.getID(), patient.getID(), examType.getID());
 
                                     if (pending == null) {
                                         Exam exam = new Exam();
@@ -159,7 +159,7 @@ public class RecallsServlet extends HttpServlet {
 
                         if (examID != null) {
                             Integer integerExamID = Integer.valueOf(examID);
-                            Recall lastRecall = recallDAO.getLastByHealthServiceAndExamType(
+                            Recall lastRecall = recallDAO.getLastByHSAndExamType(
                                     user.getID(), integerExamID);
 
                             if (lastRecall == null) {

@@ -11,7 +11,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 /**
- * The type Email service.
+ * EmaiLService service class, used to send emails to other users.
+ * <p>
+ * The service implements the Singleton pattern.
+ * <p>
+ * The service uses the resource bundle "email.properties" to correctly instantiate itself.
  */
 public class EmailService {
     private static EmailService instance;
@@ -58,9 +62,9 @@ public class EmailService {
     }
 
     /**
-     * Configure.
+     * Configuration method for the service.
      *
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public static void configure() throws ServiceException {
         if (instance == null) {
@@ -71,10 +75,10 @@ public class EmailService {
     }
 
     /**
-     * Gets instance.
+     * Instance retriever for the service.
      *
      * @return the instance
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public static EmailService getInstance() throws ServiceException {
         if (instance == null) {
@@ -85,12 +89,15 @@ public class EmailService {
     }
 
     /**
-     * Send email.
+     * Sends an email.
+     *
+     * The method creates a new {@link Runnable} for the outgoing message and dispatches it immediately to
+     * a {@link Thread}.
      *
      * @param recipient the recipient
      * @param message   the message
      * @param subject   the subject
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public synchronized void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
         var throwableWrapper = new Object() {

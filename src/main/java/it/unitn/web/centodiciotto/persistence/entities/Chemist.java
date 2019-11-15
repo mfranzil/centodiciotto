@@ -1,7 +1,8 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Chemist.
+ * Chemist entity. Represents the "chemist" user class.
+ * Subclasses {@link User} for authentication purposes.
  */
 public class Chemist extends User {
     private String name;
@@ -9,7 +10,7 @@ public class Chemist extends User {
     private String workingPlace;
 
     /**
-     * Gets name.
+     * Gets the name.
      *
      * @return the name
      */
@@ -18,7 +19,7 @@ public class Chemist extends User {
     }
 
     /**
-     * Sets name.
+     * Sets the name.
      *
      * @param Name the name
      */
@@ -27,7 +28,7 @@ public class Chemist extends User {
     }
 
     /**
-     * Gets province.
+     * Gets the province.
      *
      * @return the province
      */
@@ -36,7 +37,7 @@ public class Chemist extends User {
     }
 
     /**
-     * Sets province.
+     * Sets the province.
      *
      * @param province the province
      */
@@ -45,7 +46,7 @@ public class Chemist extends User {
     }
 
     /**
-     * Gets working place.
+     * Gets the working place.
      *
      * @return the working place
      */
@@ -54,7 +55,7 @@ public class Chemist extends User {
     }
 
     /**
-     * Sets working place.
+     * Sets the working place.
      *
      * @param workingPlace the working place
      */

@@ -21,7 +21,7 @@ public class DAOFactoryException extends Exception {
     }
 
     /**
-     * Instantiates a new DAOFactory exception with a string as a message.
+     * Instantiates a new DAOFactory exception with a {@link String} as a message.
      *
      * @param message the message
      */
@@ -39,7 +39,7 @@ public class DAOFactoryException extends Exception {
     }
 
     /**
-     * Instantiates a new DAOFactory exception wrapping a {@link Throwable} with a string as a message.
+     * Instantiates a new DAOFactory exception wrapping a {@link Throwable} with a {@link String} as a message.
      *
      * @param message the message
      * @param cause   the cause

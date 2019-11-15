@@ -86,9 +86,9 @@ public class ExamRequestsServlet extends HttpServlet {
                         Exam pendingExam;
 
                         if (user instanceof SpecializedDoctor) {
-                            pendingExam = examDAO.getPendingByDoctorAndPatient(examHandlerID, patientID, Integer.valueOf(examID));
+                            pendingExam = examDAO.getPendingByDoctorPatientType(examHandlerID, patientID, Integer.valueOf(examID));
                         } else {
-                            pendingExam = examDAO.getPendingByHSAndPatient(examHandlerID, patientID, Integer.valueOf(examID));
+                            pendingExam = examDAO.getPendingByHSPatientType(examHandlerID, patientID, Integer.valueOf(examID));
                         }
 
                         if (pendingExam != null) {

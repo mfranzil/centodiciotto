@@ -155,11 +155,11 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
         return -1L;
     }
 
-    public Recall getLastByHealthServiceAndExamType(String healthServiceID, Integer examID) throws DAOException {
+    public Recall getLastByHSAndExamType(String healthServiceID, Integer examType) throws DAOException {
         Recall res;
         try (PreparedStatement stm = CON.prepareStatement(GET_LAST_BY_HS_AND_EXAM_TYPE)) {
             stm.setString(1, healthServiceID);
-            stm.setInt(2, examID);
+            stm.setInt(2, examType);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

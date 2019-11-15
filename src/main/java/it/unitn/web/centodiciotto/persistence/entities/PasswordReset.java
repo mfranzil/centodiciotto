@@ -11,25 +11,25 @@ public class PasswordReset {
     private Timestamp expiringDate;
 
     /**
-     * Gets user id.
+     * Gets the userID
      *
-     * @return the user id
+     * @return the userID
      */
     public String getUserID() {
         return userID;
     }
 
     /**
-     * Sets user id.
+     * Sets the userID
      *
-     * @param userID the user id
+     * @param userID the userID
      */
     public void setUserID(String userID) {
         this.userID = userID;
     }
 
     /**
-     * Gets token.
+     * Gets the token.
      *
      * @return the token
      */
@@ -38,7 +38,7 @@ public class PasswordReset {
     }
 
     /**
-     * Sets token.
+     * Sets the token.
      *
      * @param token the token
      */
@@ -47,7 +47,7 @@ public class PasswordReset {
     }
 
     /**
-     * Gets expiring date.
+     * Gets the expiring date.
      *
      * @return the expiring date
      */
@@ -56,7 +56,7 @@ public class PasswordReset {
     }
 
     /**
-     * Sets expiring date.
+     * Sets the expiring date.
      *
      * @param expiringDate the expiring date
      */

@@ -19,7 +19,7 @@ public class DAOException extends Exception {
     }
 
     /**
-     * Instantiates a new DAO exception with a string as a message.
+     * Instantiates a new DAO exception with a {@link String} as a message.
      *
      * @param message the message
      */
@@ -37,7 +37,7 @@ public class DAOException extends Exception {
     }
 
     /**
-     * Instantiates a new DAO exception wrapping a {@link Throwable} with a string as a message.
+     * Instantiates a new DAO exception wrapping a {@link Throwable} with a {@link String} as a message.
      *
      * @param message the message
      * @param cause   the cause

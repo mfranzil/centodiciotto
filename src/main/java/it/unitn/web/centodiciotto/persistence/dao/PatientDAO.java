@@ -12,19 +12,19 @@ import java.util.List;
 public interface PatientDAO extends DAO<Patient, String> {
 
     /**
-     * Gets by practitioner.
+     * Returns a {@link List} of {@link Patient}s from a given {@code practitionerID}.
      *
-     * @param practitionerID the practitioner id
-     * @return the by practitioner
+     * @param practitionerID the {@code practitionerID}
+     * @return a {@link List} of {@link Patient}s from a given {@code practitionerID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Patient> getByPractitioner(String practitionerID) throws DAOException;
 
     /**
-     * Gets by province.
+     * Returns a {@link List} of {@link Patient}s from a given {@code provinceAbbreviation}.
      *
-     * @param provinceAbbreviation the province abbreviation
-     * @return the by province
+     * @param provinceAbbreviation the {@code provinceAbbreviation}
+     * @return a {@link List} of {@link Patient}s from a given {@code provinceAbbreviation}
      * @throws DAOException in case of a malformed input or query
      */
     List<Patient> getByProvince(String provinceAbbreviation) throws DAOException;

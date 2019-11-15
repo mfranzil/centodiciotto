@@ -10,25 +10,25 @@ public class Province {
     private String region;
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(Integer ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets name.
+     * Gets the name.
      *
      * @return the name
      */
@@ -37,7 +37,7 @@ public class Province {
     }
 
     /**
-     * Sets name.
+     * Sets the name.
      *
      * @param name the name
      */
@@ -46,7 +46,7 @@ public class Province {
     }
 
     /**
-     * Gets abbreviation.
+     * Gets the abbreviation.
      *
      * @return the abbreviation
      */
@@ -55,7 +55,7 @@ public class Province {
     }
 
     /**
-     * Sets abbreviation.
+     * Sets the abbreviation.
      *
      * @param abbreviation the abbreviation
      */
@@ -64,7 +64,7 @@ public class Province {
     }
 
     /**
-     * Gets region.
+     * Gets the region.
      *
      * @return the region
      */
@@ -73,7 +73,7 @@ public class Province {
     }
 
     /**
-     * Sets region.
+     * Sets the region.
      *
      * @param region the region
      */

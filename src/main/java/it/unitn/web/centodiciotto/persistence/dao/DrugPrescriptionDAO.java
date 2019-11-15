@@ -8,33 +8,42 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * DAO interface for a {@link Drug prescription} entity.
+ * DAO interface for a {@link DrugPrescription} entity.
  */
 public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
-
+    
     /**
-     * Gets valid by patient.
+     * Returns a {@link List} of valid {@link DrugPrescription}s from a given {@code patientID}.
      *
-     * @param patientID the patient id
-     * @return the valid by patient
+     * A prescription is considered valid if it hasn't been used and paid yet
+     * and was prescripted no more than a month ago.
+     *
+     * @param patientID the {@code patientID}
+     * @return {@link List} of valid {@link DrugPrescription}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getValidByPatient(String patientID) throws DAOException;
 
     /**
-     * Gets by date sold.
+     * Returns a {@link List} of {@link DrugPrescription}s from a given
+     * {@link Timestamp}, representing the date it was sold.
      *
-     * @param ts the ts
-     * @return the by date sold
+     * Eventual prescriptions with date sold set to {@code null} will be discarded.
+     *
+     * @param ts the {@link Timestamp} representing the date the prescription was sold
+     * @return {@link List} of {@link DrugPrescription}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getByDateSold(Timestamp ts) throws DAOException;
 
     /**
-     * Gets by patient not paid.
+     * Returns a {@link List} of unpaid {@link DrugPrescription}s from a given {@code patientID}.
      *
-     * @param patientID the patient id
-     * @return the by patient not paid
+     * A prescription is considered unpaid if it was sold (the date_sold parameter is not {@code null})
+     * but the ticket hasn't been paid yet.
+     *
+     * @param patientID the {@code patientID}
+     * @return {@link List} of unpaid {@link DrugPrescription}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getUnpaidByPatient(String patientID) throws DAOException;

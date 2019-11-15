@@ -16,13 +16,20 @@ import java.util.Base64;
 import java.util.Random;
 
 /**
- * The type Crypto service.
+ * CryptoService service class, used to expose methods that provide authentication and random string generation.
+ *
+ * The service implements the Singleton pattern.
+ *
+ * The service needs an initialized DAOFactory to instantiate one DAO for each user class,
+ * and instantiates a SecureRandom instance on startup.
+ *
  */
 public class CryptoService {
     private static CryptoService instance;
 
     private transient final int ITERATIONS = 10000;
     private transient final int KEY_LENGTH = 512;
+    private transient final int SALT_LENGTH = 8;
 
     private transient Random RANDOM;
     private transient UserDAO userDAO;
@@ -51,10 +58,10 @@ public class CryptoService {
     }
 
     /**
-     * Configure.
+     * Configuration method for the service.
      *
-     * @param daoFactory the dao factory
-     * @throws ServiceException the service exception
+     * @param daoFactory the DAOFactory
+     * @throws ServiceException in case of error during processing
      */
     public static void configure(DAOFactory daoFactory) throws ServiceException {
         if (instance == null) {
@@ -65,10 +72,10 @@ public class CryptoService {
     }
 
     /**
-     * Gets instance.
+     * Instance retriever for the service.
      *
      * @return the instance
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public static CryptoService getInstance() throws ServiceException {
         if (instance == null) {
@@ -78,6 +85,17 @@ public class CryptoService {
         return instance;
     }
 
+    /**
+     * Receives a password and a salt as parameter and outputs a KEY_LENGTH long hash using a
+     * {@link SecretKeyFactory}, which is then converted to Hexadecimal.
+     *
+     * The final length is KEY_LENGTH / 4 due to the hex conversion.
+     *
+     * @param password the password
+     * @param salt the salt
+     * @return a hexadecimal hash of the two parameters
+     * @throws ServiceException in case of error during processing
+     */
     private String hash(String password, String salt) throws ServiceException {
         char[] passwordChar = password.toCharArray();
         PBEKeySpec spec = new PBEKeySpec(passwordChar, salt.getBytes(), ITERATIONS, KEY_LENGTH);
@@ -92,6 +110,11 @@ public class CryptoService {
         }
     }
 
+    /**
+     * Barebones implementation for converting a byte array to a hexadecimal {@link String} representation.
+     * @param bytes an array of bytes to be converted to hex
+     * @return a {@link String} of hexadecimal characters
+     */
     private String bytesToHex(byte[] bytes) {
         final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
         char[] hexChars = new char[bytes.length * 2];
@@ -103,6 +126,14 @@ public class CryptoService {
         return new String(hexChars);
     }
 
+    /**
+     * Checks if the hash provided matches the password using the salt.
+     * @param password the password
+     * @param salt the salt
+     * @param expectedHash the hash to be checked
+     * @return true if the hash was obtained from the password hashed with the salt
+     * @throws ServiceException in case of error during processing
+     */
     private boolean isExpectedPassword(String password, String salt, String expectedHash) throws ServiceException {
         String inputHash = hash(password, salt);
         Arrays.fill(password.toCharArray(), Character.MIN_VALUE);
@@ -117,16 +148,19 @@ public class CryptoService {
         return true;
     }
 
+    /**
+     * Returns the next salt of length SALT_LENGTH * 2.
+     * @return a hexadecimal salt
+     */
     private String getNextSalt() {
-        byte[] salt = new byte[8];
+        byte[] salt = new byte[SALT_LENGTH];
         RANDOM.nextBytes(salt);
         return bytesToHex(salt);
     }
 
     /**
-     * Gets next base 64 token.
-     *
-     * @return the next base 64 token
+     * Gets the next base64 token, used for {@link it.unitn.web.centodiciotto.persistence.entities.PasswordReset} tokens.
+     * @return the next base64 token
      */
     public String getNextBase64Token() {
         byte[] token = new byte[32];
@@ -135,13 +169,21 @@ public class CryptoService {
     }
 
     /**
-     * Authenticate user.
+     * Authenticates the user.
      *
-     * @param ID       the id
+     * The role provided must be one of "patient", "general_practitioner", "specialized_doctor",
+     * "chemist", or "health_service". Failure to do so will invalidate the authentication process even
+     * if the ID and the password match.
+     *
+     * After confirming the authentication, the method returns a User subclass of the proper role.
+     *
+     * In case the authentication fails, it returns {@code null}.
+     *
+     * @param ID       the userID
      * @param password the password
      * @param role     the role
-     * @return the user
-     * @throws ServiceException the service exception
+     * @return a {@link User} subclass of the same role, or {@code null}.
+     * @throws ServiceException in case of error during processing
      */
     public User authenticate(String ID, String password, String role) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {
@@ -183,11 +225,11 @@ public class CryptoService {
     }
 
     /**
-     * Change password.
+     * Changes the password of a {@link User}
      *
-     * @param ID          the id
+     * @param ID          the ID
      * @param newPassword the new password
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public void changePassword(String ID, String newPassword) throws ServiceException {
         if (ID == null || newPassword == null || ID.equals("") || newPassword.equals("")) {
@@ -210,12 +252,12 @@ public class CryptoService {
     }
 
     /**
-     * Is current password boolean.
+     * Controls if the password provided matches the one in the database.
      *
-     * @param ID       the id
+     * @param ID       the ID
      * @param password the password
-     * @return the boolean
-     * @throws ServiceException the service exception
+     * @return true if the password is the one currently saved
+     * @throws ServiceException in case of error during processing
      */
     public boolean isCurrentPassword(String ID, String password) throws ServiceException {
         if (ID == null || password == null || ID.equals("") || password.equals("")) {

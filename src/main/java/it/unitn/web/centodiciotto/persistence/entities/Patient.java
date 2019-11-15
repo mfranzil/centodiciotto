@@ -3,7 +3,8 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Patient.
+ * Patient entity. Represents the "patient" user class.
+ * Subclasses {@link User} for authentication purposes.
  */
 public class Patient extends User {
     private String firstName;
@@ -17,7 +18,7 @@ public class Patient extends User {
     private String practitionerID;
 
     /**
-     * Gets first name.
+     * Gets the first name.
      *
      * @return the first name
      */
@@ -26,7 +27,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets first name.
+     * Sets the first name.
      *
      * @param firstName the first name
      */
@@ -35,7 +36,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets last name.
+     * Gets the last name.
      *
      * @return the last name
      */
@@ -44,7 +45,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets last name.
+     * Sets the last name.
      *
      * @param lastName the last name
      */
@@ -53,7 +54,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets birth date.
+     * Gets the birth date.
      *
      * @return the birth date
      */
@@ -62,7 +63,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets birth date.
+     * Sets the birth date.
      *
      * @param birthDate the birth date
      */
@@ -71,7 +72,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets birth place.
+     * Gets the birth place.
      *
      * @return the birth place
      */
@@ -80,7 +81,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets birth place.
+     * Sets the birth place.
      *
      * @param birthPlace the birth place
      */
@@ -89,7 +90,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets ssn.
+     * Gets the ssn.
      *
      * @return the ssn
      */
@@ -98,7 +99,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets ssn.
+     * Sets the ssn.
      *
      * @param SSN the ssn
      */
@@ -107,7 +108,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets gender.
+     * Gets the gender.
      *
      * @return the gender
      */
@@ -116,7 +117,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets gender.
+     * Sets the gender.
      *
      * @param gender the gender
      */
@@ -125,7 +126,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets living province.
+     * Gets the living province.
      *
      * @return the living province
      */
@@ -134,7 +135,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets living province.
+     * Sets the living province.
      *
      * @param livingProvince the living province
      */
@@ -143,7 +144,7 @@ public class Patient extends User {
     }
 
     /**
-     * Gets living place.
+     * Gets the living place.
      *
      * @return the living place
      */
@@ -152,7 +153,7 @@ public class Patient extends User {
     }
 
     /**
-     * Sets living place.
+     * Sets the living place.
      *
      * @param livingPlace the living place
      */
@@ -161,18 +162,18 @@ public class Patient extends User {
     }
 
     /**
-     * Gets practitioner id.
+     * Gets the practitionerID
      *
-     * @return the practitioner id
+     * @return the practitionerID
      */
     public String getPractitionerID() {
         return practitionerID;
     }
 
     /**
-     * Sets practitioner id.
+     * Sets the practitionerID
      *
-     * @param practitionerID the practitioner id
+     * @param practitionerID the practitionerID
      */
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;

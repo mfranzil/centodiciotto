@@ -13,7 +13,7 @@ public class BeanException extends Exception {
     }
 
     /**
-     * Instantiates a new Bean exception with a string as a message.
+     * Instantiates a new Bean exception with a {@link String} as a message.
      *
      * @param message the message
      */
@@ -31,7 +31,7 @@ public class BeanException extends Exception {
     }
 
     /**
-     * Instantiates a new Bean exception wrapping a {@link Throwable} with a string as a message.
+     * Instantiates a new Bean exception wrapping a {@link Throwable} with a {@link String} as a message.
      *
      * @param message the message
      * @param cause   the cause

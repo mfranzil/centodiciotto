@@ -24,7 +24,7 @@ public class Visit {
     }
 
     /**
-     * Sets booked.
+     * Sets the booked.
      *
      * @param booked the booked
      */
@@ -33,61 +33,61 @@ public class Visit {
     }
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param visitID the visit id
+     * @param visitID the visitID
      */
     public void setID(Integer visitID) {
         this.ID = visitID;
     }
 
     /**
-     * Gets patient id.
+     * Gets the patientID.
      *
-     * @return the patient id
+     * @return the patientID
      */
     public String getPatientID() {
         return patientID;
     }
 
     /**
-     * Sets patient id.
+     * Sets the patientID.
      *
-     * @param patientID the patient id
+     * @param patientID the patientID
      */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
     /**
-     * Gets practitioner id.
+     * Gets the practitionerID
      *
-     * @return the practitioner id
+     * @return the practitionerID
      */
     public String getPractitionerID() {
         return practitionerID;
     }
 
     /**
-     * Sets practitioner id.
+     * Sets the practitionerID
      *
-     * @param practitionerID the practitioner id
+     * @param practitionerID the practitionerID
      */
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;
     }
 
     /**
-     * Gets date.
+     * Gets the date.
      *
      * @return the date
      */
@@ -96,7 +96,7 @@ public class Visit {
     }
 
     /**
-     * Sets date.
+     * Sets the date.
      *
      * @param date the date
      */
@@ -105,7 +105,7 @@ public class Visit {
     }
 
     /**
-     * Gets report available.
+     * Gets the report available.
      *
      * @return the report available
      */
@@ -114,7 +114,7 @@ public class Visit {
     }
 
     /**
-     * Sets report available.
+     * Sets the report available.
      *
      * @param reportAvailable the report available
      */
@@ -123,7 +123,7 @@ public class Visit {
     }
 
     /**
-     * Gets report.
+     * Gets the report.
      *
      * @return the report
      */
@@ -132,7 +132,7 @@ public class Visit {
     }
 
     /**
-     * Sets report.
+     * Sets the report.
      *
      * @param report the report
      */

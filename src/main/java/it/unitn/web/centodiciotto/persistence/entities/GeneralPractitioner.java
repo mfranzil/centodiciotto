@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
-
 /**
- * The type General practitioner.
+ * GeneralPractitioner entity. Represents the "general_practitioner" user class.
+ * Subclasses {@link User} for authentication purposes.
  */
 public class GeneralPractitioner extends User {
     private String firstName;
@@ -10,7 +10,7 @@ public class GeneralPractitioner extends User {
     private String workingPlace;
 
     /**
-     * Gets first name.
+     * Gets the first name.
      *
      * @return the first name
      */
@@ -19,7 +19,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Sets first name.
+     * Sets the first name.
      *
      * @param firstName the first name
      */
@@ -28,7 +28,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Gets last name.
+     * Gets the last name.
      *
      * @return the last name
      */
@@ -37,7 +37,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Sets last name.
+     * Sets the last name.
      *
      * @param lastName the last name
      */
@@ -46,7 +46,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Gets working province.
+     * Gets the working province.
      *
      * @return the working province
      */
@@ -55,7 +55,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Sets working province.
+     * Sets the working province.
      *
      * @param workingProvince the working province
      */
@@ -64,7 +64,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Gets working place.
+     * Gets the working place.
      *
      * @return the working place
      */
@@ -73,7 +73,7 @@ public class GeneralPractitioner extends User {
     }
 
     /**
-     * Sets working place.
+     * Sets the working place.
      *
      * @param workingPlace the working place
      */

@@ -12,19 +12,19 @@ import java.util.List;
 public interface PhotoDAO extends DAO<Photo, Integer> {
 
     /**
-     * Gets current by patient.
+     * Returns the current {@link Photo} associated to this {@code patientID}
      *
-     * @param patientID the patient id
-     * @return the current by patient
+     * @param patientID the {@code patientID}
+     * @return the current {@link Photo} associated to this {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     Photo getCurrentByPatient(String patientID) throws DAOException;
 
     /**
-     * Gets all by patient.
+     * Returns a {@link List} of {@link Photo}s from a given {@code patientID}.
      *
-     * @param patientID the patient id
-     * @return the all by patient
+     * @param patientID the {@code patientID}
+     * @return a {@link List} of {@link Photo}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Photo> getAllByPatient(String patientID) throws DAOException;

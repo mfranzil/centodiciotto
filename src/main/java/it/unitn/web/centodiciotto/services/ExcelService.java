@@ -17,7 +17,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The type Excel service.
+ * ExcelService service class, used to generate Health Service reports in XLS format.
+ * <p>
+ * The service implements the Singleton pattern.
+ * <p>
+ * The service needs an initialized DAOFactory to instantiate one DAO for each user class, and a
+ * servletContext for retrieving the system path and storing files.
  */
 public class ExcelService {
 
@@ -56,11 +61,11 @@ public class ExcelService {
     }
 
     /**
-     * Configure.
+     * Configuration method for the service.
      *
-     * @param daoFactory     the dao factory
-     * @param servletContext the servlet context
-     * @throws ServiceException the service exception
+     * @param daoFactory     the DAOFactory
+     * @param servletContext the servletContext
+     * @throws ServiceException in case of error during processing
      */
     public static void configure(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         if (instance == null) {
@@ -71,10 +76,10 @@ public class ExcelService {
     }
 
     /**
-     * Gets instance.
+     * Instance retriever for the service.
      *
      * @return the instance
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public static ExcelService getInstance() throws ServiceException {
         if (instance == null) {
@@ -85,17 +90,17 @@ public class ExcelService {
     }
 
     /**
-     * Create report string.
+     * Creates a new XLS report for an Health Service.
      *
-     * @param healthServiceID           the health service id
-     * @param date                      the date
-     * @param includeVisits             the include visits
-     * @param includeRecalls            the include recalls
-     * @param includeDoctorExams        the include doctor exams
-     * @param includeHealthServiceExams the include health service exams
-     * @param includePrescriptions      the include prescriptions
-     * @return the string
-     * @throws ServiceException the service exception
+     * @param healthServiceID           the {@code healthServiceID} requesting the report
+     * @param date                      the date of the report
+     * @param includeVisits             if visits shall be included in the report
+     * @param includeRecalls            if recalls shall be included in the report
+     * @param includeDoctorExams        if doctor exams shall be included in the report
+     * @param includeHealthServiceExams if health service exams shall be included in the report
+     * @param includePrescriptions      if prescriptions shall be included in the report
+     * @return the relative path and name of the XLS file created
+     * @throws ServiceException in case of error during processing
      */
     public String createReport(String healthServiceID, Date date, boolean includeVisits, boolean includeRecalls,
                                boolean includeDoctorExams, boolean includeHealthServiceExams,
@@ -196,7 +201,7 @@ public class ExcelService {
 
 
     /**
-     * The type Report.
+     * The type Report, to be serialized and fed to the {@link JxlsHelper}.
      */
     public static class Report {
         /**
@@ -227,7 +232,7 @@ public class ExcelService {
     }
 
     /**
-     * The type Entry.
+     * The type Entry, to be serialized and fed to the {@link JxlsHelper}.
      */
     public static class Entry {
         /**

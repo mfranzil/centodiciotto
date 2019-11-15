@@ -8,25 +8,25 @@ public class DrugType {
     private String description;
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(Integer ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets description.
+     * Gets the description.
      *
      * @return the description
      */
@@ -35,7 +35,7 @@ public class DrugType {
     }
 
     /**
-     * Sets description.
+     * Sets the description.
      *
      * @param description the description
      */

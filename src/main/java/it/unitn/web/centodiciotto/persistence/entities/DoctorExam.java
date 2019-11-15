@@ -8,36 +8,36 @@ public class DoctorExam {
     private Integer examListID;
 
     /**
-     * Gets doctor id.
+     * Gets the doctorID
      *
-     * @return the doctor id
+     * @return the doctorID
      */
     public String getDoctorID() {
         return doctorID;
     }
 
     /**
-     * Sets doctor id.
+     * Sets the doctorID
      *
-     * @param doctorID the doctor id
+     * @param doctorID the doctorID
      */
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
 
     /**
-     * Gets exam list id.
+     * Gets the exam listID.
      *
-     * @return the exam list id
+     * @return the exam listID
      */
     public Integer getExamListID() {
         return examListID;
     }
 
     /**
-     * Sets exam list id.
+     * Sets the exam listID.
      *
-     * @param examListID the exam list id
+     * @param examListID the exam listID
      */
     public void setExamListID(Integer examListID) {
         this.examListID = examListID;

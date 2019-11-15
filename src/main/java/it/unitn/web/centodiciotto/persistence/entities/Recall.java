@@ -14,25 +14,25 @@ public class Recall {
     private String healthServiceID;
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(Integer ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets exam type.
+     * Gets the exam type.
      *
      * @return the exam type
      */
@@ -41,7 +41,7 @@ public class Recall {
     }
 
     /**
-     * Sets exam type.
+     * Sets the exam type.
      *
      * @param examType the exam type
      */
@@ -50,7 +50,7 @@ public class Recall {
     }
 
     /**
-     * Gets min age.
+     * Gets the min age.
      *
      * @return the min age
      */
@@ -59,7 +59,7 @@ public class Recall {
     }
 
     /**
-     * Sets min age.
+     * Sets the min age.
      *
      * @param minAge the min age
      */
@@ -68,7 +68,7 @@ public class Recall {
     }
 
     /**
-     * Gets max age.
+     * Gets the max age.
      *
      * @return the max age
      */
@@ -77,7 +77,7 @@ public class Recall {
     }
 
     /**
-     * Sets max age.
+     * Sets the max age.
      *
      * @param maxAge the max age
      */
@@ -86,7 +86,7 @@ public class Recall {
     }
 
     /**
-     * Gets start date.
+     * Gets the start date.
      *
      * @return the start date
      */
@@ -95,7 +95,7 @@ public class Recall {
     }
 
     /**
-     * Sets start date.
+     * Sets the start date.
      *
      * @param startDate the start date
      */
@@ -104,18 +104,18 @@ public class Recall {
     }
 
     /**
-     * Gets health service id.
+     * Gets the health serviceID.
      *
-     * @return the health service id
+     * @return the health serviceID
      */
     public String getHealthServiceID() {
         return healthServiceID;
     }
 
     /**
-     * Sets health service id.
+     * Sets the health serviceID.
      *
-     * @param healthServiceID the health service id
+     * @param healthServiceID the health serviceID
      */
     public void setHealthServiceID(String healthServiceID) {
         this.healthServiceID = healthServiceID;

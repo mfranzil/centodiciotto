@@ -12,20 +12,20 @@ import java.util.List;
 public interface RecallDAO extends DAO<Recall, Integer> {
 
     /**
-     * Gets last by health service and exam type.
+     * Returns the last done {@link Recall} by {@code healthServiceID} and {@code examType}.
      *
-     * @param healthServiceID the health service id
-     * @param examID          the exam id
-     * @return the last by health service and exam type
+     * @param healthServiceID the {@code healthServiceID}
+     * @param examType        the {@code examID}
+     * @return the last done {@link Recall} by {@code healthServiceID} and {@code examType}
      * @throws DAOException in case of a malformed input or query
      */
-    Recall getLastByHealthServiceAndExamType(String healthServiceID, Integer examID) throws DAOException;
+    Recall getLastByHSAndExamType(String healthServiceID, Integer examType) throws DAOException;
 
     /**
-     * Gets by health service.
+     * Returns a {@link List} of {@link Recall}s from a given {@code healthServiceID}.
      *
-     * @param healthServiceID the health service id
-     * @return the by health service
+     * @param healthServiceID the {@code healthServiceID}
+     * @return a {@link List} of {@link Recall}s from a given {@code healthServiceID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Recall> getByHealthService(String healthServiceID) throws DAOException;

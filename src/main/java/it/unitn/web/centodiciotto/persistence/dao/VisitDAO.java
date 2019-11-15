@@ -13,65 +13,77 @@ import java.util.List;
 public interface VisitDAO extends DAO<Visit, Integer> {
 
     /**
-     * Gets pending by practitioner.
+     * Returns a {@link List} of pending {@link Visit}s from a given {@code practitionerID}.
+     * <p>
+     * An {@link Visit} is considered pending if a date hasn't been assigned yet.
      *
-     * @param practictionerID the practictioner id
-     * @return the pending by practitioner
+     * @param practitionerID the {@code practitionerID}
+     * @return a {@link List} of pending {@link Visit}s from a given {@code practitionerID}
      * @throws DAOException in case of a malformed input or query
      */
-    List<Visit> getPendingByPractitioner(String practictionerID) throws DAOException;
+    List<Visit> getPendingByPractitioner(String practitionerID) throws DAOException;
 
     /**
-     * Gets booked by practitioner.
+     * Returns a {@link List} of booked {@link Visit}s from a given {@code practitionerID}.
+     * <p>
+     * An {@link Visit} is considered booked if a date has been assigned,
+     * but a result hasn't been assigned yet and the done flag has been
+     * set to {@code false}
      *
-     * @param practitionerID the practitioner id
-     * @return the booked by practitioner
+     * @param practitionerID the {@code practitionerID}
+     * @return a {@link List} of booked {@link Visit}s from a given {@code practitionerID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getBookedByPractitioner(String practitionerID) throws DAOException;
 
     /**
-     * Gets done by practitioner.
+     * Returns a {@link List} of done {@link Visit}s from a given {@code practitionerID}.
+     * <p>
+     * An {@link Visit} is considered booked when the done flag has been set to {@code true}.
      *
-     * @param practitionerID the practitioner id
-     * @return the done by practitioner
+     * @param practitionerID the {@code practitionerID}
+     * @return a {@link List} of done {@link Visit}s from a given {@code practitionerID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getDoneByPractitioner(String practitionerID) throws DAOException;
 
     /**
-     * Gets done by patient.
+     * Returns a {@link List} of done {@link Visit}s from a given {@code patientID}.
+     * <p>
+     * An {@link Visit} is considered booked when the done flag has been set to {@code true}.
      *
-     * @param patientID the patient id
-     * @return the done by patient
+     * @param patientID the {@code patientID}
+     * @return a {@link List} of done {@link Visit}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getDoneByPatient(String patientID) throws DAOException;
 
     /**
-     * Gets last by patient.
+     * Returns the last done {@link Visit} by {@code patientID}.
      *
-     * @param patient the patient
-     * @return the last by patient
+     * @param patientID        the {@code patientID}
+     * @return the last done {@link Visit} by {@code patientID}.
      * @throws DAOException in case of a malformed input or query
      */
-    Visit getLastByPatient(String patient) throws DAOException;
+    Visit getLastByPatient(String patientID) throws DAOException;
 
     /**
-     * Gets pending by practitioner and patient.
+     * Returns a {@link List} of pending {@link Visit}s from a given {@code practitionerID} and {@code patientID}.
+     * <p>
+     * An {@link Visit} is considered pending if a date hasn't been assigned yet.
      *
-     * @param practictionerID the practictioner id
-     * @param patientID       the patient id
-     * @return the pending by practitioner and patient
+     * @param practictionerID the {@code practitionerID}
+     * @param patientID the {@code patientID}
+     * @return a {@link List} of pending {@link Visit}s from a given {@code practitionerID} and {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     Visit getPendingByPractitionerAndPatient(String practictionerID, String patientID) throws DAOException;
 
     /**
-     * Gets by date.
+     * Returns a {@link List} of {@link Visit}s from a given {@link Timestamp}.
      *
-     * @param ts the ts
-     * @return the by date
+     * @param ts the {@link Timestamp} representing the date (discarding hours to milliseconds and considering the whole day)
+     * @return a {@link List} of {@link Visit}s from a given {@link Timestamp}
      * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getByDate(Timestamp ts) throws DAOException;

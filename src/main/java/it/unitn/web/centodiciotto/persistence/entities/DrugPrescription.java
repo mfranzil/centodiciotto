@@ -18,61 +18,61 @@ public class DrugPrescription {
     private String description;
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(Integer ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets practitioner id.
+     * Gets the practitionerID
      *
-     * @return the practitioner id
+     * @return the practitionerID
      */
     public String getPractitionerID() {
         return practitionerID;
     }
 
     /**
-     * Sets practitioner id.
+     * Sets the practitionerID
      *
-     * @param practitionerID the practitioner id
+     * @param practitionerID the practitionerID
      */
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;
     }
 
     /**
-     * Gets patient id.
+     * Gets the patientID.
      *
-     * @return the patient id
+     * @return the patientID
      */
     public String getPatientID() {
         return patientID;
     }
 
     /**
-     * Sets patient id.
+     * Sets the patientID.
      *
-     * @param patientID the patient id
+     * @param patientID the patientID
      */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
     /**
-     * Gets drug type.
+     * Gets the drug type.
      *
      * @return the drug type
      */
@@ -81,7 +81,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Sets drug type.
+     * Sets the drug type.
      *
      * @param drugType the drug type
      */
@@ -90,7 +90,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Gets date prescribed.
+     * Gets the date prescribed.
      *
      * @return the date prescribed
      */
@@ -99,7 +99,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Sets date prescribed.
+     * Sets the date prescribed.
      *
      * @param datePrescribed the date prescribed
      */
@@ -108,7 +108,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Gets date sold.
+     * Gets the date sold.
      *
      * @return the date sold
      */
@@ -117,7 +117,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Sets date sold.
+     * Sets the date sold.
      *
      * @param dateSold the date sold
      */
@@ -126,25 +126,25 @@ public class DrugPrescription {
     }
 
     /**
-     * Gets chemist id.
+     * Gets the chemistID.
      *
-     * @return the chemist id
+     * @return the chemistID
      */
     public String getChemistID() {
         return chemistID;
     }
 
     /**
-     * Sets chemist id.
+     * Sets the chemistID.
      *
-     * @param chemistID the chemist id
+     * @param chemistID the chemistID
      */
     public void setChemistID(String chemistID) {
         this.chemistID = chemistID;
     }
 
     /**
-     * Gets ticket.
+     * Gets the ticket.
      *
      * @return the ticket
      */
@@ -153,7 +153,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Sets ticket.
+     * Sets the ticket.
      *
      * @param ticket the ticket
      */
@@ -162,7 +162,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Gets ticket paid.
+     * Gets the ticket paid.
      *
      * @return the ticket paid
      */
@@ -171,7 +171,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Sets ticket paid.
+     * Sets the ticket paid.
      *
      * @param ticketPaid the ticket paid
      */
@@ -180,7 +180,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Gets description.
+     * Gets the description.
      *
      * @return the description
      */
@@ -189,7 +189,7 @@ public class DrugPrescription {
     }
 
     /**
-     * Sets description.
+     * Sets the description.
      *
      * @param description the description
      */

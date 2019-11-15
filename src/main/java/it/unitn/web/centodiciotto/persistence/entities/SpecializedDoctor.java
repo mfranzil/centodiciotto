@@ -1,7 +1,8 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Specialized doctor.
+ * SpecializedDoctor entity. Represents the "specialized_doctor" user class.
+ * Subclasses {@link User} for authentication purposes.
  */
 public class SpecializedDoctor extends User {
     private String firstName;
@@ -9,7 +10,7 @@ public class SpecializedDoctor extends User {
     private String workingPlace;
 
     /**
-     * Gets first name.
+     * Gets the first name.
      *
      * @return the first name
      */
@@ -18,7 +19,7 @@ public class SpecializedDoctor extends User {
     }
 
     /**
-     * Sets first name.
+     * Sets the first name.
      *
      * @param firstName the first name
      */
@@ -27,7 +28,7 @@ public class SpecializedDoctor extends User {
     }
 
     /**
-     * Gets last name.
+     * Gets the last name.
      *
      * @return the last name
      */
@@ -36,7 +37,7 @@ public class SpecializedDoctor extends User {
     }
 
     /**
-     * Sets last name.
+     * Sets the last name.
      *
      * @param lastName the last name
      */
@@ -45,7 +46,7 @@ public class SpecializedDoctor extends User {
     }
 
     /**
-     * Gets working place.
+     * Gets the working place.
      *
      * @return the working place
      */
@@ -54,7 +55,7 @@ public class SpecializedDoctor extends User {
     }
 
     /**
-     * Sets working place.
+     * Sets the working place.
      *
      * @param workingPlace the working place
      */

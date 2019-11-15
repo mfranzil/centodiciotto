@@ -21,61 +21,61 @@ public class Exam {
     private boolean booked;
 
     /**
-     * Gets id.
+     * Gets the ID.
      *
-     * @return the id
+     * @return the ID
      */
     public Integer getID() {
         return ID;
     }
 
     /**
-     * Sets id.
+     * Sets the ID.
      *
-     * @param ID the id
+     * @param ID the ID
      */
     public void setID(Integer ID) {
         this.ID = ID;
     }
 
     /**
-     * Gets patient id.
+     * Gets the patientID.
      *
-     * @return the patient id
+     * @return the patientID
      */
     public String getPatientID() {
         return patientID;
     }
 
     /**
-     * Sets patient id.
+     * Sets the patientID.
      *
-     * @param patientID the patient id
+     * @param patientID the patientID
      */
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
 
     /**
-     * Gets doctor id.
+     * Gets the doctorID
      *
-     * @return the doctor id
+     * @return the doctorID
      */
     public String getDoctorID() {
         return doctorID;
     }
 
     /**
-     * Sets doctor id.
+     * Sets the doctorID
      *
-     * @param doctorID the doctor id
+     * @param doctorID the doctorID
      */
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
 
     /**
-     * Gets type.
+     * Gets the type.
      *
      * @return the type
      */
@@ -84,7 +84,7 @@ public class Exam {
     }
 
     /**
-     * Sets type.
+     * Sets the type.
      *
      * @param type the type
      */
@@ -93,7 +93,7 @@ public class Exam {
     }
 
     /**
-     * Gets done.
+     * Gets the done.
      *
      * @return the done
      */
@@ -102,7 +102,7 @@ public class Exam {
     }
 
     /**
-     * Sets done.
+     * Sets the done.
      *
      * @param done the done
      */
@@ -111,7 +111,7 @@ public class Exam {
     }
 
     /**
-     * Gets date.
+     * Gets the date.
      *
      * @return the date
      */
@@ -120,7 +120,7 @@ public class Exam {
     }
 
     /**
-     * Sets date.
+     * Sets the date.
      *
      * @param date the date
      */
@@ -129,7 +129,7 @@ public class Exam {
     }
 
     /**
-     * Gets result.
+     * Gets the result.
      *
      * @return the result
      */
@@ -138,7 +138,7 @@ public class Exam {
     }
 
     /**
-     * Sets result.
+     * Sets the result.
      *
      * @param result the result
      */
@@ -147,25 +147,25 @@ public class Exam {
     }
 
     /**
-     * Gets health service id.
+     * Gets the health serviceID.
      *
-     * @return the health service id
+     * @return the health serviceID
      */
     public String getHealthServiceID() {
         return healthServiceID;
     }
 
     /**
-     * Sets health service id.
+     * Sets the health serviceID.
      *
-     * @param healthServiceID the health service id
+     * @param healthServiceID the health serviceID
      */
     public void setHealthServiceID(String healthServiceID) {
         this.healthServiceID = healthServiceID;
     }
 
     /**
-     * Gets ticket.
+     * Gets the ticket.
      *
      * @return the ticket
      */
@@ -174,7 +174,7 @@ public class Exam {
     }
 
     /**
-     * Sets ticket.
+     * Sets the ticket.
      *
      * @param ticket the ticket
      */
@@ -192,7 +192,7 @@ public class Exam {
     }
 
     /**
-     * Sets ticket paid.
+     * Sets the ticket paid.
      *
      * @param ticketPaid the ticket paid
      */
@@ -201,7 +201,7 @@ public class Exam {
     }
 
     /**
-     * Gets recall.
+     * Gets the recall.
      *
      * @return the recall
      */
@@ -210,7 +210,7 @@ public class Exam {
     }
 
     /**
-     * Sets recall.
+     * Sets the recall.
      *
      * @param recall the recall
      */
@@ -219,18 +219,18 @@ public class Exam {
     }
 
     /**
-     * Gets practitioner id.
+     * Gets the practitionerID
      *
-     * @return the practitioner id
+     * @return the practitionerID
      */
     public String getPractitionerID() {
         return practitionerID;
     }
 
     /**
-     * Sets practitioner id.
+     * Sets the practitionerID
      *
-     * @param practitionerID the practitioner id
+     * @param practitionerID the practitionerID
      */
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;
@@ -246,7 +246,7 @@ public class Exam {
     }
 
     /**
-     * Sets booked.
+     * Sets the booked.
      *
      * @param booked the booked
      */

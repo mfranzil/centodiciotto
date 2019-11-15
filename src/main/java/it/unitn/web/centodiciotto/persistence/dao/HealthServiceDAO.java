@@ -3,17 +3,18 @@ package it.unitn.web.centodiciotto.persistence.dao;
 import it.unitn.web.centodiciotto.persistence.base.DAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
+import it.unitn.web.centodiciotto.persistence.entities.Province;
 
 /**
- * DAO interface for a {@link Health service} entity.
+ * DAO interface for a {@link HealthService} entity.
  */
 public interface HealthServiceDAO extends DAO<HealthService, String> {
 
     /**
-     * Gets by province.
+     * Returns the {@link HealthService} associated to a {@link Province}, indexed by this {@code provinceAbbreviation}.
      *
-     * @param provinceAbbreviation the province abbreviation
-     * @return the by province
+     * @param provinceAbbreviation the {@code provinceAbbreviation}
+     * @return the {@link HealthService} associated to a {@link Province}, indexed by this {@code provinceAbbreviation}.
      * @throws DAOException in case of a malformed input or query
      */
     HealthService getByProvince(String provinceAbbreviation) throws DAOException;

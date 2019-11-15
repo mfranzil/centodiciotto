@@ -13,7 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Photo service.
+ * PhotoService service class, used to generate file paths for profile pictures.
+ * <p>
+ * The service implements the Singleton pattern.
+ * <p>
+ * The service needs an initialized DAOFactory to instantiate a PhotoDAO, and a
+ * servletContext for retrieving the system path.
  */
 public class PhotoService {
     private static PhotoService instance;
@@ -35,11 +40,11 @@ public class PhotoService {
     }
 
     /**
-     * Configure.
+     * Configuration method for the service.
      *
-     * @param daoFactory     the dao factory
-     * @param servletContext the servlet context
-     * @throws ServiceException the service exception
+     * @param daoFactory     the DAOFactory
+     * @param servletContext the servletContext
+     * @throws ServiceException in case of error during processing
      */
     public static void configure(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         if (instance == null) {
@@ -50,10 +55,10 @@ public class PhotoService {
     }
 
     /**
-     * Gets instance.
+     * Instance retriever for the service.
      *
      * @return the instance
-     * @throws ServiceException the service exception
+     * @throws ServiceException in case of error during processing
      */
     public static PhotoService getInstance() throws ServiceException {
         if (instance == null) {
@@ -64,11 +69,11 @@ public class PhotoService {
     }
 
     /**
-     * Gets last photo.
+     * Gets the last {@link Photo} of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}.
      *
-     * @param patientID the patient id
-     * @return the last photo
-     * @throws ServiceException the service exception
+     * @param patientID the patientID
+     * @return a file path representing the relative position of the last {@link Photo}
+     * @throws ServiceException in case of error during processing
      */
     public String getLastPhoto(String patientID) throws ServiceException {
         Photo photo;
@@ -87,11 +92,11 @@ public class PhotoService {
     }
 
     /**
-     * Gets all photos.
+     * Gets a {@link List} of {@link Photo}s of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}.
      *
      * @param patientID the patient id
-     * @return the all photos
-     * @throws ServiceException the service exception
+     * @return a {@link List} of file paths representing the relative positions of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}.
+     * @throws ServiceException in case of error during processing
      */
     public List<String> getAllPhotos(String patientID) throws ServiceException {
         int id;
@@ -117,11 +122,12 @@ public class PhotoService {
 
 
     /**
-     * Gets all photos with id.
+     * Gets a {@link List} of {@link Photo}s of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}
+     * coupled with its {@code id}.
      *
      * @param patientID the patient id
-     * @return the all photos with id
-     * @throws ServiceException the service exception
+     * @return a {@link List} of {@link Pair}s, the first of which is a file path representing the relative position of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}, the second being the ID.
+     * @throws ServiceException in case of error during processing
      */
     public List<Pair<String, Integer>> getAllPhotosWithID(String patientID) throws ServiceException {
         List<Photo> photos;
@@ -144,6 +150,11 @@ public class PhotoService {
         return photo_paths;
     }
 
+    /**
+     * Retrieves the file path for a given photo using its {@code ID} and the {@code patientID}.
+     * @param photo the photo entity
+     * @return a file path representing the relative position of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}
+     */
     private String getPhotoPath(Photo photo) {
         int id;
         String avatarFolder = getAvatarFolder();
@@ -170,7 +181,7 @@ public class PhotoService {
     }
 
     /**
-     * Gets avatar folder.
+     * Gets the current avatar folder.
      *
      * @return the avatar folder
      */
@@ -179,10 +190,10 @@ public class PhotoService {
     }
 
     /**
-     * Gets patient avatar folder.
+     * Gets a {@link it.unitn.web.centodiciotto.persistence.entities.Patient} avatar folder.
      *
-     * @param patientID the patient id
-     * @return the patient avatar folder
+     * @param patientID the patientID
+     * @return the {@link it.unitn.web.centodiciotto.persistence.entities.Patient} avatar folder
      */
     public String getPatientAvatarFolder(String patientID) {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;
