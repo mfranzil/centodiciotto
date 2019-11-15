@@ -14,7 +14,7 @@ public interface PasswordResetDAO extends DAO<PasswordReset, String> {
      *
      * @param token the token
      * @return the by token
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     PasswordReset getByToken(String token) throws DAOException;
 }

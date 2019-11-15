@@ -46,7 +46,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
      * Instantiates a new Jdbc patient dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);

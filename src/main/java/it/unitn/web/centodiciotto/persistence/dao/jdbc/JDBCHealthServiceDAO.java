@@ -39,7 +39,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
      * Instantiates a new Jdbc health service dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
         super(con);

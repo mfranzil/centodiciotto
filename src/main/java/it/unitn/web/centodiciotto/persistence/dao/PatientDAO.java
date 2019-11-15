@@ -16,7 +16,7 @@ public interface PatientDAO extends DAO<Patient, String> {
      *
      * @param practitionerID the practitioner id
      * @return the by practitioner
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Patient> getByPractitioner(String practitionerID) throws DAOException;
 
@@ -25,7 +25,7 @@ public interface PatientDAO extends DAO<Patient, String> {
      *
      * @param provinceAbbreviation the province abbreviation
      * @return the by province
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Patient> getByProvince(String provinceAbbreviation) throws DAOException;
 }

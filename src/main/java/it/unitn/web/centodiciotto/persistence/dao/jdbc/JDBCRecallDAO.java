@@ -44,7 +44,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
      * Instantiates a new Jdbc recall dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -39,7 +39,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
      * Instantiates a new Jdbc photo dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCPhotoDAO(Connection con) throws DAOFactoryException {
         super(con);

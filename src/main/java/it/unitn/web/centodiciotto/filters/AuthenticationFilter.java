@@ -9,7 +9,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * The type Authentication filter.
+ * Only filter present for the web application. Its job is to filter incoming requests depending on the
+ * requesting account's {@link User} type and on the URL requested.
  */
 public class AuthenticationFilter implements Filter {
 
@@ -23,14 +24,16 @@ public class AuthenticationFilter implements Filter {
         ServletContext servletContext = request.getServletContext();
         HttpSession session = request.getSession(false);
         User user;
+        String redirectUrl;
 
         String contextPath = servletContext.getContextPath();
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
 
-        String redirectUrl;
-
+        // If the request needs to be redirected to login, adds a referrer parameter for
+        // automatic redirect after login. Ampersand & symbols are changed into dollar $ symbols
+        // (unused in urls) to avoid ambiguity.
         if (request.getRequestURI() != null) {
             if (request.getQueryString() != null) {
                 String originalRequest = request.getRequestURI() + "?"
@@ -43,6 +46,8 @@ public class AuthenticationFilter implements Filter {
             redirectUrl = contextPath + "login";
         }
 
+        // Authorizes access to the user if and only if the session and the user are both not null,
+        // and the URL contains the role name given to the user.
         if (session == null) {
             response.sendRedirect(response.encodeRedirectURL(redirectUrl));
         } else {

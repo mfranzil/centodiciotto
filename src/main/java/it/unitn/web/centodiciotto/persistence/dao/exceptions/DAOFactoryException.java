@@ -7,19 +7,21 @@
 package it.unitn.web.centodiciotto.persistence.dao.exceptions;
 
 /**
- * The type Dao factory exception.
+ * Exception thrown by DAO methods at the moment of DAO instantiation.
+ *
+ * Can be also thrown in case of DB connection failures.
  */
 public class DAOFactoryException extends Exception {
 
     /**
-     * Instantiates a new Dao factory exception.
+     * Instantiates a new DAOFactory exception with an empty message.
      */
     public DAOFactoryException() {
         super();
     }
 
     /**
-     * Instantiates a new Dao factory exception.
+     * Instantiates a new DAOFactory exception with a string as a message.
      *
      * @param message the message
      */
@@ -28,7 +30,7 @@ public class DAOFactoryException extends Exception {
     }
 
     /**
-     * Instantiates a new Dao factory exception.
+     * Instantiates a new DAOFactory exception wrapping a {@link Throwable}.
      *
      * @param cause the cause
      */
@@ -37,7 +39,7 @@ public class DAOFactoryException extends Exception {
     }
 
     /**
-     * Instantiates a new Dao factory exception.
+     * Instantiates a new DAOFactory exception wrapping a {@link Throwable} with a string as a message.
      *
      * @param message the message
      * @param cause   the cause

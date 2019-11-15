@@ -16,7 +16,7 @@ public interface PhotoDAO extends DAO<Photo, Integer> {
      *
      * @param patientID the patient id
      * @return the current by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Photo getCurrentByPatient(String patientID) throws DAOException;
 
@@ -25,7 +25,7 @@ public interface PhotoDAO extends DAO<Photo, Integer> {
      *
      * @param patientID the patient id
      * @return the all by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Photo> getAllByPatient(String patientID) throws DAOException;
 }

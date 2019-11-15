@@ -17,7 +17,7 @@ public interface RecallDAO extends DAO<Recall, Integer> {
      * @param healthServiceID the health service id
      * @param examID          the exam id
      * @return the last by health service and exam type
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Recall getLastByHealthServiceAndExamType(String healthServiceID, Integer examID) throws DAOException;
 
@@ -26,7 +26,7 @@ public interface RecallDAO extends DAO<Recall, Integer> {
      *
      * @param healthServiceID the health service id
      * @return the by health service
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Recall> getByHealthService(String healthServiceID) throws DAOException;
 }

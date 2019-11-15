@@ -24,13 +24,21 @@ import java.util.HashMap;
 import java.util.Properties;
 
 /**
- * The type Jdbcdao factory.
+ * A JDBC implementation of {@link DAOFactory}.
  */
 public class JDBCDAOFactory implements DAOFactory {
     private static JDBCDAOFactory instance;
     private final transient Connection CON;
     private final transient HashMap<Class, DAO> DAO_CACHE;
 
+    /**
+     * Private singleton constructor for this {@link DAOFactory}.
+     *
+     * It retrieves configuration info for the database from the Resource {@code database.properties} located in the
+     * appropriate folder, then sets up a connection using the {@link org.postgresql.Driver} driver.
+     *
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
+     */
     private JDBCDAOFactory() throws DAOFactoryException {
         String url;
         String username;
@@ -73,9 +81,9 @@ public class JDBCDAOFactory implements DAOFactory {
     }
 
     /**
-     * Configure.
+     * Call this method before use the instance of this class.
      *
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public static void configure() throws DAOFactoryException {
         if (instance == null) {
@@ -86,10 +94,10 @@ public class JDBCDAOFactory implements DAOFactory {
     }
 
     /**
-     * Gets instance.
+     * Returns the singleton instance of this {@link DAOFactory}.
      *
-     * @return the instance
-     * @throws DAOFactoryException the dao factory exception
+     * @return the singleton instance of this {@link DAOFactory}.
+     * @throws DAOFactoryException if this {@link DAOFactory} is not yet configured.
      */
     public static JDBCDAOFactory getInstance() throws DAOFactoryException {
         if (instance == null) {

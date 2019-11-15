@@ -35,7 +35,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
      * Instantiates a new Jdbc specialized doctor dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCSpecializedDoctorDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -27,7 +27,7 @@ public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamT
      * Instantiates a new Jdbc exam type dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCExamTypeDAO(Connection con) throws DAOFactoryException {
         super(con);

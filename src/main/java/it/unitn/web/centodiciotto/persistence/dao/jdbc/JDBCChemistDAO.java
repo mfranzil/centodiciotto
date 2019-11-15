@@ -39,7 +39,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
      * Instantiates a new Jdbc chemist dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCChemistDAO(Connection con) throws DAOFactoryException {
         super(con);

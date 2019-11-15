@@ -16,7 +16,7 @@ public interface ChemistDAO extends DAO<Chemist, String> {
      *
      * @param provinceAbbreviation the province abbreviation
      * @return the by province
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Chemist> getByProvince(String provinceAbbreviation) throws DAOException;
 }

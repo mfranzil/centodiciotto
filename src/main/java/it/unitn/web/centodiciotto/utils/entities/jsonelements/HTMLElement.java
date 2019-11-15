@@ -3,10 +3,12 @@ package it.unitn.web.centodiciotto.utils.entities.jsonelements;
 /**
  * The type Html element.
  */
+@SuppressWarnings("unused")
 public class HTMLElement {
     private String elementType;
     private String elementClass;
     private String elementContent;
+    private String elementStyle;
     private String elementID;
 
     private String elementButtonType;
@@ -14,6 +16,7 @@ public class HTMLElement {
     private String elementInputType;
     private String elementInputName;
     private String elementInputValue;
+    private String elementInputAutocomplete;
 
     private String elementFormAction;
     private String elementFormTarget;
@@ -91,6 +94,26 @@ public class HTMLElement {
     }
 
     /**
+     * Gets element input autocomplete.
+     *
+     * @return the element input autocomplete
+     */
+    public String getElementInputAutocomplete() {
+        return elementInputAutocomplete;
+    }
+
+    /**
+     * Sets element input autocomplete.
+     *
+     * @param elementInputAutocomplete the element input autocomplete
+     * @return the element input autocomplete
+     */
+    public HTMLElement setElementInputAutocomplete(String elementInputAutocomplete) {
+        this.elementInputAutocomplete = elementInputAutocomplete;
+        return this;
+    }
+
+    /**
      * Gets element type.
      *
      * @return the element type
@@ -147,6 +170,26 @@ public class HTMLElement {
      */
     public HTMLElement setElementContent(String elementContent) {
         this.elementContent = elementContent;
+        return this;
+    }
+
+    /**
+     * Gets element style.
+     *
+     * @return the element style
+     */
+    public String getElementStyle() {
+        return elementStyle;
+    }
+
+    /**
+     * Sets element style.
+     *
+     * @param elementStyle the element style
+     * @return the element style
+     */
+    public HTMLElement setElementStyle(String elementStyle) {
+        this.elementStyle = elementStyle;
         return this;
     }
 

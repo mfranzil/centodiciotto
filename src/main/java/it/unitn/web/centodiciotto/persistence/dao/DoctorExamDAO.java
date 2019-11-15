@@ -17,7 +17,7 @@ public interface DoctorExamDAO extends DAO<DoctorExam, Pair<String, Integer>> {
      *
      * @param examType the exam type
      * @return the by exam type
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<DoctorExam> getByExamType(ExamType examType) throws DAOException;
 }

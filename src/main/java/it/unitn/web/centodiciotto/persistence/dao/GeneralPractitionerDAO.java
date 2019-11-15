@@ -16,7 +16,7 @@ public interface GeneralPractitionerDAO extends DAO<GeneralPractitioner, String>
      *
      * @param province_abbreviation the province abbreviation
      * @return the by province
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<GeneralPractitioner> getByProvince(String province_abbreviation) throws DAOException;
 }

@@ -48,7 +48,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
      * Instantiates a new Jdbc visit dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);

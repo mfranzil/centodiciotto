@@ -17,7 +17,7 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
      *
      * @param patientID the patient id
      * @return the valid by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getValidByPatient(String patientID) throws DAOException;
 
@@ -26,7 +26,7 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
      *
      * @param ts the ts
      * @return the by date sold
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getByDateSold(Timestamp ts) throws DAOException;
 
@@ -35,7 +35,7 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
      *
      * @param patientID the patient id
      * @return the by patient not paid
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getUnpaidByPatient(String patientID) throws DAOException;
 

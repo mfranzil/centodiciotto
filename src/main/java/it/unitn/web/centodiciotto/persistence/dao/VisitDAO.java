@@ -17,7 +17,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      *
      * @param practictionerID the practictioner id
      * @return the pending by practitioner
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getPendingByPractitioner(String practictionerID) throws DAOException;
 
@@ -26,7 +26,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      *
      * @param practitionerID the practitioner id
      * @return the booked by practitioner
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getBookedByPractitioner(String practitionerID) throws DAOException;
 
@@ -35,7 +35,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      *
      * @param practitionerID the practitioner id
      * @return the done by practitioner
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getDoneByPractitioner(String practitionerID) throws DAOException;
 
@@ -44,7 +44,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      *
      * @param patientID the patient id
      * @return the done by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getDoneByPatient(String patientID) throws DAOException;
 
@@ -53,7 +53,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      *
      * @param patient the patient
      * @return the last by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Visit getLastByPatient(String patient) throws DAOException;
 
@@ -63,7 +63,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      * @param practictionerID the practictioner id
      * @param patientID       the patient id
      * @return the pending by practitioner and patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Visit getPendingByPractitionerAndPatient(String practictionerID, String patientID) throws DAOException;
 
@@ -72,7 +72,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      *
      * @param ts the ts
      * @return the by date
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getByDate(Timestamp ts) throws DAOException;
 

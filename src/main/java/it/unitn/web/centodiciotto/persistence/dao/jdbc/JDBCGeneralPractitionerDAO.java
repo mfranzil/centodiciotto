@@ -42,7 +42,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
      * Instantiates a new Jdbc general practitioner dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -31,7 +31,7 @@ public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>
      * Instantiates a new Jdbc doctor exam dao.
      *
      * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCDoctorExamDAO(Connection con) throws DAOFactoryException {
         super(con);
