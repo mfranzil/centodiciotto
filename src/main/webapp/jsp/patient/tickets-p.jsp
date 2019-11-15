@@ -107,6 +107,12 @@
 <div class="container">
     <div class="body-content">
         <div class="row">
+            <jsp:useBean id="patientDAO"
+                         class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
+            <jsp:setProperty name="patientDAO" property="patientID"
+                             value="${sessionScope.user.ID}"/>
+            <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+
             <div class="col-md">
                 <div class="table-personal table-header">
                     <div class="table-cell specialized-doctor">Doctor</div>
@@ -115,16 +121,12 @@
                     <div class="table-cell exam-amount">Amount</div>
                     <div class="table-cell exam-action">Ticket</div>
                 </div>
-                <jsp:useBean id="examDAO" class="it.unitn.web.centodiciotto.beans.ExamDAOBean"/>
-                <jsp:setProperty name="examDAO" property="userID" value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="examDAO" property="DAOFactory" value=""/>
-
-                <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
+                <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.entities.SpecializedDoctorDAOBean"/>
                 <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="examDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${examDAO.patientsNotPaid}" var="exam">
+                <c:forEach items="${patientDAO.unpaidExams}" var="exam">
                     <jsp:setProperty name="examDate" property="date" value="${exam.date.time}"/>
                     <jsp:setProperty name="doctorDAO" property="doctorID" value="${exam.doctorID}"/>
 
@@ -167,24 +169,17 @@
                     <div class="table-cell drug-amount">Amount</div>
                     <div class="table-cell drug-action">Ticket</div>
                 </div>
-
-                <jsp:useBean id="prescriptionDAO"
-                             class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean"/>
-                <jsp:setProperty name="prescriptionDAO" property="patientID"
-                                 value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="prescriptionDAO" property="DAOFactory" value=""/>
-
-                <jsp:useBean id="chemistDAO" class="it.unitn.web.centodiciotto.beans.ChemistDAOBean"/>
+                <jsp:useBean id="chemistDAO" class="it.unitn.web.centodiciotto.beans.entities.ChemistDAOBean"/>
                 <jsp:setProperty name="chemistDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="practitionerDAO"
-                             class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                             class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
                 <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="drugEmissionDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
                 <jsp:useBean id="drugSoldDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${prescriptionDAO.patientsNotPaid}" var="drugPrescription">
+                <c:forEach items="${patientDAO.unpaidPrescriptions}" var="drugPrescription">
                     <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                      value="${drugPrescription.practitionerID}"/>
                     <jsp:setProperty name="chemistDAO" property="chemistID" value="${drugPrescription.chemistID}"/>

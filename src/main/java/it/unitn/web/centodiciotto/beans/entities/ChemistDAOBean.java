@@ -1,5 +1,6 @@
-package it.unitn.web.centodiciotto.beans;
+package it.unitn.web.centodiciotto.beans.entities;
 
+import it.unitn.web.centodiciotto.beans.BeanException;
 import it.unitn.web.centodiciotto.persistence.dao.ChemistDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -10,53 +11,44 @@ import it.unitn.web.centodiciotto.persistence.entities.Chemist;
 import java.io.Serializable;
 
 /**
- * The type Chemist dao bean.
+ * JavaBean representing a {@link ChemistDAO} bound to a {@link Chemist}.
  */
 public class ChemistDAOBean implements Serializable {
-
     private ChemistDAO chemistDAO = null;
 
     private String chemistID = null;
 
     /**
-     * Sets dao factory.
+     * Initializes the bean.
      *
-     * @param useless the useless
+     * Retrieves a DAOFactory implementation and then retrieves the DAOS.
+     *
+     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
      */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             chemistDAO = daoFactory.getDAO(ChemistDAO.class);
-
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
     /**
-     * Gets chemist id.
+     * Sets the chemistID.
      *
-     * @return the chemist id
+     * @param chemistID the chemistID
      */
-    public String getChemistID() {
-        return chemistID;
+    public void setChemistID(String chemistID) {
+        this.chemistID = chemistID;
     }
 
     /**
-     * Sets chemist id.
+     * Gets the {@link Chemist} entity associated to this ID.
      *
-     * @param patientID the patient id
-     */
-    public void setChemistID(String patientID) {
-        this.chemistID = patientID;
-    }
-
-    /**
-     * Gets chemist.
-     *
-     * @return the chemist
-     * @throws BeanException the bean exception
+     * @return the {@link Chemist} entity associated to this ID
+     * @throws BeanException thrown for any generic exception
      */
     public Chemist getChemist() throws BeanException {
         if (chemistID == null) {

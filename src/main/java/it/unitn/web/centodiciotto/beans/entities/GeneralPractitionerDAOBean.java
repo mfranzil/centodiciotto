@@ -1,5 +1,6 @@
-package it.unitn.web.centodiciotto.beans;
+package it.unitn.web.centodiciotto.beans.entities;
 
+import it.unitn.web.centodiciotto.beans.BeanException;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
@@ -8,27 +9,27 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
-import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
 
 /**
- * The type General practitioner dao bean.
+ * JavaBean representing a {@link GeneralPractitionerDAO} bound to a {@link GeneralPractitioner}.
  */
 public class GeneralPractitionerDAOBean implements Serializable {
-
     private VisitDAO visitDAO = null;
     private PatientDAO patientDAO = null;
     private GeneralPractitionerDAO generalPractitionerDAO = null;
+    
     private String practitionerID = null;
 
     /**
-     * Sets dao factory.
+     * Initializes the bean.
      *
-     * @param useless the useless
+     * Retrieves a DAOFactory implementation and then retrieves the DAOS.
+     *
+     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
      */
     public void setDAOFactory(String useless) {
         try {
@@ -42,42 +43,21 @@ public class GeneralPractitionerDAOBean implements Serializable {
             throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
-
+    
     /**
-     * Sets practitioner id.
+     * Sets the practitionerID.
      *
-     * @param practitionerID the practitioner id
+     * @param practitionerID the practitionerID
      */
     public void setPractitionerID(String practitionerID) {
         this.practitionerID = practitionerID;
     }
 
     /**
-     * Gets patients list.
+     * Gets the {@link GeneralPractitioner} entity associated to this ID.
      *
-     * @return the patients list
-     * @throws BeanException the bean exception
-     */
-    public List<Patient> getPatientsList() throws BeanException {
-        List<Patient> patients = Collections.emptyList();
-
-        if (practitionerID == null) {
-            throw new BeanException("Practitioner is null");
-        }
-
-        try {
-            patients = patientDAO.getByPractitioner(practitionerID);
-        } catch (DAOException e) {
-            throw new BeanException("Error getting patients list in practitionerDaoBean: ", e);
-        }
-        return patients;
-    }
-
-    /**
-     * Gets practitioner.
-     *
-     * @return the practitioner
-     * @throws BeanException the bean exception
+     * @return the {@link GeneralPractitioner} entity associated to this ID
+     * @throws BeanException thrown for any generic exception
      */
     public GeneralPractitioner getPractitioner() throws BeanException {
         if (practitionerID == null) {
@@ -92,14 +72,14 @@ public class GeneralPractitionerDAOBean implements Serializable {
     }
 
     /**
-     * Gets pending visits.
+     * Gets a {@link List} of pending {@link Visit}s associated with this {@link GeneralPractitioner}.
      *
-     * @return the pending visits
-     * @throws BeanException the bean exception
+     * @return the {@link List} of pending {@link Visit}s associated with this {@link GeneralPractitioner}
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public List<Visit> getPendingVisits() throws BeanException {
         if (practitionerID == null) {
-            throw new BeanException("Practitioner is null");
+            throw new BeanException("Practitioner is null.");
         }
 
         try {
@@ -110,20 +90,20 @@ public class GeneralPractitionerDAOBean implements Serializable {
     }
 
     /**
-     * Gets booked visits.
+     * Gets {@link List} of booked {@link Visit}s associated with this {@link GeneralPractitioner}.
      *
-     * @return the booked visits
-     * @throws BeanException the bean exception
+     * @return the {@link List} of booked {@link Visit}s associated with this {@link GeneralPractitioner}.
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public List<Visit> getBookedVisits() throws BeanException {
         if (practitionerID == null) {
-            throw new BeanException("Practitioner is null");
+            throw new BeanException("Practitioner is null.");
         }
 
         try {
             return visitDAO.getBookedByPractitioner(practitionerID);
         } catch (DAOException e) {
-            throw new BeanException("Error getting pending Visits: ", e);
+            throw new BeanException("Error getting booked Visits: ", e);
         }
     }
 }

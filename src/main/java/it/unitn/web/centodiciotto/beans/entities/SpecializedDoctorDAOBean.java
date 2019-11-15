@@ -1,8 +1,8 @@
-package it.unitn.web.centodiciotto.beans;
+package it.unitn.web.centodiciotto.beans.entities;
 
 
+import it.unitn.web.centodiciotto.beans.BeanException;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -15,48 +15,46 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * The type Specialized doctor dao bean.
+ * JavaBean representing a {@link SpecializedDoctorDAO} bound to a {@link SpecializedDoctor}.
  */
 public class SpecializedDoctorDAOBean implements Serializable {
-
     private ExamDAO examDAO = null;
-    private PatientDAO patientDAO = null;
     private SpecializedDoctorDAO doctorDAO = null;
 
     private String doctorID = null;
 
     /**
-     * Sets dao factory.
+     * Initializes the bean.
      *
-     * @param useless the useless
+     * Retrieves a DAOFactory implementation and then retrieves the DAOS.
+     *
+     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
      */
     public void setDAOFactory(String useless) {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
-            patientDAO = daoFactory.getDAO(PatientDAO.class);
             doctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
-
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error in DAO retrieval: ", e);
         }
     }
 
     /**
-     * Sets doctor id.
+     * Sets the doctorID.
      *
-     * @param doctorID the doctor id
+     * @param doctorID the doctorID
      */
     public void setDoctorID(String doctorID) {
         this.doctorID = doctorID;
     }
 
     /**
-     * Gets doctor.
+     * Gets the {@link SpecializedDoctor} entity associated to this ID.
      *
-     * @return the doctor
-     * @throws BeanException the bean exception
+     * @return the {@link SpecializedDoctor} entity associated to this ID
+     * @throws BeanException thrown for any generic exception
      */
     public SpecializedDoctor getDoctor() throws BeanException {
         try {
@@ -68,10 +66,10 @@ public class SpecializedDoctorDAOBean implements Serializable {
     }
 
     /**
-     * Gets pending exams.
+     * Gets a {@link List} of pending {@link Exam}s associated with this {@link SpecializedDoctor}
      *
-     * @return the pending exams
-     * @throws BeanException the bean exception
+     * @return the {@link List} of pending {@link Exam}s associated with this {@link SpecializedDoctor}
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public List<Exam> getPendingExams() throws BeanException {
         if (doctorID == null) {
@@ -86,10 +84,10 @@ public class SpecializedDoctorDAOBean implements Serializable {
     }
 
     /**
-     * Gets booked exams.
+     * Gets a {@link List} of booked {@link Exam}s associated with this {@link SpecializedDoctor}
      *
-     * @return the booked exams
-     * @throws BeanException the bean exception
+     * @return the {@link List} of booked {@link Exam}s associated with this {@link SpecializedDoctor}
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public List<Exam> getBookedExams() throws BeanException {
         if (doctorID == null) {

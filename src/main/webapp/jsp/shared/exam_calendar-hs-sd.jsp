@@ -77,18 +77,18 @@
                     <div class="table-cell action"></div>
                 </div>
 
-                <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+                <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
                 <c:choose>
                     <c:when test="${sessionScope.role eq 'specialized_doctor'}">
-                        <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.SpecializedDoctorDAOBean"/>
+                        <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.entities.SpecializedDoctorDAOBean"/>
                         <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
                         <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
                     </c:when>
                     <c:when test="${sessionScope.role eq 'health_service'}">
                         <jsp:useBean id="healthServiceDAO"
-                                     class="it.unitn.web.centodiciotto.beans.HealthServiceDAOBean"/>
+                                     class="it.unitn.web.centodiciotto.beans.entities.HealthServiceDAOBean"/>
                         <jsp:setProperty name="healthServiceDAO" property="healthServiceID"
                                          value="${sessionScope.user.ID}"/>
                         <jsp:setProperty name="healthServiceDAO" property="DAOFactory" value=""/>

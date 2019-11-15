@@ -61,7 +61,7 @@
 <div style="text-align: center;" class="container">
     <div style="width: 50%; margin: auto">
         <jsp:useBean id="patientDAO"
-                     class="it.unitn.web.centodiciotto.beans.PatientDAOBean"/>
+                     class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
         <jsp:setProperty name="patientDAO" property="patientID"
                          value="${sessionScope.user.ID}"/>
         <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
@@ -98,7 +98,7 @@
                 </div>
 
                 <jsp:useBean id="practitionerDAO"
-                             class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                             class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
                 <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>

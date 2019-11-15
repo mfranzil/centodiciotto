@@ -1,6 +1,7 @@
-package it.unitn.web.centodiciotto.beans;
+package it.unitn.web.centodiciotto.beans.entities;
 
 
+import it.unitn.web.centodiciotto.beans.BeanException;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.HealthServiceDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -26,9 +27,11 @@ public class HealthServiceDAOBean implements Serializable {
     private String healthServiceID = null;
 
     /**
-     * Sets dao factory.
+     * Initializes the bean.
      *
-     * @param useless the useless
+     * Retrieves a DAOFactory implementation and then retrieves the DAOS.
+     *
+     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
      */
     public void setDAOFactory(String useless) {
         try {
@@ -56,7 +59,7 @@ public class HealthServiceDAOBean implements Serializable {
      * Gets health service.
      *
      * @return the health service
-     * @throws BeanException the bean exception
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public HealthService getHealthService() throws BeanException {
         try {
@@ -71,7 +74,7 @@ public class HealthServiceDAOBean implements Serializable {
      * Gets pending exams.
      *
      * @return the pending exams
-     * @throws BeanException the bean exception
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public List<Exam> getPendingExams() throws BeanException {
         if (healthServiceID == null) {
@@ -89,7 +92,7 @@ public class HealthServiceDAOBean implements Serializable {
      * Gets booked exams.
      *
      * @return the booked exams
-     * @throws BeanException the bean exception
+     * @throws BeanException thrown for any generic exception bean exception
      */
     public List<Exam> getBookedExams() throws BeanException {
         if (healthServiceID == null) {

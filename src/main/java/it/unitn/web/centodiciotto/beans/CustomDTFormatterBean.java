@@ -6,32 +6,34 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * The type Custom dt formatter bean.
+ * JavaBean for standardized Date/Time formatting across the application.
  */
 public class CustomDTFormatterBean implements Serializable {
 
     private long date = -1L;
 
     /**
-     * Gets date.
+     * Gets the time since epoch associated to this Bean.
      *
-     * @return the date
+     * @return the time since epoch associated to this Bean
      */
     public long getDate() {
         return date;
     }
 
     /**
-     * Sets date.
+     * Sets the time since epoch associated to this Bean.
      *
-     * @param date the date
+     * @param date the time since epoch associated to this Bean
      */
     public void setDate(long date) {
         this.date = date;
     }
 
     /**
-     * Gets formatted date.
+     * Gets a date-only representation of the time since epoch.
+     *
+     * The Date is formatted as "MMMM dd, YYYY" (example: December 19, 2000)
      *
      * @return the formatted date
      */
@@ -40,7 +42,9 @@ public class CustomDTFormatterBean implements Serializable {
     }
 
     /**
-     * Gets formatted time.
+     * Gets a time-only representation of the time since epoch.
+     *
+     * The time is formatted as "HH:MM" in 24H format (example: 20:05)
      *
      * @return the formatted time
      */
@@ -49,7 +53,9 @@ public class CustomDTFormatterBean implements Serializable {
     }
 
     /**
-     * Gets formatted date time.
+     * Gets a date and time representation of the time since epoch.
+     *
+     * The Date is formatted as "MMMM dd, YYYY HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
      *
      * @return the formatted date time
      */

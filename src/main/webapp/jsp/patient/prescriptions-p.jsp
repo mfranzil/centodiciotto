@@ -45,15 +45,15 @@
                     <div class="table-cell action">Prescription</div>
                 </div>
 
-                <jsp:useBean id="prescriptionDAO" class="it.unitn.web.centodiciotto.beans.DrugPrescriptionDAOBean"/>
-                <jsp:setProperty name="prescriptionDAO" property="patientID" value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="prescriptionDAO" property="DAOFactory" value=""/>
+                <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
+                <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
+                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
 
                 <jsp:useBean id="datePrescribed" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${prescriptionDAO.byPatient}" var="prescription">
+                <c:forEach items="${patientDAO.validPrescriptions}" var="prescription">
                     <jsp:useBean id="practitionerDAO"
-                                 class="it.unitn.web.centodiciotto.beans.GeneralPractitionerDAOBean"/>
+                                 class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
                     <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                      value="${prescription.practitionerID}"/>
                     <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
