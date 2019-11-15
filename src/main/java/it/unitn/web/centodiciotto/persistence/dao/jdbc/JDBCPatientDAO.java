@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc patient dao.
@@ -66,7 +68,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(10, patient.getLivingPlace());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"PatientDAO::insert affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error inserting User: ", e);
@@ -89,7 +91,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(10, patient.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"PatientDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating Patient: ", e);
@@ -102,7 +104,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(1, patient.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"PatientDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Patient: ", e);
         }

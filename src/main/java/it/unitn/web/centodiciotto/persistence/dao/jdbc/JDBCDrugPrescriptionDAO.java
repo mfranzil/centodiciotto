@@ -11,6 +11,8 @@ import it.unitn.web.centodiciotto.persistence.entities.DrugType;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc drug prescription dao.
@@ -78,8 +80,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(9, drugPrescription.getDescription());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
+            Logger.getGlobal().log(Level.INFO,"DrugPrescriptionDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting DrugPrescription: ", e);
         }
@@ -101,7 +102,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(10, drugPrescription.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"DrugPrescriptionDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating DrugPrescription: ", e);
@@ -114,7 +115,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(1, drugPrescription.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"DrugPrescriptionDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting DrugPrescription: ", e);
         }

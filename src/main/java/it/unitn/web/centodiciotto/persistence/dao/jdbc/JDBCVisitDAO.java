@@ -9,6 +9,8 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc visit dao.
@@ -64,8 +66,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setBoolean(6, visit.isBooked());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
+            Logger.getGlobal().log(Level.INFO,"VisitDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Visit: ", e);
         }
@@ -84,8 +85,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setInt(7, visit.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
+            Logger.getGlobal().log(Level.INFO,"VisitDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Visit: ", e);
         }
@@ -97,7 +97,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setInt(1, visit.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"VisitDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Visit: ", e);
         }

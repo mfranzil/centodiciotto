@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc photo dao.
@@ -28,14 +30,9 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
     final private String GET_ALL = "SELECT * FROM photo;";
     final private String COUNT = "SELECT COUNT(*) FROM photo;";
 
-    final private String GET_CURRENT_BY_PATIENT = "SELECT * " +
-            "FROM photo " +
-            "WHERE patient_id = ? " +
-            "ORDER BY upload_date DESC " +
-            "LIMIT 1;";
-    final private String GET_ALL_BY_PATIENT = "SELECT * " +
-            "FROM photo " +
-            "WHERE patient_id = ? " +
+    final private String GET_CURRENT_BY_PATIENT = "SELECT * FROM photo WHERE patient_id = ? " +
+            "ORDER BY upload_date DESC LIMIT 1;";
+    final private String GET_ALL_BY_PATIENT = "SELECT * FROM photo WHERE patient_id = ? " +
             "ORDER BY upload_date DESC;";
 
     /**
@@ -58,8 +55,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             int photoID = stm.executeUpdate();
 
             photo.setID(photoID);
-            System.out.println("Row affected returned: " + photoID);
-
+            Logger.getGlobal().log(Level.INFO,"PhotoDAO::insert row affected returned " + photoID);
         } catch (SQLException e) {
             throw new DAOException("Error inserting Photo: ", e);
         }
@@ -73,7 +69,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             stm.setInt(2, photo.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"PhotoDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating Photo: ", e);
@@ -86,7 +82,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             stm.setInt(1, photo.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"PhotoDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Photo: ", e);
         }

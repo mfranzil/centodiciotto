@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc health service dao.
@@ -51,8 +53,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(2, healthService.getOperatingProvince().getAbbreviation());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
+            Logger.getGlobal().log(Level.INFO,"HealthServiceDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Health Service: ", e);
         }
@@ -66,7 +67,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(2, healthService.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"HealthServiceDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating HealthService: ", e);
@@ -79,7 +80,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(1, healthService.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"HealthServiceDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting HealthService: ", e);
         }

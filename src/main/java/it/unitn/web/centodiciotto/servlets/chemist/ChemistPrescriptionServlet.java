@@ -136,7 +136,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             dp.setChemistID(user.getID());
                             drugPrescriptionDAO.update(dp);
 
-                            Logger.getLogger("SCE").log(Level.INFO,
+                            Logger.getGlobal().log(Level.INFO,
                                     "Succesfully activated prescription with ID " + prescriptionID);
 
                             Patient patient = patientDAO.getByPrimaryKey(dp.getPatientID());

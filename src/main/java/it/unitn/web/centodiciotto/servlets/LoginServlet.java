@@ -1,7 +1,5 @@
 package it.unitn.web.centodiciotto.servlets;
 
-import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.CryptoService;
@@ -23,18 +21,11 @@ import java.util.logging.Logger;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private GeneralPractitionerDAO practitionerDAO;
-
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
-        }
-        try {
-            practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
-        } catch (DAOFactoryException e) {
-            throw new ServletException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -93,7 +84,7 @@ public class LoginServlet extends HttpServlet {
                         json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
                     }
 
-                    .log(Level.INFO,
+                    Logger.getGlobal().log(Level.INFO,
                             "User " + userID + " logged in with role "
                                     + role + " - redirected with JSON " + json);
                 }

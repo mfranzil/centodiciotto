@@ -11,6 +11,8 @@ import it.unitn.web.centodiciotto.persistence.entities.ExamType;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc exam dao.
@@ -96,8 +98,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             }
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
-
+            Logger.getGlobal().log(Level.INFO,"ExamDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Exam: ", e);
         }
@@ -128,7 +129,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(13, exam.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"ExamDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating Exam: ", e);
@@ -141,7 +142,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(1, exam.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"ExamDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Exam: ", e);
         }

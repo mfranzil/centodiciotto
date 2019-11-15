@@ -30,6 +30,10 @@ public class WebAppContextListener implements ServletContextListener {
             ExcelService.configure(daoFactory, sc);
             PDFService.configure(sc);
 
+            Logger logger = Logger.getLogger("CentoDiciotto");
+
+            sc.setAttribute("daoFactory", daoFactory);
+            sc.setAttribute("logger", logger);
         } catch (DAOFactoryException | ServiceException e) {
             throw new RuntimeException(e);
         }

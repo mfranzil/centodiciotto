@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The type Jdbc recall dao.
@@ -61,8 +63,12 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             ResultSet rs = stm.executeQuery();
 
             if (rs.next()) {
-                recall.setID(rs.getInt("recall_id"));
-                System.out.println("Row affected returned: " + rs.getInt("recall_id"));
+                Integer recallID = rs.getInt("recall_id");
+
+                recall.setID(recallID);
+                Logger.getGlobal().log(Level.INFO,"RecallDAO::insert row affected returned " + recallID);
+            } else {
+                throw new DAOException("Error inserting Recall, query returnet an empty ResultSet.");
             }
         } catch (SQLException e) {
             throw new DAOException("Error inserting Recall: ", e);
@@ -81,7 +87,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             stm.setInt(6, recall.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"RecallDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating Recall: ", e);
@@ -94,7 +100,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             stm.setInt(1, recall.getID());
 
             int row = stm.executeUpdate();
-            System.out.println("Rows affected: " + row);
+            Logger.getGlobal().log(Level.INFO,"RecallDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Recall: ", e);
         }
