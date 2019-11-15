@@ -4,7 +4,7 @@ import it.unitn.web.centodiciotto.persistence.base.DAO;
 import it.unitn.web.centodiciotto.persistence.entities.DrugType;
 
 /**
- * The interface Drug type dao.
+ * DAO interface for a {@link Drug type} entity.
  */
 public interface DrugTypeDAO extends DAO<DrugType, Integer> {
 }

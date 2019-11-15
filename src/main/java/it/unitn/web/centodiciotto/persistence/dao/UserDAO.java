@@ -4,7 +4,7 @@ import it.unitn.web.centodiciotto.persistence.base.DAO;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
 /**
- * The interface User dao.
+ * DAO interface for a {@link User} entity.
  */
 public interface UserDAO extends DAO<User, String> {
 }

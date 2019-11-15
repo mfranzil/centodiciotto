@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc photo dao.
+ * {@link PhotoDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
@@ -36,10 +36,10 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             "ORDER BY upload_date DESC;";
 
     /**
-     * Instantiates a new Jdbc photo dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCPhotoDAO(Connection con) throws DAOFactoryException {
         super(con);

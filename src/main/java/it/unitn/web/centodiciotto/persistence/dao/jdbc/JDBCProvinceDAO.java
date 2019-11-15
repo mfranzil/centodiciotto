@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Jdbc province dao.
+ * {@link ProvinceDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements ProvinceDAO {
@@ -26,10 +26,10 @@ public class JDBCProvinceDAO extends JDBCDAO<Province, Integer> implements Provi
     private final String GET_BY_ABBREVIATION = "SELECT * FROM province WHERE province_abbreviation = ?;";
 
     /**
-     * Instantiates a new Jdbc province dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCProvinceDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc general practitioner dao.
+ * {@link GeneralPractitionerDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, String> implements GeneralPractitionerDAO {
@@ -39,10 +39,10 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             "WHERE working_province = ? ORDER BY last_name ASC;";
 
     /**
-     * Instantiates a new Jdbc general practitioner dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);

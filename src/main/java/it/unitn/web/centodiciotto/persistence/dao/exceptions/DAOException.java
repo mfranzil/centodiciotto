@@ -6,21 +6,20 @@
  */
 package it.unitn.web.centodiciotto.persistence.dao.exceptions;
 
-
 /**
- * The type Dao exception.
+ * Exception thrown by DAO methods at the moment of the query execution.
  */
 public class DAOException extends Exception {
 
     /**
-     * Instantiates a new Dao exception.
+     * Instantiates a new DAO exception with an empty message.
      */
     public DAOException() {
         super();
     }
 
     /**
-     * Instantiates a new Dao exception.
+     * Instantiates a new DAO exception with a string as a message.
      *
      * @param message the message
      */
@@ -29,7 +28,7 @@ public class DAOException extends Exception {
     }
 
     /**
-     * Instantiates a new Dao exception.
+     * Instantiates a new DAO exception wrapping a {@link Throwable}.
      *
      * @param cause the cause
      */
@@ -38,7 +37,7 @@ public class DAOException extends Exception {
     }
 
     /**
-     * Instantiates a new Dao exception.
+     * Instantiates a new DAO exception wrapping a {@link Throwable} with a string as a message.
      *
      * @param message the message
      * @param cause   the cause

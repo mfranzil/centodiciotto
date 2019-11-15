@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Jdbc exam type dao.
+ * {@link ExamTypeDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamTypeDAO {
@@ -24,10 +24,10 @@ public class JDBCExamTypeDAO extends JDBCDAO<ExamType, Integer> implements ExamT
     final private String COUNT = "SELECT COUNT(*) FROM exam_type;";
 
     /**
-     * Instantiates a new Jdbc exam type dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCExamTypeDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -9,15 +9,16 @@ import it.unitn.web.centodiciotto.utils.entities.Pair;
 import java.util.List;
 
 /**
- * The interface Doctor exam dao.
+ * DAO interface for a {@link DoctorExam} entity.
  */
 public interface DoctorExamDAO extends DAO<DoctorExam, Pair<String, Integer>> {
+
     /**
-     * Gets by exam type.
+     * Returns a {@link List} of {@link DoctorExam}s from a given {@link ExamType}
      *
-     * @param examType the exam type
-     * @return the by exam type
-     * @throws DAOException the dao exception
+     * @param examType the {@link ExamType}
+     * @return {@link List} of {@link DoctorExam}s from a given {@link ExamType}
+     * @throws DAOException in case of a malformed input or query
      */
     List<DoctorExam> getByExamType(ExamType examType) throws DAOException;
 }

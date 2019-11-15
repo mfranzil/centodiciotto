@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * The interface Exam dao.
+ * DAO interface for a {@link Exam} entity.
  */
 public interface ExamDAO extends DAO<Exam, Integer> {
 
@@ -17,7 +17,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param patientID the patient id
      * @return the by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getByPatient(String patientID) throws DAOException;
 
@@ -26,7 +26,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param patientID the patient id
      * @return the by patient last year
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getByPatientLastYear(String patientID) throws DAOException;
 
@@ -35,7 +35,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param patientID the patient id
      * @return the unpaid by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getUnpaidByPatient(String patientID) throws DAOException;
 
@@ -44,7 +44,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param patientID the patient id
      * @return the not pending by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getNotPendingByPatient(String patientID) throws DAOException;
 
@@ -53,7 +53,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param patientID the patient id
      * @return the pending by patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getPendingByPatient(String patientID) throws DAOException;
 
@@ -63,7 +63,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      * @param patientID the patient id
      * @param examID    the exam id
      * @return the pending by patient and exam type
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Exam getPendingByPatientAndExamType(String patientID, Integer examID) throws DAOException;
 
@@ -72,7 +72,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param patientID the patient id
      * @return the pending by patient doctor health service not selected
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getPendingByPatientDoctorHealthServiceNotSelected(String patientID) throws DAOException;
 
@@ -81,7 +81,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param doctorID the doctor id
      * @return the pending by doctor
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getPendingByDoctor(String doctorID) throws DAOException;
 
@@ -90,7 +90,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param doctorID the doctor id
      * @return the booked by doctor
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getBookedByDoctor(String doctorID) throws DAOException;
 
@@ -99,7 +99,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param doctorID the doctor id
      * @return the done by doctor
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getDoneByDoctor(String doctorID) throws DAOException;
 
@@ -108,7 +108,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param healthServiceID the health service id
      * @return the pending by hs
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getPendingByHS(String healthServiceID) throws DAOException;
 
@@ -117,7 +117,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param healthServiceID the health service id
      * @return the booked by hs
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getBookedByHS(String healthServiceID) throws DAOException;
 
@@ -126,7 +126,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param healthServiceID the health service id
      * @return the done by hs
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getDoneByHS(String healthServiceID) throws DAOException;
 
@@ -137,7 +137,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      * @param patientID the patient id
      * @param examID    the exam id
      * @return the pending by doctor and patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Exam getPendingByDoctorAndPatient(String doctorID, String patientID, Integer examID) throws DAOException;
 
@@ -148,7 +148,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      * @param patientID       the patient id
      * @param examID          the exam id
      * @return the pending by hs and patient
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Exam getPendingByHSAndPatient(String healthServiceID, String patientID, Integer examID) throws DAOException;
 
@@ -157,7 +157,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      *
      * @param ts the ts
      * @return the by date
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getByDate(Timestamp ts) throws DAOException;
 
@@ -168,7 +168,7 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      * @param healthServiceID the health service id
      * @param patientID       the patient id
      * @return the pending recall
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Exam getPendingRecall(Integer examType, String healthServiceID, String patientID) throws DAOException;
 }

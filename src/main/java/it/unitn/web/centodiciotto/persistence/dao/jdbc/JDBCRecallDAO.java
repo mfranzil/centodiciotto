@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc recall dao.
+ * {@link RecallDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO {
@@ -41,10 +41,10 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             "ORDER BY start_date DESC;";
 
     /**
-     * Instantiates a new Jdbc recall dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
         super(con);

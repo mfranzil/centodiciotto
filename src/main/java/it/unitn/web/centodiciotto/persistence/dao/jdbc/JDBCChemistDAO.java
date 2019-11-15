@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc chemist dao.
+ * {@link ChemistDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistDAO {
@@ -36,10 +36,10 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     final private String GET_BY_PROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
 
     /**
-     * Instantiates a new Jdbc chemist dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCChemistDAO(Connection con) throws DAOFactoryException {
         super(con);

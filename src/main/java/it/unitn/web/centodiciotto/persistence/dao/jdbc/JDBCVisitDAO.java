@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc visit dao.
+ * {@link VisitDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
@@ -45,10 +45,10 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
     final private String GET_BY_DATE = "SELECT * FROM visit WHERE visit_date::date = ?::date;";
 
     /**
-     * Instantiates a new Jdbc visit dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCVisitDAO(Connection con) throws DAOFactoryException {
         super(con);

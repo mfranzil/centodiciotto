@@ -5,7 +5,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 
 /**
- * The interface Password reset dao.
+ * DAO interface for a {@link Password reset} entity.
  */
 public interface PasswordResetDAO extends DAO<PasswordReset, String> {
 
@@ -14,7 +14,7 @@ public interface PasswordResetDAO extends DAO<PasswordReset, String> {
      *
      * @param token the token
      * @return the by token
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     PasswordReset getByToken(String token) throws DAOException;
 }

@@ -9,10 +9,14 @@ import it.unitn.web.centodiciotto.services.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.logging.Logger;
 
 /**
- * The type Web app context listener.
+ * ContextListener for this web application.
+ *
+ * Initializes the DAOFactory and all the services located in the
+ * {@link it.unitn.web.centodiciotto.services} package.
+ *
+ * At the moment of Context destruction, it calls the {@link DAOFactory} destructor.
  */
 public class WebAppContextListener implements ServletContextListener {
 
@@ -30,10 +34,7 @@ public class WebAppContextListener implements ServletContextListener {
             ExcelService.configure(daoFactory, sc);
             PDFService.configure(sc);
 
-            Logger logger = Logger.getLogger("CentoDiciotto");
-
             sc.setAttribute("daoFactory", daoFactory);
-            sc.setAttribute("logger", logger);
         } catch (DAOFactoryException | ServiceException e) {
             throw new RuntimeException(e);
         }

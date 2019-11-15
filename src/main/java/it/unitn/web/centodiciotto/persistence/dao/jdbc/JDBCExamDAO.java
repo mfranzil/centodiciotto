@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc exam dao.
+ * {@link ExamDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
@@ -66,10 +66,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null;";
 
     /**
-     * Instantiates a new Jdbc exam dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);

@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc user dao.
+ * {@link UserDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
@@ -30,10 +30,10 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
     final private String COUNT = "SELECT COUNT(*) FROM user_;";
 
     /**
-     * Instantiates a new Jdbc user dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCUserDAO(Connection con) throws DAOFactoryException {
         super(con);

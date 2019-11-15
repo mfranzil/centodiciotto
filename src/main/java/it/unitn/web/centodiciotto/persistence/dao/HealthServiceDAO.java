@@ -5,7 +5,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 
 /**
- * The interface Health service dao.
+ * DAO interface for a {@link Health service} entity.
  */
 public interface HealthServiceDAO extends DAO<HealthService, String> {
 
@@ -14,7 +14,7 @@ public interface HealthServiceDAO extends DAO<HealthService, String> {
      *
      * @param provinceAbbreviation the province abbreviation
      * @return the by province
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     HealthService getByProvince(String provinceAbbreviation) throws DAOException;
 }

@@ -5,7 +5,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.entities.Province;
 
 /**
- * The interface Province dao.
+ * DAO interface for a {@link Province} entity.
  */
 public interface ProvinceDAO extends DAO<Province, Integer> {
 
@@ -14,7 +14,7 @@ public interface ProvinceDAO extends DAO<Province, Integer> {
      *
      * @param provinceAbbreviation the province abbreviation
      * @return the by abbreviation
-     * @throws DAOException the dao exception
+     * @throws DAOException in case of a malformed input or query
      */
     Province getByAbbreviation(String provinceAbbreviation) throws DAOException;
 }

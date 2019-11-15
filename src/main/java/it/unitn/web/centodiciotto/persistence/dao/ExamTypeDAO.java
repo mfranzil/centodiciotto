@@ -4,7 +4,7 @@ import it.unitn.web.centodiciotto.persistence.base.DAO;
 import it.unitn.web.centodiciotto.persistence.entities.ExamType;
 
 /**
- * The interface Exam type dao.
+ * DAO interface for a {@link Exam type} entity.
  */
 public interface ExamTypeDAO extends DAO<ExamType, Integer> {
 }

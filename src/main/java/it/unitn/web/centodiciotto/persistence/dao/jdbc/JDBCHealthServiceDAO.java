@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Jdbc health service dao.
+ * {@link HealthServiceDAO} JDBC concrete implementation.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> implements HealthServiceDAO {
@@ -36,10 +36,10 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String GET_BY_PROVINCE = "SELECT *  FROM health_service WHERE operating_province = ?;";
 
     /**
-     * Instantiates a new Jdbc health service dao.
+     * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
-     * @param con the con
-     * @throws DAOFactoryException the dao factory exception
+     * @param con the {@link Connection} to the database
+     * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
         super(con);
