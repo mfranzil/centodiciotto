@@ -5,7 +5,6 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
-import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -99,39 +98,8 @@ public class PhotoService {
      * @throws ServiceException in case of error during processing
      */
     public List<String> getAllPhotos(String patientID) throws ServiceException {
-        int id;
-        List<Photo> photos = null;
-        List<String> photo_paths = new ArrayList<>();
-
-        if (patientID == null) {
-            return null;
-        }
-
-        try {
-            photos = photoDAO.getAllByPatient(patientID);
-        } catch (DAOException e) {
-            throw new ServiceException("Error in DAO usage: ", e);
-        }
-
-        for (Photo photo : photos) {
-            photo_paths.add(getPhotoPath(photo));
-        }
-
-        return photo_paths;
-    }
-
-
-    /**
-     * Gets a {@link List} of {@link Photo}s of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}
-     * coupled with its {@code id}.
-     *
-     * @param patientID the patient id
-     * @return a {@link List} of {@link Pair}s, the first of which is a file path representing the relative position of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}, the second being the ID.
-     * @throws ServiceException in case of error during processing
-     */
-    public List<Pair<String, Integer>> getAllPhotosWithID(String patientID) throws ServiceException {
         List<Photo> photos;
-        List<Pair<String, Integer>> photo_paths = new ArrayList<>();
+        List<String> photoPaths = new ArrayList<>();
 
         if (patientID == null) {
             return null;
@@ -144,14 +112,15 @@ public class PhotoService {
         }
 
         for (Photo photo : photos) {
-            photo_paths.add(Pair.makePair(getPhotoPath(photo), photo.getID()));
+            photoPaths.add(getPhotoPath(photo));
         }
 
-        return photo_paths;
+        return photoPaths;
     }
 
     /**
      * Retrieves the file path for a given photo using its {@code ID} and the {@code patientID}.
+     *
      * @param photo the photo entity
      * @return a file path representing the relative position of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}
      */
@@ -181,19 +150,19 @@ public class PhotoService {
     }
 
     /**
-     * Gets the current avatar folder.
+     * Gets the current avatar folder as a relative path.
      *
-     * @return the avatar folder
+     * @return the avatar folder as a relative path
      */
     public String getAvatarFolder() {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator;
     }
 
     /**
-     * Gets a {@link it.unitn.web.centodiciotto.persistence.entities.Patient} avatar folder.
+     * Gets a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}'s avatar folder as a relative path.
      *
      * @param patientID the patientID
-     * @return the {@link it.unitn.web.centodiciotto.persistence.entities.Patient} avatar folder
+     * @return the {@link it.unitn.web.centodiciotto.persistence.entities.Patient}'s avatar folder as a relative path
      */
     public String getPatientAvatarFolder(String patientID) {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;

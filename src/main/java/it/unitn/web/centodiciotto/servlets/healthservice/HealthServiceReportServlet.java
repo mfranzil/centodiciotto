@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.healthservice;
 
-import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.services.ExcelService;
@@ -18,22 +17,15 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
- * The type Health service report servlet.
+ * HealthServiceReportServlet for handling requests to /restricted/health_service/reports.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests receive five booleans (which are compared in a null-safe way with {@link Object#equals(Object)}),
+ * a date and pass this information to an {@link ExcelService} for generating the report.
  */
 @WebServlet("/restricted/health_service/reports")
 public class HealthServiceReportServlet extends HttpServlet {
-
-    @Override
-    public void init() throws ServletException {
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("DAOFactory is null.");
-        }
-        /*try {
-        } catch (DAOFactoryException e) {
-            throw new ServletException("Error in DAO retrieval: ", e);
-        }*/
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

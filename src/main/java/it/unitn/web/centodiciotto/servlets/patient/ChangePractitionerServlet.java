@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * The type Change practitioner servlet.
@@ -44,6 +43,15 @@ public class ChangePractitionerServlet extends HttpServlet {
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (user instanceof Patient) {
+            request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);
         }
     }
 
@@ -108,25 +116,6 @@ public class ChangePractitionerServlet extends HttpServlet {
             } catch (ServiceException e) {
                 response.setStatus(400);
                 throw new ServletException("Error in email sending: ", e);
-            }
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = (User) request.getSession().getAttribute("user");
-
-        if (user instanceof Patient) {
-            try {
-                List<GeneralPractitioner> availablePractitioners =
-                        practitionerDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
-                GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
-
-                request.setAttribute("practitioner", practitioner);
-                request.setAttribute("availablePractitioners", availablePractitioners);
-                request.getRequestDispatcher("/jsp/patient/change_practitioner-p.jsp").forward(request, response);
-            } catch (DAOException e) {
-                throw new ServletException("Error in DAO usage: ", e);
             }
         }
     }

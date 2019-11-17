@@ -28,7 +28,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * The type Recalls servlet.
+ * RecallsServlet for handling requests to /restricted/health_service/recalls.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> recallHistory: select2 AJAX response generator for returing a list of {@link Recall}s done by this
+ *                         {@link HealthService}.
+ *     <li> newRecall: generates a new Recall by picking a {@link List} of {@link Patient}s in a given {@link Province}
+ *                     and a given age range, inserting a new {@link Exam} for each patient as long as there's
+ *                     not already a pending one in the database.
+ *     <li> examRow: select2 AJAX response generator for returing a list of {@link Exam}s from a {@code examID}
+ *     <li> examSearch: select2 AJAX response generator for searching {@link Exam}s by name
+ * </ul>
  */
 @WebServlet("/restricted/health_service/recalls")
 public class RecallsServlet extends HttpServlet {

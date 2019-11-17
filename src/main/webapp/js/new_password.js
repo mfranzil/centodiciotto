@@ -1,17 +1,21 @@
 $("document").ready(function () {
     $('#new-password, #new-password-confirm').on('keyup', function () {
         let message = $('#password-change-button');
-        let newPassword = $('#new-password');
-        let newPasswordConfirm = $('#new-password-confirm');
+        let newPassword = $('#new-password').val();
+        let newPasswordConfirm = $('#new-password-confirm').val();
 
-        if (newPassword.val().length > 64 || newPasswordConfirm.val().length > 64) {
-            message.html("Password is too long!").css('background-color', 'red').prop('disabled', true);
+        if (newPassword.length > 64 || newPasswordConfirm.length > 64 ||
+            newPassword.length < 8 || newPasswordConfirm.length < 8) {
+            message.html("Password must be 8 to 64 characters long.")
+                .css('background-color', 'red').prop('disabled', true);
             return;
         }
 
-        if ((newPassword.val() !== newPasswordConfirm.val()) ||
-            newPassword.val() === "" || newPasswordConfirm.val() === "") {
-            message.html('Passwords do not match.').css('background-color', 'red').prop('disabled', true);
+
+        if ((newPassword !== newPasswordConfirm) ||
+            newPassword === "" || newPasswordConfirm === "") {
+            message.html('Passwords do not match.')
+                .css('background-color', 'red').prop('disabled', true);
             return;
         }
 

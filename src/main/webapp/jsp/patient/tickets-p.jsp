@@ -10,9 +10,8 @@
                 margin: .5em;
             }
 
-
             /* Esami */
-            .table-cell.specialized-doctor {
+            .table-cell.dispatcher {
                 width: 25%;
             }
 
@@ -111,28 +110,42 @@
                          class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
             <jsp:setProperty name="patientDAO" property="patientID"
                              value="${sessionScope.user.ID}"/>
-            <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+            <jsp:setProperty name="patientDAO" property="init" value=""/>
 
             <div class="col-md">
                 <div class="table-personal table-header">
-                    <div class="table-cell specialized-doctor">Doctor</div>
+                    <div class="table-cell dispatcher">Doctor</div>
                     <div class="table-cell exam">Exam</div>
                     <div class="table-cell date">Date</div>
                     <div class="table-cell exam-amount">Amount</div>
                     <div class="table-cell exam-action">Ticket</div>
                 </div>
                 <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.entities.SpecializedDoctorDAOBean"/>
-                <jsp:setProperty name="doctorDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="doctorDAO" property="init" value=""/>
+
+                <jsp:useBean id="healthServiceDAO"
+                             class="it.unitn.web.centodiciotto.beans.entities.HealthServiceDAOBean"/>
+                <jsp:setProperty name="healthServiceDAO" property="init" value=""/>
 
                 <jsp:useBean id="examDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
                 <c:forEach items="${patientDAO.unpaidExams}" var="exam">
                     <jsp:setProperty name="examDate" property="date" value="${exam.date.time}"/>
-                    <jsp:setProperty name="doctorDAO" property="doctorID" value="${exam.doctorID}"/>
 
-                    <c:set var="doctor" value="${doctorDAO.doctor}"/>
+                    <c:choose>
+                        <c:when test="${empty exam.healthServiceID}">
+                            <jsp:setProperty name="doctorDAO" property="doctorID" value="${exam.doctorID}"/>
+                            <c:set var="dispatcher" value="${doctorDAO.doctor}"/>
+                        </c:when>
+                        <c:when test="${empty exam.doctorID}">
+                            <jsp:setProperty name="healthServiceDAO"
+                                             property="healthServiceID" value="${exam.healthServiceID}"/>
+                            <c:set var="dispatcher" value="${healthServiceDAO.healthService}"/>
+                        </c:when>
+                    </c:choose>
+
                     <div class="table-personal">
-                        <div class="table-cell specialized-doctor">${doctor}</div>
+                        <div class="table-cell dispatcher">${dispatcher}</div>
                         <div class="table-cell exam">${exam.type.description}</div>
                         <div class="table-cell date">${examDate.formattedDateTime}</div>
                         <div class="table-cell exam-amount">$${exam.ticket}</div>
@@ -170,11 +183,11 @@
                     <div class="table-cell drug-action">Ticket</div>
                 </div>
                 <jsp:useBean id="chemistDAO" class="it.unitn.web.centodiciotto.beans.entities.ChemistDAOBean"/>
-                <jsp:setProperty name="chemistDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="chemistDAO" property="init" value=""/>
 
                 <jsp:useBean id="practitionerDAO"
                              class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
-                <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerDAO" property="init" value=""/>
 
                 <jsp:useBean id="drugEmissionDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
                 <jsp:useBean id="drugSoldDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>

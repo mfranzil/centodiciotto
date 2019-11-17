@@ -130,8 +130,9 @@ public class ExamBookingServlet extends HttpServlet {
                         results = ALL_INTERNAL_EXAMS;
                     } else {
                         List<ExamSearchResult> tmpResults = new ArrayList<>();
-                        ALL_INTERNAL_EXAMS.stream().filter(exam_SearchResult_
-                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                        ALL_INTERNAL_EXAMS.stream().filter(examSearchResult
+                                -> (examSearchResult.getText().toLowerCase()
+                                .contains(userInput.toLowerCase()))).forEach(tmpResults::add);
                         results = tmpResults;
                     }
 
@@ -155,16 +156,21 @@ public class ExamBookingServlet extends HttpServlet {
                             List<DoctorExam> doctorExamList = doctorExamDAO.getByExamType(examType);
 
                             for (DoctorExam doctorExam : doctorExamList) {
-                                SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(doctorExam.getDoctorID());
-                                results.add(new DoctorSearchResult(doctorExam.getDoctorID(), specializedDoctor.toString(), false));
+                                SpecializedDoctor specializedDoctor = specializedDoctorDAO.getByPrimaryKey(
+                                        doctorExam.getDoctorID());
+                                results.add(new DoctorSearchResult(doctorExam.getDoctorID(),
+                                        specializedDoctor.toString(), false));
                             }
-                            HealthService livingHealthService = healthServiceDAO.getByProvince(((Patient) user).getLivingProvince().getAbbreviation());
-                            results.add(new DoctorSearchResult(livingHealthService.getID(), "Servizio Sanitario Provinciale di " + ((Patient) user).getLivingProvince().getName(), true));
+                            HealthService livingHealthService = healthServiceDAO.getByProvince(((Patient) user)
+                                    .getLivingProvince().getAbbreviation());
+                            results.add(new DoctorSearchResult(livingHealthService.getID(),
+                                    livingHealthService.toString(), true));
 
                             if (userInput != null) {
                                 List<DoctorSearchResult> tmpResults = new ArrayList<>();
-                                results.stream().filter(exam_SearchResult_
-                                        -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                                results.stream().filter(doctorSearchResult
+                                        -> (doctorSearchResult.getText().toLowerCase()
+                                        .contains(userInput.toLowerCase()))).forEach(tmpResults::add);
                                 results = tmpResults;
                             }
 

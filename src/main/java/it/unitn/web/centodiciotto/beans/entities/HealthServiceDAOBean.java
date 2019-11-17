@@ -31,9 +31,9 @@ public class HealthServiceDAOBean implements Serializable {
      *
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
-     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
+     * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
      */
-    public void setDAOFactory(String useless) {
+    public void setInit(String initializer) throws BeanException {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
@@ -42,7 +42,7 @@ public class HealthServiceDAOBean implements Serializable {
             examDAO = daoFactory.getDAO(ExamDAO.class);
 
         } catch (DAOFactoryException e) {
-            throw new RuntimeException("Error in DAO retrieval: ", e);
+            throw new BeanException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -59,7 +59,7 @@ public class HealthServiceDAOBean implements Serializable {
      * Gets health service.
      *
      * @return the health service
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public HealthService getHealthService() throws BeanException {
         try {
@@ -74,7 +74,7 @@ public class HealthServiceDAOBean implements Serializable {
      * Gets pending exams.
      *
      * @return the pending exams
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Exam> getPendingExams() throws BeanException {
         if (healthServiceID == null) {
@@ -92,7 +92,7 @@ public class HealthServiceDAOBean implements Serializable {
      * Gets booked exams.
      *
      * @return the booked exams
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Exam> getBookedExams() throws BeanException {
         if (healthServiceID == null) {

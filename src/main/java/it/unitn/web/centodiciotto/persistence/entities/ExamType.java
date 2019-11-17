@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Exam type.
+ * ExamType entity for giving names to the types of {@link Exam}s that can be done.
  */
 public class ExamType {
     private Integer ID;

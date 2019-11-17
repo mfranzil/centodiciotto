@@ -30,7 +30,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/chemist/prescriptions";
+            const url = window.href;
             let tableHeaders = [
                 {field: "pract", type: "string", text: "Practitioner"},
                 {field: "drug", type: "string", text: "Drug"},
@@ -140,7 +140,6 @@
                     });
                 });
             }
-
 
             let action = "${requestScope.action}";
 

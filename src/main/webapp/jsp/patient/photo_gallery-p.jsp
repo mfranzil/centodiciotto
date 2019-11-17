@@ -6,6 +6,15 @@
     <title>Photo Gallery - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script>
+        $(document).ready(function () {
+            $(".photo-path").each(function () {
+                $(this).val(getID($(this).val()));
+            });
+
+            function getID(photoPath) {
+                return parseInt(photoPath.split("/").slice(-1).toString().split(".")[0]);
+            }
+        });
     </script>
 </head>
 <body>
@@ -17,9 +26,11 @@
     </p>
 </div>
 <div class="container flex-wrap">
-    <c:forEach items="${requestScope.photos}" var="pair">
-        <c:set var="photo" value="${pair.first}"/>
-        <c:set var="id" value="${pair.second}"/>
+    <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
+    <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
+    <jsp:setProperty name="patientDAO" property="init" value=""/>
+
+    <c:forEach items="${patientDAO.allPhotos}" var="photo">
         <figure class="col-md">
             <img alt="picture" class="avatar img-fluid popup-opener" src="${pageContext.request.contextPath}/${photo}">
             <div class="popup-window">
@@ -31,7 +42,7 @@
                         </div>
                         <img class="avatar mb-2" src="${pageContext.request.contextPath}/${photo}" alt="${photo}">
                         <label>
-                            <input type="text" hidden name="photoID" value="${id}">
+                            <input type="text" hidden name="photoID" class="photo-path" value="${photo}">
                         </label>
                         <button class="btn btn-lg btn-block btn-personal mb-2" type="submit" id="submit">Change photo
                         </button>

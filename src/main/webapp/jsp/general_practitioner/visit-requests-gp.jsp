@@ -93,11 +93,11 @@
                              class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
                 <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                  value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerDAO" property="init" value=""/>
 
                 <jsp:useBean id="patientDAO"
                              class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
-                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="patientDAO" property="init" value=""/>
 
                 <c:forEach items="${practitionerDAO.pendingVisits}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>

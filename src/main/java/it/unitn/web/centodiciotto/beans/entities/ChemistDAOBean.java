@@ -20,18 +20,18 @@ public class ChemistDAOBean implements Serializable {
 
     /**
      * Initializes the bean.
-     *
+     * <p>
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
-     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
+     * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
      */
-    public void setDAOFactory(String useless) {
+    public void setInit(String initializer) throws BeanException {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             chemistDAO = daoFactory.getDAO(ChemistDAO.class);
         } catch (DAOFactoryException e) {
-            throw new RuntimeException("Error in DAO retrieval: ", e);
+            throw new BeanException("Error in DAO retrieval: ", e);
         }
     }
 

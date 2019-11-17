@@ -64,7 +64,7 @@
                      class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
         <jsp:setProperty name="patientDAO" property="patientID"
                          value="${sessionScope.user.ID}"/>
-        <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+        <jsp:setProperty name="patientDAO" property="init" value=""/>
 
         <c:set var="practitioner" value="${patientDAO.practitioner}"/>
         <c:set var="alreadyBooked" value="${!empty patientDAO.pendingVisit}"/>
@@ -99,7 +99,7 @@
 
                 <jsp:useBean id="practitionerDAO"
                              class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
-                <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerDAO" property="init" value=""/>
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 

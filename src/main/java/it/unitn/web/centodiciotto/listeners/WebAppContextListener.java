@@ -36,7 +36,7 @@ public class WebAppContextListener implements ServletContextListener {
 
             sc.setAttribute("daoFactory", daoFactory);
         } catch (DAOFactoryException | ServiceException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error during WebApplication init: ", e);
         }
     }
 

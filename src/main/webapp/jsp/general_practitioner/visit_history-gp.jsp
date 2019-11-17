@@ -32,7 +32,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/general_practitioner/visit_history";
+            const url = window.href;
 
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},

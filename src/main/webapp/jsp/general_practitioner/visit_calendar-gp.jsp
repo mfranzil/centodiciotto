@@ -76,10 +76,10 @@
                              class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
                 <jsp:setProperty name="practitionerID" property="practitionerID"
                                  value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="practitionerID" property="DAOFactory" value=""/>
+                <jsp:setProperty name="practitionerID" property="init" value=""/>
 
                 <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
-                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="patientDAO" property="init" value=""/>
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 

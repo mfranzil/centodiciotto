@@ -40,7 +40,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/general_practitioner/prescriptions";
+            const url = window.href;
 
             $("#patient-search")
                 .select2({

@@ -3,7 +3,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Photo.
+ * Photo entity for representing a {@link Patient}'s profile photo on the DB.
  */
 public class Photo {
     private Integer ID;

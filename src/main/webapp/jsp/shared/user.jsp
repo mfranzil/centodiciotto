@@ -17,7 +17,7 @@
     <c:if test="${sessionScope.role eq 'patient'}">
         <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
         <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
-        <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+        <jsp:setProperty name="patientDAO" property="init" value=""/>
 
         <jsp:useBean id="birth" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
         <jsp:setProperty name="birth" property="date" value="${sessionScope.user.birthDate.time}"/>

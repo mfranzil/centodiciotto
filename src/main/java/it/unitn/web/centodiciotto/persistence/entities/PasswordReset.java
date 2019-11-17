@@ -3,7 +3,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Password reset.
+ * {@link PasswordReset} entity for storing temporary information about {@link User}s who needed a password reset.
  */
 public class PasswordReset {
     private String userID;

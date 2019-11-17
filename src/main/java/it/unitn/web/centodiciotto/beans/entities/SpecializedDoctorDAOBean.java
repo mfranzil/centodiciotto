@@ -28,16 +28,16 @@ public class SpecializedDoctorDAOBean implements Serializable {
      *
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
-     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
+     * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
      */
-    public void setDAOFactory(String useless) {
+    public void setInit(String initializer) throws BeanException {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
             doctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
         } catch (DAOFactoryException e) {
-            throw new RuntimeException("Error in DAO retrieval: ", e);
+            throw new BeanException("Error in DAO retrieval: ", e);
         }
     }
 
@@ -69,7 +69,7 @@ public class SpecializedDoctorDAOBean implements Serializable {
      * Gets a {@link List} of pending {@link Exam}s associated with this {@link SpecializedDoctor}
      *
      * @return the {@link List} of pending {@link Exam}s associated with this {@link SpecializedDoctor}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Exam> getPendingExams() throws BeanException {
         if (doctorID == null) {
@@ -87,7 +87,7 @@ public class SpecializedDoctorDAOBean implements Serializable {
      * Gets a {@link List} of booked {@link Exam}s associated with this {@link SpecializedDoctor}
      *
      * @return the {@link List} of booked {@link Exam}s associated with this {@link SpecializedDoctor}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Exam> getBookedExams() throws BeanException {
         if (doctorID == null) {

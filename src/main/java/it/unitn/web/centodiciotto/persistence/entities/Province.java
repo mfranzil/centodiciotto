@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Province.
+ * Province entity for modelling real-world administrative divisions.
  */
 public class Province {
     private Integer ID;

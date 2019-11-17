@@ -3,7 +3,9 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Drug prescription.
+ * DrugPrescription entity that represents a potential medicine sold by a {@link Chemist} to a {@link Patient}.
+ *
+ * It must be prescribed by a {@link GeneralPractitioner}.
  */
 public class DrugPrescription {
     private Integer ID;

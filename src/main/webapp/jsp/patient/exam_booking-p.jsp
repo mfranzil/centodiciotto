@@ -22,7 +22,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/patient/exam_booking";
+            const url = window.href;
             let availableExamFilter = true;
 
             $(function () {

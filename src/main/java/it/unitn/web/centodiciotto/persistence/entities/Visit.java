@@ -3,7 +3,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Visit.
+ * Visit entity that represents a potential Visit made by a {@link Patient} at a {@link GeneralPractitioner}.
  */
 public class Visit {
     private Integer ID;
@@ -17,16 +17,16 @@ public class Visit {
     /**
      * Is booked boolean.
      *
-     * @return the boolean
+     * @return true if the visit is booked
      */
     public boolean isBooked() {
         return booked;
     }
 
     /**
-     * Sets the booked.
+     * Sets the booked flag
      *
-     * @param booked the booked
+     * @param booked true if the visit is booked
      */
     public void setBooked(boolean booked) {
         this.booked = booked;

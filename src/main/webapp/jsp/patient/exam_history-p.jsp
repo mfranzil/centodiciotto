@@ -28,7 +28,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/patient/exam_history";
+            const url = window.href;
 
             let tableHeaders = [
                 {field: "exam", type: "string", text: "Exam"},

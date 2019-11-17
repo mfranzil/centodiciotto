@@ -12,6 +12,7 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * JavaBean representing a {@link PatientDAO} bound to a {@link Patient}.
@@ -25,14 +26,16 @@ public class PatientDAOBean implements Serializable {
 
     private String patientID = null;
 
+    private PhotoService photoService;
+
     /**
      * Initializes the bean.
-     *
+     * <p>
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
-     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
+     * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
      */
-    public void setDAOFactory(String useless) {
+    public void setInit(String initializer) throws BeanException {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
@@ -41,8 +44,12 @@ public class PatientDAOBean implements Serializable {
             examDAO = daoFactory.getDAO(ExamDAO.class);
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
+
+            photoService = PhotoService.getInstance();
         } catch (DAOFactoryException e) {
-            throw new RuntimeException("Error in DAO retrieval: ", e);
+            throw new BeanException("Error in DAO retrieval: ", e);
+        } catch (ServiceException e) {
+            throw new BeanException("Error in initializing PhotoService: ", e);
         }
     }
 
@@ -80,7 +87,7 @@ public class PatientDAOBean implements Serializable {
      * Gets the {@link Photo} path associated with this {@link Patient}.
      *
      * @return a {@link String} representing the relative {@link Photo} path of the current {@link Patient}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public String getPhotoPath() throws BeanException {
         if (patientID == null) {
@@ -88,7 +95,25 @@ public class PatientDAOBean implements Serializable {
         }
 
         try {
-            return PhotoService.getInstance().getLastPhoto(patientID);
+            return photoService.getLastPhoto(patientID);
+        } catch (ServiceException e) {
+            throw new BeanException("Error getting PhotoPath in patientDaoBean: ", e);
+        }
+    }
+
+    /**
+     * Gets a {@link List} of {@link Photo} paths associated with this {@link Patient}, in antichronological order.
+     *
+     * @return a {@link List} of {@link Photo} paths associated with this {@link Patient}, in antichronological order
+     * @throws BeanException thrown for any generic exception
+     */
+    public List<String> getAllPhotos() throws BeanException {
+        if (patientID == null) {
+            throw new BeanException("Practitioner is null");
+        }
+
+        try {
+            return photoService.getAllPhotos(patientID);
         } catch (ServiceException e) {
             throw new BeanException("Error getting PhotoPath in patientDaoBean: ", e);
         }
@@ -98,7 +123,7 @@ public class PatientDAOBean implements Serializable {
      * Gets the last {@link Visit} done by this {@link Patient}.
      *
      * @return a {@link Visit}, the last one made chronologically by the {@link Patient}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public Visit getLastVisit() throws BeanException {
         if (patientID == null) {
@@ -116,7 +141,7 @@ public class PatientDAOBean implements Serializable {
      * Gets all the {@link Exam}s done by this {@link Patient} in chronological order.
      *
      * @return a {@link List} of {@link Exam}s done by this patient, ordered chronologically
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Exam> getExams() throws BeanException {
         if (patientID == null) {
@@ -134,7 +159,7 @@ public class PatientDAOBean implements Serializable {
      * Gets all the {@link Visit}s done by this {@link Patient} in chronological order.
      *
      * @return a {@link List} of {@link Visit}s done by this patient, ordered chronologically
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Visit> getDoneVisits() throws BeanException {
         if (patientID == null) {
@@ -153,7 +178,7 @@ public class PatientDAOBean implements Serializable {
      * Gets the pending {@link Visit}, if exists, for this {@link Patient}.
      *
      * @return the pending {@link Visit}, if exists, for this {@link Patient}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public Visit getPendingVisit() throws BeanException {
         if (patientID == null) {
@@ -171,7 +196,7 @@ public class PatientDAOBean implements Serializable {
      * Gets this {@link Patient}'s {@link GeneralPractitioner}.
      *
      * @return the {@link Patient}'s associated {@link GeneralPractitioner}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public GeneralPractitioner getPractitioner() throws BeanException {
         if (patientID == null) {
@@ -189,7 +214,7 @@ public class PatientDAOBean implements Serializable {
      * Gets this {@link Patient}'s valid {@link DrugPrescription}s.
      *
      * @return the {@link Patient}'s valid {@link DrugPrescription}s
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<DrugPrescription> getValidPrescriptions() throws BeanException {
         List<DrugPrescription> prescriptions;
@@ -211,7 +236,7 @@ public class PatientDAOBean implements Serializable {
      * Gets this {@link Patient}'s unpaid {@link DrugPrescription}s.
      *
      * @return the {@link Patient}'s unpaid {@link DrugPrescription}s
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<DrugPrescription> getUnpaidPrescriptions() throws BeanException {
         List<DrugPrescription> prescriptions;
@@ -232,7 +257,7 @@ public class PatientDAOBean implements Serializable {
      * Gets this {@link Patient}'s unpaid {@link Exam}s.
      *
      * @return the {@link Patient}'s unpaid {@link Exam}s
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Exam> getUnpaidExams() throws BeanException {
         List<Exam> exams;
@@ -247,6 +272,30 @@ public class PatientDAOBean implements Serializable {
             throw new BeanException("Error getting unpaid Exams in patientDaoBean: ", e);
         }
         return exams;
+    }
+
+    /**
+     * Gets a {@link List} of potential {@link GeneralPractitioner}s for this Patient in this {@link Province}.
+     *
+     * @return a {@link List} of potential {@link GeneralPractitioner}s for this Patient in this {@link Province}
+     * @throws BeanException thrown for any generic exception
+     */
+    public List<GeneralPractitioner> getAvailablePractitioners() throws BeanException {
+        List<GeneralPractitioner> practitioners;
+
+        if (patientID == null) {
+            throw new BeanException("Patient is null");
+        }
+
+        try {
+            GeneralPractitioner currentPractitioner = getPractitioner();
+            practitioners = practitionerDAO.getByProvince(getPatient().getLivingProvince().getAbbreviation());
+            practitioners = practitioners.stream().filter(practitioner ->
+                    !practitioner.getID().equals(currentPractitioner.getID())).collect(Collectors.toList());
+        } catch (DAOException e) {
+            throw new BeanException("Error getting unpaid Exams in patientDaoBean: ", e);
+        }
+        return practitioners;
     }
 
 }

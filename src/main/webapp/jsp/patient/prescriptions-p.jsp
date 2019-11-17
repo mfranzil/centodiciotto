@@ -47,7 +47,7 @@
 
                 <jsp:useBean id="patientDAO" class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
-                <jsp:setProperty name="patientDAO" property="DAOFactory" value=""/>
+                <jsp:setProperty name="patientDAO" property="init" value=""/>
 
                 <jsp:useBean id="datePrescribed" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
@@ -56,7 +56,7 @@
                                  class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
                     <jsp:setProperty name="practitionerDAO" property="practitionerID"
                                      value="${prescription.practitionerID}"/>
-                    <jsp:setProperty name="practitionerDAO" property="DAOFactory" value=""/>
+                    <jsp:setProperty name="practitionerDAO" property="init" value=""/>
 
                     <jsp:setProperty name="datePrescribed" property="date" value="${prescription.datePrescribed.time}"/>
 

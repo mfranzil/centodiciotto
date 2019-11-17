@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets;
 
-import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.CryptoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
@@ -16,18 +15,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The type Login servlet.
+ * LoginServlet for handling requests to /login
+ * <p>
+ * GET requests pass through as long as the user isn't logged in.
+ * <p>
+ * POST requests authenticate the user with a {@link CryptoService} instance. If the authentication is
+ * successful, initialize a new {@link javax.websocket.Session} (eventually setting its duration to infinity
+ * if the rememberMe flag was set during login), sets the {@code user}, {@code role} and {@code displayName}
+ * session attributes and eventually redirects the user to the referral URL received in the request (which
+ * will be filtered by an {@link it.unitn.web.centodiciotto.filters.AuthenticationFilter} for role compatibility)
  */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-
-    @Override
-    public void init() throws ServletException {
-        DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
-        if (daoFactory == null) {
-            throw new ServletException("DAOFactory is null.");
-        }
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -96,6 +95,11 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Returns a short variant of a {@link User} name for navbar purposes.
+     * @param user the User from which to retrieve the name
+     * @return a {@link String} representing the displayed short name
+     */
     private String getDisplayName(User user) {
         String displayName;
         if (user instanceof Patient) {

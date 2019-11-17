@@ -42,7 +42,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/${sessionScope.role}/patients";
+            const url = window.href;
             $(function () {
                 $("#patient-search")
                     .select2({

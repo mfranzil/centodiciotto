@@ -3,7 +3,7 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Recall.
+ * Recall entity for memorizing recalls ordered by {@link HealthService}s.
  */
 public class Recall {
     private Integer ID;

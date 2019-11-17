@@ -19,8 +19,19 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
+
 /**
- * The type Password reset servlet.
+ * PasswordResetServlet for handling requests to /restricted/health_service/recalls.
+ * <p>
+ * GET requests pass through as long as the user isn't logged in. They are then filtered
+ * by checking the {@code token} received and verifies if a valid row exists in the {@link PasswordReset} table.
+ * If true, sets the userID attribute for the request and forwards to the JSP.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> confirm: receives a newPassword parameter and sets it as the new password for the user.
+ *     <li> request: creates a new {@link PasswordReset} object for the user.
+ * </ul>
  */
 @WebServlet("/password_reset")
 public class PasswordResetServlet extends HttpServlet {
@@ -93,6 +104,10 @@ public class PasswordResetServlet extends HttpServlet {
             switch (requestType) {
                 case "confirm": {
                     String newPassword = request.getParameter("newPassword");
+
+                    if (newPassword.length() < 8 || newPassword.length() > 64) {
+                        throw new ServletException("Password must be between 8 and 64 characters.");
+                    }
 
                     try {
                         cryptoService.changePassword(userID, newPassword);

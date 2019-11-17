@@ -246,8 +246,9 @@ public class PrescriptionServlet extends HttpServlet {
                         results = ALL_INTERNAL_DRUGS;
                     } else {
                         List<DrugSearchResult> tmpResults = new ArrayList<>();
-                        ALL_INTERNAL_DRUGS.stream().filter(exam_SearchResult_
-                                -> (exam_SearchResult_.getText().toLowerCase().contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                        ALL_INTERNAL_DRUGS.stream().filter(drugSearchResult
+                                -> (drugSearchResult.getText().toLowerCase()
+                                .contains(userInput.toLowerCase()))).forEach(tmpResults::add);
                         results = tmpResults;
                     }
 

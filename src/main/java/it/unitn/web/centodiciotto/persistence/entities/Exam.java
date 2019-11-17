@@ -3,7 +3,11 @@ package it.unitn.web.centodiciotto.persistence.entities;
 import java.sql.Timestamp;
 
 /**
- * The type Exam.
+ * Exam entity that represents a potential exam done by a {@link Patient}.
+ * <p>
+ * An exam can be either done with a {@link SpecializedDoctor} or a {@link HealthService}, but not both.
+ * <p>
+ * An exam can be classified as a {@link Recall} if ordered by a {@link HealthService}.
  */
 public class Exam {
     private Integer ID;
@@ -239,16 +243,16 @@ public class Exam {
     /**
      * Is booked boolean.
      *
-     * @return the boolean
+     * @return true if the exam is booked
      */
     public boolean isBooked() {
         return booked;
     }
 
     /**
-     * Sets the booked.
+     * Sets the booked flag.
      *
-     * @param booked the booked
+     * @param booked true if the exam is booked
      */
     public void setBooked(boolean booked) {
         this.booked = booked;

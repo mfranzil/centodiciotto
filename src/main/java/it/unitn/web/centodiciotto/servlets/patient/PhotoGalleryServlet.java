@@ -8,9 +8,6 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-import it.unitn.web.centodiciotto.services.PhotoService;
-import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * The type Photo gallery servlet.
@@ -46,21 +42,19 @@ public class PhotoGalleryServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof Patient) {
-            try {
-                PhotoService photoService = PhotoService.getInstance();
-                List<Pair<String, Integer>> photoPathList = photoService.getAllPhotosWithID(user.getID());
-
-                request.setAttribute("photos", photoPathList);
-                request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
-            } catch (ServiceException e) {
-                throw new ServletException("Error in Service usage: ", e);
-            }
+            request.getRequestDispatcher("/jsp/patient/photo_gallery-p.jsp").forward(request, response);
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        Integer photoID = Integer.valueOf(request.getParameter("photoID"));
+        Integer photoID;
+
+        try {
+            photoID = Integer.valueOf(request.getParameter("photoID"));
+        } catch (NumberFormatException e) {
+            throw new ServletException("Malformed input (photoID not a valid integer)");
+        }
 
         if (user instanceof Patient) {
             try {

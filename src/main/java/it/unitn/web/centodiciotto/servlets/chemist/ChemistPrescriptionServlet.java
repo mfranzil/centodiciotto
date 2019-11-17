@@ -35,7 +35,20 @@ import java.util.stream.Collectors;
 
 
 /**
- * The type Chemist prescription servlet.
+ * ChemistPrescriptionServlet for handling requests to /restricted/chemist/prescriptions.
+ * <p>
+ * GET requests are filtered if an action=qr parameter is passed to it, along with a practitionerID,
+ * patientID and prescriptionID. If these three parameters match a valid prescription on the system,
+ * they will be passed as request {@code Attribute}s to be handled by the JSP (by prompting the user
+ * immediately with a pop-up).
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> serve: activates a prescription, setting it as sold (by setting the chemistID and dateSold flags)
+ *     <li> patientSearch: select2 AJAX response generator for searching {@link Patient}s by name or SSN
+ *     <li> prescriptions: select2 AJAX response generator for returing a list of {@link DrugPrescription}s from a {@link Patient}
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup showing {@link DrugPrescription} information
+ * </ul>
  */
 @WebServlet("/restricted/chemist/prescriptions")
 public class ChemistPrescriptionServlet extends HttpServlet {
@@ -157,7 +170,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                                     "Prescription date: " + dp.getDatePrescribed() + "\n" +
                                     "Dispatch date: " + dp.getDateSold() + "\n\n" +
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
-                            String subject = "CentoDiciotto - Patient change notification";
+                            String subject = "CentoDiciotto <li> Patient change notification";
 
                             // Avviso il paziente dell'avvenuta ricezione del farmaco
                             emailService.sendEmail(recipient, message, subject);
@@ -196,7 +209,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         int id = 0;
                         for (Patient patient : allPatients) {
                             results.add(new PatientSearchResult(
-                                    id++, patient.toString() + " - " + patient.getSSN(),
+                                    id++, patient.toString() + " <li> " + patient.getSSN(),
                                     patient.getID(),
                                     patient.toString(),
                                     patient.getSSN(),

@@ -32,7 +32,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.location.href;
+            const url = window.href;
 
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},

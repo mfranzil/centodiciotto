@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Drug type.
+ * DrugType entity for assigning names to {@link DrugPrescription} medicines.
  */
 public class DrugType {
     private Integer ID;

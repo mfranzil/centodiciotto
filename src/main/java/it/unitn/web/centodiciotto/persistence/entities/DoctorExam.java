@@ -1,7 +1,7 @@
 package it.unitn.web.centodiciotto.persistence.entities;
 
 /**
- * The type Doctor exam.
+ * DoctorExam entity for memorizing which {@link Exam} can be done by what {@link SpecializedDoctor}.
  */
 public class DoctorExam {
     private String doctorID;

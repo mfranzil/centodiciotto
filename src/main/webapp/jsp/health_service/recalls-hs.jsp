@@ -30,7 +30,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = getContextPath() + "/restricted/health_service/recalls";
+            const url = window.href;
             $("#main-table,#main-loading-container,#history-loading-container,#send-recall-div").hide();
 
             let tableHeaders = [

@@ -1,4 +1,4 @@
-const url = window.location.href;
+const url = window.href;
 
 $(".set-exam").submit(function (e) {
     e.preventDefault();

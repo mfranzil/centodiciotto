@@ -24,5 +24,10 @@ public class HealthService extends User {
     public void setOperatingProvince(Province operatingProvince) {
         this.operatingProvince = operatingProvince;
     }
+
+    @Override
+    public String toString() {
+        return operatingProvince.getName() + " Health Service";
+    }
 }
 

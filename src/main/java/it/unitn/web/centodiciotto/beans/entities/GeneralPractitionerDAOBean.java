@@ -29,9 +29,9 @@ public class GeneralPractitionerDAOBean implements Serializable {
      *
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
-     * @param useless a parameter required by the JavaBeans implementation that can be left to null.
+     * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
      */
-    public void setDAOFactory(String useless) {
+    public void setInit(String initializer) throws BeanException {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
@@ -40,7 +40,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
             visitDAO = daoFactory.getDAO(VisitDAO.class);
 
         } catch (DAOFactoryException e) {
-            throw new RuntimeException("Error in DAO retrieval: ", e);
+            throw new BeanException("Error in DAO retrieval: ", e);
         }
     }
     
@@ -75,7 +75,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
      * Gets a {@link List} of pending {@link Visit}s associated with this {@link GeneralPractitioner}.
      *
      * @return the {@link List} of pending {@link Visit}s associated with this {@link GeneralPractitioner}
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Visit> getPendingVisits() throws BeanException {
         if (practitionerID == null) {
@@ -93,7 +93,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
      * Gets {@link List} of booked {@link Visit}s associated with this {@link GeneralPractitioner}.
      *
      * @return the {@link List} of booked {@link Visit}s associated with this {@link GeneralPractitioner}.
-     * @throws BeanException thrown for any generic exception bean exception
+     * @throws BeanException thrown for any generic exception
      */
     public List<Visit> getBookedVisits() throws BeanException {
         if (practitionerID == null) {
