@@ -17,7 +17,7 @@
                 width: 20%;
             }
 
-            .table-cell.report_state {
+            .table-cell.reportstate {
                 width: 15%;
             }
 
@@ -33,7 +33,7 @@
             let tableHeaders = [
                 {field: "exam", type: "string", text: "Exam"},
                 {field: "date", type: "string", text: "Date"},
-                {field: "report_state", type: "bool", text: "Report State"},
+                {field: "reportstate", type: "bool", text: "Report state"},
                 {field: "action", type: "button", text: "&nbsp;"}
             ];
 

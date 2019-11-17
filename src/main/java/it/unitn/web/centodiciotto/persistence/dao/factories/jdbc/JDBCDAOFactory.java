@@ -33,7 +33,7 @@ public class JDBCDAOFactory implements DAOFactory {
 
     /**
      * Private singleton constructor for this {@link DAOFactory}.
-     *
+     * <p>
      * It retrieves configuration info for the database from the Resource {@code database.properties} located in the
      * appropriate folder, then sets up a connection using the {@link org.postgresql.Driver} driver.
      *

@@ -10,7 +10,7 @@
                 margin: .5em;
             }
 
-            /* Esami */
+            /* Exams */
             .table-cell.dispatcher {
                 width: 25%;
             }
@@ -31,7 +31,7 @@
                 width: 10%;
             }
 
-            /* Farmaci */
+            /* Prescriptions */
             .table-cell.practitioner {
                 width: 15%;
             }
@@ -70,11 +70,12 @@
     </style>
     <script>
         $("document").ready(function () {
+            const url = window.href;
+
             $("form").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let button = form.find("button");
 
                 $.ajax({
@@ -150,8 +151,7 @@
                         <div class="table-cell date">${examDate.formattedDateTime}</div>
                         <div class="table-cell exam-amount">$${exam.ticket}</div>
                         <div class="table-cell exam-action">
-                            <form method="POST" class="pay"
-                                  action="${pageContext.request.contextPath}/restricted/patient/tickets">
+                            <form method="POST" class="pay">
                                 <input type="hidden" value="${exam.ID}" name="ID">
                                 <input type="hidden" value="exam" name="type">
                                 <button type="submit" id="btn-pay-e-${exam.ID}" class="btn btn-block btn-personal"
@@ -211,8 +211,7 @@
                         <div class="table-cell erogation-date">${drugSoldDate.formattedDate}</div>
                         <div class="table-cell drug-amount">$${drugPrescription.ticket}</div>
                         <div class="table-cell drug-action">
-                            <form method="POST" class="pay"
-                                  action="${pageContext.request.contextPath}/restricted/patient/tickets">
+                            <form method="POST" class="pay">
                                 <input type="hidden" value="${drugPrescription.ID}" name="ID">
                                 <input type="hidden" value="drug" name="type">
                                 <button type="submit" id="btn-pay-e-${drugPrescription.ID}"

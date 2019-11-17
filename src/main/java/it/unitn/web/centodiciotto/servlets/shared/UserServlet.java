@@ -31,6 +31,9 @@ public class UserServlet extends HttpServlet {
 
     private PhotoDAO photoDAO;
 
+    private CryptoService cryptoService;
+    private PhotoService photoService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -41,6 +44,13 @@ public class UserServlet extends HttpServlet {
             photoDAO = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            cryptoService = CryptoService.getInstance();
+            photoService = PhotoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -63,7 +73,6 @@ public class UserServlet extends HttpServlet {
                     try {
                         String oldPassword = request.getParameter("oldPassword");
                         String newPassword = request.getParameter("newPassword");
-                        CryptoService cryptoService = CryptoService.getInstance();
 
                         if (cryptoService.isCurrentPassword(user.getID(), oldPassword)) {
                             cryptoService.changePassword(user.getID(), newPassword);
@@ -92,8 +101,6 @@ public class UserServlet extends HttpServlet {
                     photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
 
                     try {
-                        PhotoService photoService = PhotoService.getInstance();
-
                         photoDAO.insert(photo);
 
                         String fileName = Integer.toString(photo.getID());
@@ -105,8 +112,8 @@ public class UserServlet extends HttpServlet {
                         out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
                         filecontent = filePart.getInputStream();
 
-                        int read = 0;
-                        final byte[] bytes = new byte[1024];
+                        int read;
+                        final byte[] bytes = new byte[2048];
 
                         while ((read = filecontent.read(bytes)) != -1) {
                             out.write(bytes, 0, read);
@@ -117,8 +124,6 @@ public class UserServlet extends HttpServlet {
                     } catch (DAOException e) {
                         response.setStatus(400);
                         throw new ServletException("Error in DAO usage: ", e);
-                    } catch (ServiceException e) {
-                        throw new ServletException("Error in Photo path retrival: ", e);
                     } finally {
                         if (out != null) {
                             out.close();

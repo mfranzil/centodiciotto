@@ -21,12 +21,12 @@ public class GeneralPractitionerDAOBean implements Serializable {
     private VisitDAO visitDAO = null;
     private PatientDAO patientDAO = null;
     private GeneralPractitionerDAO generalPractitionerDAO = null;
-    
+
     private String practitionerID = null;
 
     /**
      * Initializes the bean.
-     *
+     * <p>
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
      * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
@@ -43,7 +43,7 @@ public class GeneralPractitionerDAOBean implements Serializable {
             throw new BeanException("Error in DAO retrieval: ", e);
         }
     }
-    
+
     /**
      * Sets the practitionerID.
      *

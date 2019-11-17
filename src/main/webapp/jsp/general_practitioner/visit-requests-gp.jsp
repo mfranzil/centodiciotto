@@ -7,29 +7,30 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 5%;
             }
 
             .table-cell.patient {
-                width: 30%;
+                width: 40%;
             }
 
             .table-cell.ssn {
-                width: 30%;
+                width: 35%;
             }
 
             .table-cell.action {
-                width: 30%;
+                width: 20%;
             }
         }
     </style>
     <script>
         $("document").ready(function () {
+            const url = window.href;
+
             $(".set-visit").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let button = form.find("button.submit");
                 let data = form.serialize();
 
@@ -115,8 +116,7 @@
                             </button>
                             <div class="popup-window">
                                 <div class="popup animate-in">
-                                    <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_requests"
-                                          class="set-visit" method="POST">
+                                    <form class="set-visit" method="POST">
                                         Insert a date and time for the appointment, then confirm.
                                         <div style="display: flex; width: 100%;">
                                             <label style="flex: 50%" class="my-2 mr-1">

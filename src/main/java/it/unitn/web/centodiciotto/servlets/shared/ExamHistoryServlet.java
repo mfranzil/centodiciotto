@@ -27,10 +27,13 @@ import java.util.List;
 /**
  * The type Exam history servlet.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_history", "/restricted/health_service/exam_history"})
 public class ExamHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
     private ExamDAO examDAO;
+
+    private PhotoService photoService;
 
     @Override
     public void init() throws ServletException {
@@ -43,6 +46,12 @@ public class ExamHistoryServlet extends HttpServlet {
             examDAO = daoFactory.getDAO(ExamDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            photoService = PhotoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -64,8 +73,6 @@ public class ExamHistoryServlet extends HttpServlet {
             switch (ajax_type) {
                 case "examList": {
                     try {
-                        PhotoService photoService = PhotoService.getInstance();
-
                         List<Exam> examList;
 
                         if (user instanceof SpecializedDoctor) {
@@ -83,9 +90,12 @@ public class ExamHistoryServlet extends HttpServlet {
                                     ? new Action("Insert result", true)
                                     : new Action("Edit result", true));
                             examListElements.add(new ExamListElement(
-                                    patient.toString(), exam.getType().getDescription(),
-                                    photoPath, CustomDTFormatter.formatDateTime(exam.getDate()),
-                                    action, exam.getID().toString()));
+                                    exam.getID().toString(),
+                                    patient.toString(),
+                                    exam.getType().getDescription(),
+                                    photoPath,
+                                    CustomDTFormatter.formatDateTime(exam.getDate()),
+                                    action));
                         }
 
                         Gson gson = new Gson();
@@ -171,23 +181,13 @@ public class ExamHistoryServlet extends HttpServlet {
         private Action action;
         private String ID;
 
-        /**
-         * Instantiates a new Exam list element.
-         *
-         * @param name   the name
-         * @param exam   the exam
-         * @param avt    the avt
-         * @param date   the date
-         * @param action the action
-         * @param ID     the id
-         */
-        public ExamListElement(String name, String exam, String avt, String date, Action action, String ID) {
+        ExamListElement(String ID, String name, String exam, String avt, String date, Action action) {
+            this.ID = ID;
             this.name = name;
             this.exam = exam;
             this.avt = avt;
             this.date = date;
             this.action = action;
-            this.ID = ID;
         }
     }
 }

@@ -1,6 +1,4 @@
 $("document").ready(function () {
-    let isHealthService = false;
-
     $(".doctor-search").select2({
         placeholder: "Select a Specialized Doctor",
         allowClear: true,

@@ -92,7 +92,6 @@
                 }
 
                 let form = $(this);
-                let url = form.attr('action');
                 let data = form.serialize();
 
                 $("#main-loading-container").slideDown();
@@ -204,8 +203,7 @@
                     </div>
                     <hr>
                 </div>
-                <form id="send-recall" method="POST"
-                      action="${pageContext.request.contextPath}/restricted/health_service/recalls">
+                <form id="send-recall" method="POST">
                     <div class="form-group mt-3 mx-3" id="send-recall-div"
                          style="display: flex; justify-content: center; flex-wrap: wrap">
                         <div>

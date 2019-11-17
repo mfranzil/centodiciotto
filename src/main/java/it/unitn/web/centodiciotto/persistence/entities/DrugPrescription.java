@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * DrugPrescription entity that represents a potential medicine sold by a {@link Chemist} to a {@link Patient}.
- *
+ * <p>
  * It must be prescribed by a {@link GeneralPractitioner}.
  */
 public class DrugPrescription {

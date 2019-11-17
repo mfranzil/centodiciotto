@@ -9,11 +9,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 5%;
             }
 
             .table-cell.patient {
-                width: 25%;
+                width: 30%;
             }
 
             .table-cell.exam {

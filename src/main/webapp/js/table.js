@@ -6,59 +6,34 @@ function buildHtmlFromJson(json, parent) {
         } else {
             let htmlParagraphElement = document.createElement(element.elementType);
 
+            if (element.elementClass !== undefined) htmlParagraphElement.className = element.elementClass;
+            if (element.elementStyle !== undefined) htmlParagraphElement.style = element.elementStyle;
+            if (element.elementID !== undefined) htmlParagraphElement.id = element.elementID;
+            if (element.elementContent !== undefined) htmlParagraphElement.innerHTML = element.elementContent;
+
             if (element.elementType === "button") {
-                htmlParagraphElement.type = (typeof element.elementButtonType === "undefined") ?
-                    htmlParagraphElement.type : element.elementButtonType;
+                if (element.elementButtonType !== undefined) htmlParagraphElement.type = element.elementButtonType;
             } else if (element.elementType === "form") {
-                htmlParagraphElement.action = (typeof element.elementFormAction === "undefined") ?
-                    htmlParagraphElement.action : element.elementFormAction;
-                htmlParagraphElement.target = (typeof element.elementFormTarget === "undefined") ?
-                    htmlParagraphElement.target : element.elementFormTarget;
-                htmlParagraphElement.method = (typeof element.elementFormMethod === "undefined") ?
-                    htmlParagraphElement.method : element.elementFormMethod;
+                if (element.elementFormAction !== undefined) htmlParagraphElement.action = element.elementFormAction;
+                if (element.elementFormTarget !== undefined) htmlParagraphElement.target = element.elementFormTarget;
+                if (element.elementFormMethod !== undefined) htmlParagraphElement.method = element.elementFormMethod;
             } else if (element.elementType === "input") {
-                htmlParagraphElement.value = (typeof element.elementInputValue === "undefined") ?
-                    htmlParagraphElement.value : element.elementInputValue;
-                htmlParagraphElement.type = (typeof element.elementInputType === "undefined") ?
-                    htmlParagraphElement.type : element.elementInputType;
-                htmlParagraphElement.name = (typeof element.elementInputName === "undefined") ?
-                    htmlParagraphElement.name : element.elementInputName;
-                htmlParagraphElement.autocomplete = (typeof element.elementInputAutocomplete === "undefined") ?
-                    htmlParagraphElement.autocomplete : element.elementInputAutocomplete;
+                if (element.elementInputValue !== undefined) htmlParagraphElement.value = element.elementInputValue;
+                if (element.elementInputType !== undefined) htmlParagraphElement.type = element.elementInputType;
+                if (element.elementInputName !== undefined) htmlParagraphElement.name = element.elementInputName;
+                if (element.elementInputAutocomplete !== undefined) htmlParagraphElement.autocomplete = element.elementInputAutocomplete;
             } else if (element.elementType === "textarea") {
-                htmlParagraphElement.placeholder = (typeof element.elementTextAreaPlaceholder === "undefined") ?
-                    htmlParagraphElement.placeholder : element.elementTextAreaPlaceholder;
-                htmlParagraphElement.name = (typeof element.elementTextAreaName === "undefined") ?
-                    htmlParagraphElement.name : element.elementTextAreaName;
+                if (element.elementTextAreaPlaceholder !== undefined) htmlParagraphElement.placeholder = element.elementTextAreaPlaceholder;
+                if (element.elementTextAreaName !== undefined) htmlParagraphElement.name = element.elementTextAreaName;
             } else if (element.elementType === "script") {
-                if (!(typeof element.elementScriptSrc === "undefined")) {
-                    htmlParagraphElement.src = element.elementScriptSrc;
-                }
-                if (!(typeof element.elementScriptType === "undefined")) {
-                    htmlParagraphElement.type = element.elementScriptType;
-                }
+                if (element.elementScriptSrc !== undefined) htmlParagraphElement.src = element.elementScriptSrc;
+                if (element.elementScriptType !== undefined) htmlParagraphElement.type = element.elementScriptType;
             } else if (element.elementType === "link") {
-                htmlParagraphElement.href = (typeof element.elementLinkHref === "undefined") ?
-                    htmlParagraphElement.href : element.elementLinkHref;
-                htmlParagraphElement.rel = (typeof element.elementLinkRel === "undefined") ?
-                    htmlParagraphElement.rel : element.elementLinkRel;
+                if (element.elementLinkHref !== undefined) htmlParagraphElement.href = element.elementLinkHref;
+                if (element.elementLinkRel !== undefined) htmlParagraphElement.rel = element.elementLinkRel;
             } else if (element.elementType === "select") {
-                htmlParagraphElement.name = (typeof element.elementSelectName === "undefined") ?
-                    htmlParagraphElement.name : element.elementSelectName;
+                if (element.elementSelectName !== undefined) htmlParagraphElement.name = element.elementSelectName;
             }
-
-            htmlParagraphElement.className = (typeof element.elementClass === "undefined") ?
-                htmlParagraphElement.className : element.elementClass;
-
-            htmlParagraphElement.style = (typeof element.elementStyle === "undefined") ?
-                htmlParagraphElement.style : element.elementStyle;
-
-            htmlParagraphElement.id = (typeof element.elementID === "undefined") ?
-                htmlParagraphElement.id : element.elementID;
-
-            htmlParagraphElement.innerHTML = (typeof element.elementContent === "undefined") ?
-                htmlParagraphElement.innerHTML : element.elementContent;
-
 
             parent.appendChild(htmlParagraphElement);
             lastElement = htmlParagraphElement;

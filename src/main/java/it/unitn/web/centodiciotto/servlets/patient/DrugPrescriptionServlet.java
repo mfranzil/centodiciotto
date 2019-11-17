@@ -26,12 +26,15 @@ import java.sql.Timestamp;
 /**
  * The type Drug prescription servlet.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/patient/prescriptions")
 public class DrugPrescriptionServlet extends HttpServlet {
 
     private GeneralPractitionerDAO practitionerDAO;
     private DrugPrescriptionDAO drugPrescriptionDAO;
     private PatientDAO patientDAO;
+
+    private PDFService pdfService;
 
     @Override
     public void init() throws ServletException {
@@ -45,6 +48,12 @@ public class DrugPrescriptionServlet extends HttpServlet {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            pdfService = PDFService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -81,7 +90,7 @@ public class DrugPrescriptionServlet extends HttpServlet {
                                 "https".equals(request.getScheme()) && request.getServerPort() == 443
                                 ? "" : ":" + request.getServerPort());
 
-                PDDocument prescriptionDoc = PDFService.getInstance().createDrugPrescription(
+                PDDocument prescriptionDoc = pdfService.createDrugPrescription(
                         prescription, patient, practitioner, qrCodeURL);
 
                 response.setContentType("application/pdf");

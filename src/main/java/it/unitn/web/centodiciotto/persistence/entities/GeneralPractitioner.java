@@ -1,4 +1,5 @@
 package it.unitn.web.centodiciotto.persistence.entities;
+
 /**
  * GeneralPractitioner entity. Represents the "general_practitioner" user class.
  * Subclasses {@link User} for authentication purposes.

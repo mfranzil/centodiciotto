@@ -31,6 +31,7 @@
     <script>
         $("document").ready(function () {
             const url = window.href;
+
             let tableHeaders = [
                 {field: "pract", type: "string", text: "Practitioner"},
                 {field: "drug", type: "string", text: "Drug"},
@@ -109,7 +110,6 @@
                     $('#submit-serve').prop('disabled', true);
 
                     let form = $(this);
-                    let url = form.attr('action');
 
                     $.ajax({
                         type: "POST",

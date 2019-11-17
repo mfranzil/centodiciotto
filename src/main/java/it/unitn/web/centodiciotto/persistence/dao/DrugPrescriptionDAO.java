@@ -11,10 +11,10 @@ import java.util.List;
  * DAO interface for a {@link DrugPrescription} entity.
  */
 public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
-    
+
     /**
      * Returns a {@link List} of valid {@link DrugPrescription}s from a given {@code patientID}.
-     *
+     * <p>
      * A prescription is considered valid if it hasn't been used and paid yet
      * and was prescripted no more than a month ago.
      *
@@ -27,7 +27,7 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
     /**
      * Returns a {@link List} of {@link DrugPrescription}s from a given
      * {@link Timestamp}, representing the date it was sold.
-     *
+     * <p>
      * Eventual prescriptions with date sold set to {@code null} will be discarded.
      *
      * @param ts the {@link Timestamp} representing the date the prescription was sold
@@ -38,7 +38,7 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
 
     /**
      * Returns a {@link List} of unpaid {@link DrugPrescription}s from a given {@code patientID}.
-     *
+     * <p>
      * A prescription is considered unpaid if it was sold (the date_sold parameter is not {@code null})
      * but the ticket hasn't been paid yet.
      *

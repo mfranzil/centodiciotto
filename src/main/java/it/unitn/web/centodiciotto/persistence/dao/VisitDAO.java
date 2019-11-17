@@ -61,7 +61,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
     /**
      * Returns the last done {@link Visit} by {@code patientID}.
      *
-     * @param patientID        the {@code patientID}
+     * @param patientID the {@code patientID}
      * @return the last done {@link Visit} by {@code patientID}.
      * @throws DAOException in case of a malformed input or query
      */
@@ -73,7 +73,7 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      * An {@link Visit} is considered pending if a date hasn't been assigned yet.
      *
      * @param practictionerID the {@code practitionerID}
-     * @param patientID the {@code patientID}
+     * @param patientID       the {@code patientID}
      * @return a {@link List} of pending {@link Visit}s from a given {@code practitionerID} and {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */

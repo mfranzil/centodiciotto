@@ -7,15 +7,15 @@ import java.util.List;
 /**
  * The basic DAO interface that all DAOs must implement.
  *
- * @param <ENTITY_CLASS> the class of the entity to handle.
+ * @param <ENTITY_CLASS>      the class of the entity to handle.
  * @param <PRIMARY_KEY_CLASS> the class of the primary key of the entity the DAO
- * handle.
+ *                            handle.
  */
 public interface DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
 
     /**
      * Gets an {@code ENTITY_CLASS as a parameter and inserts it into the database.
-     *
+     * <p>
      * If the entity has a {@code SERIAL} type as a primary key, then returns it internally
      * from the query and tries to assign it.
      *

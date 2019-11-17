@@ -10,15 +10,15 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 7%;
             }
 
             .table-cell.name {
-                width: 25%;
+                width: 28%;
             }
 
             .table-cell.exam {
-                width: 20%;
+                width: 25%;
             }
 
             .table-cell.date {
@@ -26,7 +26,7 @@
             }
 
             .table-cell.action {
-                width: 20%;
+                width: 15%;
             }
         }
     </style>

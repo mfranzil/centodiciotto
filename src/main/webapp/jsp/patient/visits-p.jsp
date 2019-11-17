@@ -26,11 +26,11 @@
     </style>
     <script>
         $("document").ready(function () {
+            const url = window.href;
             $("#book-visit").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let button = form.find("button");
 
                 button.prop("disabled", true).html("Requesting..");
@@ -70,7 +70,7 @@
         <c:set var="alreadyBooked" value="${!empty patientDAO.pendingVisit}"/>
 
         <h3>${practitioner}</h3>
-        <form action="${pageContext.request.contextPath}/restricted/patient/visits" id="book-visit" method="post">
+        <form id="book-visit" method="post">
             <button class="btn btn-block btn-personal" type="submit"
             ${alreadyBooked ? "disabled" : ""}> ${alreadyBooked ? "Already booked" : "Book now"}
             </button>

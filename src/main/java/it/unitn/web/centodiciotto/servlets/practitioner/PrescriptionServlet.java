@@ -32,8 +32,6 @@ import java.util.List;
 public class PrescriptionServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
     private static final List<DrugSearchResult> ALL_INTERNAL_DRUGS = new ArrayList<>();
-    private static List<ExamType> ALL_EXAMS = new ArrayList<>();
-    private static List<DrugType> ALL_DRUGS = new ArrayList<>();
 
     private DrugPrescriptionDAO drugPrescriptionDAO;
     private DrugTypeDAO drugTypeDAO;
@@ -41,31 +39,40 @@ public class PrescriptionServlet extends HttpServlet {
     private ExamDAO examDAO;
     private PatientDAO patientDAO;
 
+    private PhotoService photoService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
+
         try {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
 
-            ALL_EXAMS = examTypeDAO.getAll();
-            for (ExamType exam : ALL_EXAMS) {
+            List<ExamType> allExams = examTypeDAO.getAll();
+            for (ExamType exam : allExams) {
                 ALL_INTERNAL_EXAMS.add(new ExamSearchResult(exam.getID(), exam.getDescription()));
             }
 
             drugTypeDAO = daoFactory.getDAO(DrugTypeDAO.class);
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
 
-            ALL_DRUGS = drugTypeDAO.getAll();
-            for (DrugType drugType : ALL_DRUGS) {
+            List<DrugType> allDrugs = drugTypeDAO.getAll();
+            for (DrugType drugType : allDrugs) {
                 ALL_INTERNAL_DRUGS.add(new DrugSearchResult(drugType.getID(), drugType.getDescription()));
             }
         } catch (DAOFactoryException | DAOException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            photoService = PhotoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -94,7 +101,7 @@ public class PrescriptionServlet extends HttpServlet {
                             List<Patient> patientList = patientDAO.getByPractitioner(user.getID());
 
                             for (Patient patient : patientList) {
-                                String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
+                                String photoPath = photoService.getLastPhoto(patient.getID());
                                 patientListElements.add(new PatientListElement(patient.toString(),
                                         patient.getSSN(),
                                         photoPath,
@@ -104,7 +111,7 @@ public class PrescriptionServlet extends HttpServlet {
                         } else {
                             Patient patient = patientDAO.getByPrimaryKey(patientID);
                             if (patient.getPractitionerID().equals(user.getID())) {
-                                String photoPath = PhotoService.getInstance().getLastPhoto(patient.getID());
+                                String photoPath = photoService.getLastPhoto(patient.getID());
                                 patientListElements.add(new PatientListElement(patient.toString(),
                                         patient.getSSN(),
                                         photoPath,
@@ -247,8 +254,8 @@ public class PrescriptionServlet extends HttpServlet {
                     } else {
                         List<DrugSearchResult> tmpResults = new ArrayList<>();
                         ALL_INTERNAL_DRUGS.stream().filter(drugSearchResult
-                                -> (drugSearchResult.getText().toLowerCase()
-                                .contains(userInput.toLowerCase()))).forEach(tmpResults::add);
+                                -> drugSearchResult.getText().toLowerCase()
+                                .contains(userInput.toLowerCase())).forEach(tmpResults::add);
                         results = tmpResults;
                     }
 

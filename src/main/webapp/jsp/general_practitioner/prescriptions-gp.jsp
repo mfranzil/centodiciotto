@@ -11,24 +11,19 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 5%;
             }
 
             .table-cell.name {
-                width: 35%;
+                width: 40%;
             }
 
             .table-cell.ssn {
-                width: 30%;
+                width: 35%;
             }
 
             .table-cell.action {
-                width: 25%;
-                padding-right: 2%;
-            }
-
-            .table-cell.action > button {
-                margin: .5em;
+                width: 20%;
             }
         }
 

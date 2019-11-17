@@ -9,13 +9,13 @@
     <script src="${pageContext.request.contextPath}/js/new_password.js"></script>
     <script>
         $("document").ready(function () {
+            const url = window.href;
             $("#password-reset").submit(function (e) {
                 e.preventDefault();
                 let form = $(this);
-                let url = form.attr('action');
 
                 if ($("#user-id").val() !== "${requestScope.userID}") {
-                    alert("Email non corrispondente alla richiesta.");
+                    alert("Invalid email provided.");
                     return;
                 }
 
@@ -29,12 +29,11 @@
                         $("#new-password,#new-password-confirm,#user-id").slideUp();
                         $("#password-change-button").html("Go to login").click(function (e) {
                             e.preventDefault();
-                            window.location = window.location.pathname.substring(
-                                0, window.location.pathname.indexOf("/", 2)) + "/login";
+                            window.location = getContextPath() + "/login";
                         });
                     },
                     error: function (data) {
-                        alert("Errore durante il cambiamento della password.");
+                        alert("Error while changing password");
                     }
                 });
             });

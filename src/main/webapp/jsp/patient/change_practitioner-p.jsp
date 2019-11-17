@@ -29,6 +29,7 @@
     </style>
     <script>
         $("document").ready(function () {
+            const url = window.href;
             $('#table-select div').click(function () {
                 $(this).find('input[type=radio]').prop('checked', true);
                 $('#submit').removeAttr("disabled");
@@ -39,7 +40,6 @@
                 $('#submit').prop('disabled', true).html("Requesting change...");
 
                 let form = $(this);
-                let url = form.attr('action');
                 let pract = $(".practitioner-id:checked");
 
                 $.ajax({
@@ -100,8 +100,7 @@
                         <div id="check" class="table-cell action">✔</div>
                     </div>
                     <hr>
-                    <form action="${pageContext.request.contextPath}/restricted/patient/change_practitioner"
-                          id="practitioner" method="POST">
+                    <form id="practitioner" method="POST">
                         <c:forEach items="${patientDAO.availablePractitioners}" var="availablePractitioner">
                             <div class="table-personal available">
                                 <div class="table-cell name">${availablePractitioner}</div>

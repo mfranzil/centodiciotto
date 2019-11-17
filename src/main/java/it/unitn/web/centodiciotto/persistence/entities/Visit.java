@@ -19,7 +19,7 @@ public class Visit {
      *
      * @return true if the visit is booked
      */
-    public boolean isBooked() {
+    public boolean getBooked() {
         return booked;
     }
 

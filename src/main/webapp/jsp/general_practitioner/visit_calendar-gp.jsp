@@ -9,29 +9,29 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 5%;
             }
 
             .table-cell.patient {
-                width: 30%;
+                width: 40%;
             }
 
             .table-cell.date {
-                width: 30%;
+                width: 35%;
             }
 
             .table-cell.action {
-                width: 30%;
+                width: 20%;
             }
         }
     </style>
     <script>
         $("document").ready(function () {
+            const url = window.href;
             $(".mark-completed").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let button = form.find("button");
 
                 button.prop("disabled", true).html("Sending..");
@@ -97,8 +97,7 @@
                         </div>
                         <div class="table-cell date">${visitDate.formattedDateTime}</div>
                         <div class="table-cell action">
-                            <form action="${pageContext.request.contextPath}/restricted/general_practitioner/visit_calendar"
-                                  class="mark-completed" method="POST">
+                            <form class="mark-completed" method="POST">
                                 <input type="hidden" value="${exam.ID}" name="visitID">
                                 <button type="submit" class="btn btn-block btn-personal">Mark as completed</button>
                             </form>

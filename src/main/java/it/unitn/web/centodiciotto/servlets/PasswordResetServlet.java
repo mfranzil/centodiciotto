@@ -38,16 +38,27 @@ public class PasswordResetServlet extends HttpServlet {
 
     private PasswordResetDAO prDAO;
 
+    private CryptoService cryptoService;
+    private EmailService emailService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
+
         try {
             prDAO = daoFactory.getDAO(PasswordResetDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            cryptoService = CryptoService.getInstance();
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -89,17 +100,6 @@ public class PasswordResetServlet extends HttpServlet {
         } else {
             String requestType = request.getParameter("requestType");
             String userID = request.getParameter("userID");
-
-            CryptoService cryptoService;
-            EmailService emailService;
-
-            try {
-                cryptoService = CryptoService.getInstance();
-                emailService = EmailService.getInstance();
-            } catch (ServiceException e) {
-                response.setStatus(400);
-                throw new ServletException("Error in initializing CryptoService or EmailService: ", e);
-            }
 
             switch (requestType) {
                 case "confirm": {

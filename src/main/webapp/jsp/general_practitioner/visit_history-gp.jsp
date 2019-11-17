@@ -10,11 +10,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 5%;
             }
 
             .table-cell.name {
-                width: 25%;
+                width: 35%;
             }
 
             .table-cell.ssn {
@@ -73,7 +73,6 @@
                     e.preventDefault();
 
                     let form = $(this);
-                    let url = form.attr('action');
                     let button = form.find("button.submit-button");
 
                     button.prop("disabled", true).html("Sending..");

@@ -35,6 +35,8 @@ public class VisitHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
     private VisitDAO visitDAO;
 
+    private PhotoService photoService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -46,6 +48,12 @@ public class VisitHistoryServlet extends HttpServlet {
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            photoService = PhotoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -60,14 +68,12 @@ public class VisitHistoryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String ajax_type = request.getParameter("requestType");
+        String requestType = request.getParameter("requestType");
 
-        switch (ajax_type) {
+        switch (requestType) {
             case "visitList": {
                 if (user instanceof GeneralPractitioner) {
                     try {
-                        PhotoService photoService = PhotoService.getInstance();
-
                         List<Visit> visitList = visitDAO.getDoneByPractitioner(user.getID());
                         List<VisitListElement> visitListElements = new ArrayList<>();
 

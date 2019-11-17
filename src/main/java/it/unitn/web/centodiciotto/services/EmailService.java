@@ -90,7 +90,7 @@ public class EmailService {
 
     /**
      * Sends an email.
-     *
+     * <p>
      * The method creates a new {@link Runnable} for the outgoing message and dispatches it immediately to
      * a {@link Thread}.
      *

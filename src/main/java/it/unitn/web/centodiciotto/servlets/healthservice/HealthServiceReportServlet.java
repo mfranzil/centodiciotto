@@ -24,8 +24,21 @@ import java.util.Objects;
  * POST requests receive five booleans (which are compared in a null-safe way with {@link Object#equals(Object)}),
  * a date and pass this information to an {@link ExcelService} for generating the report.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/health_service/reports")
 public class HealthServiceReportServlet extends HttpServlet {
+
+    private ExcelService excelService;
+
+    @Override
+    public void init() throws ServletException {
+        try {
+            excelService = ExcelService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
+        }
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,8 +55,6 @@ public class HealthServiceReportServlet extends HttpServlet {
 
         if (user instanceof HealthService) {
             try {
-                ExcelService excelService = ExcelService.getInstance();
-
                 boolean includeVisits = Objects.equals(request.getParameter("includeVisits"), "on");
                 boolean includeRecalls = Objects.equals(request.getParameter("includeRecalls"), "on");
                 boolean includeDoctorExams = Objects.equals(request.getParameter("includeDoctorExams"), "on");

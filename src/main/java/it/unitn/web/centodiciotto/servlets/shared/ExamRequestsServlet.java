@@ -36,6 +36,8 @@ public class ExamRequestsServlet extends HttpServlet {
     private ExamDAO examDAO;
     private PatientDAO patientDAO;
 
+    private PhotoService photoService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -48,6 +50,12 @@ public class ExamRequestsServlet extends HttpServlet {
 
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            photoService = PhotoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -111,7 +119,6 @@ public class ExamRequestsServlet extends HttpServlet {
                     try {
                         List<ExamRequestListElement> examRequestListElements = new ArrayList<>();
                         List<Exam> examList;
-                        PhotoService photoService = PhotoService.getInstance();
 
                         if (user instanceof SpecializedDoctor) {
                             examList = examDAO.getPendingByDoctor(user.getID());

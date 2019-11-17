@@ -24,7 +24,7 @@ public interface DAOFactory {
     /**
      * Returns the concrete {@link DAO} whose type is the class passed as parameter.
      *
-     * @param <DAO_CLASS> the class name of the {@link DAO} to get.
+     * @param <DAO_CLASS>  the class name of the {@link DAO} to get.
      * @param daoInterface the class instance of the {@link DAO} to get.
      * @return the concrete {@link DAO} which type is the class passed as
      * parameter.

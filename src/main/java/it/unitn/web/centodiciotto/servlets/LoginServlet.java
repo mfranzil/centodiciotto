@@ -97,6 +97,7 @@ public class LoginServlet extends HttpServlet {
 
     /**
      * Returns a short variant of a {@link User} name for navbar purposes.
+     *
      * @param user the User from which to retrieve the name
      * @return a {@link String} representing the displayed short name
      */

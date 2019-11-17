@@ -8,7 +8,7 @@ package it.unitn.web.centodiciotto.persistence.dao.exceptions;
 
 /**
  * Exception thrown by DAO methods at the moment of DAO instantiation.
- *
+ * <p>
  * Can be also thrown in case of DB connection failures.
  */
 public class DAOFactoryException extends Exception {

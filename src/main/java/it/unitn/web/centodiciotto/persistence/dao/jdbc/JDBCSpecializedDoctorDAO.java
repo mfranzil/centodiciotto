@@ -51,7 +51,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(4, specializedDoctor.getWorkingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"SpecializedDoctorDAO::insert affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "SpecializedDoctorDAO::insert affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error inserting Specialized Doctor: ", e);
@@ -69,7 +69,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"SpecializedDoctorDAO::update affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "SpecializedDoctorDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating SpecializedDoctor: ", e);
@@ -82,7 +82,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(1, specializedDoctor.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"SpecializedDoctorDAO::delete affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "SpecializedDoctorDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting SpecializedDoctor: ", e);
         }

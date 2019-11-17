@@ -35,9 +35,9 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             "practitioner_id = ? AND booked = TRUE AND visit_date IS NOT null " +
             "AND report_available = FALSE ORDER BY visit_date DESC;";
     final private String GET_DONE_BY_PRACTITIONER = "SELECT * FROM visit WHERE " +
-            "practitioner_id = ? AND report_available = true ORDER BY visit_date DESC;";
+            "practitioner_id = ? AND report_available = TRUE ORDER BY visit_date DESC;";
     final private String GET_DONE_BY_PATIENT = "SELECT * FROM visit WHERE patient_id = ?" +
-            " AND report_available = true ORDER BY visit_date DESC;";
+            " AND report_available = TRUE ORDER BY visit_date DESC;";
     final private String GET_LAST_BY_PATIENT = "SELECT * FROM visit WHERE patient_id = " +
             "? AND visit_date <= localtimestamp ORDER BY visit_date DESC limit 1;";
     final private String GET_PENDING_BY_PRACTITIONER_AND_PATIENT = "SELECT * FROM visit " +
@@ -63,10 +63,10 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setTimestamp(3, visit.getDate());
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
-            stm.setBoolean(6, visit.isBooked());
+            stm.setBoolean(6, visit.getBooked());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"VisitDAO::insert affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "VisitDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Visit: ", e);
         }
@@ -81,11 +81,11 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setTimestamp(3, visit.getDate());
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
-            stm.setBoolean(6, visit.isBooked());
+            stm.setBoolean(6, visit.getBooked());
             stm.setInt(7, visit.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"VisitDAO::update affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "VisitDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Visit: ", e);
         }
@@ -97,7 +97,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setInt(1, visit.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"VisitDAO::delete affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "VisitDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Visit: ", e);
         }

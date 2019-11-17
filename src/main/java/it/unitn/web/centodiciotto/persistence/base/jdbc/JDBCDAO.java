@@ -17,9 +17,10 @@ import java.sql.ResultSet;
 
 /**
  * This is the base DAO class all concrete DAO using JDBC technology must extend.
- * @param <ENTITY_CLASS> the class of the entities the dao handle.
+ *
+ * @param <ENTITY_CLASS>      the class of the entities the dao handle.
  * @param <PRIMARY_KEY_CLASS> the class of the primary key of the entity the
- * dao handle.
+ *                            dao handle.
  */
 public abstract class JDBCDAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> implements DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
     /**
@@ -33,6 +34,7 @@ public abstract class JDBCDAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> implements DAO<EN
 
     /**
      * The base constructor for all the JDBC DAOs.
+     *
      * @param con the internal {@link Connection}.
      * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
@@ -45,7 +47,7 @@ public abstract class JDBCDAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> implements DAO<EN
     /**
      * Abstract method that all concrete DAOS using JDBC technology must implement
      * for properly assigning {@link ResultSet} to entities.
-     *
+     * <p>
      * It must properly instantiate an {@code ENTITY_CLASS}.
      *
      * @param rs the {@link ResultSet} from a query

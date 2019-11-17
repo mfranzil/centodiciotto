@@ -59,7 +59,7 @@ public class TicketServlet extends HttpServlet {
                 try {
                     Exam selectedExam = examDAO.getByPrimaryKey(ID);
 
-                    if (selectedExam.isTicketPaid()) {
+                    if (selectedExam.getTicketPaid()) {
                         response.setStatus(400);
                     } else {
                         selectedExam.setTicketPaid(true);

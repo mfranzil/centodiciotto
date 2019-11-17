@@ -36,10 +36,10 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
 
     final private String GET_VALID_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE date_prescribed + interval '1 month' >= now() AND patient_id = ? " +
-            "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = false " +
+            "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = FALSE " +
             "ORDER BY date_prescribed ASC;";
     final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM drug_prescription " +
-            "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = false " +
+            "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = FALSE " +
             "ORDER BY date_prescribed ASC;";
     final private String GET_BY_DATE_SOLD = "SELECT * FROM drug_prescription " +
             "WHERE date_sold::date = ?::date";
@@ -69,7 +69,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(9, drugPrescription.getDescription());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"DrugPrescriptionDAO::insert affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "DrugPrescriptionDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting DrugPrescription: ", e);
         }
@@ -91,7 +91,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(10, drugPrescription.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"DrugPrescriptionDAO::update affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "DrugPrescriptionDAO::update affected " + row + " rows");
 
         } catch (SQLException e) {
             throw new DAOException("Error updating DrugPrescription: ", e);
@@ -104,7 +104,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(1, drugPrescription.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO,"DrugPrescriptionDAO::delete affected " + row + " rows");
+            Logger.getGlobal().log(Level.INFO, "DrugPrescriptionDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting DrugPrescription: ", e);
         }

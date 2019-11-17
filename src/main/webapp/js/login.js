@@ -1,4 +1,6 @@
 $("document").ready(function () {
+    const url = window.href;
+
     $('#user-id-login').val(localStorage.userID);
     $('#password-login').val(localStorage.password);
     $('#remember-me').prop("checked", localStorage.checkBoxValidation);
@@ -31,8 +33,6 @@ $("document").ready(function () {
         }
 
         let form = $(this);
-        let url = form.attr('action');
-
         let oldButtonName = $("#form-name").html();
 
         $.ajax({
@@ -74,11 +74,10 @@ $("document").ready(function () {
 
         $('#submit-recovery').prop('disabled', true);
         let form = $(this);
-        let url = form.attr('action');
 
         $.ajax({
             type: "POST",
-            url: url,
+            url: form.attr('action'),
             cache: false,
             data: form.serialize(),
             success: function (data) {

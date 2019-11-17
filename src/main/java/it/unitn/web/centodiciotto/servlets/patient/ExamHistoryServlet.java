@@ -108,7 +108,7 @@ public class ExamHistoryServlet extends HttpServlet {
     private static class ExamHistoryElement implements Serializable {
         private String exam;
         private String date;
-        private Boolean report_state;
+        private Boolean reportstate;
         private Action action;
         private Integer ID;
 
@@ -117,14 +117,14 @@ public class ExamHistoryServlet extends HttpServlet {
          *
          * @param exam        the exam
          * @param date        the date
-         * @param reportState the report state
+         * @param reportstate the report state
          * @param action      the action
          * @param ID          the id
          */
-        public ExamHistoryElement(String exam, String date, Boolean reportState, Action action, Integer ID) {
+        public ExamHistoryElement(String exam, String date, Boolean reportstate, Action action, Integer ID) {
             this.exam = exam;
             this.date = date;
-            this.report_state = reportState;
+            this.reportstate = reportstate;
             this.action = action;
             this.ID = ID;
         }

@@ -191,7 +191,7 @@ public class Exam {
      *
      * @return the boolean
      */
-    public boolean isTicketPaid() {
+    public boolean getTicketPaid() {
         return ticketPaid;
     }
 
@@ -245,7 +245,7 @@ public class Exam {
      *
      * @return true if the exam is booked
      */
-    public boolean isBooked() {
+    public boolean getBooked() {
         return booked;
     }
 

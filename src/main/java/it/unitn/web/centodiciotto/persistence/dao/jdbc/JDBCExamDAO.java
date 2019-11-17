@@ -32,45 +32,45 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String GET_ALL = "SELECT * FROM exam;";
     final private String COUNT = "SELECT COUNT(*) FROM exam;";
 
-    final private String GET_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ?";
+    final private String GET_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? ORDER BY date desc";
     final private String GET_BY_PATIENT_LAST_YEAR = "SELECT * FROM exam WHERE date <= localtimestamp AND " +
-            "date > localtimestamp - interval '1 year' AND patient_id = ?;";
+            "date > localtimestamp - interval '1 year' AND patient_id = ? ORDER BY date desc;";
     final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND ticket_paid = false AND done = true";
+            "AND ticket_paid = FALSE AND done = TRUE ORDER BY date desc";
     final private String GET_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND booked IS FALSE";
+            "AND booked = FALSE ORDER BY date desc";
     final private String GET_NOT_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND date IS NOT NULL";
+            "AND date IS NOT NULL ORDER BY date desc";
 
     final private String GET_PENDING_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
-            "AND booked IS false";
+            "AND booked = FALSE ORDER BY date desc";
     final private String GET_BOOKED_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
-            "AND date IS NOT NULL AND done = false AND booked = true";
+            "AND date IS NOT NULL AND done = FALSE AND booked = TRUE ORDER BY date desc";
     final private String GET_DONE_BY_DOCTOR = "SELECT * FROM exam WHERE doctor_id = ? " +
-            "AND done = true";
+            "AND done = TRUE ORDER BY date desc";
 
     final private String GET_PENDING_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
-            "AND booked IS false";
+            "AND booked = FALSE";
     final private String GET_BOOKED_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
-            "AND date IS NOT NULL AND done = false AND booked = true";
+            "AND date IS NOT NULL AND done = FALSE AND booked = TRUE";
     final private String GET_DONE_BY_HS = "SELECT * FROM exam WHERE health_service_id = ? " +
-            "AND done = true";
+            "AND done = TRUE";
 
     final private String GET_PENDING_BY_PATIENT_AND_TYPE = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND exam_type = ? AND booked IS FALSE";
+            "AND exam_type = ? AND booked = FALSE ORDER BY date desc";
 
     final private String GET_UNASSIGNED_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND doctor_id IS NULL AND health_service_id IS NULL";
+            "AND doctor_id IS NULL AND health_service_id IS NULL ORDER BY date desc";
 
     final private String GET_PENDING_BY_DOCTOR_PATIENT_TYPE = "SELECT * FROM exam WHERE doctor_id = ? " +
-            "AND patient_id = ? AND exam_type = ? AND booked IS false";
+            "AND patient_id = ? AND exam_type = ? AND booked = FALSE ORDER BY date desc";
     final private String GET_PENDING_BY_HS_PATIENT_TYPE = "SELECT * FROM exam WHERE health_service_id = ? " +
-            "AND patient_id = ? AND exam_type = ? AND booked IS false";
+            "AND patient_id = ? AND exam_type = ? AND booked = FALSE ORDER BY date desc";
 
-    final private String GET_BY_DATE = "SELECT * FROM exam WHERE date::date = ?::date";
+    final private String GET_BY_DATE = "SELECT * FROM exam WHERE date::date = ?::date ORDER BY date desc";
 
-    final private String GET_PENDING_RECALL_BY_HS_PATIENT_TYPE = "SELECT * FROM exam WHERE done = false AND exam_type = ? " +
-            "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null;";
+    final private String GET_PENDING_RECALL_BY_HS_PATIENT_TYPE = "SELECT * FROM exam WHERE done = FALSE AND exam_type = ? " +
+            "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null ORDER BY date desc;";
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
@@ -94,9 +94,9 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(6, exam.getResult());
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
-            stm.setBoolean(9, exam.isTicketPaid());
+            stm.setBoolean(9, exam.getTicketPaid());
             stm.setString(10, exam.getPractitionerID());
-            stm.setBoolean(11, exam.isBooked());
+            stm.setBoolean(11, exam.getBooked());
 
             if (exam.getRecall() == null) {
                 stm.setNull(12, Types.INTEGER);
@@ -123,9 +123,9 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setString(6, exam.getResult());
             stm.setString(7, exam.getHealthServiceID());
             stm.setInt(8, exam.getTicket());
-            stm.setBoolean(9, exam.isTicketPaid());
+            stm.setBoolean(9, exam.getTicketPaid());
             stm.setString(10, exam.getPractitionerID());
-            stm.setBoolean(11, exam.isBooked());
+            stm.setBoolean(11, exam.getBooked());
             if (exam.getRecall() == null || exam.getRecall() == 0) {
                 stm.setNull(12, Types.INTEGER);
             } else {

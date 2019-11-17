@@ -9,19 +9,19 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 10%;
+                width: 5%;
             }
 
             .table-cell.patient {
-                width: 30%;
+                width: 45%;
             }
 
             .table-cell.exam {
-                width: 30%;
+                width: 35%;
             }
 
             .table-cell.action {
-                width: 30%;
+                width: 20%;
             }
         }
     </style>
@@ -161,7 +161,7 @@
                                 <img class="avatar-small" alt=""
                                      src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
                             </div>
-                            <div class="table-cell patient">${patient.firstName} ${patient.lastName}</div>
+                            <div class="table-cell patient">${patient}</div>
                             <div class="table-cell exam">${exam.type.description}</div>
                             <div class="table-cell action">
                                 <button class="btn btn-block btn-personal popup-opener">

@@ -6,6 +6,7 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script>
         $("document").ready(function () {
+            const url = window.href;
             let datepicker = $(".datepicker");
             $("#include,#generate-new,#download,#loading-container").hide();
 
@@ -31,7 +32,6 @@
                 e.preventDefault();
 
                 let form = $(this);
-                let url = form.attr('action');
                 let data = form.serialize();
 
                 $('#submit').prop("disabled", true).html("Requesting...");

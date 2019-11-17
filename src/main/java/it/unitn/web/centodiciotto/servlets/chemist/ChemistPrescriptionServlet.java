@@ -58,12 +58,16 @@ public class ChemistPrescriptionServlet extends HttpServlet {
     private ChemistDAO chemistDAO;
     private GeneralPractitionerDAO generalPractitionerDAO;
 
+    private PhotoService photoService;
+    private EmailService emailService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
+
         try {
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
@@ -71,6 +75,13 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            emailService = EmailService.getInstance();
+            photoService = PhotoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -92,7 +103,6 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
                     GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
 
-                    PhotoService photoService = PhotoService.getInstance();
 
                     if (practitioner != null && patient != null && prescription != null) {
                         if (prescription.getChemistID() == null
@@ -125,17 +135,6 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
-
-        PhotoService photoService;
-        EmailService emailService;
-
-        try {
-            photoService = PhotoService.getInstance();
-            emailService = EmailService.getInstance();
-        } catch (ServiceException e) {
-            throw new ServletException("Error in EmailService or PhotoService retrieval: ", e);
-        }
-
         switch (ajax_type) {
             case "serve": {
                 if (user instanceof Chemist) {

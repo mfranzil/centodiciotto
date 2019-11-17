@@ -12,10 +12,10 @@ import javax.servlet.ServletContextListener;
 
 /**
  * ContextListener for this web application.
- *
+ * <p>
  * Initializes the DAOFactory and all the services located in the
  * {@link it.unitn.web.centodiciotto.services} package.
- *
+ * <p>
  * At the moment of Context destruction, it calls the {@link DAOFactory} destructor.
  */
 public class WebAppContextListener implements ServletContextListener {

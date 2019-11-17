@@ -17,12 +17,11 @@ import java.util.Random;
 
 /**
  * CryptoService service class, used to expose methods that provide authentication and random string generation.
- *
+ * <p>
  * The service implements the Singleton pattern.
- *
+ * <p>
  * The service needs an initialized DAOFactory to instantiate one DAO for each user class,
  * and instantiates a SecureRandom instance on startup.
- *
  */
 public class CryptoService {
     private static CryptoService instance;
@@ -88,11 +87,11 @@ public class CryptoService {
     /**
      * Receives a password and a salt as parameter and outputs a KEY_LENGTH long hash using a
      * {@link SecretKeyFactory}, which is then converted to Hexadecimal.
-     *
+     * <p>
      * The final length is KEY_LENGTH / 4 due to the hex conversion.
      *
      * @param password the password
-     * @param salt the salt
+     * @param salt     the salt
      * @return a hexadecimal hash of the two parameters
      * @throws ServiceException in case of error during processing
      */
@@ -112,6 +111,7 @@ public class CryptoService {
 
     /**
      * Barebones implementation for converting a byte array to a hexadecimal {@link String} representation.
+     *
      * @param bytes an array of bytes to be converted to hex
      * @return a {@link String} of hexadecimal characters
      */
@@ -128,8 +128,9 @@ public class CryptoService {
 
     /**
      * Checks if the hash provided matches the password using the salt.
-     * @param password the password
-     * @param salt the salt
+     *
+     * @param password     the password
+     * @param salt         the salt
      * @param expectedHash the hash to be checked
      * @return true if the hash was obtained from the password hashed with the salt
      * @throws ServiceException in case of error during processing
@@ -150,6 +151,7 @@ public class CryptoService {
 
     /**
      * Returns the next salt of length SALT_LENGTH * 2.
+     *
      * @return a hexadecimal salt
      */
     private String getNextSalt() {
@@ -160,6 +162,7 @@ public class CryptoService {
 
     /**
      * Gets the next base64 token, used for {@link it.unitn.web.centodiciotto.persistence.entities.PasswordReset} tokens.
+     *
      * @return the next base64 token
      */
     public String getNextBase64Token() {
@@ -170,13 +173,13 @@ public class CryptoService {
 
     /**
      * Authenticates the user.
-     *
+     * <p>
      * The role provided must be one of "patient", "general_practitioner", "specialized_doctor",
      * "chemist", or "health_service". Failure to do so will invalidate the authentication process even
      * if the ID and the password match.
-     *
+     * <p>
      * After confirming the authentication, the method returns a User subclass of the proper role.
-     *
+     * <p>
      * In case the authentication fails, it returns {@code null}.
      *
      * @param ID       the userID

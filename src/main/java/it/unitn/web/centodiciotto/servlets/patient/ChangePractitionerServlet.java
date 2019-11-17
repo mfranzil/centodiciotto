@@ -24,6 +24,7 @@ import java.io.IOException;
 /**
  * The type Change practitioner servlet.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/patient/change_practitioner")
 public class ChangePractitionerServlet extends HttpServlet {
 
@@ -31,18 +32,27 @@ public class ChangePractitionerServlet extends HttpServlet {
     private PatientDAO patientDAO;
     private VisitDAO visitDAO;
 
+    private EmailService emailService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
+
         try {
             practitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -62,7 +72,6 @@ public class ChangePractitionerServlet extends HttpServlet {
         if (user instanceof Patient) {
             try {
                 String newPractitionerID = request.getParameter("practitionerID");
-                EmailService emailService = EmailService.getInstance();
 
                 GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
                 GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractitionerID);
