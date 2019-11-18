@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.practitioner;
 
-
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -26,8 +25,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Prescription servlet.
+ * PrescriptionServlet for handling requests to /restricted/general_practitioner/prescriptions.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> examList: select2 AJAX response generator for returning a list of available {@link Patient}s
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup to let the user choose
+ *                        from a new {@link DrugPrescription} or a new {@link Exam}, with relative dropdowns
+ *     <li> examSearch: select2 AJAX response generator for returing a list of {@link Exam} for the
+ *                      user to choose from, with a word query
+ *     <li> examAdd: instantiates a new {@link Exam} from the {@link ExamType} and the {@link Patient}
+ *     <li> drugSearch: select2 AJAX response generator for returing a list of {@link DrugPrescription} for the
+ *                      user to choose from, with a word query
+ *     <li> drugAdd: instantiates a new {@link DrugPrescription} from the {@link DrugType} and the {@link Patient}
+ * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/general_practitioner/prescriptions")
 public class PrescriptionServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
@@ -89,9 +104,9 @@ public class PrescriptionServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         String ajax_type = request.getParameter("requestType");
 
-        switch (ajax_type) {
-            case "patientList": {
-                if (user instanceof GeneralPractitioner) {
+        if (user instanceof GeneralPractitioner) {
+            switch (ajax_type) {
+                case "patientList": {
                     try {
                         String patientID = request.getParameter("patientID");
 
@@ -130,73 +145,71 @@ public class PrescriptionServlet extends HttpServlet {
                     }
                     break;
                 }
-            }
-            case "detailedInfo": {
-                String patientID = request.getParameter("item");
+                case "detailedInfo": {
+                    String patientID = request.getParameter("item");
 
-                List<Object> jsonResponse = new ArrayList<>();
-                String contextPath = getServletContext().getContextPath();
+                    List<Object> jsonResponse = new ArrayList<>();
+                    String contextPath = getServletContext().getContextPath();
 
-                jsonResponse.add(new HTMLElement().setElementType("form").
-                        setElementClass("exam-form")
-                        .setElementFormAction(contextPath + "/restricted/general_practitioner/prescriptions")
-                        .setElementFormMethod("POST"));
+                    jsonResponse.add(new HTMLElement().setElementType("form").
+                            setElementClass("exam-form")
+                            .setElementFormAction(contextPath + "/restricted/general_practitioner/prescriptions")
+                            .setElementFormMethod("POST"));
 
-                List<HTMLElement> examForm = new ArrayList<>();
-                examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
-                        .setElementInputName("patientID").setElementInputValue(patientID));
-                examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
-                        .setElementInputName("requestType").setElementInputValue("examAdd"));
-                examForm.add(new HTMLElement().setElementType("h5")
-                        .setElementContent("Select an exam from the menu below"));
-                examForm.add(new HTMLElement().setElementType("select")
-                        .setElementClass("select2-allow-clear form-control exam-search width-100")
-                        .setElementSelectName("examID"));
-                examForm.add(new HTMLElement().setElementType("button")
-                        .setElementClass("btn btn-lg btn-block btn-personal prescribe-exam mt-2")
-                        .setElementButtonType("submit").setElementContent("Prescribe exam"));
-                examForm.add(new HTMLElement().setElementType("small").
-                        setElementClass("exam-prescribe-label"));
+                    List<HTMLElement> examForm = new ArrayList<>();
+                    examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
+                            .setElementInputName("patientID").setElementInputValue(patientID));
+                    examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
+                            .setElementInputName("requestType").setElementInputValue("examAdd"));
+                    examForm.add(new HTMLElement().setElementType("h5")
+                            .setElementContent("Select an exam from the menu below"));
+                    examForm.add(new HTMLElement().setElementType("select")
+                            .setElementClass("select2-allow-clear form-control exam-search width-100")
+                            .setElementSelectName("examID"));
+                    examForm.add(new HTMLElement().setElementType("button")
+                            .setElementClass("btn btn-lg btn-block btn-personal prescribe-exam mt-2")
+                            .setElementButtonType("submit").setElementContent("Prescribe exam"));
+                    examForm.add(new HTMLElement().setElementType("small").
+                            setElementClass("exam-prescribe-label"));
 
-                jsonResponse.add(examForm);
+                    jsonResponse.add(examForm);
 
-                jsonResponse.add(new HTMLElement().setElementType("form")
-                        .setElementClass("drug-form")
-                        .setElementFormAction(contextPath + "/restricted/general_practitioner/prescriptions")
-                        .setElementFormMethod("POST"));
+                    jsonResponse.add(new HTMLElement().setElementType("form")
+                            .setElementClass("drug-form")
+                            .setElementFormAction(contextPath + "/restricted/general_practitioner/prescriptions")
+                            .setElementFormMethod("POST"));
 
-                List<HTMLElement> drugForm = new ArrayList<>();
+                    List<HTMLElement> drugForm = new ArrayList<>();
 
-                drugForm.add(new HTMLElement().setElementType("br"));
-                drugForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
-                        .setElementInputName("patientID").setElementInputValue(patientID));
-                drugForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
-                        .setElementInputName("requestType").setElementInputValue("drugAdd"));
-                drugForm.add(new HTMLElement().setElementType("h5")
-                        .setElementContent("Select a drug from the menu below"));
-                drugForm.add(new HTMLElement().setElementType("select")
-                        .setElementClass("select2-allow-clear form-control drug-search width-100")
-                        .setElementSelectName("drugID"));
-                drugForm.add(new HTMLElement().setElementType("button")
-                        .setElementClass("btn btn-lg btn-block btn-personal prescribe-drug mt-2")
-                        .setElementButtonType("submit").setElementContent("Prescribe drug"));
-                drugForm.add(new HTMLElement().setElementType("small")
-                        .setElementClass("drug-prescribe-label"));
+                    drugForm.add(new HTMLElement().setElementType("br"));
+                    drugForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
+                            .setElementInputName("patientID").setElementInputValue(patientID));
+                    drugForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden")
+                            .setElementInputName("requestType").setElementInputValue("drugAdd"));
+                    drugForm.add(new HTMLElement().setElementType("h5")
+                            .setElementContent("Select a drug from the menu below"));
+                    drugForm.add(new HTMLElement().setElementType("select")
+                            .setElementClass("select2-allow-clear form-control drug-search width-100")
+                            .setElementSelectName("drugID"));
+                    drugForm.add(new HTMLElement().setElementType("button")
+                            .setElementClass("btn btn-lg btn-block btn-personal prescribe-drug mt-2")
+                            .setElementButtonType("submit").setElementContent("Prescribe drug"));
+                    drugForm.add(new HTMLElement().setElementType("small")
+                            .setElementClass("drug-prescribe-label"));
 
-                jsonResponse.add(drugForm);
+                    jsonResponse.add(drugForm);
 
-                jsonResponse.add(new HTMLElement().setElementType("script")
-                        .setElementScriptType("text/javascript")
-                        .setElementScriptSrc(contextPath + "/js/details/prescription.js"));
+                    jsonResponse.add(new HTMLElement().setElementType("script")
+                            .setElementScriptType("text/javascript")
+                            .setElementScriptSrc(contextPath + "/js/details/prescription.js"));
 
-                Gson gson = new Gson();
-                response.setContentType("application/json");
-                response.getWriter().write(gson.toJson(jsonResponse));
+                    Gson gson = new Gson();
+                    response.setContentType("application/json");
+                    response.getWriter().write(gson.toJson(jsonResponse));
 
-                break;
-            }
-            case "examSearch": {
-                if (user instanceof GeneralPractitioner) {
+                    break;
+                }
+                case "examSearch": {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -214,12 +227,10 @@ public class PrescriptionServlet extends HttpServlet {
                     Gson gson = new Gson();
                     response.setContentType("application/json");
                     response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    break;
                 }
-                break;
-            }
-            case "examAdd": {
-                try {
-                    if (user instanceof GeneralPractitioner) {
+                case "examAdd": {
+                    try {
                         String examID = request.getParameter("examID");
                         String patientID = request.getParameter("patientID");
 
@@ -234,17 +245,14 @@ public class PrescriptionServlet extends HttpServlet {
                         newExam.setTicket(-1);
 
                         examDAO.insert(newExam);
+                    } catch (DAOException e) {
+                        throw new ServletException("Error with DAOs in :", e);
+                    } catch (NumberFormatException e) {
+                        throw new ServletException("Error ExamID is null", e);
                     }
-                } catch (DAOException e) {
-                    throw new ServletException("Error with DAOs in :", e);
-                } catch (NumberFormatException e) {
-                    throw new ServletException("Error ExamID is null", e);
+                    break;
                 }
-                break;
-            }
-
-            case "drugSearch": {
-                if (user instanceof GeneralPractitioner) {
+                case "drugSearch": {
                     String userInput = request.getParameter("term");
 
                     List<DrugSearchResult> results;
@@ -262,12 +270,11 @@ public class PrescriptionServlet extends HttpServlet {
                     Gson gson = new Gson();
                     response.setContentType("application/json");
                     response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new DrugSearchResult[0]))));
+
+                    break;
                 }
-                break;
-            }
-            case "drugAdd": {
-                try {
-                    if (user instanceof GeneralPractitioner) {
+                case "drugAdd": {
+                    try {
                         String drugID = request.getParameter("drugID");
                         String patientID = request.getParameter("patientID");
 
@@ -282,25 +289,23 @@ public class PrescriptionServlet extends HttpServlet {
                         newPrescription.setTicket(3);
                         newPrescription.setTicketPaid(false);
                         newPrescription.setDescription(" ");
-                        /* ????????
-                        private Timestamp dateSold;
-                        private String chemistID;
-                        private String description;
-                         */
 
                         drugPrescriptionDAO.insert(newPrescription);
-                    }
 
-                } catch (DAOException e) {
-                    throw new ServletException("Error with DAOs in ", e);
-                } catch (NumberFormatException e) {
-                    throw new ServletException("Error DrugID is null", e);
+                    } catch (DAOException e) {
+                        throw new ServletException("Error with DAOs in ", e);
+                    } catch (NumberFormatException e) {
+                        throw new ServletException("Error DrugID is null", e);
+                    }
+                    break;
                 }
-                break;
             }
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class PatientListElement implements Serializable {
         private String name;
         private String ssn;
@@ -317,7 +322,7 @@ public class PrescriptionServlet extends HttpServlet {
          * @param action the action
          * @param ID     the id
          */
-        public PatientListElement(String name, String ssn, String avt, Action action, String ID) {
+        PatientListElement(String name, String ssn, String avt, Action action, String ID) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;
@@ -326,6 +331,9 @@ public class PrescriptionServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class DrugSearchResult implements Serializable {
         private Integer id;
         private String text;

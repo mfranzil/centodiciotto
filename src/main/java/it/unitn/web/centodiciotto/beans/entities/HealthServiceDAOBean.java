@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.beans.entities;
 
-
 import it.unitn.web.centodiciotto.beans.BeanException;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.HealthServiceDAO;
@@ -105,6 +104,4 @@ public class HealthServiceDAOBean implements Serializable {
             throw new BeanException("Error getting pending Visits: ", e);
         }
     }
-
-
 }

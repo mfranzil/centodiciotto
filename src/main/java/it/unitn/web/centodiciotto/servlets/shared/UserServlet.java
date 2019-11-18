@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -24,8 +23,17 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 
 /**
- * The type User servlet.
+ * UserSerlvet for handling requests to /restricted/user.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> passwordChange: changes a user's password after validating it.
+ *     <li> photoUpload: uploads a new profile photo for the user.
+ * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/user")
 public class UserServlet extends HttpServlet {
 
@@ -73,6 +81,10 @@ public class UserServlet extends HttpServlet {
                     try {
                         String oldPassword = request.getParameter("oldPassword");
                         String newPassword = request.getParameter("newPassword");
+
+                        if (newPassword.length() < 8 || newPassword.length() > 64) {
+                            throw new ServletException("Password must be between 8 and 64 characters.");
+                        }
 
                         if (cryptoService.isCurrentPassword(user.getID(), oldPassword)) {
                             cryptoService.changePassword(user.getID(), newPassword);

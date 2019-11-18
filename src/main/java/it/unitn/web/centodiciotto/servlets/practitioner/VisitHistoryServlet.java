@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.practitioner;
 
-
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
@@ -28,8 +27,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Visit history servlet.
+ * VisitHistoryServlet for handling requests to /restricted/general_practitioner/visit_history.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> visitList: select2 AJAX response generator for returning a list of available {@link Visit}s
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup to
+ *                        let the user update a {@link Visit}'s report.
+ *     <li> setReport: updates a {@link Visit}'s report.
+ * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/general_practitioner/visit_history")
 public class VisitHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
@@ -70,9 +80,9 @@ public class VisitHistoryServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
 
-        switch (requestType) {
-            case "visitList": {
-                if (user instanceof GeneralPractitioner) {
+        if (user instanceof GeneralPractitioner) {
+            switch (requestType) {
+                case "visitList": {
                     try {
                         List<Visit> visitList = visitDAO.getDoneByPractitioner(user.getID());
                         List<VisitListElement> visitListElements = new ArrayList<>();
@@ -98,60 +108,58 @@ public class VisitHistoryServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Photo path retrieval: ", e);
                     }
+                    break;
                 }
-                break;
-            }
-            case "detailedInfo": {
-                try {
-                    String visitID = request.getParameter("item");
-                    List<Object> jsonResponse = new ArrayList<>();
-                    String contextPath = getServletContext().getContextPath();
+                case "detailedInfo": {
+                    try {
+                        String visitID = request.getParameter("item");
+                        List<Object> jsonResponse = new ArrayList<>();
+                        String contextPath = getServletContext().getContextPath();
 
-                    Visit currentVisit = visitDAO.getByPrimaryKey(Integer.valueOf(visitID));
+                        Visit currentVisit = visitDAO.getByPrimaryKey(Integer.valueOf(visitID));
 
-                    jsonResponse.add(new HTMLElement()
-                            .setElementType("form")
-                            .setElementClass("submit-report")
-                            .setElementFormAction(contextPath + "/restricted/general_practitioner/visit_history")
-                            .setElementFormMethod("POST"));
+                        jsonResponse.add(new HTMLElement()
+                                .setElementType("form")
+                                .setElementClass("submit-report")
+                                .setElementFormAction(contextPath + "/restricted/general_practitioner/visit_history")
+                                .setElementFormMethod("POST"));
 
-                    List<HTMLElement> form = new ArrayList<>();
+                        List<HTMLElement> form = new ArrayList<>();
 
-                    if (currentVisit.getReport() != null) {
-                        form.add(new HTMLElement().setElementType("h5").setElementContent("Old report:"));
-                        form.add(new HTMLElement().setElementType("p").setElementContent(currentVisit.getReport()));
+                        if (currentVisit.getReport() != null) {
+                            form.add(new HTMLElement().setElementType("h5").setElementContent("Old report:"));
+                            form.add(new HTMLElement().setElementType("p").setElementContent(currentVisit.getReport()));
+                        }
+
+                        form.add(new HTMLElement().setElementType("h5").setElementContent("Please enter the report in the form below, " +
+                                "then click on submit to set it."));
+
+                        form.add(new HTMLElement().setElementType("input")
+                                .setElementInputType("hidden")
+                                .setElementInputValue(visitID)
+                                .setElementInputName("visitID"));
+                        form.add(new HTMLElement().setElementType("input")
+                                .setElementInputType("hidden")
+                                .setElementInputValue("setReport")
+                                .setElementInputName("requestType"));
+                        form.add(new HTMLElement().setElementType("textarea")
+                                .setElementTextAreaPlaceholder("Click to start typing...")
+                                .setElementTextAreaName("reportText"));
+                        form.add(new HTMLElement().setElementType("button")
+                                .setElementClass("btn btn-lg btn-block btn-personal submit-button mt-2")
+                                .setElementButtonType("submit")
+                                .setElementContent("Submit report"));
+                        jsonResponse.add(form);
+
+                        Gson gson = new Gson();
+                        response.setContentType("application/json");
+                        response.getWriter().write(gson.toJson(jsonResponse));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
                     }
-
-                    form.add(new HTMLElement().setElementType("h5").setElementContent("Please enter the report in the form below, " +
-                            "then click on submit to set it."));
-
-                    form.add(new HTMLElement().setElementType("input")
-                            .setElementInputType("hidden")
-                            .setElementInputValue(visitID)
-                            .setElementInputName("visitID"));
-                    form.add(new HTMLElement().setElementType("input")
-                            .setElementInputType("hidden")
-                            .setElementInputValue("setReport")
-                            .setElementInputName("requestType"));
-                    form.add(new HTMLElement().setElementType("textarea")
-                            .setElementTextAreaPlaceholder("Click to start typing...")
-                            .setElementTextAreaName("reportText"));
-                    form.add(new HTMLElement().setElementType("button")
-                            .setElementClass("btn btn-lg btn-block btn-personal submit-button mt-2")
-                            .setElementButtonType("submit")
-                            .setElementContent("Submit report"));
-                    jsonResponse.add(form);
-
-                    Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(jsonResponse));
-                } catch (DAOException e) {
-                    e.printStackTrace();
+                    break;
                 }
-                break;
-            }
-            case "setReport": {
-                if (user instanceof GeneralPractitioner) {
+                case "setReport": {
                     Integer visitID = Integer.valueOf(request.getParameter("visitID"));
                     String reportText = request.getParameter("reportText");
 
@@ -168,6 +176,9 @@ public class VisitHistoryServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class VisitListElement implements Serializable {
         private String name;
         private String ssn;
@@ -186,7 +197,7 @@ public class VisitHistoryServlet extends HttpServlet {
          * @param action the action
          * @param ID     the id
          */
-        public VisitListElement(String name, String ssn, String avt, String date, Action action, String ID) {
+        VisitListElement(String name, String ssn, String avt, String date, Action action, String ID) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;

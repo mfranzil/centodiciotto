@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
@@ -22,7 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * The type Change practitioner servlet.
+ * ChangePractitionerServlet for handling requests to /restricted/patient/change_practitioner.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests get a {@code practitionerID} and change a {@link Patient}'s {@link GeneralPractitioner},
+ * alerting the old practitioner, the new practitioner and the patient itself via the {@link EmailService}.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/patient/change_practitioner")

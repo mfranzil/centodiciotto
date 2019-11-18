@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
-
 import it.unitn.web.centodiciotto.persistence.entities.User;
 
 import javax.servlet.ServletException;
@@ -12,12 +11,15 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * The type Logout servlet.
+ * LogoutServlet for handling requests to /restricted/logout_handler.
+ * <p>
+ * GET and POST requests invalidate the session and redirect the user to the main page.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/logout_handler")
 public class LogoutServlet extends HttpServlet {
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
 
@@ -41,7 +43,6 @@ public class LogoutServlet extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

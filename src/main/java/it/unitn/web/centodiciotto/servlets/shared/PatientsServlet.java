@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
-
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -26,8 +25,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * The type Patients servlet.
+ * PatientsServlet for handling requests to /restricted/role/patients,
+ * where role can be health_service, specialized_doctor, or general_practitioner.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> patientList: select2 AJAX response generator for returning a list of available {@link Patient}s
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup to show detailed information
+ *                        about a Patient, such as personal information, {@link Visit}s, {@link Exam}s and
+ *                        {@link DrugPrescription}s
+ *     <li> patientSearch: select2 AJAX response generator for returning a list of available {@link Patient}s
+ *                         to choose from a dropdown, from a query
+ * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/patients",
         "/restricted/health_service/patients",
         "/restricted/specialized_doctor/patients"})
@@ -233,6 +246,9 @@ public class PatientsServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class PatientListElement implements Serializable {
         private String name;
         private String ssn;
@@ -258,6 +274,9 @@ public class PatientsServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class PatientSearchResult implements Serializable {
         private Integer id;
         private String text;

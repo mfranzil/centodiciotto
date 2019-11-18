@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -19,8 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * The type Ticket servlet.
+ * TicketServlet for handling requests to /restricted/patient/tickets.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests set a ticket as paid and are filtered depending on the {@code type} parameter, as the ticket may
+ * be from an {@link Exam} or from a {@link DrugPrescription}.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/patient/tickets")
 public class TicketServlet extends HttpServlet {
     private ExamDAO examDAO;

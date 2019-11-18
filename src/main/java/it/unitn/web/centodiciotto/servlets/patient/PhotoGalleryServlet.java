@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -18,8 +17,13 @@ import java.io.IOException;
 import java.sql.Timestamp;
 
 /**
- * The type Photo gallery servlet.
+ * PhotoGalleryRequest for handling requests to /restricted/patient/photo_gallery.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests take a photoID as a parameter and set the relative {@link Patient} photo as the current one.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/patient/photo_gallery")
 public class PhotoGalleryServlet extends HttpServlet {
 

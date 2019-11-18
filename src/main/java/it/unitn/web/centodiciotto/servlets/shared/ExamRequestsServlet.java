@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
-
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -29,8 +28,21 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The type Exam requests servlet.
+ * ExamRequestsServlet for handling requests to /restricted/role/exam_requests,
+ * where role can be health_service or specialized_doctor.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> requestBook: retrieves {@code patientID}, date and time from the request, validate them and try to update the
+ *                       date of the {@link Exam}.
+ *     <li> requestList: select2 AJAX response generator for returning a list of available {@link Exam}s
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup to let the user choose a
+ *                        date and time for the {@link Exam}.
+ * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_requests", "/restricted/health_service/exam_requests"})
 public class ExamRequestsServlet extends HttpServlet {
     private ExamDAO examDAO;
@@ -203,6 +215,9 @@ public class ExamRequestsServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class ExamRequestListElement implements Serializable {
         private String avt;
         private String patient;
@@ -210,7 +225,7 @@ public class ExamRequestsServlet extends HttpServlet {
         private Action action;
         private String ID;
 
-        public ExamRequestListElement(String avt, String patient, String exam, Action action, String ID) {
+        ExamRequestListElement(String avt, String patient, String exam, Action action, String ID) {
             this.avt = avt;
             this.patient = patient;
             this.exam = exam;

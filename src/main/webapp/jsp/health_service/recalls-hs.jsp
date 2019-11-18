@@ -73,7 +73,6 @@
                     $("#main-table").slideUp();
                 });
 
-
             $("#send-recall").submit(function (e) {
                 e.preventDefault();
 
@@ -235,7 +234,6 @@
         </p>
     </div>
 </div>
-
 
 <div class="container">
     <div class="body-content">

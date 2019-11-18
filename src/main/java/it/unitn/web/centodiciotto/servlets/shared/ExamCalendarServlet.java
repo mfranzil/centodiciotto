@@ -17,8 +17,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * The type Exam calendar servlet.
+ * ExamCalendarServlet for handling requests to /restricted/role/visit_calendar,
+ * where role can be health_service or specialized_doctor.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests get a {@code examID} and set its result to available, therefore ending its pending status.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_calendar", "/restricted/health_service/exam_calendar"})
 public class ExamCalendarServlet extends HttpServlet {
     private ExamDAO examDAO;

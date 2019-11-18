@@ -11,7 +11,6 @@ $("document").ready(function () {
             return;
         }
 
-
         if ((newPassword !== newPasswordConfirm) ||
             newPassword === "" || newPasswordConfirm === "") {
             message.html('Passwords do not match.')

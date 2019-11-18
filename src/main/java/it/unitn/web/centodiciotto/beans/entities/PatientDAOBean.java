@@ -173,7 +173,6 @@ public class PatientDAOBean implements Serializable {
         }
     }
 
-
     /**
      * Gets the pending {@link Visit}, if exists, for this {@link Patient}.
      *

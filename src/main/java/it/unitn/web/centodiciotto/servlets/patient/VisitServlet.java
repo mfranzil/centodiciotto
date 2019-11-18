@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -17,8 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * The type Visit servlet.
+ * VisitServlet for handling requests to /restricted/patient/visits.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests instantiate a new pending {@link Visit} between the {@link Patient} and his/her
+ * {@link it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner} with the date initially set to {@code null}.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/patient/visits")
 public class VisitServlet extends HttpServlet {
     private VisitDAO visitDAO;

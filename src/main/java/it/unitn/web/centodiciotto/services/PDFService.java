@@ -176,14 +176,10 @@ public class PDFService {
             PDStreamUtils.write(
                     contents, insertSpaces(pat.getLivingProvince().getAbbreviation(), 2),
                     PDType1Font.HELVETICA, 21, 562, 560, Color.BLACK);
-            // Prescription date
+            // Prescription date and time
             PDStreamUtils.write(
                     contents, dateTimeFormatter(dp.getDatePrescribed(), "ddMMyyHHMM"),
                     PDType1Font.HELVETICA, 21, 397, 320, Color.BLACK);
-            // Prescription time
-            PDStreamUtils.write(
-                    contents, dateTimeFormatter(dp.getDateSold(), "ddMMyy"),
-                    PDType1Font.HELVETICA, 21, 758, 159, Color.BLACK);
             // Prescription ID
             PDStreamUtils.write(
                     contents, dp.getID().toString(),

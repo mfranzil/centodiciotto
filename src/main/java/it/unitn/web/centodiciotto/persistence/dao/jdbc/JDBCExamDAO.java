@@ -126,12 +126,12 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setBoolean(9, exam.getTicketPaid());
             stm.setString(10, exam.getPractitionerID());
             stm.setBoolean(11, exam.getBooked());
+
             if (exam.getRecall() == null || exam.getRecall() == 0) {
                 stm.setNull(12, Types.INTEGER);
             } else {
                 stm.setInt(12, exam.getRecall());
             }
-
 
             stm.setInt(13, exam.getID());
 
@@ -393,7 +393,6 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-
     public List<Exam> getPendingByHS(String healthServiceID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
@@ -543,8 +542,6 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             throw new DAOException("Error getting pending Recalls: ", e);
         }
     }
-
-
     @Override
     protected Exam mapRowToEntity(ResultSet rs) throws DAOException {
         try {

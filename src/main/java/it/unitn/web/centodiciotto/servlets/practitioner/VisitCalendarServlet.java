@@ -17,8 +17,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * The type Visit calendar servlet.
+ * VisitCalendarServlet for handling requests to /restricted/general_practitioner/visit_calendar
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests get a {@code visitID} and set its report to available, therefore ending its pending status.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/general_practitioner/visit_calendar")
 public class VisitCalendarServlet extends HttpServlet {
     private PatientDAO patientDAO;

@@ -162,8 +162,6 @@
                     </div>
                     <hr>
                 </c:forEach>
-
-
             </div>
         </div>
     </div>
@@ -230,27 +228,3 @@
 </div>
 <%@ include file="/jsp/fragments/foot.jsp" %>
 </body>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

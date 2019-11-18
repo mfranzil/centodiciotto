@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.practitioner;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -22,8 +21,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * The type Visit requests servlet.
+ * VisitRequestsServlet for handling requests to /restricted/general_practitioner/visit_requests.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests retrieve {@code patientID}, date and time from the request, validate them and try to update the
+ * date of the {@link Visit}.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/general_practitioner/visit_requests")
 public class VisitRequestsServlet extends HttpServlet {
     private VisitDAO visitDAO;

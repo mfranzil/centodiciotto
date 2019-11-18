@@ -228,6 +228,9 @@ public class RecallsServlet extends HttpServlet {
         return dateLong <= minAgeLong && dateLong >= maxAgeLong;
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class TableExam implements Serializable {
         private String exam;
         private String date;

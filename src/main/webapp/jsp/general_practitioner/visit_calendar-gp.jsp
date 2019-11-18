@@ -60,7 +60,6 @@
     </p>
 </div>
 
-
 <div class="container">
     <div class="body-content">
         <div class="row">

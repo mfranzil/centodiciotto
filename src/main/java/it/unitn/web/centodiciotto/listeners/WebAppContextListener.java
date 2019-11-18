@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.listeners;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;

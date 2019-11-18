@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
-
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -25,9 +24,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Exam history servlet.
+ * ExamHistoryServlet for handling requests to /restricted/role/exam_history,
+ * where role can be health_service or specialized_doctor.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> examList: select2 AJAX response generator for returning a list of available {@link Exam}s
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup to
+ *                        let the user update a {@link Exam}'s report.
+ *     <li> setResult: updates a {@link Exam}'s report.
+ * </ul>
  */
-@SuppressWarnings({"FieldCanBeLocal", "unused"})
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_history", "/restricted/health_service/exam_history"})
 public class ExamHistoryServlet extends HttpServlet {
     private PatientDAO patientDAO;
@@ -173,6 +183,9 @@ public class ExamHistoryServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class ExamListElement implements Serializable {
         private String name;
         private String exam;

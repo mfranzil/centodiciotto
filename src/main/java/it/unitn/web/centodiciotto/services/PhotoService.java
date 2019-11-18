@@ -167,6 +167,4 @@ public class PhotoService {
     public String getPatientAvatarFolder(String patientID) {
         return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;
     }
-
-
 }

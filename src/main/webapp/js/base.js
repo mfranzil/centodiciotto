@@ -20,7 +20,6 @@ $("document").ready(function () {
         $("#logo").toggleClass("navbar-logo-animate");
     });
 
-
     $(function(){
         $('a').each(function() {
             if ($(this).prop('href') === window.location.href) {

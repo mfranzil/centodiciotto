@@ -199,7 +199,6 @@ public class ExcelService {
         }
     }
 
-
     /**
      * The type Report, to be serialized and fed to the {@link JxlsHelper}.
      */

@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.PasswordResetDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * PasswordResetServlet for handling requests to /restricted/health_service/recalls.

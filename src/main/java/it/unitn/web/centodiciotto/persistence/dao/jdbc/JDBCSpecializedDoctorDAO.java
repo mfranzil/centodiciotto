@@ -67,7 +67,6 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(3, specializedDoctor.getWorkingPlace());
             stm.setString(4, specializedDoctor.getID());
 
-
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "SpecializedDoctorDAO::update affected " + row + " rows");
 

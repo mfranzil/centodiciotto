@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -21,10 +20,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
 
 /**
- * The type Drug prescription servlet.
+ * DrugPrescriptionServlet for handling requests to /restricted/patient/prescriptions.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests get a {@code prescriptionID}, a {@code patientID}, and a {@code practitionerID} and pass
+ * them to a {@link PDFService} instance for the generation of a PDF prescription, which is
+ * then shown to the user.
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/patient/prescriptions")
@@ -65,7 +69,6 @@ public class DrugPrescriptionServlet extends HttpServlet {
         }
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
@@ -80,15 +83,9 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
                 Patient patient = patientDAO.getByPrimaryKey(patientID);
 
-                prescription.setDateSold(new Timestamp(System.currentTimeMillis()));
-
                 // Inserisco l'indirizzo corrente, possibile soltanto a livello di richiesta
                 // in modo da aggiungerlo al codice QR
-                String qrCodeURL = request.getScheme() + "://" +
-                        request.getServerName() + (
-                        "http".equals(request.getScheme()) && request.getServerPort() == 80 ||
-                                "https".equals(request.getScheme()) && request.getServerPort() == 443
-                                ? "" : ":" + request.getServerPort());
+                String qrCodeURL = getCurrentURL(request);
 
                 PDDocument prescriptionDoc = pdfService.createDrugPrescription(
                         prescription, patient, practitioner, qrCodeURL);
@@ -102,6 +99,12 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 throw new ServletException("Error in PDF generation: ", e);
             }
         }
+    }
 
+    private String getCurrentURL(HttpServletRequest request) {
+        return request.getScheme() + "://" + request.getServerName() + (
+                "http".equals(request.getScheme()) && request.getServerPort() == 80 ||
+                        "https".equals(request.getScheme()) && request.getServerPort() == 443
+                        ? "" : ":" + request.getServerPort());
     }
 }

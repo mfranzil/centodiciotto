@@ -33,7 +33,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
 /**
  * ChemistPrescriptionServlet for handling requests to /restricted/chemist/prescriptions.
  * <p>
@@ -50,6 +49,7 @@ import java.util.stream.Collectors;
  *     <li> detailedInfo: select2 AJAX response generator for building out a popup showing {@link DrugPrescription} information
  * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/chemist/prescriptions")
 public class ChemistPrescriptionServlet extends HttpServlet {
 
@@ -103,7 +103,6 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
                     GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
 
-
                     if (practitioner != null && patient != null && prescription != null) {
                         if (prescription.getChemistID() == null
                                 && prescription.getDateSold() == null
@@ -135,9 +134,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
         }
-        switch (ajax_type) {
-            case "serve": {
-                if (user instanceof Chemist) {
+        if (user instanceof Chemist) {
+            switch (ajax_type) {
+                case "serve": {
                     Integer prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
 
                     try {
@@ -187,10 +186,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         throw new ServletException("Error in Email sending: ", e);
                     }
                 }
-            }
-            break;
-            case "patientSearch": {
-                if (user instanceof Chemist) {
+                break;
+                case "patientSearch": {
                     try {
                         String userInput = request.getParameter("term");
                         Province province = ((Chemist) user).getProvince();
@@ -225,10 +222,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         throw new ServletException("Error in Photo path retrieval: ", e);
                     }
                 }
-            }
-            break;
-            case "prescriptions": {
-                if (user instanceof Chemist) {
+                break;
+                case "prescriptions": {
                     try {
                         String patientID = request.getParameter("patientID");
 
@@ -253,10 +248,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
                 }
-            }
-            break;
-            case "detailedInfo": {
-                if (user instanceof Chemist) {
+                break;
+                case "detailedInfo": {
                     Integer prescriptionID = Integer.valueOf(request.getParameter("item"));
                     List<Object> jsonResponse = new ArrayList<>();
 
@@ -304,11 +297,14 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
                 }
+                break;
             }
-            break;
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class PatientSearchResult implements Serializable {
         private Integer id;
         private String text;
@@ -338,6 +334,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class PrescriptionListElement implements Serializable {
         private String pract;
         private String drug;
@@ -363,5 +362,3 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         }
     }
 }
-
-

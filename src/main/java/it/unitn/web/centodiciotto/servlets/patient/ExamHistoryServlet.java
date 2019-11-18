@@ -1,6 +1,5 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
-
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
@@ -24,8 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Exam history servlet.
+ * ExamHistoryServlet for handling requests to /restricted/patient/exam_history.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> historyList: select2 AJAX response generator for returning a list of past {@link Exam}s done by the Patient
+ *     <li> examSearch: select2 AJAX response generator for returing detailed information about a particular {@link Exam}
+ * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/patient/exam_history")
 public class ExamHistoryServlet extends HttpServlet {
 
@@ -105,6 +113,9 @@ public class ExamHistoryServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class ExamHistoryElement implements Serializable {
         private String exam;
         private String date;
@@ -121,7 +132,7 @@ public class ExamHistoryServlet extends HttpServlet {
          * @param action      the action
          * @param ID          the id
          */
-        public ExamHistoryElement(String exam, String date, Boolean reportstate, Action action, Integer ID) {
+        ExamHistoryElement(String exam, String date, Boolean reportstate, Action action, Integer ID) {
             this.exam = exam;
             this.date = date;
             this.reportstate = reportstate;

@@ -22,7 +22,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Exam booking servlet.
+ * ExamBookingServlet for handling requests to /restricted/patient/exam_booking.
+ * <p>
+ * GET requests pass through.
+ * <p>
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> examList: select2 AJAX response generator for returning a list of available {@link Exam}s, all exams,
+ *                    or just one (selected via examSearch) to show to the Patient
+ *     <li> examSearch: select2 AJAX response generator for returing a list of {@link Exam}s the Patient is
+ *                      able to choose from a dropdown
+ *     <li> doctorSearch: select2 AJAX response generator for returing a list {@link SpecializedDoctor}s
+ *                        for the user to choose from and book an exam
+ *     <li> doctorExamBook: receives an {@code examID} of a pending Exam and assigns either a {@link HealthService} or
+ *                          a {@link SpecializedDoctor} doctor to it (but keeping it pending)
+ *     <li> detailedInfo: select2 AJAX response generator for building out a popup showing an additional select2
+ *                        selector served by doctorSearch
+ * </ul>
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/patient/exam_booking")
@@ -71,10 +87,10 @@ public class ExamBookingServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
 
-        switch (requestType) {
-            case "examList": {
-                try {
-                    if (user instanceof Patient) {
+        if (user instanceof Patient) {
+            switch (requestType) {
+                case "examList": {
+                    try {
                         Boolean onlyAvailable = Boolean.valueOf(request.getParameter("onlyAvailable"));
                         String examID = request.getParameter("examID");
 
@@ -115,14 +131,12 @@ public class ExamBookingServlet extends HttpServlet {
                         Gson gson = new Gson();
                         response.setContentType("application/json");
                         response.getWriter().write(gson.toJson(examListElements));
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
                     }
-                } catch (DAOException e) {
-                    throw new ServletException("Error in DAO usage: ", e);
+                    break;
                 }
-                break;
-            }
-            case "examSearch": {
-                if (user instanceof Patient) {
+                case "examSearch": {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -140,11 +154,9 @@ public class ExamBookingServlet extends HttpServlet {
                     Gson gson = new Gson();
                     response.setContentType("application/json");
                     response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    break;
                 }
-                break;
-            }
-            case "doctorSearch": {
-                if (user instanceof Patient) {
+                case "doctorSearch": {
                     String userInput = request.getParameter("term");
                     String examID = request.getParameter("examID");
 
@@ -182,19 +194,17 @@ public class ExamBookingServlet extends HttpServlet {
                             e.printStackTrace();
                         }
                     }
+
+                    break;
                 }
-                break;
-            }
-            case "doctorExamBook": {
-                try {
-                    if (user instanceof Patient) {
+                case "doctorExamBook": {
+                    try {
                         String examID = request.getParameter("examID");
                         String doctorID = request.getParameter("doctorID");
                         String isHealthService = request.getParameter("isHealthService");
 
                         if (examID != null && doctorID != null && isHealthService != null) {
                             ExamType examType = examTypeDAO.getByPrimaryKey(Integer.valueOf(examID));
-
                             Exam toUpdate = examDAO.getPendingByPatientAndExamType(user.getID(), examType.getID());
 
                             if (Boolean.parseBoolean(isHealthService)) {
@@ -210,16 +220,14 @@ public class ExamBookingServlet extends HttpServlet {
 
                             examDAO.update(toUpdate);
                         }
+                    } catch (NumberFormatException e) {
+                        throw new ServletException("Error ExamID is null", e);
+                    } catch (DAOException e) {
+                        throw new ServletException("DAOException while inserting doctorExam", e);
                     }
-                } catch (NumberFormatException e) {
-                    throw new ServletException("Error ExamID is null", e);
-                } catch (DAOException e) {
-                    throw new ServletException("DAOException while inserting doctorExam", e);
+                    break;
                 }
-                break;
-            }
-            case "detailedInfo": {
-                if (user instanceof Patient) {
+                case "detailedInfo": {
                     String examID = request.getParameter("item");
 
                     List<Object> jsonResponse = new ArrayList<>();
@@ -242,14 +250,15 @@ public class ExamBookingServlet extends HttpServlet {
                     Gson gson = new Gson();
                     response.setContentType("application/json");
                     response.getWriter().write(gson.toJson(jsonResponse));
+                    break;
                 }
-                break;
             }
-
         }
     }
 
-
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class ExamListElement implements Serializable {
         private String exam;
         private Action action;
@@ -269,7 +278,9 @@ public class ExamBookingServlet extends HttpServlet {
         }
     }
 
-
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
     private static class DoctorSearchResult implements Serializable {
         private String id;
         private String text;
