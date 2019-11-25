@@ -6,6 +6,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -55,6 +57,9 @@ public class PrescriptionServlet extends HttpServlet {
     private PatientDAO patientDAO;
 
     private PhotoService photoService;
+    private EmailService emailService;
+
+    private String contextPath;
 
     @Override
     public void init() throws ServletException {
@@ -86,8 +91,14 @@ public class PrescriptionServlet extends HttpServlet {
 
         try {
             photoService = PhotoService.getInstance();
+            emailService = EmailService.getInstance();
         } catch (ServiceException e) {
             throw new ServletException("Error in initializing services: ", e);
+        }
+
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
         }
     }
 
@@ -102,10 +113,18 @@ public class PrescriptionServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String ajax_type = request.getParameter("requestType");
+        String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         if (user instanceof GeneralPractitioner) {
-            switch (ajax_type) {
+            switch (requestType) {
                 case "patientList": {
                     try {
                         String patientID = request.getParameter("patientID");
@@ -135,9 +154,7 @@ public class PrescriptionServlet extends HttpServlet {
                             }
                         }
                         Gson gson = new Gson();
-
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(patientListElements));
+                        writer.write(gson.toJson(patientListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
@@ -148,8 +165,13 @@ public class PrescriptionServlet extends HttpServlet {
                 case "detailedInfo": {
                     String patientID = request.getParameter("item");
 
+                    if (patientID == null) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please choose a valid patient.\"}");
+                        return;
+                    }
+
                     List<Object> jsonResponse = new ArrayList<>();
-                    String contextPath = getServletContext().getContextPath();
 
                     jsonResponse.add(new HTMLElement().setElementType("form").
                             setElementClass("exam-form")
@@ -204,8 +226,7 @@ public class PrescriptionServlet extends HttpServlet {
                             .setElementScriptSrc(contextPath + "/js/details/prescription.js"));
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(jsonResponse));
+                    writer.write(gson.toJson(jsonResponse));
 
                     break;
                 }
@@ -225,16 +246,29 @@ public class PrescriptionServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
                     break;
                 }
                 case "examAdd": {
                     try {
-                        String examID = request.getParameter("examID");
+                        Integer examID;
                         String patientID = request.getParameter("patientID");
 
-                        ExamType examType = examTypeDAO.getByPrimaryKey(Integer.valueOf(examID));
+                        try {
+                            examID = Integer.valueOf(request.getParameter("examID"));
+                        } catch (NumberFormatException | NullPointerException e) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            return;
+                        }
+
+                        if (patientID == null) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            return;
+                        }
+
+                        ExamType examType = examTypeDAO.getByPrimaryKey(examID);
 
                         Exam newExam = new Exam();
                         newExam.setPatientID(patientID);
@@ -245,10 +279,24 @@ public class PrescriptionServlet extends HttpServlet {
                         newExam.setTicket(-1);
 
                         examDAO.insert(newExam);
+
+                        Patient patient = patientDAO.getByPrimaryKey(patientID);
+
+                        String message = "Dear " + patient.toString() + ",\n\n" +
+                                "your General Practitioner just prescribed you an exam:\n\n" +
+                                examType.getDescription() +
+                                "\n\nPlease visit CentoDiciotto to book this exam as soon as possible." +
+                                "\n\nYours,\nThe CentoDiciotto team.\n";
+                        String subject = "CentoDiciotto - Exam prescription notification";
+
+                        // Avviso il paziente dell'abilitazione dell'esame
+                        emailService.sendEmail(patientID, message, subject);
+
+                        writer.write("{}");
                     } catch (DAOException e) {
-                        throw new ServletException("Error with DAOs in :", e);
-                    } catch (NumberFormatException e) {
-                        throw new ServletException("Error ExamID is null", e);
+                        throw new ServletException("Error in DAO usage:", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in email sending: ", e);
                     }
                     break;
                 }
@@ -268,23 +316,35 @@ public class PrescriptionServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new DrugSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new DrugSearchResult[0]))));
 
                     break;
                 }
                 case "drugAdd": {
                     try {
-                        String drugID = request.getParameter("drugID");
+                        Integer drugID;
                         String patientID = request.getParameter("patientID");
 
-                        DrugType drugType = drugTypeDAO.getByPrimaryKey(Integer.valueOf(drugID));
+                        try {
+                            drugID = Integer.valueOf(request.getParameter("drugID"));
+                        } catch (NumberFormatException | NullPointerException e) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            return;
+                        }
+
+                        if (patientID == null) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        }
+
+                        DrugType drugType = drugTypeDAO.getByPrimaryKey(drugID);
 
                         DrugPrescription newPrescription = new DrugPrescription();
 
                         newPrescription.setPractitionerID(user.getID());
                         newPrescription.setPatientID(patientID);
-                        newPrescription.setDrugType(drugType);
+                        newPrescription.setType(drugType);
                         newPrescription.setDatePrescribed(new Timestamp(System.currentTimeMillis()));
                         newPrescription.setTicket(3);
                         newPrescription.setTicketPaid(false);
@@ -292,10 +352,23 @@ public class PrescriptionServlet extends HttpServlet {
 
                         drugPrescriptionDAO.insert(newPrescription);
 
+                        Patient patient = patientDAO.getByPrimaryKey(patientID);
+
+                        String message = "Dear " + patient.toString() + ",\n\n" +
+                                "your General Practitioner just prescribed you an drug:\n\n" +
+                                drugType.getDescription() +
+                                "\n\nPlease visit CentoDiciotto to retrieve your prescription as soon as possible." +
+                                "\n\nYours,\nThe CentoDiciotto team.\n";
+                        String subject = "CentoDiciotto - Drug prescription notification";
+
+                        // Avviso il paziente dell'abilitazione della precrizione
+                        emailService.sendEmail(patientID, message, subject);
+
+                        writer.write("{}");
                     } catch (DAOException e) {
-                        throw new ServletException("Error with DAOs in ", e);
-                    } catch (NumberFormatException e) {
-                        throw new ServletException("Error DrugID is null", e);
+                        throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in email sending: ", e);
                     }
                     break;
                 }

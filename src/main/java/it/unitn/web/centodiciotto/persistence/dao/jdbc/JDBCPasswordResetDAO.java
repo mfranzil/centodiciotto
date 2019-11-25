@@ -67,7 +67,6 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "PasswordResetDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating PasswordReset: ", e);
         }

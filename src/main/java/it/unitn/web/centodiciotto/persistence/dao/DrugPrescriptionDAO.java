@@ -47,5 +47,4 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
      * @throws DAOException in case of a malformed input or query
      */
     List<DrugPrescription> getUnpaidByPatient(String patientID) throws DAOException;
-
 }

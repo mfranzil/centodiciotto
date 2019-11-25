@@ -70,5 +70,4 @@ public interface DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
      * @throws DAOException in case of a malformed input or query
      */
     Long getCount() throws DAOException;
-
 }

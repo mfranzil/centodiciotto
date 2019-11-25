@@ -54,8 +54,8 @@
                             </tr>
                             <tr>
                                 <th>Gender</th>
-                                <td>${(sessionScope.user.gender eq 'M'.charAt(0)) ? "Male" :
-                                        (sessionScope.user.gender eq 'F'.charAt(0)) ? "Female" : "Not specified"}</td>
+                                <td>${(sessionScope.user.gender eq "M".charAt(0)) ? "Male" :
+                                        (sessionScope.user.gender eq "F".charAt(0)) ? "Female" : "Not specified"}</td>
                             </tr>
                             <tr>
                                 <th>SSN</th>

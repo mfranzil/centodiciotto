@@ -88,7 +88,6 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "RecallDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating Recall: ", e);
         }

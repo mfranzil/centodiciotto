@@ -6,14 +6,18 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * The type Custom dt formatter.
+ * Auxiliary class for system-wide date and time formatting.
+ * <p>
+ * Used by {@link it.unitn.web.centodiciotto.beans.CustomDTFormatterBean}, which is a wrapper.
  */
 public class CustomDTFormatter {
+
     /**
-     * Format date string.
+     * Gets a date-only representation of the time since epoch.
+     * <p>
+     * The Date is formatted as "MMMM dd, YYYY" (example: December 19, 2000)
      *
-     * @param date the date
-     * @return the string
+     * @return the formatted date
      */
     public static String formatDate(Date date) {
         return DateTimeFormatter.ofPattern("MMMM d, YYYY").withLocale(Locale.UK)
@@ -21,10 +25,11 @@ public class CustomDTFormatter {
     }
 
     /**
-     * Format time string.
+     * Gets a time-only representation of the time since epoch.
+     * <p>
+     * The time is formatted as "HH:MM" in 24H format (example: 20:05)
      *
-     * @param date the date
-     * @return the string
+     * @return the formatted time
      */
     public static String formatTime(Date date) {
         return DateTimeFormatter.ofPattern("HH:mm").withLocale(Locale.UK)
@@ -32,10 +37,11 @@ public class CustomDTFormatter {
     }
 
     /**
-     * Format date time string.
+     * Gets a date and time representation of the time since epoch.
+     * <p>
+     * The Date is formatted as "MMMM dd, YYYY HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
      *
-     * @param date the date
-     * @return the string
+     * @return the formatted date time
      */
     public static String formatDateTime(Date date) {
         return DateTimeFormatter.ofPattern("MMMM d, YYYY HH:mm").withLocale(Locale.UK)

@@ -7,8 +7,10 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
 
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -49,6 +52,9 @@ public class ExamRequestsServlet extends HttpServlet {
     private PatientDAO patientDAO;
 
     private PhotoService photoService;
+    private EmailService emailService;
+
+    private String contextPath;
 
     @Override
     public void init() throws ServletException {
@@ -59,15 +65,20 @@ public class ExamRequestsServlet extends HttpServlet {
         try {
             examDAO = daoFactory.getDAO(ExamDAO.class);
             patientDAO = daoFactory.getDAO(PatientDAO.class);
-
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
 
         try {
             photoService = PhotoService.getInstance();
+            emailService = EmailService.getInstance();
         } catch (ServiceException e) {
             throw new ServletException("Error in initializing services: ", e);
+        }
+
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
         }
     }
 
@@ -84,44 +95,75 @@ public class ExamRequestsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         switch (requestType) {
             case "requestBook": {
                 if (user instanceof SpecializedDoctor || user instanceof HealthService) {
-                    String examHandlerID = user.getID(); // Può essere doctor o HS
                     String patientID = request.getParameter("patientID");
                     String examID = request.getParameter("examID");
                     String examDate = request.getParameter("examDate");
                     String examTime = request.getParameter("examTime");
-                    DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
                     if (examDate == null || examTime == null || patientID == null
                             || examTime.equals("") || examDate.equals("") || examID == null) {
-                        throw new ServletException("Malformed input.");
-                    }
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please insert a valid date" +
+                                " and time.\"}");
+                    } else {
+                        try {
+                            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+                            Date date = formatter.parse(examDate + " " + examTime);
+                            Exam pendingExam;
 
-                    try {
-                        Date date = formatter.parse(examDate + " " + examTime);
+                            if (user instanceof SpecializedDoctor) {
+                                pendingExam = examDAO.getPendingByDoctorPatientType(user.getID(),
+                                        patientID, Integer.valueOf(examID));
+                            } else { // HealthService
+                                pendingExam = examDAO.getPendingByHSPatientType(user.getID(),
+                                        patientID, Integer.valueOf(examID));
+                            }
 
-                        Exam pendingExam;
+                            if (pendingExam != null) {
+                                pendingExam.setDate(new Timestamp(date.getTime()));
+                                pendingExam.setBooked(true);
+                                examDAO.update(pendingExam);
 
-                        if (user instanceof SpecializedDoctor) {
-                            pendingExam = examDAO.getPendingByDoctorPatientType(examHandlerID, patientID, Integer.valueOf(examID));
-                        } else {
-                            pendingExam = examDAO.getPendingByHSPatientType(examHandlerID, patientID, Integer.valueOf(examID));
+                                Patient patient = patientDAO.getByPrimaryKey(pendingExam.getPatientID());
+                                String handler = user instanceof SpecializedDoctor ? "Specialized Doctor" : "Local Health Service";
+
+                                String recipient = patient.getID();
+                                String message = "Dear " + patient.toString() + ",\n\n" +
+                                        "an exam with your " + handler + " was just appointed.\n\n" +
+                                        "Here are the exam details:\n\n" +
+                                        "Exam handler: " + user.toString() + "\n" +
+                                        "Date: " + CustomDTFormatter.formatDate(pendingExam.getDate()) +
+                                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                                String subject = "CentoDiciotto - Exam appointment notification";
+
+                                // Avviso il paziente dell'avvenuta aggiunta di data e ora
+                                emailService.sendEmail(recipient, message, subject);
+
+                                writer.write("{}");
+                            } else {
+                                response.setStatus(400);
+                                writer.write("{\"error\": \"Requested exam is not pending." +
+                                        " Cannot assign a date and time.\"}");
+                            }
+                        } catch (DAOException e) {
+                            throw new ServletException("Error in DAO usage: ", e);
+                        } catch (ParseException e) {
+                            throw new ServletException("Error in Date parsing: ", e);
+                        } catch (ServiceException e) {
+                            throw new ServletException("Error in email sending: ", e);
                         }
-
-                        if (pendingExam != null) {
-                            pendingExam.setDate(new Timestamp(date.getTime()));
-                            pendingExam.setBooked(true);
-                            examDAO.update(pendingExam);
-                        } else {
-                            throw new ServletException("Failed to find pending exam with this parameters.");
-                        }
-                    } catch (DAOException e) {
-                        throw new ServletException("Error in DAO usage: ", e);
-                    } catch (ParseException e) {
-                        throw new ServletException("Error in Date parsing: ", e);
                     }
                 }
                 break;
@@ -141,16 +183,16 @@ public class ExamRequestsServlet extends HttpServlet {
                         for (Exam exam : examList) {
                             Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            //TODO find better way to send both IDs
-                            examRequestListElements.add(new ExamRequestListElement(photoPath, patient.toString(), exam.getType().getDescription(), new Action("Choose date and time", true), patient.getID() + ";" + exam.getType().getID()));
+                            examRequestListElements.add(new ExamRequestListElement(
+                                    photoPath, patient.toString(), exam.getType().getDescription(),
+                                    new Action("Choose date and time", true),
+                                    patient.getID() + ";" + exam.getType().getID()));
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(examRequestListElements));
-
+                        writer.write(gson.toJson(examRequestListElements));
                     } catch (ServiceException e) {
-                        throw new ServletException("Error in getting PhotoService Instance: ", e);
+                        throw new ServletException("Error in retrieving Photo path: ", e);
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage in requestList: ", e);
                     }
@@ -159,6 +201,13 @@ public class ExamRequestsServlet extends HttpServlet {
             }
             case "detailedInfo": {
                 String patientIDExamID = request.getParameter("item");
+
+                if (patientIDExamID == null) {
+                    response.setStatus(400);
+                    writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                    return;
+                }
+
                 List<Object> jsonResponse = new ArrayList<>();
 
                 try {
@@ -166,31 +215,45 @@ public class ExamRequestsServlet extends HttpServlet {
                     String examID = patientIDExamID.split(";")[1];
 
                     Patient patient = patientDAO.getByPrimaryKey(patientID);
-                    String contextPath = getServletContext().getContextPath();
 
                     jsonResponse.add(new HTMLElement().setElementType("form").
                             setElementClass("set-exam")
                             .setElementFormMethod("POST"));
 
                     List<Object> setExamForm = new ArrayList<>();
-                    setExamForm.add(new HTMLElement().setElementType("p").setElementContent("Insert a date and time for the appointment, then confirm."));
-                    setExamForm.add(new HTMLElement().setElementType("div").setElementStyle("display: flex; width: 100%;"));
+                    setExamForm.add(new HTMLElement().setElementType("p")
+                            .setElementContent("Insert a date and time for " +
+                                    "the appointment, then confirm."));
+                    setExamForm.add(new HTMLElement().setElementType("div")
+                            .setElementStyle("display: flex; width: 100%;"));
 
                     List<Object> div = new ArrayList<>();
 
-                    div.add(new HTMLElement().setElementType("label").setElementStyle("flex: 50%").setElementClass("my-2 mr-1"));
+                    div.add(new HTMLElement().setElementType("label")
+                            .setElementStyle("flex: 50%").setElementClass("my-2 mr-1"));
                     List<HTMLElement> firstLabel = new ArrayList<>();
-                    firstLabel.add(new HTMLElement().setElementType("input").setElementInputName("examDate").setElementInputType("text").setElementInputAutocomplete("off").setElementClass("form-control datepicker exam-date"));
+                    firstLabel.add(new HTMLElement().setElementType("input")
+                            .setElementInputName("examDate").setElementInputType("text")
+                            .setElementInputAutocomplete("off")
+                            .setElementClass("form-control datepicker exam-date"));
                     div.add(firstLabel);
 
-                    div.add(new HTMLElement().setElementType("label").setElementStyle("flex: 50%").setElementClass("my-2 ml-1"));
+                    div.add(new HTMLElement().setElementType("label")
+                            .setElementStyle("flex: 50%").setElementClass("my-2 ml-1"));
                     List<HTMLElement> secondLabel = new ArrayList<>();
-                    secondLabel.add(new HTMLElement().setElementType("input").setElementInputName("examTime").setElementInputType("text").setElementInputAutocomplete("off").setElementClass("form-control timepicker exam-time"));
+                    secondLabel.add(new HTMLElement().setElementType("input")
+                            .setElementInputName("examTime").setElementInputType("text")
+                            .setElementInputAutocomplete("off")
+                            .setElementClass("form-control timepicker exam-time"));
                     div.add(secondLabel);
 
                     setExamForm.add(div);
-                    setExamForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden").setElementInputValue(patientID).setElementInputName("patientID"));
-                    setExamForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden").setElementInputValue(examID).setElementInputName("examID"));
+                    setExamForm.add(new HTMLElement().setElementType("input")
+                            .setElementInputType("hidden").setElementInputValue(patientID)
+                            .setElementInputName("patientID"));
+                    setExamForm.add(new HTMLElement().setElementType("input")
+                            .setElementInputType("hidden").setElementInputValue(examID)
+                            .setElementInputName("examID"));
                     setExamForm.add(new HTMLElement().setElementType("button")
                             .setElementClass("btn btn-lg btn-block btn-personal submit")
                             .setElementButtonType("submit")
@@ -203,13 +266,10 @@ public class ExamRequestsServlet extends HttpServlet {
                             .setElementScriptSrc(contextPath + "/js/details/examRequests.js"));
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(jsonResponse));
-
+                    writer.write(gson.toJson(jsonResponse));
                 } catch (DAOException e) {
-                    throw new ServletException("Error while getting patient detail in ExamRequestsServlet", e);
+                    throw new ServletException("Error in DAO usage: ", e);
                 }
-
                 break;
             }
         }

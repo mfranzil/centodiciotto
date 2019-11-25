@@ -8,6 +8,7 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.services.CryptoService;
+import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 
@@ -41,6 +42,7 @@ public class UserServlet extends HttpServlet {
 
     private CryptoService cryptoService;
     private PhotoService photoService;
+    private EmailService emailService;
 
     @Override
     public void init() throws ServletException {
@@ -57,6 +59,7 @@ public class UserServlet extends HttpServlet {
         try {
             cryptoService = CryptoService.getInstance();
             photoService = PhotoService.getInstance();
+            emailService = EmailService.getInstance();
         } catch (ServiceException e) {
             throw new ServletException("Error in initializing services: ", e);
         }
@@ -74,6 +77,14 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         switch (requestType) {
             case "passwordChange": {
@@ -82,19 +93,34 @@ public class UserServlet extends HttpServlet {
                         String oldPassword = request.getParameter("oldPassword");
                         String newPassword = request.getParameter("newPassword");
 
-                        if (newPassword.length() < 8 || newPassword.length() > 64) {
-                            throw new ServletException("Password must be between 8 and 64 characters.");
-                        }
-
-                        if (cryptoService.isCurrentPassword(user.getID(), oldPassword)) {
-                            cryptoService.changePassword(user.getID(), newPassword);
-                            response.setStatus(200);
-                        } else {
+                        if (oldPassword == null || newPassword == null ||
+                                newPassword.length() < 8 || newPassword.length() > 64) {
                             response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. " +
+                                    "Please insert your old password and a new one wtih 8 to 64 characters.\"}");
+                        } else {
+                            if (cryptoService.isCurrentPassword(user.getID(), oldPassword)) {
+                                cryptoService.changePassword(user.getID(), newPassword);
+
+                                String recipient = user.getID();
+                                String message = "Dear " + user.toString() + ",\n\n" +
+                                        "your account password has been changed. If this wasn't you," +
+                                        " please request a password reset immediately or contact us." +
+                                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                                String subject = "CentoDiciotto - Password change notification";
+
+                                // Avviso l'utente del cambio password
+                                emailService.sendEmail(recipient, message, subject);
+
+                                writer.write("{}");
+                            } else {
+                                response.setStatus(400);
+                                writer.write("{\"error\": \"Invalid existing password. " +
+                                        "Please type your current password.\"}");
+                            }
                         }
                     } catch (ServiceException e) {
-                        response.setStatus(400);
-                        throw new ServletException("Failed to change password: ", e);
+                        throw new ServletException("Failed to change password / send email: ", e);
                     }
                 }
                 break;
@@ -103,10 +129,15 @@ public class UserServlet extends HttpServlet {
                 if (user instanceof Patient) {
                     OutputStream out = null;
                     InputStream filecontent = null;
-                    String json = "{\"output\": false}";
 
                     Part filePart = request.getPart("avatarSelect");
                     String extension = request.getParameter("extension");
+
+                    if (filePart == null || extension == null) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"File upload failed. Please try again.\"}");
+                        return;
+                    }
 
                     Photo photo = new Photo();
                     photo.setPatientID(user.getID());
@@ -115,13 +146,14 @@ public class UserServlet extends HttpServlet {
                     try {
                         photoDAO.insert(photo);
 
-                        String fileName = Integer.toString(photo.getID());
+                        String fileName = photo.getID() + "." + extension;
                         String path = getServletContext().getRealPath("/")
                                 + photoService.getPatientAvatarFolder(user.getID());
 
+                        // Create the necessary folder path if the user hasn't uploaded one yet
                         Files.createDirectories(Paths.get(path));
 
-                        out = new FileOutputStream(new File(path + File.separator + fileName + "." + extension));
+                        out = new FileOutputStream(new File(path + File.separator + fileName));
                         filecontent = filePart.getInputStream();
 
                         int read;
@@ -131,10 +163,8 @@ public class UserServlet extends HttpServlet {
                             out.write(bytes, 0, read);
                         }
 
-                        response.setStatus(200);
-                        json = "{\"output\": true}";
+                        writer.write("{\"output\": true}");
                     } catch (DAOException e) {
-                        response.setStatus(400);
                         throw new ServletException("Error in DAO usage: ", e);
                     } finally {
                         if (out != null) {
@@ -143,7 +173,6 @@ public class UserServlet extends HttpServlet {
                         if (filecontent != null) {
                             filecontent.close();
                         }
-                        response.getWriter().write(json);
                     }
                 }
                 break;

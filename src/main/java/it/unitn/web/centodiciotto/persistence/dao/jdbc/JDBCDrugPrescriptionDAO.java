@@ -60,7 +60,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, drugPrescription.getPractitionerID());
             stm.setString(2, drugPrescription.getPatientID());
-            stm.setInt(3, drugPrescription.getDrugType().getID());
+            stm.setInt(3, drugPrescription.getType().getID());
             stm.setTimestamp(4, drugPrescription.getDatePrescribed());
             stm.setTimestamp(5, drugPrescription.getDateSold());
             stm.setString(6, drugPrescription.getChemistID());
@@ -81,7 +81,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, drugPrescription.getPractitionerID());
             stm.setString(2, drugPrescription.getPatientID());
-            stm.setInt(3, drugPrescription.getDrugType().getID());
+            stm.setInt(3, drugPrescription.getType().getID());
             stm.setTimestamp(4, drugPrescription.getDatePrescribed());
             stm.setTimestamp(5, drugPrescription.getDateSold());
             stm.setString(6, drugPrescription.getChemistID());
@@ -92,7 +92,6 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "DrugPrescriptionDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating DrugPrescription: ", e);
         }
@@ -226,7 +225,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             drugPrescription.setID(rs.getInt("drug_prescription_id"));
             drugPrescription.setPractitionerID(rs.getString("practitioner_id"));
             drugPrescription.setPatientID(rs.getString("patient_id"));
-            drugPrescription.setDrugType(drugType);
+            drugPrescription.setType(drugType);
             drugPrescription.setDatePrescribed(rs.getTimestamp("date_prescribed"));
             drugPrescription.setDateSold(rs.getTimestamp("date_sold"));
             drugPrescription.setChemistID(rs.getString("chemist_id"));

@@ -9,11 +9,11 @@ $("document").ready(function () {
             data: function (params) {
                 return {
                     term: params.term,
-                    examID: this.parent().find('input[name="examID"]').val(),
-                    requestType: 'doctorSearch'
+                    examID: this.parent().find("input[name='examID']").val(),
+                    requestType: "doctorSearch"
                 }
             },
-            url: getContextPath() + "/restricted/patient/exam_booking",
+            url: getContextPath() + "restricted/patient/exam_booking",
             dataType: "json",
         },
     }).val(null);
@@ -22,18 +22,17 @@ $("document").ready(function () {
         e.preventDefault();
 
         let form = $(this);
-        let url = form.attr('action');
+        let url = form.attr("action");
 
         let doctor = form.find(".doctor-search");
         let label = form.find(".doctor-label");
 
         let d = doctor.select2("data")[0].healthService;
-        console.log(d);
 
         if (doctor.val() == null) {
-            label.text('Please select an exam');
+            label.text("Please select an exam");
         } else {
-            label.text('');
+            label.text("");
 
             let data = $(this).serializeArray();
             data.push({name: "isHealthService", value: doctor.select2("data")[0].healthService});
@@ -44,11 +43,8 @@ $("document").ready(function () {
                 cache: false,
                 data: data,
                 success: function () {
-                    label.text("Exam booked successfully");
+                    label.text("Exam booked successfully.");
                     setTimeout(() => window.location.reload(), 750);
-                },
-                error: function () {
-                    label.text("Error while booking exam. Patient may already have a pending exam");
                 }
             });
         }

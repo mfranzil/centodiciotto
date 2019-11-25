@@ -7,11 +7,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 5%;
+                width: 7%;
             }
 
             .table-cell.patient {
-                width: 40%;
+                width: 43%;
             }
 
             .table-cell.ssn {
@@ -25,7 +25,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
 
             $(".set-visit").submit(function (e) {
                 e.preventDefault();
@@ -56,13 +56,13 @@
                 changeYear: true,
                 showButtonPanel: true,
             });
-            $('input.timepicker').timepicker({
-                timeFormat: 'HH:mm',
+            $("input.timepicker").timepicker({
+                timeFormat: "HH:mm",
                 interval: 15,
-                minTime: '8:30',
-                maxTime: '19:00',
-                defaultTime: '8:30',
-                startTime: '8:30',
+                minTime: "8:30",
+                maxTime: "19:00",
+                defaultTime: "8:30",
+                startTime: "8:30",
                 dropdown: true,
                 scrollbar: true
             });

@@ -56,7 +56,6 @@ function getDetails(id, url) {
 
         },
         success: function (json) {
-            console.log(json);
             buildHtmlFromJson(json, content);
             $(".loading").slideUp();
         }
@@ -164,7 +163,7 @@ $("document").ready(function () {
                                 let loadingImage = document.createElement("img");
                                 loadingImage.classList.add("rotating");
                                 loadingImage.style.width = "64px";
-                                loadingImage.src = getContextPath() + "/img/logo_blue.svg";
+                                loadingImage.src = getContextPath() + "img/logo_blue.svg";
                                 loadingImage.alt = "Loading";
                                 loading.append(loadingImage);
 

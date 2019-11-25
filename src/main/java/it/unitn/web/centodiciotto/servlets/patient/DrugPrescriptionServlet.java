@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * DrugPrescriptionServlet for handling requests to /restricted/patient/prescriptions.
@@ -72,11 +73,27 @@ public class DrugPrescriptionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
         if (user instanceof Patient) {
             String practitionerID = request.getParameter("practitionerID");
-            int prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
             String patientID = request.getParameter("patientID");
+            Integer prescriptionID;
+
+            try {
+                prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
+            } catch (NumberFormatException | NullPointerException e) {
+                response.setStatus(400);
+                writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                return;
+            }
+
+            if (practitionerID == null || patientID == null) {
+                response.setStatus(400);
+                writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                return;
+            }
 
             try {
                 GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(practitionerID);

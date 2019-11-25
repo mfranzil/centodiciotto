@@ -1,7 +1,11 @@
 package it.unitn.web.centodiciotto.utils.entities.jsonelements;
 
+import com.google.gson.Gson;
+
 /**
- * The type Json results.
+ * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+ * <p>
+ * Used by all classes that implement JSON functionality as a wrapper for returning their results.
  *
  * @param <T> the type parameter
  */

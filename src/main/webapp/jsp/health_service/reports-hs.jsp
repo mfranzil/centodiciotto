@@ -6,7 +6,7 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
             let datepicker = $(".datepicker");
             $("#include,#generate-new,#download,#loading-container").hide();
 
@@ -34,7 +34,7 @@
                 let form = $(this);
                 let data = form.serialize();
 
-                $('#submit').prop("disabled", true).html("Requesting...");
+                $("#submit").prop("disabled", true).html("Requesting...");
                 $("input").prop("disabled", true);
                 $("#loading-container").slideDown();
 
@@ -49,9 +49,6 @@
                     cache: false,
                     data: data,
                     success: function (result) {
-                        result = JSON.parse(result);
-
-                        console.log(result);
                         $("#submit,#loading-container").slideUp();
                         $("#generate-new,#download").slideDown();
                         $(".datepicker").prop("disabled", true);
@@ -60,15 +57,14 @@
                             window.location.href = result.path;
                         });
                     },
-                    error: function (result) {
-                        alert("Error while generating the report. Please try again.");
-                        location.reload();
+                    error: function () {
+                        window.location.reload(); // TODO evitare i reload
                     }
                 });
             });
 
             $("#generate-new").click(function () {
-                location.reload();
+                window.location.reload();
             });
         });
     </script>

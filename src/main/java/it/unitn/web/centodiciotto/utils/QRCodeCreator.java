@@ -7,11 +7,11 @@ import net.glxn.qrgen.image.ImageType;
 import java.util.List;
 
 /**
- * The type Qr code creator.
+ * Wrapper class for the createQRCodeURL method.
  */
 public class QRCodeCreator {
     /**
-     * Create qr code url qr code.
+     * Creates a new QR code with a given url and parameters and size.
      *
      * @param url        the url
      * @param parameters the parameters

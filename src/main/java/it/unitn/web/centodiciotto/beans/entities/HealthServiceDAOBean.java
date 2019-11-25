@@ -39,7 +39,6 @@ public class HealthServiceDAOBean implements Serializable {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
-
         } catch (DAOFactoryException e) {
             throw new BeanException("Error in DAO retrieval: ", e);
         }

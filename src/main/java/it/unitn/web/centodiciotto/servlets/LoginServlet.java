@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,17 +26,31 @@ import java.util.logging.Logger;
  * session attributes and eventually redirects the user to the referral URL received in the request (which
  * will be filtered by an {@link it.unitn.web.centodiciotto.filters.AuthenticationFilter} for role compatibility)
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+
+    private String contextPath;
+
+    private CryptoService cryptoService;
+
+    @Override
+    public void init() throws ServletException {
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
+        }
+
+        try {
+            cryptoService = CryptoService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
+        }
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
-            String contextPath = getServletContext().getContextPath();
-            if (!contextPath.endsWith("/")) {
-                contextPath += "/";
-            }
-
             response.sendRedirect(response.encodeRedirectURL(contextPath));
         } else {
             request.getRequestDispatcher("/jsp/login.jsp").forward(request, response);
@@ -44,10 +59,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
@@ -57,38 +70,44 @@ public class LoginServlet extends HttpServlet {
                 String password = request.getParameter("password");
                 String role = request.getParameter("role");
                 String rememberMe = request.getParameter("rememberMe");
-                String referrer = request.getParameter("referrer");
+                String referrer = request.getParameter("referrer"); // Nullable
 
-                CryptoService cryptoService = CryptoService.getInstance();
-                User user = cryptoService.authenticate(userID, password, role);
                 String json;
 
-                if (user == null) {
+                if (userID == null || password == null || role == null || rememberMe == null) {
                     response.setStatus(400);
-                    json = "{\"url\":\"\"}";
+                    json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
                 } else {
-                    if (rememberMe != null && rememberMe.equals("on")) {
-                        request.getSession().setMaxInactiveInterval(2592000);
-                    }
+                    User user = cryptoService.authenticate(userID, password, role);
 
-                    request.getSession().setAttribute("user", user);
-                    request.getSession().setAttribute("role", role);
-                    request.getSession().setAttribute("displayName", getDisplayName(user));
-
-                    response.setStatus(200);
-                    if (!Objects.equals(referrer, "")
-                            && !referrer.equals(request.getContextPath() + "/restricted/logout_handler")) {
-                        json = "{\"url\":\"" + referrer.replace('$', '&') + "\"}";
+                    if (user == null) {
+                        response.setStatus(400);
+                        json = "{\"error\":\"Invalid username or password.\"}";
                     } else {
-                        json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
+                        if (rememberMe.equals("on")) {
+                            request.getSession().setMaxInactiveInterval(2592000);
+                        }
+
+                        request.getSession().setAttribute("user", user);
+                        request.getSession().setAttribute("role", role);
+                        request.getSession().setAttribute("displayName", getDisplayName(user));
+
+                        // To avoid corner cases in which the user tries to visit the logout page,
+                        // which is restricted, and would be redirected immediately to it upon login
+                        if (!Objects.equals(referrer, null) &&
+                                referrer.equals(request.getContextPath() + "restricted/logout_handler")) {
+                            json = "{\"url\":\"" + response.encodeRedirectURL(
+                                    contextPath + "restricted/user") + "\"}";
+                        } else {
+                            json = "{\"url\":\"" + referrer.replace('$', '&') + "\"}";
+                        }
+
+                        Logger.getGlobal().log(Level.INFO,
+                                "User " + userID + " logged in with role "
+                                        + role + " - redirected with JSON " + json);
                     }
-
-                    Logger.getGlobal().log(Level.INFO,
-                            "User " + userID + " logged in with role "
-                                    + role + " - redirected with JSON " + json);
                 }
-
-                response.getWriter().write(json);
+                writer.write(json);
             } catch (ServiceException e) {
                 throw new ServletException("Failed to authenticate user: ", e);
             }

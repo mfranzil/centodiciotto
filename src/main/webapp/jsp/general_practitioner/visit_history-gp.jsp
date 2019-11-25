@@ -10,11 +10,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 5%;
+                width: 7%;
             }
 
             .table-cell.name {
-                width: 35%;
+                width: 33%;
             }
 
             .table-cell.ssn {
@@ -32,7 +32,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
 
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},
@@ -56,7 +56,6 @@
                     },
                     url: url,
                     success: function (json) {
-                        console.log(json);
                         $("#history-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();

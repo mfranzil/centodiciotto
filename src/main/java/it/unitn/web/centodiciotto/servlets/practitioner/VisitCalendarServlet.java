@@ -6,8 +6,12 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
+import it.unitn.web.centodiciotto.services.EmailService;
+import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * VisitCalendarServlet for handling requests to /restricted/general_practitioner/visit_calendar
@@ -26,8 +31,11 @@ import java.io.IOException;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/general_practitioner/visit_calendar")
 public class VisitCalendarServlet extends HttpServlet {
+
     private PatientDAO patientDAO;
     private VisitDAO visitDAO;
+
+    private EmailService emailService;
 
     @Override
     public void init() throws ServletException {
@@ -40,6 +48,12 @@ public class VisitCalendarServlet extends HttpServlet {
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -54,22 +68,46 @@ public class VisitCalendarServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
         if (user instanceof GeneralPractitioner) {
             Integer visitID;
 
             try {
                 visitID = Integer.valueOf(request.getParameter("visitID"));
-            } catch (NumberFormatException e) {
-                throw new ServletException("Malformed input: ", e);
+            } catch (NumberFormatException | NullPointerException e) {
+                response.setStatus(400);
+                writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+                return;
             }
 
             try {
                 Visit visit = visitDAO.getByPrimaryKey(visitID);
                 visit.setReportAvailable(true);
                 visitDAO.update(visit);
+
+                Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
+
+                String recipient = patient.getID();
+                String message = "Dear " + patient.toString() + ",\n\n" +
+                        "your visit with your General Practitioner was just completed.\n\n" +
+                        "Here are the visit details:\n\n" +
+                        "Practitioner: " + user.toString() + "\n" +
+                        "Date: " + CustomDTFormatter.formatDate(visit.getDate()) +
+                        "\n\nYou will receieve an additional notification once" +
+                        " your General Practitioner inserts a report." +
+                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                String subject = "CentoDiciotto - Visit completion notification";
+
+                // Avviso il paziente del completamento della visita
+                emailService.sendEmail(recipient, message, subject);
+
+                writer.write("{}");
             } catch (DAOException e) {
                 throw new ServletException("Error in DAO usage: ", e);
+            } catch (ServiceException e) {
+                throw new ServletException("Error in email sending: ", e);
             }
         }
     }

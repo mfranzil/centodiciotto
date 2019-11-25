@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,14 @@ public class ExamHistoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         switch (requestType) {
             case "historyList": {
@@ -82,8 +91,7 @@ public class ExamHistoryServlet extends HttpServlet {
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(examHistoryElements));
+                        writer.write(gson.toJson(examHistoryElements));
                     }
                 } catch (DAOException e) {
                     throw new ServletException("Error in DAO usage: ", e);
@@ -95,6 +103,12 @@ public class ExamHistoryServlet extends HttpServlet {
                     if (user instanceof Patient) {
                         String examID = request.getParameter("item");
 
+                        if (examID == null) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                            return;
+                        }
+
                         List<Object> jsonResponse = new ArrayList<>();
                         Exam currentExam = examDAO.getByPrimaryKey(Integer.valueOf(examID));
 
@@ -102,8 +116,7 @@ public class ExamHistoryServlet extends HttpServlet {
                         jsonResponse.add(new HTMLElement().setElementType("p").setElementContent(currentExam.getResult()));
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(jsonResponse));
+                        writer.write(gson.toJson(jsonResponse));
                     }
                 } catch (DAOException e) {
                     throw new ServletException("Error in DAO usage: ", e);

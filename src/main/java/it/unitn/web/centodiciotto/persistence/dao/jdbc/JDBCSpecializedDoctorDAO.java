@@ -52,7 +52,6 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "SpecializedDoctorDAO::insert affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error inserting Specialized Doctor: ", e);
         }
@@ -69,7 +68,6 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "SpecializedDoctorDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating SpecializedDoctor: ", e);
         }

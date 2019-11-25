@@ -9,6 +9,9 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.services.EmailService;
+import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
 
@@ -18,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -53,12 +57,15 @@ public class RecallsServlet extends HttpServlet {
     private RecallDAO recallDAO;
     private PatientDAO patientDAO;
 
+    private EmailService emailService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
+
         try {
             examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
@@ -72,6 +79,13 @@ public class RecallsServlet extends HttpServlet {
         } catch (DAOFactoryException | DAOException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
+
+        try {
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
+        }
+
     }
 
     @Override
@@ -87,6 +101,14 @@ public class RecallsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         if (user instanceof HealthService) {
             switch (requestType) {
@@ -98,15 +120,14 @@ public class RecallsServlet extends HttpServlet {
                         for (Recall recall : recallList) {
                             patientListElements.add(new TableExam(
                                     recall.getExamType().getDescription(),
-                                    recall.getStartDate().toString(),
+                                    CustomDTFormatter.formatDate(recall.getStartDate()),
                                     recall.getMinAge() + " - " + recall.getMaxAge()
                             ));
                         }
 
                         Gson gson = new Gson();
 
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(patientListElements));
+                        writer.write(gson.toJson(patientListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
@@ -130,6 +151,16 @@ public class RecallsServlet extends HttpServlet {
 
                             recallDAO.insert(recall);
 
+                            String recipient = user.getID();
+                            String message = "Dear " + user.toString() + ",\n\n" +
+                                    "a recall was just started in your local SSP area for this exam:\n\n" +
+                                    examType.getDescription() +
+                                    "\n\nYours,\nThe CentoDiciotto team.\n";
+                            String subject = "CentoDiciotto - Recall start notification";
+
+                            // Avviso l'HS dell'avvenuto inizio del recall
+                            emailService.sendEmail(recipient, message, subject);
+
                             List<Patient> allPatients = patientDAO.getByProvince(
                                     ((HealthService) user).getOperatingProvince().getAbbreviation());
 
@@ -150,18 +181,34 @@ public class RecallsServlet extends HttpServlet {
                                         exam.setRecall(recall.getID());
 
                                         examDAO.insert(exam);
+
+                                        recipient = patient.getID();
+                                        message = "Dear " + patient.toString() + ",\n\n" +
+                                                "a recall was just started in your local SSP area for this exam:\n\n" +
+                                                examType.getDescription() + "\n\nPlease contact a Specialized Doctor " +
+                                                "as soon as possible to book this exam." +
+                                                "\n\nYours,\nThe CentoDiciotto team.\n";
+                                        subject = "CentoDiciotto - Recall exam notification";
+
+                                        // Avviso il paziente dell'inizio del recall
+                                        emailService.sendEmail(recipient, message, subject);
                                     }
                                 }
                             }
 
-                            response.setContentType("application/json");
-                            String json = "{\"output\": true}";
-                            response.getWriter().write(json);
+                            writer.write("{}");
+                        } else {
+                            response.setStatus(400);
+                            writer.write("{\"error\":\"Invalid input (age range must be between 0 and 130).\"}");
                         }
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in email sending: ", e);
                     } catch (NumberFormatException | NullPointerException e) {
-                        throw new ServletException("Malformed input: ", e);
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        return;
                     }
                     break;
                 }
@@ -183,14 +230,13 @@ public class RecallsServlet extends HttpServlet {
                             } else {
                                 tableExams.add(new TableExam(
                                         lastRecall.getExamType().getDescription(),
-                                        lastRecall.getStartDate().toString(),
+                                        CustomDTFormatter.formatDateTime(lastRecall.getStartDate()),
                                         lastRecall.getMinAge() + " - " + lastRecall.getMaxAge()));
                             }
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(tableExams));
+                        writer.write(gson.toJson(tableExams));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
@@ -210,8 +256,7 @@ public class RecallsServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
                 }
                 break;
             }

@@ -70,7 +70,6 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "PhotoDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating Photo: ", e);
         }

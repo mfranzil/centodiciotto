@@ -3,10 +3,10 @@ package it.unitn.web.centodiciotto.utils.entities;
 import java.util.Objects;
 
 /**
- * The type Pair.
+ * Simple class that mimics a JavaFX pair and allows coupling of two {@link Object}s of an arbitrary type.
  *
- * @param <F> the type parameter
- * @param <S> the type parameter
+ * @param <F> first item
+ * @param <S> second item
  */
 public class Pair<F, S> {
     private final F first;
@@ -15,8 +15,8 @@ public class Pair<F, S> {
     /**
      * Instantiates a new Pair.
      *
-     * @param first  the first
-     * @param second the second
+     * @param first  the first item
+     * @param second the second item
      */
     public Pair(F first, S second) {
         this.first = first;
@@ -26,10 +26,10 @@ public class Pair<F, S> {
     /**
      * Make pair pair.
      *
-     * @param <A> the type parameter
-     * @param <B> the type parameter
-     * @param a   the a
-     * @param b   the b
+     * @param <A> the first item's type
+     * @param <B> the second item's type
+     * @param a   the first item
+     * @param b   the second item
      * @return the pair
      */
     public static <A, B> Pair<A, B> makePair(A a, B b) {
@@ -51,18 +51,18 @@ public class Pair<F, S> {
     }
 
     /**
-     * Gets first.
+     * Gets the first item.
      *
-     * @return the first
+     * @return the first item
      */
     public F getFirst() {
         return first;
     }
 
     /**
-     * Gets second.
+     * Gets the second item.
      *
-     * @return the second
+     * @return the second item
      */
     public S getSecond() {
         return second;

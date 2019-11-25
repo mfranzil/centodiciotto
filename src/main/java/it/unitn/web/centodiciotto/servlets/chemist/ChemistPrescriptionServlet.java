@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -61,6 +62,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
     private PhotoService photoService;
     private EmailService emailService;
 
+    private String contextPath;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -83,61 +86,92 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         } catch (ServiceException e) {
             throw new ServletException("Error in initializing services: ", e);
         }
+
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        PrintWriter writer = response.getWriter();
 
         if (user instanceof Chemist) {
             String action = request.getParameter("action");
             request.setAttribute("action", "none");
 
             if (action != null && action.equals("qr")) {
+                String practitionerID = null;
+                String patientID = null;
+                Integer prescriptionID = null;
+
                 try {
-                    String practitionerID = request.getParameter("practitionerID");
-                    String patientID = request.getParameter("patientID");
-                    Integer prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
-
-                    DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
-                    Patient patient = patientDAO.getByPrimaryKey(patientID);
-                    GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
-
-                    if (practitioner != null && patient != null && prescription != null) {
-                        if (prescription.getChemistID() == null
-                                && prescription.getDateSold() == null
-                                && !prescription.getTicketPaid()) {
-
-                            request.setAttribute("action", "qr");
-                            request.setAttribute("patient", patient);
-                            request.setAttribute("patientPhoto", photoService.getLastPhoto(patientID));
-                            request.setAttribute("practitioner", practitioner);
-                            request.setAttribute("prescription", prescription);
-                        }
-                    }
-                } catch (DAOException | NullPointerException | NumberFormatException e) {
-                    throw new ServletException("Malformed request (error in DAO or parameters): ", e);
-                } catch (ServiceException e) {
-                    throw new ServletException("Error in Photo path retrieval: ", e);
+                    practitionerID = request.getParameter("practitionerID");
+                    patientID = request.getParameter("patientID");
+                    prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
+                } catch (NumberFormatException | NullPointerException e) {
+                    response.setStatus(400);
+                    writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                    return;
                 }
+
+                if (practitionerID != null && patientID != null) {
+                    try {
+                        DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                        Patient patient = patientDAO.getByPrimaryKey(patientID);
+                        GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(practitionerID);
+
+                        if (practitioner != null && patient != null && prescription != null) {
+                            if (prescription.getChemistID() == null && prescription.getDateSold() == null
+                                    && !prescription.getTicketPaid()) {
+                                request.setAttribute("action", "qr");
+                                request.setAttribute("patient", patient);
+                                request.setAttribute("patientPhoto", photoService.getLastPhoto(patientID));
+                                request.setAttribute("practitioner", practitioner);
+                                request.setAttribute("prescription", prescription);
+                            }
+                        }
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in Photo path retrieval: ", e);
+                    }
+                }
+
             }
             request.getRequestDispatcher("/jsp/chemist/prescriptions-c.jsp").forward(request, response);
+        } else {
+            response.sendRedirect(response.encodeRedirectURL(contextPath));
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String ajax_type = request.getParameter("requestType");
+        String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
         }
+
         if (user instanceof Chemist) {
-            switch (ajax_type) {
+            switch (requestType) {
                 case "serve": {
-                    Integer prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
+                    Integer prescriptionID;
+
+                    try {
+                        prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
+                    } catch (NumberFormatException | NullPointerException e) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input.\"}");
+                        return;
+                    }
 
                     try {
                         DrugPrescription dp = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
@@ -145,6 +179,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         if (!dp.getTicketPaid() && dp.getChemistID() == null && dp.getDateSold() == null) {
                             dp.setDateSold(new Timestamp(System.currentTimeMillis()));
                             dp.setChemistID(user.getID());
+                            dp.setPatientID(null);
                             drugPrescriptionDAO.update(dp);
 
                             Logger.getGlobal().log(Level.INFO,
@@ -157,36 +192,32 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
                             String recipient = patient.getID();
                             String message = "Dear " + patient.toString() + ",\n\n" +
-                                    "a drug prescription was just dispatched to you. Here are the details:\n" +
-                                    "\n" +
-                                    "Drug: " + dp.getDrugType().getDescription() + "\n" +
-                                    "Prescription: " + dp.getDescription() + "\n" +
-                                    "\n" +
+                                    "a drug prescription was just dispatched to you. Here are the details:\n\n" +
+                                    "Drug: " + dp.getType().getDescription() + "\n" +
+                                    "Prescription: " + dp.getDescription() + "\n\n" +
                                     "General practitioner: " + practitioner.toString() + "\n" +
-                                    "Chemist's: " + chemist.toString() + "\n" +
-                                    "\n" +
+                                    "Chemist's: " + chemist.toString() + "\n\n" +
                                     "Prescription date: " + dp.getDatePrescribed() + "\n" +
                                     "Dispatch date: " + dp.getDateSold() + "\n\n" +
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
-                            String subject = "CentoDiciotto <li> Patient change notification";
+                            String subject = "CentoDiciotto - Drug disptach notification";
 
                             // Avviso il paziente dell'avvenuta ricezione del farmaco
                             emailService.sendEmail(recipient, message, subject);
 
-                            response.setStatus(200);
-                            response.getWriter().write("{\"patientID\": \"" + dp.getPatientID() + "\"}");
+                            writer.write("{\"patientID\": \"" + dp.getPatientID() + "\"}");
                         } else {
                             response.setStatus(400);
-                            response.getWriter().write("{\"patientID\": \"\"}");
+                            writer.write("{\"error\": \"Prescription is invalid " +
+                                    "or has already been activated.\"}");
                         }
-
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Email sending: ", e);
                     }
+                    break;
                 }
-                break;
                 case "patientSearch": {
                     try {
                         String userInput = request.getParameter("term");
@@ -205,27 +236,31 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         int id = 0;
                         for (Patient patient : allPatients) {
                             results.add(new PatientSearchResult(
-                                    id++, patient.toString() + " <li> " + patient.getSSN(),
+                                    id++, patient.toString() + " - " + patient.getSSN(),
                                     patient.getID(),
                                     patient.toString(),
                                     patient.getSSN(),
                                     photoService.getLastPhoto(patient.getID())));
                         }
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(
+                        writer.write(gson.toJson(
                                 new JSONResults<>(results.toArray(new PatientSearchResult[0]))));
-
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Photo path retrieval: ", e);
                     }
+                    break;
                 }
-                break;
                 case "prescriptions": {
                     try {
                         String patientID = request.getParameter("patientID");
+
+                        if (patientID == null) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            return;
+                        }
 
                         List<DrugPrescription> prescriptionList = drugPrescriptionDAO.getValidByPatient(patientID);
 
@@ -235,25 +270,24 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                                     generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
                             patientListElements.add(new PrescriptionListElement(
                                     practitioner.toString(),
-                                    prescription.getDrugType().getDescription(),
+                                    prescription.getType().getDescription(),
                                     CustomDTFormatter.formatDate(new Date(prescription.getDatePrescribed().getTime())),
                                     prescription.getID(),
                                     "Dispatch prescription"));
                         }
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(patientListElements));
-
+                        writer.write(gson.toJson(patientListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
+                    break;
                 }
-                break;
                 case "detailedInfo": {
-                    Integer prescriptionID = Integer.valueOf(request.getParameter("item"));
-                    List<Object> jsonResponse = new ArrayList<>();
-
                     try {
+                        Integer prescriptionID = Integer.valueOf(request.getParameter("item"));
+
+                        List<Object> jsonResponse = new ArrayList<>();
+
                         DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
                         Patient patient = patientDAO.getByPrimaryKey(prescription.getPatientID());
                         GeneralPractitioner practitioner = generalPractitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
@@ -266,7 +300,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         jsonResponse.add(JSONUtils.createTableEntry("Practitioner name", practitioner.toString()));
                         jsonResponse.add(JSONUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
                         jsonResponse.add(JSONUtils.createTableEntry("Prescription ID", prescription.getID().toString()));
-                        jsonResponse.add(JSONUtils.createTableEntry("Prescription drug", prescription.getDrugType().getDescription()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Prescription drug", prescription.getType().getDescription()));
                         jsonResponse.add(JSONUtils.createTableEntry("Description",
                                 prescription.getDescription() == null ? "" : prescription.getDescription()));
 
@@ -291,13 +325,17 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         jsonResponse.add(form);
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(jsonResponse));
+
+                        writer.write(gson.toJson(jsonResponse));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (NumberFormatException e) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please select a valid prescription.\"}");
+                        return;
                     }
+                    break;
                 }
-                break;
             }
         }
     }

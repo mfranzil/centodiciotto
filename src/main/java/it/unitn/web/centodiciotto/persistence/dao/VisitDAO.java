@@ -87,5 +87,4 @@ public interface VisitDAO extends DAO<Visit, Integer> {
      * @throws DAOException in case of a malformed input or query
      */
     List<Visit> getByDate(Timestamp ts) throws DAOException;
-
 }

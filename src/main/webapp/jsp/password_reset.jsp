@@ -9,7 +9,7 @@
     <script src="${pageContext.request.contextPath}/js/new_password.js"></script>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
             $("#password-reset").submit(function (e) {
                 e.preventDefault();
                 let form = $(this);
@@ -24,16 +24,13 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function (__data) {
+                    success: function () {
                         $("#message").html("Password changed successfully.");
                         $("#new-password,#new-password-confirm,#user-id").slideUp();
                         $("#password-change-button").html("Go to login").click(function (e) {
                             e.preventDefault();
-                            window.location = getContextPath() + "/login";
+                            window.location = getContextPath() + "login";
                         });
-                    },
-                    error: function (data) {
-                        alert("Error while changing password");
                     }
                 });
             });

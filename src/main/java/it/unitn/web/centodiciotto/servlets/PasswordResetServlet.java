@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  *     <li> request: creates a new {@link PasswordReset} object for the user.
  * </ul>
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/password_reset")
 public class PasswordResetServlet extends HttpServlet {
 
@@ -38,6 +40,8 @@ public class PasswordResetServlet extends HttpServlet {
 
     private CryptoService cryptoService;
     private EmailService emailService;
+
+    private String contextPath;
 
     @Override
     public void init() throws ServletException {
@@ -52,20 +56,15 @@ public class PasswordResetServlet extends HttpServlet {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
 
-        try {
-            cryptoService = CryptoService.getInstance();
-            emailService = EmailService.getInstance();
-        } catch (ServiceException e) {
-            throw new ServletException("Error in initializing services: ", e);
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
         }
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
 
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
@@ -88,10 +87,8 @@ public class PasswordResetServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String contextPath = getServletContext().getContextPath();
-        if (!contextPath.endsWith("/")) {
-            contextPath += "/";
-        }
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
@@ -99,31 +96,44 @@ public class PasswordResetServlet extends HttpServlet {
             String requestType = request.getParameter("requestType");
             String userID = request.getParameter("userID");
 
+            if (requestType == null || userID == null) {
+                response.setStatus(400);
+                writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+                return;
+            }
+
             switch (requestType) {
                 case "confirm": {
                     String newPassword = request.getParameter("newPassword");
 
-                    if (newPassword.length() < 8 || newPassword.length() > 64) {
-                        throw new ServletException("Password must be between 8 and 64 characters.");
-                    }
-
-                    try {
-                        cryptoService.changePassword(userID, newPassword);
-                        prDAO.delete(prDAO.getByPrimaryKey(userID));
-
-                        response.setStatus(200);
-                    } catch (DAOException e) {
+                    if (newPassword == null || newPassword.length() < 8 || newPassword.length() > 64) {
                         response.setStatus(400);
-                        throw new ServletException("Error in DAO usage: ", e);
-                    } catch (ServiceException e) {
-                        response.setStatus(400);
-                        throw new ServletException("Error in CryptoService while changing password: ", e);
+                        writer.write("{\"error\": \"Password must be between 8 and 64 characters.\"}");
+                    } else {
+                        try {
+                            cryptoService.changePassword(userID, newPassword);
+                            prDAO.delete(prDAO.getByPrimaryKey(userID));
+
+                            String message = "Dear CentoDiciotto user,\n\n" +
+                                    "your account password has been changed. If this wasn't you," +
+                                    " please request a password reset immediately or contact us." +
+                                    "\n\nYours,\nThe CentoDiciotto team.\n";
+                            String subject = "CentoDiciotto - Password change notification";
+
+                            // Avviso l'utente del cambio password
+                            emailService.sendEmail(userID, message, subject);
+
+                            writer.write("{}");
+                        } catch (DAOException e) {
+                            throw new ServletException("Error in DAO usage: ", e);
+                        } catch (ServiceException e) {
+                            throw new ServletException("Error in CryptoService while changing password: ", e);
+                        }
                     }
                     break;
                 }
                 case "request": {
                     try {
-
                         PasswordReset pr = new PasswordReset();
                         pr.setUserID(userID);
                         pr.setToken(cryptoService.getNextBase64Token());
@@ -147,12 +157,10 @@ public class PasswordResetServlet extends HttpServlet {
 
                         emailService.sendEmail(userID, message, subject);
 
-                        response.setStatus(200);
+                        writer.write("{}");
                     } catch (DAOException e) {
-                        response.setStatus(400);
                         throw new ServletException("Error in DAO usage. ", e);
                     } catch (ServiceException e) {
-                        response.setStatus(400);
                         throw new ServletException("Error in mail sending or CryptoService: ", e);
                     }
                 }

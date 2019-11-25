@@ -29,32 +29,34 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
-            $('#table-select div').click(function () {
-                $(this).find('input[type=radio]').prop('checked', true);
-                $('#submit').removeAttr("disabled");
+            const url = window.location.href;
+            $("#table-select div").click(function () {
+                $(this).find("input[type=radio]").prop("checked", true);
+                $("#submit").removeAttr("disabled");
             });
 
             $("#practitioner").submit(function (e) {
                 e.preventDefault();
-                $('#submit').prop('disabled', true).html("Requesting change...");
+                $("#submit").prop("disabled", true).html("Requesting change...");
 
                 let form = $(this);
                 let pract = $(".practitioner-id:checked");
+                let data = form.serialize();
+
+                $("input").prop("disabled", true);
 
                 $.ajax({
                     type: "POST",
                     url: url,
                     cache: false,
-                    data: form.serialize(),
+                    data: data,
                     success: function () {
-                        form.prop("disabled", true);
                         $("#current-practitioner").removeClass("chosen-practitioner");
                         $("#check").html("");
                         pract.parent().html("✔").parent().addClass("chosen-practitioner");
-                        $('#title').html("Your practitioner change request has been receieved. " +
+                        $("#title").html("Your practitioner change request has been receieved. " +
                             "You will receive a confirmation email soon.");
-                        $('#message,#subtitle').slideUp();
+                        $("#message,#subtitle").slideUp();
                         $("#submit").html("Practitioner changed.")
                     }
                 });

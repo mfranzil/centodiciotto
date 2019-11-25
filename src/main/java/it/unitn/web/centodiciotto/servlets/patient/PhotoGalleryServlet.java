@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 /**
@@ -29,6 +30,8 @@ public class PhotoGalleryServlet extends HttpServlet {
 
     private PhotoDAO photoDAO;
 
+    private String contextPath;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
@@ -39,6 +42,11 @@ public class PhotoGalleryServlet extends HttpServlet {
             photoDAO = daoFactory.getDAO(PhotoDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
         }
     }
 
@@ -52,24 +60,25 @@ public class PhotoGalleryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        Integer photoID;
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
-        try {
-            photoID = Integer.valueOf(request.getParameter("photoID"));
-        } catch (NumberFormatException e) {
-            throw new ServletException("Malformed input (photoID not a valid integer)");
-        }
 
         if (user instanceof Patient) {
+            Integer photoID;
+
+            try {
+                photoID = Integer.valueOf(request.getParameter("photoID"));
+            } catch (NumberFormatException | NullPointerException e) {
+                response.setStatus(400);
+                writer.write("{\"error\": \"Malformed input. Please try the photo again.\"}");
+                return;
+            }
+
             try {
                 Photo chosenPhoto = photoDAO.getByPrimaryKey(photoID);
                 chosenPhoto.setUploadDate(new Timestamp(System.currentTimeMillis()));
                 photoDAO.update(chosenPhoto);
-
-                String contextPath = getServletContext().getContextPath();
-                if (!contextPath.endsWith("/")) {
-                    contextPath += "/";
-                }
 
                 if (!response.isCommitted()) {
                     response.sendRedirect(response.encodeRedirectURL(contextPath + "restricted/user"));

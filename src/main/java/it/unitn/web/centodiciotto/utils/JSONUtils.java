@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Json utils.
+ * Wrapper class for the createTableEntry method, used by classes that implement JSON functionality.
  */
 public class JSONUtils {
     /**
-     * Create table entry list.
+     * Creates a new table that contains {@link HTMLElement}s, to be returned in JSON form.
      *
      * @param title   the title
      * @param content the content

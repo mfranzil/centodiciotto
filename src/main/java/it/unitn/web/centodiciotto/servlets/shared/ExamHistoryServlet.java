@@ -7,6 +7,7 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,7 @@ public class ExamHistoryServlet extends HttpServlet {
     private ExamDAO examDAO;
 
     private PhotoService photoService;
+    private EmailService emailService;
 
     @Override
     public void init() throws ServletException {
@@ -60,6 +63,7 @@ public class ExamHistoryServlet extends HttpServlet {
 
         try {
             photoService = PhotoService.getInstance();
+            emailService = EmailService.getInstance();
         } catch (ServiceException e) {
             throw new ServletException("Error in initializing services: ", e);
         }
@@ -76,11 +80,18 @@ public class ExamHistoryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         if (user instanceof SpecializedDoctor || user instanceof HealthService) {
-            String ajax_type = request.getParameter("requestType");
-
-            switch (ajax_type) {
+            switch (requestType) {
                 case "examList": {
                     try {
                         List<Exam> examList;
@@ -109,9 +120,7 @@ public class ExamHistoryServlet extends HttpServlet {
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(examListElements));
-
+                        writer.write(gson.toJson(examListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
@@ -122,6 +131,13 @@ public class ExamHistoryServlet extends HttpServlet {
                 case "detailedInfo": {
                     try {
                         String examID = request.getParameter("item");
+
+                        if (examID == null) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                            return;
+                        }
+
                         List<Object> jsonResponse = new ArrayList<>();
 
                         Exam currentExam = examDAO.getByPrimaryKey(Integer.valueOf(examID));
@@ -159,24 +175,58 @@ public class ExamHistoryServlet extends HttpServlet {
                         jsonResponse.add(form);
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(jsonResponse));
+                        writer.write(gson.toJson(jsonResponse));
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        throw new ServletException("Error in DAO usage: ");
                     }
                     break;
                 }
                 case "setResult": {
-                    Integer examID = Integer.valueOf(request.getParameter("examID"));
+                    Integer examID;
                     String resultText = request.getParameter("resultText");
 
                     try {
-                        Exam tmp = examDAO.getByPrimaryKey(examID);
-                        tmp.setResult(resultText);
-                        examDAO.update(tmp);
+                        examID = Integer.valueOf(request.getParameter("examID"));
+                    } catch (NumberFormatException | NullPointerException e) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        return;
+                    }
+
+                    if (resultText == null) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        return;
+                    }
+
+                    try {
+                        Exam exam = examDAO.getByPrimaryKey(examID);
+                        exam.setResult(resultText);
+                        examDAO.update(exam);
+
+                        Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());
+                        String handler = user instanceof SpecializedDoctor ? "Specialized Doctor" : "Local Health Service";
+
+                        String recipient = patient.getID();
+                        String message = "Dear " + patient.toString() + ",\n\n" +
+                                "an exam with your " + handler + " has had its report updated.\n\n" +
+                                "Here are the exam details:\n\n" +
+                                "Exam: " + exam.getType().getDescription() + "\n" +
+                                "Exam handler: " + user.toString() + "\n" +
+                                "Date: " + CustomDTFormatter.formatDate(exam.getDate()) +
+                                "\n\nYours,\nThe CentoDiciotto team.\n";
+                        String subject = "CentoDiciotto - Exam report update notification";
+
+                        // Avviso il paziente dell'aggiornamento del risultato
+                        emailService.sendEmail(recipient, message, subject);
+
+                        writer.write("{}");
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in email sending: ", e);
                     }
+
                     break;
                 }
             }

@@ -1,9 +1,13 @@
 package it.unitn.web.centodiciotto.utils.entities.jsonelements;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 /**
- * The type Exam search result.
+ * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+ * <p>
+ * This class is used by mutiple classes and is thus defined outside them to avoid duplicate code.
  */
 public class ExamSearchResult implements Serializable {
     private Integer id;

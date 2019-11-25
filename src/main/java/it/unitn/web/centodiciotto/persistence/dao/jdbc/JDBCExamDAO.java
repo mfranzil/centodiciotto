@@ -137,7 +137,6 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "ExamDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating Exam: ", e);
         }
@@ -542,6 +541,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             throw new DAOException("Error getting pending Recalls: ", e);
         }
     }
+
     @Override
     protected Exam mapRowToEntity(ResultSet rs) throws DAOException {
         try {

@@ -9,11 +9,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 5%;
+                width: 7%;
             }
 
             .table-cell.patient {
-                width: 30%;
+                width: 28%;
             }
 
             .table-cell.exam {
@@ -31,7 +31,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
 
             $(".mark-completed").submit(function (e) {
                 e.preventDefault();

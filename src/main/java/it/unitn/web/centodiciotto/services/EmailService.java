@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * EmaiLService service class, used to send emails to other users.
@@ -22,6 +26,8 @@ public class EmailService {
 
     private final transient Session session;
     private final transient InternetAddress sender;
+
+    private transient ExecutorService executorService;
 
     private EmailService() throws ServiceException {
         Properties data = new Properties();
@@ -56,9 +62,13 @@ public class EmailService {
                     return new PasswordAuthentication(username, password);
                 }
             });
+
+            session.setDebug(false);
         } catch (IOException e) {
             throw new ServiceException("Error sending email", e);
         }
+
+        executorService = Executors.newCachedThreadPool();
     }
 
     /**
@@ -99,7 +109,7 @@ public class EmailService {
      * @param subject   the subject
      * @throws ServiceException in case of error during processing
      */
-    public synchronized void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
+    public void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
         var throwableWrapper = new Object() {
             Throwable tr = null;
         };
@@ -112,12 +122,13 @@ public class EmailService {
             }
         };
 
+        executorService.execute(runnable);
+
         if (throwableWrapper.tr != null) {
             throw new ServiceException(throwableWrapper.tr);
         }
 
-        Thread thread = new Thread(runnable);
-        thread.start();
+        Logger.getGlobal().log(Level.INFO, "Email successfully sent to " + recipient + " with subject " + subject);
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")

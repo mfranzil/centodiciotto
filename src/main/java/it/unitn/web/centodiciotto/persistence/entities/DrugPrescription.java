@@ -11,7 +11,7 @@ public class DrugPrescription {
     private Integer ID;
     private String practitionerID;
     private String patientID;
-    private DrugType drugType;
+    private DrugType type;
     private Timestamp datePrescribed;
     private Timestamp dateSold;
     private String chemistID;
@@ -78,17 +78,17 @@ public class DrugPrescription {
      *
      * @return the drug type
      */
-    public DrugType getDrugType() {
-        return drugType;
+    public DrugType getType() {
+        return type;
     }
 
     /**
      * Sets the drug type.
      *
-     * @param drugType the drug type
+     * @param type the drug type
      */
-    public void setDrugType(DrugType drugType) {
-        this.drugType = drugType;
+    public void setType(DrugType type) {
+        this.type = type;
     }
 
     /**

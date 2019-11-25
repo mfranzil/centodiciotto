@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Patients - CentoDiciotto</title>
+    <title>Prescription - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
@@ -30,7 +30,8 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
+            let action = "${requestScope.action}";
 
             let tableHeaders = [
                 {field: "pract", type: "string", text: "Practitioner"},
@@ -52,7 +53,7 @@
                         data: function (params) {
                             return {
                                 term: params.term,
-                                requestType: 'patientSearch'
+                                requestType: "patientSearch"
                             }
                         },
                         url: url,
@@ -61,23 +62,24 @@
                 })
                 .val("")
                 .trigger("change")
-                .on('select2:select', function (e) {
+                .on("select2:select", function (e) {
                     $("#main-loading-container").slideDown();
-                    $("#main-table").children().not('first').remove();
+                    $("#main-table").children().not("first").remove();
                     $("#patient-name").html(e.params.data.fullName);
                     $("#patient-ssn").html(e.params.data.SSN);
                     $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
                     $("#patient-info").slideDown();
                     renderPrescriptions(e.params.data.patientID);
                 })
-                .on('select2:unselect', function (e) {
+                .on("select2:unselect", function (e) {
                     $("#main-loading-container").slideUp();
                     $("#patient-info").slideUp();
-                    $("#main-table").children().not('first').remove();
+                    $("#main-table").children().not("first").remove();
                     renderPrescriptions();
                 });
 
             function renderPrescriptions(patientID) {
+                $("#main-loading-container").slideDown();
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -86,16 +88,16 @@
                         patientID: patientID
                     },
                     url: url,
-                    success: function (json) {
-                        $("#main-table").createTableHeaders(tableHeaders);
-                        $("#main-table").insertRows(tableHeaders, json, url);
+                    success: function(data, textStatus, jqXHR) {
+                        let json = jqXHR.responseJSON;
+                        $("#main-table").createTableHeaders(tableHeaders).insertRows(tableHeaders, json, url);
                         enablePopup();
                         $("#main-loading-container").slideUp();
 
                         if (action === "qr") {
                             $("#btn-${requestScope.prescription.ID}").click();
                         }
-                    }
+                    },
                 });
             }
 
@@ -107,7 +109,7 @@
                 $(".serve-prescription").submit(function (e) {
                     e.preventDefault();
 
-                    $('#submit-serve').prop('disabled', true);
+                    $("#submit-serve").prop("disabled", true);
 
                     let form = $(this);
 
@@ -116,36 +118,32 @@
                         url: url,
                         cache: false,
                         data: form.serialize(),
-                        success: function (data) {
+                        success: function (data, textStatus, jqXHR) {
+                            let json = jqXHR.responseJSON;
+
                             $(".submit-serve").css("background", "rgba(0, 55, 0, 0.8)").html("Submitted");
-                            data = JSON.parse(data);
 
                             setTimeout(function () {
                                 $(".popup-window").hide();
                                 $("#main-loading-container").slideDown();
-                                $("#main-table").children().not('first').remove();
+                                $("#main-table").children().not("first").remove();
                             }, 750);
 
                             setTimeout(function () {
-                                renderPrescriptions(data.patientID);
+                                renderPrescriptions(json.patientID);
                             }, 1500);
                         },
-                        error: function (data) {
-                            alert("Error. Prescription already served.");
-                            $(".popup-window").hide();
-                            $("#main-loading-container").slideDown();
-                            $("#main-table").children().not('first').remove();
-                            renderPrescriptions();
+                        error: function () {
+                            let newUrl = url.substring(0, url.indexOf('?'));
+                            $(location).attr("href", newUrl);
                         }
                     });
                 });
             }
 
-            let action = "${requestScope.action}";
-
             if (action === "qr") {
                 $("#main-loading-container").slideDown();
-                $("#main-table").children().not('first').remove();
+                $("#main-table").children().not("first").remove();
                 $("#patient-name").html("${requestScope.patient}");
                 $("#patient-ssn").html("${requestScope.patient.SSN}");
                 $("#patient-avatar").prop("src", getContextPath() + "${requestScope.patientPhoto}");
@@ -168,7 +166,7 @@
 <div class="container">
     <div class="body-content">
         <div class="row">
-            <div class="col-md">
+            <div class="col-md" style="overflow-y: hidden">
                 <div class="form-label-group my-4 mx-4 ls-search">
                     <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control"
                             autofocus>

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * ChangePractitionerServlet for handling requests to /restricted/patient/change_practitioner.
@@ -72,10 +73,18 @@ public class ChangePractitionerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
         if (user instanceof Patient) {
             try {
                 String newPractitionerID = request.getParameter("practitionerID");
+
+                if (newPractitionerID == null) {
+                    response.setStatus(400);
+                    writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                    return;
+                }
 
                 GeneralPractitioner oldPract = practitionerDAO.getByPrimaryKey(((Patient) user).getPractitionerID());
                 GeneralPractitioner newPract = practitionerDAO.getByPrimaryKey(newPractitionerID);
@@ -91,7 +100,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 String recipient = oldPract.getID();
                 String message = "Dear " + oldPract.toString() + ",\n\n" +
                         "one of your patients just asked for a change of practitioner " +
-                        "and will be no longer on your patient list.\n" +
+                        "and will be no longer on your patient list.\n\n" +
                         "Here are the patient details:\n\n" +
                         user.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
@@ -102,7 +111,7 @@ public class ChangePractitionerServlet extends HttpServlet {
 
                 recipient = newPract.getID();
                 message = "Dear " + newPract.toString() + ",\n\n" +
-                        "we are glad to tell you that you have a new patient on your patient list.\n" +
+                        "we are glad to tell you that you have a new patient on your patient list.\n\n" +
                         "Here are the patient details:\n\n" +
                         user.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
@@ -113,7 +122,7 @@ public class ChangePractitionerServlet extends HttpServlet {
 
                 recipient = user.getID();
                 message = "Dear " + user.toString() + ",\n\n" +
-                        "we inform you that your general practitioner has been successfully changed.\n" +
+                        "we inform you that your general practitioner has been successfully changed.\n\n" +
                         "Here are the practitioner details:\n\n" +
                         oldPract.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
@@ -122,12 +131,10 @@ public class ChangePractitionerServlet extends HttpServlet {
                 // Avviso il paziente
                 emailService.sendEmail(recipient, message, subject);
 
-                response.setStatus(200);
+                writer.write("{}");
             } catch (DAOException e) {
-                response.setStatus(400);
                 throw new ServletException("Error in DAO usage: ", e);
             } catch (ServiceException e) {
-                response.setStatus(400);
                 throw new ServletException("Error in email sending: ", e);
             }
         }

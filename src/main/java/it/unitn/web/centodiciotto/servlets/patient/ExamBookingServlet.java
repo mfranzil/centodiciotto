@@ -6,6 +6,8 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.services.EmailService;
+import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
@@ -17,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +55,17 @@ public class ExamBookingServlet extends HttpServlet {
     private HealthServiceDAO healthServiceDAO;
     private SpecializedDoctorDAO specializedDoctorDAO;
 
+    private String contextPath;
+
+    private EmailService emailService;
+
     @Override
     public void init() throws ServletException {
         DAOFactory daoFactory = (DAOFactory) super.getServletContext().getAttribute("daoFactory");
         if (daoFactory == null) {
             throw new ServletException("DAOFactory is null.");
         }
+
         try {
             examTypeDAO = daoFactory.getDAO(ExamTypeDAO.class);
             examDAO = daoFactory.getDAO(ExamDAO.class);
@@ -71,6 +79,17 @@ public class ExamBookingServlet extends HttpServlet {
             }
         } catch (DAOFactoryException | DAOException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
+        }
+
+        try {
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
     }
 
@@ -86,12 +105,21 @@ public class ExamBookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         if (user instanceof Patient) {
             switch (requestType) {
                 case "examList": {
                     try {
                         Boolean onlyAvailable = Boolean.valueOf(request.getParameter("onlyAvailable"));
+
                         String examID = request.getParameter("examID");
 
                         List<ExamListElement> examListElements = new ArrayList<>();
@@ -129,8 +157,7 @@ public class ExamBookingServlet extends HttpServlet {
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(examListElements));
+                        writer.write(gson.toJson(examListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
@@ -152,8 +179,7 @@ public class ExamBookingServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
                     break;
                 }
                 case "doctorSearch": {
@@ -188,50 +214,84 @@ public class ExamBookingServlet extends HttpServlet {
                             }
 
                             Gson gson = new Gson();
-                            response.setContentType("application/json");
-                            response.getWriter().write(gson.toJson(new JSONResults<>(results.toArray(new DoctorSearchResult[0]))));
+                            writer.write(gson.toJson(new JSONResults<>(results.toArray(new DoctorSearchResult[0]))));
                         } catch (DAOException e) {
-                            e.printStackTrace();
+                            throw new ServletException("Error in DAO usage: ", e);
                         }
                     }
-
                     break;
                 }
                 case "doctorExamBook": {
+                    Integer examID;
+                    String doctorID = request.getParameter("doctorID");
+                    String isHealthService = request.getParameter("isHealthService");
+
                     try {
-                        String examID = request.getParameter("examID");
-                        String doctorID = request.getParameter("doctorID");
-                        String isHealthService = request.getParameter("isHealthService");
-
-                        if (examID != null && doctorID != null && isHealthService != null) {
-                            ExamType examType = examTypeDAO.getByPrimaryKey(Integer.valueOf(examID));
-                            Exam toUpdate = examDAO.getPendingByPatientAndExamType(user.getID(), examType.getID());
-
-                            if (Boolean.parseBoolean(isHealthService)) {
-                                toUpdate.setHealthServiceID(doctorID);
-                                toUpdate.setTicket(11);
-                            } else {
-                                toUpdate.setDoctorID(doctorID);
-                                toUpdate.setTicket(50);
-                            }
-                            toUpdate.setBooked(false);
-                            toUpdate.setType(examType);
-                            toUpdate.setDone(false);
-
-                            examDAO.update(toUpdate);
-                        }
+                        examID = Integer.valueOf(request.getParameter("examID"));
                     } catch (NumberFormatException e) {
-                        throw new ServletException("Error ExamID is null", e);
-                    } catch (DAOException e) {
-                        throw new ServletException("DAOException while inserting doctorExam", e);
+                        response.setStatus(400);
+                        writer.write("{\"error\":\"Malformed input. Please choose a valid exam.\"}");
+                        return;
+                    }
+
+                    if (doctorID != null && isHealthService != null) {
+                        try {
+                            ExamType examType = examTypeDAO.getByPrimaryKey(examID);
+                            Exam toUpdate = examDAO.getPendingByPatientAndExamType(
+                                    user.getID(), examType.getID());
+
+                            if (toUpdate != null) {
+                                if (Boolean.parseBoolean(isHealthService)) {
+                                    toUpdate.setHealthServiceID(doctorID);
+                                    toUpdate.setTicket(11);
+                                } else {
+                                    toUpdate.setDoctorID(doctorID);
+                                    toUpdate.setTicket(50);
+                                }
+                                toUpdate.setBooked(false);
+                                toUpdate.setType(examType);
+                                toUpdate.setDone(false);
+
+                                examDAO.update(toUpdate);
+
+                                String recipient = user.getID();
+                                String message = "Dear " + user.toString() + ",\n\n" +
+                                        "your exam booking request for the following exam has been accepted:\n\n" +
+                                        examType.getDescription() + "\n\nYou will receieve an email once " +
+                                        "the Specialized Doctor sets a date and time for this exam." +
+                                        "\n\nYours,\nThe CentoDiciotto team.\n";
+                                String subject = "CentoDiciotto - Exam request notification";
+
+                                // Avviso il paziente della richiesta d'esame
+                                emailService.sendEmail(recipient, message, subject);
+
+                                writer.write("{}");
+                            } else {
+                                response.setStatus(400);
+                                writer.write("{\"error\":\"" +
+                                        "Requested exam is not pending and cannot be booked.\"}");
+                            }
+                        } catch (DAOException e) {
+                            throw new ServletException("Error in DAO usage: ", e);
+                        } catch (ServiceException e) {
+                            throw new ServletException("Error in email sending: ", e);
+                        }
+                    } else {
+                        response.setStatus(400);
+                        writer.write("{\"error\":\"Malformed input. Please try again.\"}");
                     }
                     break;
                 }
                 case "detailedInfo": {
                     String examID = request.getParameter("item");
 
+                    if (examID == null) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                        return;
+                    }
+
                     List<Object> jsonResponse = new ArrayList<>();
-                    String contextPath = getServletContext().getContextPath();
 
                     jsonResponse.add(new HTMLElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exam_booking").setElementFormMethod("POST"));
 
@@ -248,8 +308,7 @@ public class ExamBookingServlet extends HttpServlet {
                     jsonResponse.add(new HTMLElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details/doctorExam.js"));
 
                     Gson gson = new Gson();
-                    response.setContentType("application/json");
-                    response.getWriter().write(gson.toJson(jsonResponse));
+                    writer.write(gson.toJson(jsonResponse));
                     break;
                 }
             }

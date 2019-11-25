@@ -8,6 +8,7 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.JSONUtils;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
 import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,6 +91,14 @@ public class PatientsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         if (user instanceof GeneralPractitioner || user instanceof HealthService || user instanceof SpecializedDoctor) {
             switch (requestType) {
@@ -102,7 +112,8 @@ public class PatientsServlet extends HttpServlet {
                             if (user instanceof GeneralPractitioner) {
                                 patientList = patientDAO.getByPractitioner(user.getID());
                             } else if (user instanceof HealthService) {
-                                patientList = patientDAO.getByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
+                                patientList = patientDAO.getByProvince
+                                        (((HealthService) user).getOperatingProvince().getAbbreviation());
                             } else { // SpecializedDoctor
                                 patientList = patientDAO.getAll();
                             }
@@ -113,14 +124,16 @@ public class PatientsServlet extends HttpServlet {
                         List<PatientListElement> patientListElements = new ArrayList<>();
                         for (Patient patient : patientList) {
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            patientListElements.add(new PatientListElement(patient.toString(), patient.getSSN(), photoPath, patient.getID(), new Action("Patient Data", true)));
+                            patientListElements.add(new PatientListElement(
+                                    patient.toString(),
+                                    patient.getSSN(),
+                                    photoPath,
+                                    patient.getID(),
+                                    new Action("Patient Data", true)));
                         }
 
                         Gson gson = new Gson();
-
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(patientListElements));
-
+                        writer.write(gson.toJson(patientListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
@@ -131,63 +144,90 @@ public class PatientsServlet extends HttpServlet {
                 case "detailedInfo": {
                     String patientID = request.getParameter("item");
 
+                    if (patientID == null) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please choose a valid patient.\"}");
+                        return;
+                    }
+
                     List<Object> jsonResponse = new ArrayList<>();
 
                     try {
                         Patient patient = patientDAO.getByPrimaryKey(patientID);
-                        GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(patient.getPractitionerID());
+                        GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(
+                                patient.getPractitionerID());
 
                         // Patient data
-                        jsonResponse.add(new HTMLElement().setElementType("h4").setElementClass("").setElementContent("Patient data"));
-                        jsonResponse.add(new HTMLElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
+                        jsonResponse.add(new HTMLElement().setElementType("h4")
+                                .setElementClass("").setElementContent("Patient data"));
+                        jsonResponse.add(new HTMLElement().setElementType("table")
+                                .setElementClass("table table-unresponsive").setElementContent(""));
 
                         jsonResponse.add(JSONUtils.createTableEntry("Name", patient.getFirstName()));
                         jsonResponse.add(JSONUtils.createTableEntry("Surname", patient.getLastName()));
                         jsonResponse.add(JSONUtils.createTableEntry("SSN", patient.getSSN()));
-                        jsonResponse.add(JSONUtils.createTableEntry("Birthdate", patient.getBirthDate().toString()));
-                        jsonResponse.add(JSONUtils.createTableEntry("Gender", patient.getGender().toString()));
-                        jsonResponse.add(JSONUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Birthdate",
+                                CustomDTFormatter.formatDate(patient.getBirthDate())));
+                        jsonResponse.add(JSONUtils.createTableEntry("Gender",
+                                patient.getGender().toString()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Province",
+                                patient.getLivingProvince().getName()));
                         jsonResponse.add(JSONUtils.createTableEntry("Practitioner", practitioner.toString()));
 
                         // Last visit
                         Visit lastVisit = visitDAO.getLastByPatient(patientID);
                         if (lastVisit != null) {
-                            GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(lastVisit.getPractitionerID());
+                            GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(
+                                    lastVisit.getPractitionerID());
 
-                            jsonResponse.add(new HTMLElement().setElementType("h4").setElementClass("").setElementContent("Last visit"));
-                            jsonResponse.add(new HTMLElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
+                            jsonResponse.add(new HTMLElement().setElementType("h4")
+                                    .setElementClass("").setElementContent("Last visit"));
+                            jsonResponse.add(new HTMLElement().setElementType("table")
+                                    .setElementClass("table table-unresponsive").setElementContent(""));
 
-                            jsonResponse.add(JSONUtils.createTableEntry("Date", lastVisit.getDate().toString()));
-                            jsonResponse.add(JSONUtils.createTableEntry("Practitioner", visitPractitioner.toString()));
-                            jsonResponse.add(JSONUtils.createTableEntry("Report", lastVisit.getReport()));
+                            jsonResponse.add(JSONUtils.createTableEntry("Date",
+                                    CustomDTFormatter.formatDateTime(lastVisit.getDate())));
+                            jsonResponse.add(JSONUtils.createTableEntry("Practitioner",
+                                    visitPractitioner.toString()));
+                            jsonResponse.add(JSONUtils.createTableEntry("Report",
+                                    lastVisit.getReport()));
                         }
+
                         // Last exam
                         List<Exam> examPatientList = examDAO.getByPatientLastYear(patientID);
                         if (!examPatientList.isEmpty()) {
-                            jsonResponse.add(new HTMLElement().setElementType("h4").setElementClass("").setElementContent("Last exams"));
-                            jsonResponse.add(new HTMLElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
+                            jsonResponse.add(new HTMLElement().setElementType("h4")
+                                    .setElementClass("").setElementContent("Last exams"));
+                            jsonResponse.add(new HTMLElement().setElementType("table")
+                                    .setElementClass("table table-unresponsive").setElementContent(""));
 
                             for (Exam exam : examPatientList) {
-                                jsonResponse.add(JSONUtils.createTableEntry("Date", exam.getDate().toString()));
-                                jsonResponse.add(JSONUtils.createTableEntry("Description", exam.getType().getDescription()));
+                                jsonResponse.add(JSONUtils.createTableEntry("Date",
+                                        CustomDTFormatter.formatDateTime(exam.getDate())));
+                                jsonResponse.add(JSONUtils.createTableEntry("Description",
+                                        exam.getType().getDescription()));
+
                                 if (exam.getResult() != null) {
                                     jsonResponse.add(JSONUtils.createTableEntry("Result", exam.getResult()));
                                 }
+
                                 jsonResponse.add(JSONUtils.createTableEntry("", ""));
                             }
                         }
 
-                        // Medicinali
+                        // Drugs
                         List<DrugPrescription> prescriptions = drugPrescriptionDAO.getValidByPatient(patientID);
                         if (!examPatientList.isEmpty()) {
-                            jsonResponse.add(new HTMLElement().setElementType("h4").setElementClass("").setElementContent("Last prescriptions"));
-                            jsonResponse.add(new HTMLElement().setElementType("table").setElementClass("table table-unresponsive").setElementContent(""));
+                            jsonResponse.add(new HTMLElement().setElementType("h4")
+                                    .setElementClass("").setElementContent("Last prescriptions"));
+                            jsonResponse.add(new HTMLElement().setElementType("table")
+                                    .setElementClass("table table-unresponsive").setElementContent(""));
 
                             for (DrugPrescription prescription : prescriptions) {
                                 jsonResponse.add(JSONUtils.createTableEntry("Prescription date",
-                                        prescription.getDatePrescribed().toString()));
+                                        CustomDTFormatter.formatDate(prescription.getDatePrescribed())));
                                 jsonResponse.add(JSONUtils.createTableEntry("Drug description",
-                                        prescription.getDrugType().getDescription()));
+                                        prescription.getType().getDescription()));
                                 if (prescription.getDescription() != null) {
                                     jsonResponse.add(JSONUtils.createTableEntry("Description",
                                             prescription.getDescription()));
@@ -197,10 +237,9 @@ public class PatientsServlet extends HttpServlet {
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(jsonResponse));
+                        writer.write(gson.toJson(jsonResponse));
                     } catch (DAOException e) {
-                        throw new ServletException("Error while getting patient detail in PatientListServlet", e);
+                        throw new ServletException("Error in DAO usage: ", e);
                     }
                     break;
                 }
@@ -212,7 +251,8 @@ public class PatientsServlet extends HttpServlet {
                         if (user instanceof GeneralPractitioner) {
                             allPatients = patientDAO.getByPractitioner(user.getID());
                         } else if (user instanceof HealthService) {
-                            allPatients = patientDAO.getByProvince(((HealthService) user).getOperatingProvince().getAbbreviation());
+                            allPatients = patientDAO.getByProvince(
+                                    ((HealthService) user).getOperatingProvince().getAbbreviation());
                         } else { // SpecializedDoctor
                             allPatients = patientDAO.getAll();
                         }
@@ -234,8 +274,7 @@ public class PatientsServlet extends HttpServlet {
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(
+                        writer.write(gson.toJson(
                                 new JSONResults<>(results.toArray(new PatientSearchResult[0]))));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);

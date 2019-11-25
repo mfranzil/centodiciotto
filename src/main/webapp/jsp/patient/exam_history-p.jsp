@@ -28,7 +28,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
 
             let tableHeaders = [
                 {field: "exam", type: "string", text: "Exam"},
@@ -51,7 +51,6 @@
                         requestType: "historyList"
                     },
                     success: function (json) {
-                        console.log(json);
                         $("#main-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();

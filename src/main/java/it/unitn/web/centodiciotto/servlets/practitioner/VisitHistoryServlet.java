@@ -10,6 +10,7 @@ import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
+import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,9 @@ public class VisitHistoryServlet extends HttpServlet {
     private VisitDAO visitDAO;
 
     private PhotoService photoService;
+    private EmailService emailService;
+
+    private String contextPath;
 
     @Override
     public void init() throws ServletException {
@@ -62,8 +67,14 @@ public class VisitHistoryServlet extends HttpServlet {
 
         try {
             photoService = PhotoService.getInstance();
+            emailService = EmailService.getInstance();
         } catch (ServiceException e) {
             throw new ServletException("Error in initializing services: ", e);
+        }
+
+        contextPath = getServletContext().getContextPath();
+        if (!contextPath.endsWith("/")) {
+            contextPath += "/";
         }
     }
 
@@ -79,6 +90,14 @@ public class VisitHistoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         String requestType = request.getParameter("requestType");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            return;
+        }
 
         if (user instanceof GeneralPractitioner) {
             switch (requestType) {
@@ -90,9 +109,9 @@ public class VisitHistoryServlet extends HttpServlet {
                         for (Visit visit : visitList) {
                             Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            Action action = ((visit.getReport() == null)
+                            Action action = visit.getReport() == null
                                     ? new Action("Insert report", true)
-                                    : new Action("Edit report", true));
+                                    : new Action("Edit report", true);
                             visitListElements.add(new VisitListElement(
                                     patient.toString(), patient.getSSN(),
                                     photoPath, CustomDTFormatter.formatDateTime(visit.getDate()),
@@ -100,9 +119,7 @@ public class VisitHistoryServlet extends HttpServlet {
                         }
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(visitListElements));
-
+                        writer.write(gson.toJson(visitListElements));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
@@ -113,8 +130,14 @@ public class VisitHistoryServlet extends HttpServlet {
                 case "detailedInfo": {
                     try {
                         String visitID = request.getParameter("item");
+
+                        if (visitID == null) {
+                            response.setStatus(400);
+                            writer.write("{\"error\": \"Malformed input. Please choose a valid visit.\"}");
+                            return;
+                        }
+
                         List<Object> jsonResponse = new ArrayList<>();
-                        String contextPath = getServletContext().getContextPath();
 
                         Visit currentVisit = visitDAO.getByPrimaryKey(Integer.valueOf(visitID));
 
@@ -152,25 +175,55 @@ public class VisitHistoryServlet extends HttpServlet {
                         jsonResponse.add(form);
 
                         Gson gson = new Gson();
-                        response.setContentType("application/json");
-                        response.getWriter().write(gson.toJson(jsonResponse));
+                        writer.write(gson.toJson(jsonResponse));
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        throw new ServletException("Error in DAO usage: ", e);
                     }
                     break;
                 }
                 case "setReport": {
-                    Integer visitID = Integer.valueOf(request.getParameter("visitID"));
+                    Integer visitID;
                     String reportText = request.getParameter("reportText");
 
                     try {
-                        Visit tmp = visitDAO.getByPrimaryKey(visitID);
-                        tmp.setReport(reportText);
-                        visitDAO.update(tmp);
+                        visitID = Integer.valueOf(request.getParameter("examID"));
+                    } catch (NumberFormatException | NullPointerException e) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        return;
+                    }
+
+                    if (reportText == null) {
+                        response.setStatus(400);
+                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        return;
+                    }
+
+                    try {
+                        Visit visit = visitDAO.getByPrimaryKey(visitID);
+                        visit.setReport(reportText);
+                        visitDAO.update(visit);
+
+                        Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
+
+                        String recipient = patient.getID();
+                        String message = "Dear " + patient.toString() + ",\n\n" +
+                                "a visit with your General Practitioner has had its report updated.\n\n" +
+                                "Here are the visit details:\n\n" +
+                                "Practitioner: " + user.toString() + "\n" +
+                                "Date: " + CustomDTFormatter.formatDate(visit.getDate()) +
+                                "\n\nYours,\nThe CentoDiciotto team.\n";
+                        String subject = "CentoDiciotto - Visit report update notification";
+
+                        // Avviso il paziente dell'aggiornamento del report
+                        emailService.sendEmail(recipient, message, subject);
+
+                        writer.write("{}");
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in email sending: ", e);
                     }
-                    request.getRequestDispatcher("/jsp/general_practitioner/visit_history-gp.jsp").forward(request, response);
                 }
             }
         }

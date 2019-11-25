@@ -57,7 +57,6 @@ public class JDBCDAOFactory implements DAOFactory {
                 password = data.getProperty("Password");
 
                 url = "jdbc:postgresql://" + hostname + "/" + defaultDatabase;
-
             } catch (IOException e) {
                 throw new DAOFactoryException("Error reading database.properties file: ", e);
             }

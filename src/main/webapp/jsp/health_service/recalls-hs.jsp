@@ -30,7 +30,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
             $("#main-table,#main-loading-container,#history-loading-container,#send-recall-div").hide();
 
             let tableHeaders = [
@@ -56,7 +56,7 @@
                         data: function (params) {
                             return {
                                 term: params.term,
-                                requestType: 'examSearch'
+                                requestType: "examSearch"
                             }
                         },
                         url: url,
@@ -65,10 +65,10 @@
                 })
                 .val(null)
                 .trigger("change")
-                .on('select2:select', function (e) {
+                .on("select2:select", function (e) {
                     renderExam(e.params.data.id);
                 })
-                .on('select2:unselect', function (e) {
+                .on("select2:unselect", function (e) {
                     renderExam();
                     $("#main-table").slideUp();
                 });
@@ -94,9 +94,9 @@
                 let data = form.serialize();
 
                 $("#main-loading-container").slideDown();
-                $('#submit-recall').prop('disabled', true);
-                $('#main-table').slideUp();
-                $('#min-age,#max-age').prop("disabled", true);
+                $("#submit-recall").prop("disabled", true);
+                $("#main-table").slideUp();
+                $("#min-age,#max-age").prop("disabled", true);
 
                 $.ajax({
                     type: "POST",
@@ -142,7 +142,7 @@
 
             function renderHistory() {
                 $("#history-loading-container").slideDown();
-                $("#history-table").children().not('first').remove();
+                $("#history-table").children().not("first").remove();
 
                 $.ajax({
                     type: "POST",

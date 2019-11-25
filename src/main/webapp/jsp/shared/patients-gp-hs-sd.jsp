@@ -13,11 +13,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 5%;
+                width: 7%;
             }
 
             .table-cell.name {
-                width: 40%;
+                width: 38%;
             }
 
             .table-cell.ssn {
@@ -37,7 +37,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
             $(function () {
                 $("#patient-search")
                     .select2({
@@ -49,7 +49,7 @@
                             data: function (params) {
                                 return {
                                     term: params.term,
-                                    requestType: 'patientSearch'
+                                    requestType: "patientSearch"
                                 }
                             },
                             url: url,
@@ -58,12 +58,12 @@
                     })
                     .val(null)
                     .trigger("change")
-                    .on('select2:select', function (e) {
-                        $("#main-table").children().not('first').remove();
+                    .on("select2:select", function (e) {
+                        $("#main-table").children().not("first").remove();
                         renderPatientsRows(e.params.data.patientID);
                     })
-                    .on('select2:unselect', function (e) {
-                        $("#main-table").children().not('first').remove();
+                    .on("select2:unselect", function (e) {
+                        $("#main-table").children().not("first").remove();
                         renderPatientsRows();
                     });
             });

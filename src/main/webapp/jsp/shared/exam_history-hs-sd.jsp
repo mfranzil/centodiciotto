@@ -32,7 +32,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
 
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},
@@ -56,7 +56,6 @@
                     },
                     url: url,
                     success: function (json) {
-                        console.log(json);
                         $("#history-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();

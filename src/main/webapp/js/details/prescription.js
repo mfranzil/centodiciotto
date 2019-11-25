@@ -9,10 +9,10 @@ $("document").ready(function () {
             data: function (params) {
                 return {
                     term: params.term,
-                    requestType: 'examSearch'
+                    requestType: "examSearch"
                 }
             },
-            url: getContextPath() + "/restricted/general_practitioner/prescriptions",
+            url: getContextPath() + "restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
     }).val(null);
@@ -27,10 +27,10 @@ $("document").ready(function () {
             data: function (params) {
                 return {
                     term: params.term,
-                    requestType: 'drugSearch'
+                    requestType: "drugSearch"
                 }
             },
-            url: getContextPath() + "/restricted/general_practitioner/prescriptions",
+            url: getContextPath() + "restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
     }).val(null);
@@ -39,15 +39,15 @@ $("document").ready(function () {
         e.preventDefault();
 
         let form = $(this);
-        let url = form.attr('action');
+        let url = form.attr("action");
 
         let exam = form.find(".exam-search");
         let label = form.find(".exam-prescribe-label");
 
         if (exam.val() == null) {
-            label.text('Please select an exam');
+            label.text("Please select an exam");
         } else {
-            label.text('');
+            label.text("");
 
             $.ajax({
                 type: "POST",
@@ -55,10 +55,7 @@ $("document").ready(function () {
                 cache: false,
                 data: form.serialize(),
                 success: function () {
-                    label.text("Exam prescribed successfully")
-                },
-                error: function () {
-                    label.text("Error while prescribing exam")
+                    label.text("Exam prescribed successfully.")
                 }
             });
         }
@@ -68,15 +65,15 @@ $("document").ready(function () {
         e.preventDefault();
 
         let form = $(this);
-        let url = form.attr('action');
+        let url = form.attr("action");
 
         let drug = form.find(".drug-search");
         let label = form.find(".drug-prescribe-label");
 
         if (drug.val() == null) {
-            label.text('Please select an exam');
+            label.text("Please select a drug.");
         } else {
-            label.text('');
+            label.text("");
 
             $.ajax({
                 type: "POST",
@@ -84,10 +81,10 @@ $("document").ready(function () {
                 cache: false,
                 data: form.serialize(),
                 success: function () {
-                    label.text("Drug prescribed successfully")
+                    label.text("Drug prescribed successfully.");
                 },
                 error: function () {
-                    label.text("Error while prescribing drug")
+                    label.text("Error while prescribing drug.");
                 }
             });
         }

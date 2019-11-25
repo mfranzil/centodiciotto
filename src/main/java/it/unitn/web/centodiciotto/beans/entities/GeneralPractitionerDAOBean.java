@@ -38,7 +38,6 @@ public class GeneralPractitionerDAOBean implements Serializable {
             patientDAO = daoFactory.getDAO(PatientDAO.class);
             generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
-
         } catch (DAOFactoryException e) {
             throw new BeanException("Error in DAO retrieval: ", e);
         }

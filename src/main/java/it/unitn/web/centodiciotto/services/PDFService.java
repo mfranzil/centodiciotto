@@ -126,6 +126,22 @@ public class PDFService {
     public PDDocument createDrugPrescription(DrugPrescription dp, Patient pat, GeneralPractitioner pra, String qrCodeURL)
             throws ServiceException {
 
+        if (dp == null) {
+            throw new ServiceException("DrugPrescription parameter cannot be null.");
+        }
+        if (pat == null) {
+            throw new ServiceException("Patient parameter cannot be null.");
+        }
+        if (pra == null) {
+            throw new ServiceException("GeneralPractitioner parameter cannot be null.");
+        }
+        if (qrCodeURL == null) {
+            throw new ServiceException("QRCodeURL parameter cannot be null.");
+        }
+        if (qrCodeURL.equals("")) {
+            throw new ServiceException("QRCodeURL cannot be an empty string.");
+        }
+
         PDRectangle rec = new PDRectangle(1000, 765);
         PDDocument doc = new PDDocument();
         PDPage page = new PDPage(rec);
@@ -138,7 +154,7 @@ public class PDFService {
         parameters.add(Pair.makePair("patientID", pat.getID()));
 
         File file = QRCodeCreator.createQRCodeURL(
-                qrCodeURL + sc.getContextPath() + "/restricted/chemist/prescriptions", parameters,
+                qrCodeURL + sc.getContextPath() + "restricted/chemist/prescriptions", parameters,
                 220, 220).file();
 
         try {
@@ -186,7 +202,7 @@ public class PDFService {
                     PDType1Font.HELVETICA, 21, 826, 110, Color.BLACK);
             // Drug description
             splitWrite(
-                    contents, dp.getDrugType().getDescription(),
+                    contents, dp.getType().getDescription(),
                     PDType1Font.HELVETICA, 21, 40, 500, Color.BLACK, 26);
             // Prescription description
             if (dp.getDescription() != null) {
@@ -196,7 +212,7 @@ public class PDFService {
             }
             // Ticket
             PDStreamUtils.write(
-                    contents, insertSpaces(((((float) dp.getTicket() / 10.0) <= 1) ? " " : "")
+                    contents, insertSpaces(((float) dp.getTicket() / 10.0 <= 1 ? " " : "")
                             + dp.getTicket() + "00", 3),
                     PDType1Font.HELVETICA, 21, 820, 56, Color.BLACK);
             contents.close();

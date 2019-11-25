@@ -32,16 +32,12 @@
             }
 
             /* Prescriptions */
-            .table-cell.practitioner {
-                width: 15%;
-            }
-
             .table-cell.chemist {
-                width: 15%;
+                width: 25%;
             }
 
             .table-cell.drug {
-                width: 15%;
+                width: 20%;
             }
 
             .table-cell.emission-date {
@@ -70,7 +66,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
 
             $("form").submit(function (e) {
                 e.preventDefault();
@@ -86,9 +82,6 @@
                     success: function () {
                         button.prop("disabled", true).html("Paid");
                         alert("Ticket successfully paid.");
-                    },
-                    error: function () {
-                        alert("Error while paying ticket (may already have been paid).");
                     }
                 });
             });
@@ -172,7 +165,6 @@
         <div class="row">
             <div class="col-md">
                 <div class="table-personal table-header">
-                    <div class="table-cell practitioner">Doctor</div>
                     <div class="table-cell chemist">Chemist</div>
                     <div class="table-cell drug">Drug</div>
                     <div class="table-cell emission-date">Emission Date</div>
@@ -183,28 +175,21 @@
                 <jsp:useBean id="chemistDAO" class="it.unitn.web.centodiciotto.beans.entities.ChemistDAOBean"/>
                 <jsp:setProperty name="chemistDAO" property="init" value=""/>
 
-                <jsp:useBean id="practitionerDAO"
-                             class="it.unitn.web.centodiciotto.beans.entities.GeneralPractitionerDAOBean"/>
-                <jsp:setProperty name="practitionerDAO" property="init" value=""/>
-
                 <jsp:useBean id="drugEmissionDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
                 <jsp:useBean id="drugSoldDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
                 <c:forEach items="${patientDAO.unpaidPrescriptions}" var="drugPrescription">
-                    <jsp:setProperty name="practitionerDAO" property="practitionerID"
-                                     value="${drugPrescription.practitionerID}"/>
                     <jsp:setProperty name="chemistDAO" property="chemistID" value="${drugPrescription.chemistID}"/>
+
                     <jsp:setProperty name="drugEmissionDate" property="date"
                                      value="${drugPrescription.datePrescribed.time}"/>
                     <jsp:setProperty name="drugSoldDate" property="date" value="${drugPrescription.dateSold.time}"/>
 
-                    <c:set var="practitioner" value="${practitionerDAO.practitioner}"/>
                     <c:set var="chemist" value="${chemistDAO.chemist}"/>
 
                     <div class="table-personal">
-                        <div class="table-cell practitioner">${practitioner}</div>
                         <div class="table-cell chemist">${chemist.name} </div>
-                        <div class="table-cell drug">${drugPrescription.drugType.description} </div>
+                        <div class="table-cell drug">${drugPrescription.type.description} </div>
                         <div class="table-cell emission-date">${drugEmissionDate.formattedDate}</div>
                         <div class="table-cell erogation-date">${drugSoldDate.formattedDate}</div>
                         <div class="table-cell drug-amount">$${drugPrescription.ticket}</div>

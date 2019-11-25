@@ -22,7 +22,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
             let availableExamFilter = true;
 
             $(function () {
@@ -36,7 +36,7 @@
                             data: function (params) {
                                 return {
                                     term: params.term,
-                                    requestType: 'examSearch'
+                                    requestType: "examSearch"
                                 }
                             },
                             url: url,
@@ -45,11 +45,11 @@
                     })
                     .val(null)
                     .trigger("change")
-                    .on('select2:select', function (e) {
+                    .on("select2:select", function (e) {
                         $("#main-table").children().slice(1).remove();
                         renderExamsRows(e.params.data.id);
                     })
-                    .on('select2:unselect', function (e) {
+                    .on("select2:unselect", function (e) {
                         $("#main-table").children().slice(1).remove();
                         renderExamsRows();
                     });
@@ -97,8 +97,7 @@
                     $("#exam-filter").html("Show available exams");
                 }
             });
-
-        });
+});
     </script>
 </head>
 <body>

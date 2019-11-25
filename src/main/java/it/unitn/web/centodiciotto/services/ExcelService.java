@@ -193,7 +193,6 @@ public class ExcelService {
             }
 
             return sc.getContextPath() + File.separator + "xls" + File.separator + fileName;
-
         } catch (DAOException | IOException e) {
             throw new ServiceException("Failure in XLS Report creation: ", e);
         }

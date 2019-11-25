@@ -9,11 +9,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.avt {
-                width: 5%;
+                width: 7%;
             }
 
             .table-cell.patient {
-                width: 40%;
+                width: 38%;
             }
 
             .table-cell.date {
@@ -27,7 +27,7 @@
     </style>
     <script>
         $("document").ready(function () {
-            const url = window.href;
+            const url = window.location.href;
             $(".mark-completed").submit(function (e) {
                 e.preventDefault();
 

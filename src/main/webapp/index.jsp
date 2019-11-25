@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CentoDiciotto - Home</title>
+    <title>Home - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/index.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/vendor/magnific-popup/magnific-popup.css" rel="stylesheet">

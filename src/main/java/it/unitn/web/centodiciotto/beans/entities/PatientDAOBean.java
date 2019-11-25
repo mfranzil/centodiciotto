@@ -224,7 +224,6 @@ public class PatientDAOBean implements Serializable {
 
         try {
             prescriptions = drugPrescriptionDAO.getValidByPatient(patientID);
-
         } catch (DAOException e) {
             throw new BeanException("Error getting drugPre list in patientDaoBean: ", e);
         }

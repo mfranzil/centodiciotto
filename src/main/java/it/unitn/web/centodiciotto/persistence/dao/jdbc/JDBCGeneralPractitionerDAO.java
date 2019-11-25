@@ -60,7 +60,6 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "GeneralPractitionerDAO::insert affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error inserting GeneralPractitioner: ", e);
         }
@@ -78,7 +77,6 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
 
             int row = stm.executeUpdate();
             Logger.getGlobal().log(Level.INFO, "GeneralPractitionerDAO::update affected " + row + " rows");
-
         } catch (SQLException e) {
             throw new DAOException("Error updating GeneralPractitioner: ", e);
         }

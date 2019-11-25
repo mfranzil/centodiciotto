@@ -162,5 +162,4 @@ $.extend( $.easing,
 			( 1 + bounceOut( 2 * x - 1 ) ) / 2;
 	}
 });
-
 });

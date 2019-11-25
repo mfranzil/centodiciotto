@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,6 +53,8 @@ public class HealthServiceReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        PrintWriter writer = response.getWriter();
+        response.setContentType("application/json");
 
         if (user instanceof HealthService) {
             try {
@@ -68,8 +71,7 @@ public class HealthServiceReportServlet extends HttpServlet {
                 String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
                         includeDoctorExams, includeHealthServiceExams, includePrescriptions);
 
-                String json = "{\"path\": \"" + reportPath.replace("\\", "\\\\") + "\"}";
-                response.getWriter().write(json);
+                writer.write("{\"path\": \"" + reportPath.replace("\\", "\\\\") + "\"}");
             } catch (ParseException e) {
                 throw new ServletException("Failed to parse date parameter: ", e);
             } catch (ServiceException e) {
