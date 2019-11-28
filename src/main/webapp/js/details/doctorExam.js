@@ -1,4 +1,8 @@
-$("document").ready(function () {
+/**
+ * This JS document is injected by ExamBookingServlet.java into /restricted/patient/exam_booking.
+ * It enables a popup that lets the user choose a Specialized Doctor (or the local HS) in order to do an exam.
+ */
+$("document").ready(() => {
     $(".doctor-search").select2({
         placeholder: "Select a Specialized Doctor",
         allowClear: true,
@@ -6,19 +10,17 @@ $("document").ready(function () {
         minimumInputSize: 6,
         ajax: {
             type: "POST",
-            data: function (params) {
-                return {
-                    term: params.term,
-                    examID: this.parent().find("input[name='examID']").val(),
-                    requestType: "doctorSearch"
-                }
-            },
+            data: (params) => ({
+                term: params.term,
+                examID: this.parent().find("input[name='examID']").val(),
+                requestType: "doctorSearch"
+            }),
             url: getContextPath() + "restricted/patient/exam_booking",
             dataType: "json",
         },
     }).val(null);
 
-    $(".doctor-form").submit(function (e) {
+    $(".doctor-form").submit((e) => {
         e.preventDefault();
 
         let form = $(this);
@@ -27,22 +29,25 @@ $("document").ready(function () {
         let doctor = form.find(".doctor-search");
         let label = form.find(".doctor-label");
 
-        let d = doctor.select2("data")[0].healthService;
-
         if (doctor.val() == null) {
             label.text("Please select an exam");
         } else {
             label.text("");
 
             let data = $(this).serializeArray();
-            data.push({name: "isHealthService", value: doctor.select2("data")[0].healthService});
+            data.push(
+                {
+                    name: "isHealthService",
+                    value: doctor.select2("data")[0].healthService
+                }
+            );
 
             $.ajax({
                 type: "POST",
                 url: url,
                 cache: false,
                 data: data,
-                success: function () {
+                success: () => {
                     label.text("Exam booked successfully.");
                     setTimeout(() => window.location.reload(), 750);
                 }

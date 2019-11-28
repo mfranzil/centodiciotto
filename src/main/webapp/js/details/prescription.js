@@ -1,4 +1,9 @@
-$("document").ready(function () {
+/**
+ * This JS document is injected by PrescriptionServlet into /restricted/general_practitioner/prescriptions.
+ *
+ * Its role is to send AJAX POST requests to the servlet, containing exam and drug prescriptions requests.
+ */
+$("document").ready(() => {
     $(".exam-search").select2({
         placeholder: "Select an exam",
         allowClear: true,
@@ -6,12 +11,10 @@ $("document").ready(function () {
         minimumInputSize: 6,
         ajax: {
             type: "POST",
-            data: function (params) {
-                return {
-                    term: params.term,
-                    requestType: "examSearch"
-                }
-            },
+            data: params => ({
+                term: params.term,
+                requestType: "examSearch"
+            }),
             url: getContextPath() + "restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
@@ -24,18 +27,16 @@ $("document").ready(function () {
         minimumInputSize: 6,
         ajax: {
             type: "POST",
-            data: function (params) {
-                return {
-                    term: params.term,
-                    requestType: "drugSearch"
-                }
-            },
+            data: params => ({
+                term: params.term,
+                requestType: "drugSearch"
+            }),
             url: getContextPath() + "restricted/general_practitioner/prescriptions",
             dataType: "json",
         },
     }).val(null);
 
-    $(".exam-form").submit(function (e) {
+    $(".exam-form").submit((e) => {
         e.preventDefault();
 
         let form = $(this);
@@ -54,14 +55,12 @@ $("document").ready(function () {
                 url: url,
                 cache: false,
                 data: form.serialize(),
-                success: function () {
-                    label.text("Exam prescribed successfully.")
-                }
+                success: () => label.text("Exam prescribed successfully.")
             });
         }
     });
 
-    $(".drug-form").submit(function (e) {
+    $(".drug-form").submit((e) => {
         e.preventDefault();
 
         let form = $(this);
@@ -80,12 +79,8 @@ $("document").ready(function () {
                 url: url,
                 cache: false,
                 data: form.serialize(),
-                success: function () {
-                    label.text("Drug prescribed successfully.");
-                },
-                error: function () {
-                    label.text("Error while prescribing drug.");
-                }
+                success: () => label.text("Drug prescribed successfully."),
+                error: () => label.text("Error while prescribing drug.")
             });
         }
     });

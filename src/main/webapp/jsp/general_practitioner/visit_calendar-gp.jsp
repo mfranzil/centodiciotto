@@ -26,9 +26,9 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
-            $(".mark-completed").submit(function (e) {
+            $(".mark-completed").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -41,7 +41,7 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function (data) {
+                    success: () => {
                         button.html("Completed");
                     }
                 });

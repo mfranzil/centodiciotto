@@ -5,7 +5,7 @@
     <title>Reports - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
             let datepicker = $(".datepicker");
             $("#include,#generate-new,#download,#loading-container").hide();
@@ -17,7 +17,7 @@
                 changeMonth: true,
                 changeYear: true,
                 showButtonPanel: true,
-                onClose: function (dateText, inst) {
+                onClose: dateText => {
                     if (dateText !== "") {
                         $("#include").slideDown();
                         $("#choose-date").slideUp();
@@ -28,7 +28,7 @@
                 }
             });
 
-            $("#generate").submit(function (e) {
+            $("#generate").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -48,22 +48,21 @@
                     url: url,
                     cache: false,
                     data: data,
-                    success: function (result) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#submit,#loading-container").slideUp();
                         $("#generate-new,#download").slideDown();
                         $(".datepicker").prop("disabled", true);
-                        $("#download").click(function () {
+                        $("#download").click(() => {
                             e.preventDefault();
-                            window.location.href = result.path;
+                            window.location.href = json.path;
                         });
-                    },
-                    error: function () {
-                        window.location.reload(); // TODO evitare i reload
-                    }
+                    },// TODO evitare i reload
+                    error: () => window.location.reload()
                 });
             });
 
-            $("#generate-new").click(function () {
+            $("#generate-new").click(() => {
                 window.location.reload();
             });
         });
@@ -124,7 +123,8 @@
                             Include drug prescriptions
                         </label>
                         <button type="submit" id="submit" class="btn btn-block btn-personal">Generate report</button>
-                        <div class="justify-content-center loading mt-2" id="loading-container" style="text-align: center;">
+                        <div class="justify-content-center loading mt-2" id="loading-container"
+                             style="text-align: center;">
                             <img class="rotating" role="status" style="width: 64px"
                                  src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                         </div>

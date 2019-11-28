@@ -21,39 +21,35 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
             let availableExamFilter = true;
 
-            $(function () {
-                $("#exam-search")
-                    .select2({
-                        placeholder: "Choose an exam",
-                        allowClear: true,
-                        closeOnSelect: true,
-                        ajax: {
-                            type: "POST",
-                            data: function (params) {
-                                return {
-                                    term: params.term,
-                                    requestType: "examSearch"
-                                }
-                            },
-                            url: url,
-                            dataType: "json",
-                        }
-                    })
-                    .val(null)
-                    .trigger("change")
-                    .on("select2:select", function (e) {
-                        $("#main-table").children().slice(1).remove();
-                        renderExamsRows(e.params.data.id);
-                    })
-                    .on("select2:unselect", function (e) {
-                        $("#main-table").children().slice(1).remove();
-                        renderExamsRows();
-                    });
-            });
+            $("#exam-search")
+                .select2({
+                    placeholder: "Choose an exam",
+                    allowClear: true,
+                    closeOnSelect: true,
+                    ajax: {
+                        type: "POST",
+                        data: params => ({
+                            term: params.term,
+                            requestType: "examSearch"
+                        }),
+                        url: url,
+                        dataType: "json",
+                    }
+                })
+                .val(null)
+                .trigger("change")
+                .on("select2:select", e => {
+                    $("#main-table").children().slice(1).remove();
+                    renderExamsRows(e.params.data.id);
+                })
+                .on("select2:unselect", e => {
+                    $("#main-table").children().slice(1).remove();
+                    renderExamsRows();
+                });
 
             let tableHeaders = [
                 {field: "exam", type: "string", text: "Exam"},
@@ -78,7 +74,8 @@
                         onlyAvailable: onlyAvailable
                     },
                     url: url,
-                    success: function (json) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#main-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();
@@ -97,7 +94,7 @@
                     $("#exam-filter").html("Show available exams");
                 }
             });
-});
+        });
     </script>
 </head>
 <body>
@@ -120,7 +117,8 @@
                     </select>
                 </div>
                 <div id="main-table" class="mt-2"></div>
-                <div class="justify-content-center loading mt-2" id="main-loading-container" style="text-align: center;">
+                <div class="justify-content-center loading mt-2" id="main-loading-container"
+                     style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
                 </div>

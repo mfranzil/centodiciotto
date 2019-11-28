@@ -5,8 +5,8 @@
     <title>500 Internal Server Error - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script type="text/javascript">
-        $("document").ready(function () {
-            $("#reload").click(function () {
+        $("document").ready(() => {
+            $("#reload").click(() => {
                 document.location.reload();
             });
         });

@@ -29,7 +29,7 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
             $("#main-table,#main-loading-container,#history-loading-container,#send-recall-div").hide();
 
@@ -42,9 +42,7 @@
             $("#history-table").createTableHeaders(tableHeaders);
             renderHistory();
 
-            $("#new-recall").click(function () {
-                $("#send-recall-div").slideDown();
-            });
+            $("#new-recall").click(() => $("#send-recall-div").slideDown());
 
             $("#exam-search")
                 .select2({
@@ -53,27 +51,25 @@
                     closeOnSelect: true,
                     ajax: {
                         type: "POST",
-                        data: function (params) {
-                            return {
-                                term: params.term,
-                                requestType: "examSearch"
-                            }
-                        },
+                        data: params => ({
+                            term: params.term,
+                            requestType: "examSearch"
+                        }),
                         url: url,
                         dataType: "json",
                     }
                 })
                 .val(null)
                 .trigger("change")
-                .on("select2:select", function (e) {
+                .on("select2:select", e => {
                     renderExam(e.params.data.id);
                 })
-                .on("select2:unselect", function (e) {
+                .on("select2:unselect", () => {
                     renderExam();
                     $("#main-table").slideUp();
                 });
 
-            $("#send-recall").submit(function (e) {
+            $("#send-recall").submit(e => {
                 e.preventDefault();
 
                 let maxAge = parseInt($("#max-age").val());
@@ -83,7 +79,7 @@
                     (minAge < 0) || (maxAge > 130) || (minAge >= maxAge)) {
                     $("#max-age,#min-age").css("background", "rgba(255, 0, 0, 0.2)").css("outline", "none");
 
-                    setTimeout(function () {
+                    setTimeout(() => {
                         $("#max-age,#min-age").css("background", "").css("outline", "");
                     }, 2000);
 
@@ -103,9 +99,9 @@
                     url: url,
                     cache: false,
                     data: data,
-                    success: function (data) {
+                    success: () => {
                         $("#submit-recall").html("Recall inviato con successo.");
-                        setTimeout(function () {
+                        setTimeout(() => {
                             renderExam();
                             renderHistory();
                         }, 2000);
@@ -125,14 +121,15 @@
                         examID: examID,
                     },
                     url: url,
-                    success: function (result) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         if (!examID) {
                             $("#exam-id").val("");
                             $("#main-table,#main-loading-container,#send-recall-div").slideUp();
                         } else {
-                            $(".table-cell.content.exam").html(result[0].exam);
-                            $(".table-cell.content.date").html(result[0].date);
-                            $(".table-cell.content.age").html(result[0].age);
+                            $(".table-cell.content.exam").html(json[0].exam);
+                            $(".table-cell.content.date").html(json[0].date);
+                            $(".table-cell.content.age").html(json[0].age);
                             $("#exam-id").val(examID);
                             $("main-loading-container,#send-recall-div").slideUp();
                         }
@@ -151,7 +148,8 @@
                         requestType: "recallHistory",
                     },
                     url: url,
-                    success: function (json) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#history-table").insertRows(tableHeaders, json, url);
                         $("#history-loading-container").slideUp();
                     }

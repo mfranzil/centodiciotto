@@ -24,10 +24,10 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
 
-            $(".set-visit").submit(function (e) {
+            $(".set-visit").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -41,7 +41,7 @@
                     url: url,
                     cache: false,
                     data: data,
-                    success: function (data) {
+                    success: () => {
                         button.html("Confirmed");
                     }
                 });

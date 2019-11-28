@@ -34,9 +34,11 @@
                             </a>
                             <div class="dropdown-menu nav-personal">
                                 <a class="dropdown-item nav-link-personal"
-                                   href="${pageContext.request.contextPath}/restricted/patient/exam_history">Exam History</a>
+                                   href="${pageContext.request.contextPath}/restricted/patient/exam_history">Exam
+                                                                                                             History</a>
                                 <a class="dropdown-item nav-link-personal"
-                                   href="${pageContext.request.contextPath}/restricted/patient/exam_booking">Book your Exam</a>
+                                   href="${pageContext.request.contextPath}/restricted/patient/exam_booking">Book your
+                                                                                                             Exam</a>
                             </div>
                         </li>
                         <li class="nav-item">

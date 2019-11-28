@@ -65,10 +65,10 @@
 
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
 
-            $("form").submit(function (e) {
+            $("form").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -79,7 +79,7 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function () {
+                    success: () => {
                         button.prop("disabled", true).html("Paid");
                         alert("Ticket successfully paid.");
                     }

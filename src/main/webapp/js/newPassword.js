@@ -1,5 +1,10 @@
-$("document").ready(function () {
-    $("#new-password, #new-password-confirm").on("keyup", function () {
+/**
+ * JS document for handling new password requests.
+ *
+ * Used on password reset and user pages.
+ */
+$("document").ready(() => {
+    $("#new-password, #new-password-confirm").on("keyup", () => {
         let message = $("#password-change-button");
         let newPassword = $("#new-password").val();
         let newPasswordConfirm = $("#new-password-confirm").val();
@@ -11,8 +16,7 @@ $("document").ready(function () {
             return;
         }
 
-        if ((newPassword !== newPasswordConfirm) ||
-            newPassword === "" || newPasswordConfirm === "") {
+        if (newPassword !== newPasswordConfirm || newPassword === "" || newPasswordConfirm === "") {
             message.html("Passwords do not match.")
                 .css("background-color", "red").prop("disabled", true);
             return;
@@ -20,7 +24,7 @@ $("document").ready(function () {
 
         message.html("Passwords match!").css("background-color", "green").removeAttr("disabled");
 
-        setTimeout(function () {
+        setTimeout(() => {
             message.html("Change your password").css("background-color", "");
         }, 2000);
     });

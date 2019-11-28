@@ -28,14 +28,14 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
-            $("#table-select div").click(function () {
+            $("#table-select div").click(() => {
                 $(this).find("input[type=radio]").prop("checked", true);
                 $("#submit").removeAttr("disabled");
             });
 
-            $("#practitioner").submit(function (e) {
+            $("#practitioner").submit(e => {
                 e.preventDefault();
                 $("#submit").prop("disabled", true).html("Requesting change...");
 
@@ -50,7 +50,7 @@
                     url: url,
                     cache: false,
                     data: data,
-                    success: function () {
+                    success: () => {
                         $("#current-practitioner").removeClass("chosen-practitioner");
                         $("#check").html("");
                         pract.parent().html("✔").parent().addClass("chosen-practitioner");

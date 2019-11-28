@@ -6,11 +6,11 @@
 <head>
     <title>Reset your password - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
-    <script src="${pageContext.request.contextPath}/js/new_password.js"></script>
+    <script src="${pageContext.request.contextPath}/js/newPassword.js"></script>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
-            $("#password-reset").submit(function (e) {
+            $("#password-reset").submit(e => {
                 e.preventDefault();
                 let form = $(this);
 
@@ -24,10 +24,10 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function () {
+                    success: () => {
                         $("#message").html("Password changed successfully.");
                         $("#new-password,#new-password-confirm,#user-id").slideUp();
-                        $("#password-change-button").html("Go to login").click(function (e) {
+                        $("#password-change-button").html("Go to login").click(e => {
                             e.preventDefault();
                             window.location = getContextPath() + "login";
                         });

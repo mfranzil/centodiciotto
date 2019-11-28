@@ -26,7 +26,7 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
 
             let tableHeaders = [
@@ -49,7 +49,8 @@
                         requestType: "requestList"
                     },
                     url: url,
-                    success: function (json) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#requests-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();
@@ -57,7 +58,7 @@
                 });
             }
 
-            $(".set-exam").submit(function (e) {
+            $(".set-exam").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -73,7 +74,7 @@
                     url: url,
                     cache: false,
                     data: data,
-                    success: function (data) {
+                    success: () => {
                         button.html("Confirmed");
                     }
                 });

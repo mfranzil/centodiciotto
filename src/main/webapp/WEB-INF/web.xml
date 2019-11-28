@@ -9,12 +9,12 @@
         <param-value>img/avatars</param-value>
     </context-param>
     <context-param>
-        <description>The folder where are stored the exported pdfs</description>
+        <description>The folder where the exported pdfs are stored.</description>
         <param-name>pdf-folder</param-name>
         <param-value>pdfs</param-value>
     </context-param>
 
-    <!-- Filtri: mapping filtri-classi -->
+    <!-- Filtri -->
     <filter>
         <filter-name>AuthenticationFilter</filter-name>
         <filter-class>it.unitn.web.centodiciotto.filters.AuthenticationFilter</filter-class>

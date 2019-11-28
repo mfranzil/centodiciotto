@@ -30,10 +30,10 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
 
-            $(".mark-completed").submit(function (e) {
+            $(".mark-completed").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -46,7 +46,7 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function (data) {
+                    success: () => {
                         button.html("Completed");
                     }
                 });
@@ -82,7 +82,8 @@
 
                 <c:choose>
                     <c:when test="${sessionScope.role eq 'specialized_doctor'}">
-                        <jsp:useBean id="doctorDAO" class="it.unitn.web.centodiciotto.beans.entities.SpecializedDoctorDAOBean"/>
+                        <jsp:useBean id="doctorDAO"
+                                     class="it.unitn.web.centodiciotto.beans.entities.SpecializedDoctorDAOBean"/>
                         <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
                         <jsp:setProperty name="doctorDAO" property="init" value=""/>
                     </c:when>

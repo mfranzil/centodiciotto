@@ -25,9 +25,9 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
-            $("#book-visit").submit(function (e) {
+            $("#book-visit").submit(e => {
                 e.preventDefault();
 
                 let form = $(this);
@@ -40,7 +40,7 @@
                     url: url,
                     cache: false,
                     data: form.serialize(),
-                    success: function (data) {
+                    success: () => {
                         button.html("Successfully booked");
                     }
                 });

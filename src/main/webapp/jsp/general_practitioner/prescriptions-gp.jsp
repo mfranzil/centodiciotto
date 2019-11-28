@@ -34,7 +34,7 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
 
             $("#patient-search")
@@ -44,23 +44,21 @@
                     closeOnSelect: true,
                     ajax: {
                         type: "POST",
-                        data: function (params) {
-                            return {
-                                term: params.term,
-                                requestType: "patientSearch"
-                            }
-                        },
+                        data: params => ({
+                            term: params.term,
+                            requestType: "patientSearch"
+                        }),
                         url: getContextPath() + "restricted/general_practitioner/patients",
                         dataType: "json",
                     }
                 })
                 .val(null)
                 .trigger("change")
-                .on("select2:select", function (e) {
+                .on("select2:select", e => {
                     $("#patient-table").children().not("first").remove();
                     renderPatientsRows(e.params.data.patientID);
                 })
-                .on("select2:unselect", function (e) {
+                .on("select2:unselect", () => {
                     $("#patient-table").children().not("first").remove();
                     renderPatientsRows();
                 });
@@ -86,7 +84,8 @@
                         patientID: patientID
                     },
                     url: url,
-                    success: function (json) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#patient-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();

@@ -29,7 +29,7 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
             let action = "${requestScope.action}";
 
@@ -50,19 +50,17 @@
                     minimumInputSize: 6,
                     ajax: {
                         type: "POST",
-                        data: function (params) {
-                            return {
-                                term: params.term,
-                                requestType: "patientSearch"
-                            }
-                        },
+                        data: params => ({
+                            term: params.term,
+                            requestType: "patientSearch"
+                        }),
                         url: url,
                         dataType: "json",
                     }
                 })
                 .val("")
                 .trigger("change")
-                .on("select2:select", function (e) {
+                .on("select2:select", e => {
                     $("#main-loading-container").slideDown();
                     $("#main-table").children().not("first").remove();
                     $("#patient-name").html(e.params.data.fullName);
@@ -71,7 +69,7 @@
                     $("#patient-info").slideDown();
                     renderPrescriptions(e.params.data.patientID);
                 })
-                .on("select2:unselect", function (e) {
+                .on("select2:unselect", () => {
                     $("#main-loading-container").slideUp();
                     $("#patient-info").slideUp();
                     $("#main-table").children().not("first").remove();
@@ -88,7 +86,7 @@
                         patientID: patientID
                     },
                     url: url,
-                    success: function(data, textStatus, jqXHR) {
+                    success: (data, textStatus, jqXHR) => {
                         let json = jqXHR.responseJSON;
                         $("#main-table").createTableHeaders(tableHeaders).insertRows(tableHeaders, json, url);
                         enablePopup();
@@ -101,12 +99,10 @@
                 });
             }
 
-            $(document).ajaxSuccess(function () {
-                activateForm();
-            });
+            $(document).ajaxSuccess(() => activateForm());
 
             function activateForm() {
-                $(".serve-prescription").submit(function (e) {
+                $(".serve-prescription").submit(e => {
                     e.preventDefault();
 
                     $("#submit-serve").prop("disabled", true);
@@ -118,22 +114,22 @@
                         url: url,
                         cache: false,
                         data: form.serialize(),
-                        success: function (data, textStatus, jqXHR) {
+                        success: (data, textStatus, jqXHR) => {
                             let json = jqXHR.responseJSON;
 
                             $(".submit-serve").css("background", "rgba(0, 55, 0, 0.8)").html("Submitted");
 
-                            setTimeout(function () {
+                            setTimeout(() => {
                                 $(".popup-window").hide();
                                 $("#main-loading-container").slideDown();
                                 $("#main-table").children().not("first").remove();
                             }, 750);
 
-                            setTimeout(function () {
+                            setTimeout(() => {
                                 renderPrescriptions(json.patientID);
                             }, 1500);
                         },
-                        error: function () {
+                        error: () => {
                             let newUrl = url.substring(0, url.indexOf('?'));
                             $(location).attr("href", newUrl);
                         }

@@ -27,7 +27,7 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
 
             let tableHeaders = [
@@ -40,7 +40,7 @@
             $("#main-table").createTableHeaders(tableHeaders);
             renderExamsRows();
 
-            function renderExamsRows(examID, onlyAvailable = true) {
+            function renderExamsRows() {
                 $("#main-loading-container").slideDown();
 
                 $.ajax({
@@ -50,7 +50,8 @@
                     data: {
                         requestType: "historyList"
                     },
-                    success: function (json) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#main-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();

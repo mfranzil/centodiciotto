@@ -36,37 +36,33 @@
         }
     </style>
     <script>
-        $("document").ready(function () {
+        $("document").ready(() => {
             const url = window.location.href;
-            $(function () {
-                $("#patient-search")
-                    .select2({
-                        placeholder: "Select a patient",
-                        allowClear: true,
-                        closeOnSelect: true,
-                        ajax: {
-                            type: "POST",
-                            data: function (params) {
-                                return {
-                                    term: params.term,
-                                    requestType: "patientSearch"
-                                }
-                            },
-                            url: url,
-                            dataType: "json",
-                        }
-                    })
-                    .val(null)
-                    .trigger("change")
-                    .on("select2:select", function (e) {
-                        $("#main-table").children().not("first").remove();
-                        renderPatientsRows(e.params.data.patientID);
-                    })
-                    .on("select2:unselect", function (e) {
-                        $("#main-table").children().not("first").remove();
-                        renderPatientsRows();
-                    });
-            });
+            $("#patient-search")
+                .select2({
+                    placeholder: "Select a patient",
+                    allowClear: true,
+                    closeOnSelect: true,
+                    ajax: {
+                        type: "POST",
+                        data: params => ({
+                            term: params.term,
+                            requestType: "patientSearch"
+                        }),
+                        url: url,
+                        dataType: "json",
+                    }
+                })
+                .val(null)
+                .trigger("change")
+                .on("select2:select", e => {
+                    $("#main-table").children().not("first").remove();
+                    renderPatientsRows(e.params.data.patientID);
+                })
+                .on("select2:unselect", () => {
+                    $("#main-table").children().not("first").remove();
+                    renderPatientsRows();
+                });
 
             let tableHeaders = [
                 {field: "avt", type: "photo", text: "&nbsp;"},
@@ -89,7 +85,8 @@
                         patientID: patientID
                     },
                     url: url,
-                    success: function (json) {
+                    success: (data, textStatus, jqXHR) => {
+                        let json = jqXHR.responseJSON;
                         $("#main-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();

@@ -1,6 +1,24 @@
+/**
+ * JS document used in pages that require dynamic JSON requests and datatable creation.
+ */
+
+/**
+ * Generates a dynamic and responsive HTML tree from an Array of elements.
+ *
+ * Works recursively until the DOM subtree template is exhausted.
+ *
+ * Supports generation of any type of HTML tags, but is specifically designed to work with buttons,
+ * forms, inputs, textareas, scripts, link hrefs and selects tags.
+ *
+ * At the end it appends the newly created element to the supplied parent.
+ *
+ * @param json a JSON object obtained from the servlet or a sub-object, representing a DOM subtree
+ * @param parent the HTML element to attach the newly created child
+ * @returns {*} the parent
+ */
 function buildHtmlFromJson(json, parent) {
     let lastElement;
-    json.forEach(function (element, index) {
+    json.forEach(element => {
         if (element instanceof Array) {
             buildHtmlFromJson(element, lastElement);
         } else {
@@ -21,9 +39,11 @@ function buildHtmlFromJson(json, parent) {
                 if (element.elementInputValue !== undefined) htmlParagraphElement.value = element.elementInputValue;
                 if (element.elementInputType !== undefined) htmlParagraphElement.type = element.elementInputType;
                 if (element.elementInputName !== undefined) htmlParagraphElement.name = element.elementInputName;
-                if (element.elementInputAutocomplete !== undefined) htmlParagraphElement.autocomplete = element.elementInputAutocomplete;
+                if (element.elementInputAutocomplete !== undefined)
+                    htmlParagraphElement.autocomplete = element.elementInputAutocomplete;
             } else if (element.elementType === "textarea") {
-                if (element.elementTextAreaPlaceholder !== undefined) htmlParagraphElement.placeholder = element.elementTextAreaPlaceholder;
+                if (element.elementTextAreaPlaceholder !== undefined)
+                    htmlParagraphElement.placeholder = element.elementTextAreaPlaceholder;
                 if (element.elementTextAreaName !== undefined) htmlParagraphElement.name = element.elementTextAreaName;
             } else if (element.elementType === "script") {
                 if (element.elementScriptSrc !== undefined) htmlParagraphElement.src = element.elementScriptSrc;
@@ -42,6 +62,12 @@ function buildHtmlFromJson(json, parent) {
     return parent;
 }
 
+/**
+ * Sends an AJAX request to a servlet URL for filling up a popup.
+ * @param id the item ID to send to the servlet
+ * @param url the url to send a POST request
+ * @returns {HTMLDivElement} the newly created DOM tree
+ */
 function getDetails(id, url) {
     let content = document.createElement("div");
     $.ajax({
@@ -52,10 +78,7 @@ function getDetails(id, url) {
             item: id
         },
         url: url,
-        start: function () {
-
-        },
-        success: function (json) {
+        success: json => {
             buildHtmlFromJson(json, content);
             $(".loading").slideUp();
         }
@@ -63,14 +86,37 @@ function getDetails(id, url) {
     return content;
 }
 
-$("document").ready(function () {
-    $.fn.createTableHeaders = function (headers) {
+$("document").ready(() => {
+    // Applies a custom css theme to select2 items
+    try {
+        $.fn.select2.defaults.set("theme", "bootstrap");
+    } catch (TypeError) {
+        console.log("Select2 not present in the page, skipping CSS load");
+    }
+
+    /**
+     * Custom jQuery function for adding table headings to the document.
+     *
+     * Requires base.css for responsive CSS behaviour.
+     *
+     * Requires additional CSS classes, one for each column,
+     * including the column width (for example: .table-cell.col1 {width: 20%})
+     *
+     * The headers parameter must be an Array of objects of the following form:
+     * {field: "", -> the name (also used in the css class)
+     * type: "", -> the datatype (must be one of button, string, bool or photo)
+     * text: ""} -> the header text
+     *
+     * @param headers an Array of objects (see description)
+     * @returns {$} this (for method chaining)
+     */
+    $.fn.createTableHeaders = (headers) => {
         this.html("");
         let headersDiv = document.createElement("div");
         headersDiv.classList.add("table-personal");
         headersDiv.classList.add("table-header");
 
-        $.each(headers, function (index, header) {
+        $.each(headers, (index, header) => {
             let headerDiv = document.createElement("div");
             headerDiv.className = "table-cell " + header.field;
             headerDiv.innerHTML = header.text;
@@ -80,21 +126,27 @@ $("document").ready(function () {
 
         return this;
     };
-
-    try {
-        $.fn.select2.defaults.set("theme", "bootstrap");
-    } catch (TypeError) {
-        console.log("Select2 not present in the page, skipping CSS load");
-    }
-
-    $.fn.insertRows = function (headers, data, url) {
+    /**
+     * Inserts rows into a table previously created with #createTableHeaders.
+     *
+     * The headers parameter must be an Array of objects of the following form:
+     * {field: "", -> the name (also used in the css class)
+     * type: "", -> the datatype (must be one of button, string, bool or photo)
+     * text: ""} -> the header text
+     *
+     * @param headers the headers previously supplied.
+     * @param data a JSON object contiaining the rows
+     * @param url the url to send post requests to in case of popup buttons
+     * @returns {$} this (for method chaining)
+     */
+    $.fn.insertRows = (headers, data, url) => {
         let mainTable = this;
 
-        $.each(data, function (index, item) {
+        $.each(data, (index, item) => {
             let row = document.createElement("div");
             row.className = "table-personal";
             row.id = "table-select";
-            $.each(headers, function (index1, header) {
+            $.each(headers, (index1, header) => {
                 let cell = document.createElement("div");
                 cell.className = "table-cell " + header.field;
 
@@ -149,7 +201,7 @@ $("document").ready(function () {
 
                             popupWindow.appendChild(popupAnimate);
 
-                            button.onclick = function () {
+                            button.onclick = () => {
                                 while (popupAnimate.firstChild) {
                                     popupAnimate.removeChild(popupAnimate.firstChild);
                                 }

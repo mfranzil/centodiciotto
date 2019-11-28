@@ -1,13 +1,19 @@
-$("document").ready(function () {
+/**
+ * JS file for handling login.jsp requests.
+ *
+ * It handles both requests for login and password recovery via the appropriate callbacks.
+ */
+$("document").ready(() => {
     const url = window.location.href;
 
+    // LocalStorage usage for memorizing user credentials
     $("#user-id-login").val(localStorage.userID);
     $("#password-login").val(localStorage.password);
     $("#remember-me").prop("checked", localStorage.checkBoxValidation);
 
     $("#loading-container").hide();
 
-    $(".hover-button").click(function () {
+    $(".hover-button").click(() => {
         let id = this.id;
         let role = getNameFromID(id);
         $("#form-image").attr("src", getContextPath() + "img/classes/" + id + ".png");
@@ -16,7 +22,7 @@ $("document").ready(function () {
         $("#role").val(id);
     });
 
-    $("#login").submit(function (e) {
+    $("#login").submit((e) => {
         e.preventDefault();
 
         $("#login").slideUp();
@@ -40,20 +46,20 @@ $("document").ready(function () {
             url: url,
             cache: false,
             data: form.serialize(),
-            success: function (data, textStatus, jqXHR) {
+            success: (data, textStatus, jqXHR) => {
                 let json = jqXHR.responseJSON;
                 $(".hover-button").prop("disabled", "true");
                 $("#form-window").fadeOut();
                 window.location = json.url;
             },
-            error: function () {
+            error: () => {
                 $(".mini-icon").css("border", "2px solid rgba(135, 0, 0, 0.75) !important");
                 $("#form-name").html("Incorrect email or password.").css("color", "rgba(135, 0, 0, 1)")
                     .css("background-color", "rgba(255, 55, 55, 0.6)");
                 $("#user-id-login,#password-login").css("background", "rgba(255, 0, 0, 0.2)")
                     .css("border-color", "red");
 
-                setTimeout(function () {
+                setTimeout(() => {
                     $(".mini-icon").css("border", "");
                     $("#user-id-login,#password-login").css("background", "").css("border-color", "");
                     $("#form-name").html(oldButtonName).css("color", "")
@@ -66,7 +72,7 @@ $("document").ready(function () {
         });
     });
 
-    $("#recovery").submit(function (e) {
+    $("#recovery").submit((e) => {
         e.preventDefault();
 
         $("#recovery").slideUp();
@@ -80,32 +86,34 @@ $("document").ready(function () {
             url: form.attr("action"),
             cache: false,
             data: form.serialize(),
-            success: function (data) {
+            success: () => {
                 $("#recovery").slideDown();
                 $("#loading-container").slideUp();
                 $("#submit-recovery").slideUp();
 
-                $("#message").html("If " + $("#user-id-recovery").val() + " corresponds to a valid email," +
-                    " you'll receive instructions for resetting your password in your inbox. <br>" +
-                    "The link is valid for 24 hours.");
-                $("#user-id-recovery").css("background", "rgba(0, 255, 0, 0.2)")
+                let userIDrecovery = $("#user-id-recovery");
+
+                $("#message").html(`If ${userIDrecovery.val()} corresponds to a valid email, 
+                                    you'll receive instructions for resetting your password in your inbox.
+                                    <br>The link is valid for 24 hours.`);
+                userIDrecovery.css("background", "rgba(0, 255, 0, 0.2)")
                     .css("border-color", "green").prop("disabled", true);
             }
         });
     });
 
-    $("#to-recovery").click(function (e) {
+    $("#to-recovery").click(e => {
         e.preventDefault();
         $("#recovery").slideDown();
         $("#login").slideUp();
     });
 
-    $("#to-login").click(function () {
+    $("#to-login").click(() => {
         $("#recovery").slideUp();
         $("#login").slideDown();
     });
 
-    $("#close-form").click(function () {
+    $("#close-form").click(() => {
         $("#form-window").fadeOut();
     });
 });

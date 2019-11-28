@@ -40,39 +40,69 @@
                        delle seguenti tipologie di dati:</p>
                     <ol>
                         <li><b>dati di natura prettamente tecnica</b> (quali, a titolo esemplificativo: le informazioni
-                       relative al <em>browser</em> utilizzato, l’indirizzo IP identificativo dell’<em>host</em> di rete,
-                       indirizzi in notazione URI -<em>Uniform Resource Identifier</em>- delle risorse richieste, data e
-                       orario delle richieste, il metodo utilizzato nel sottoporre la richiesta al <em>server</em>,
-                       la dimensione del <em>file</em> ottenuto in risposta, il codice numerico indicante lo stato
-                       della risposta data dal <em>server</em> -buon fine, errore, ecc.- ed altri parametri relativi
-                       al sistema operativo e all’ambiente informatico) che potranno essere acquisiti, in modo del tutto
-                       automatizzato, dai sistemi informatici.<br>La presente informativa non attiene alle operazioni di
-                       trattamento inerenti i cookie, che si svolgeranno in conformità alla cookie policy disponibile
-                       al link a fondo pagina.</li>
+                                                                      relative al <em>browser</em> utilizzato,
+                                                                      l’indirizzo IP identificativo dell’<em>host</em>
+                                                                      di rete,
+                                                                      indirizzi in notazione URI -<em>Uniform Resource
+                                                                                                      Identifier</em>-
+                                                                      delle risorse richieste, data e
+                                                                      orario delle richieste, il metodo utilizzato nel
+                                                                      sottoporre la richiesta al <em>server</em>,
+                                                                      la dimensione del <em>file</em> ottenuto in
+                                                                      risposta, il codice numerico indicante lo stato
+                                                                      della risposta data dal <em>server</em> -buon
+                                                                      fine, errore, ecc.- ed altri parametri relativi
+                                                                      al sistema operativo e all’ambiente informatico)
+                                                                      che potranno essere acquisiti, in modo del tutto
+                                                                      automatizzato, dai sistemi informatici.<br>La
+                                                                      presente informativa non attiene alle operazioni
+                                                                      di
+                                                                      trattamento inerenti i cookie, che si svolgeranno
+                                                                      in conformità alla cookie policy disponibile
+                                                                      al link a fondo pagina.
+                        </li>
                         <li><b>dati relativi alla Sua autenticazione</b> (quali Suoi, <em>user ID</em>,
                             <em>password</em>, nome e cognome, Codice Fiscale, fascia di età,
-                            codice del comune di nascita, indirizzo di posta elettronica,
-                            modalità di autenticazione) necessari per accedere alla piattaforma saranno trattati
-                            al fine di gestire le periodiche procedure di aggiornamento e modifica delle credenziali di
-                            autenticazione in assolvimento ai vigenti obblighi di legge; inoltre, i dati relativi alla
-                            procedura di autenticazione espletata dall'interessato (codice univoco, data di primo
-                            accesso alla piattaforma, data dell'ultimo accesso) saranno trattati ai fini dell’art 13
-                            del DPCM 178/2015 <em>Regolamento in materia di fascicolo sanitario elettronico</em>;</li>
+                                                                         codice del comune di nascita, indirizzo di
+                                                                         posta elettronica,
+                                                                         modalità di autenticazione) necessari per
+                                                                         accedere alla piattaforma saranno trattati
+                                                                         al fine di gestire le periodiche procedure di
+                                                                         aggiornamento e modifica delle credenziali di
+                                                                         autenticazione in assolvimento ai vigenti
+                                                                         obblighi di legge; inoltre, i dati relativi
+                                                                         alla
+                                                                         procedura di autenticazione espletata
+                                                                         dall'interessato (codice univoco, data di primo
+                                                                         accesso alla piattaforma, data dell'ultimo
+                                                                         accesso) saranno trattati ai fini dell’art 13
+                                                                         del DPCM 178/2015 <em>Regolamento in materia di
+                                                                                               fascicolo sanitario
+                                                                                               elettronico</em>;
+                        </li>
                         <li><b>eventuali ulteriori dati</b>, forniti dall'utente, quali, a titolo esemplificativo,
-                            indirizzo <em>e-mail</em> impiegati e numero di telefono cellulare per inviare comunicazioni
-                            o richiese di informazioni al <em>contact center</em>, e dati personali contenuti nelle
-                            predette comunicazioni elettroniche, saranno acquisiti e trattati esclusivamente per le
-                            finalità, e per il tempo, necessari all'espletamento delle richieste ricevute;<br>La
-                            presente informativa non attiene alle operazioni di trattamento inerenti tali dati, che si
-                            svolgeranno in conformità all’informativa a Lei resa in fase compilazione del <em>form</em>
-                            di assistenza.</li>
+                                                           indirizzo <em>e-mail</em> impiegati e numero di telefono
+                                                           cellulare per inviare comunicazioni
+                                                           o richiese di informazioni al <em>contact center</em>, e dati
+                                                           personali contenuti nelle
+                                                           predette comunicazioni elettroniche, saranno acquisiti e
+                                                           trattati esclusivamente per le
+                                                           finalità, e per il tempo, necessari all'espletamento delle
+                                                           richieste ricevute;<br>La
+                                                           presente informativa non attiene alle operazioni di
+                                                           trattamento inerenti tali dati, che si
+                                                           svolgeranno in conformità all’informativa a Lei resa in fase
+                                                           compilazione del <em>form</em>
+                                                           di assistenza.
+                        </li>
                         <li><b>dati personali, e tra questi anche dati idonei a rivelare il Suo stato di salute</b>
                             , contenuti nei dati e documenti clinici elettronici disponibili all’interno del Fascicolo
                             Sanitario Elettronico (FSE).<br>La presente informativa non attiene alle operazioni di
                             trattamento inerenti ai Suoi dati di natura personale e sensibile, contenuti nei documenti
                             e dati del FSE. Tali trattamenti, di titolarità delle singole strutture sanitarie, infatti,
                             continueranno a svolgersi in conformità all’informativa a Lei già resa in sede di
-                            attivazione del Fascicolo Sanitario Elettronico e in base al consenso ivi espresso.</li>
+                            attivazione del Fascicolo Sanitario Elettronico e in base al consenso ivi espresso.
+                        </li>
                     </ol>
                     <p>Lei è informato che i dati di autenticazione e i dati di natura prettamente tecnica acquisiti
                        in modo automatizzato da sistemi informatici, sono trattati per le finalità connesse e
@@ -81,11 +111,13 @@
                     <ol>
                         <li>i Suoi dati di autenticazione, saranno principalmente impiegati per garantire la sicurezza
                             e il corretto funzionamento del servizio, nonché per tutelare la riservatezza dei dati,
-                            in ossequio alle vigenti disposizioni di legge;</li>
+                            in ossequio alle vigenti disposizioni di legge;
+                        </li>
                         <li>i dati di natura prettamente tecnica, congiuntamente a taluni dei predetti dati relativi
                             alle procedure di autenticazione, previa rielaborazione in forma anonima di questi ultimi,
                             potranno essere utilizzati per elaborare informazioni statistiche anonime sull’uso del sito
-                            e del servizio, anche per verificarne e monitorarne i rispettivi funzionamenti.</li>
+                            e del servizio, anche per verificarne e monitorarne i rispettivi funzionamenti.
+                        </li>
                     </ol>
                     <p>I dati potrebbero essere utilizzati per l’accertamento di responsabilità in caso di ipotetici
                        reati informatici ai danni del sito.</p>
@@ -101,7 +133,8 @@
                         <li>CentoDiciotto, (P.I. 81921980900), con sede centrale in Via dei Solteri 97, 38121 Trento
                             (TN), Italia, Mail: rewqasdfcxz11@gmail.com, per quanto attiene alle operazioni di
                             trattamento poste in essere dal <em>software</em> e dal relativo servizio e per
-                            l’autenticazione allo stesso.</li>
+                            l’autenticazione allo stesso.
+                        </li>
                     </ul>
                     <p><b>4.&nbsp; Responsabile della protezione dei dati (RPD)</b></p>
                     <p>Il responsabile della protezione dei dati di CentoDiciotto può essere contattato inviando una
@@ -119,7 +152,8 @@
                        protezione dei dati, per assicurare il medesimo livello di sicurezza offerto dal titolare.
                        I dati personali non saranno mai comunicati a terzi, se non in assolvimento a eventuali obblighi
                        di legge. I dati non saranno in alcun modo diffusi.</p>
-                    <p><b>7.&nbsp; Trasferimento dei dati personali verso Paesi non appartenenti all’Unione Europea</b></p>
+                    <p><b>7.&nbsp; Trasferimento dei dati personali verso Paesi non appartenenti all’Unione Europea</b>
+                    </p>
                     <p>I dati raccolti ed elaborati non sono trasferiti presso società o altre entità al di fuori del
                        territorio comunitario.</p>
                     <p><b>8.&nbsp; Periodo di conservazione dei dati </b></p>

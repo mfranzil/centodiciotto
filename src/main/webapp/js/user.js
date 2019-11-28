@@ -1,5 +1,11 @@
-$("document").ready(function () {
-    $("#password-change").submit(function (e) {
+/**
+ * JS document used in the user page.
+ *
+ * Handles AJAX requests for avatar changes (patients only).
+ */
+
+$("document").ready(() => {
+    $("#password-change").submit((e) => {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");
@@ -10,20 +16,20 @@ $("document").ready(function () {
             url: url,
             cache: false,
             data: form.serialize(),
-            success: function () {
+            success: () => {
                 $("#old-password,#new-password-confirm,#new-password").val("");
                 alert("Password cambiata con successo.");
             },
-            error: function () {
+            error: () => {
                 oldPassword.css("background", "rgba(255, 0, 0, 0.2)").css("border-color", "red").val("");
-                setTimeout(function () {
+                setTimeout(() => {
                     oldPassword.css("background", "").css("border-color", "");
                 }, 2000);
             }
         });
     });
 
-    $("#avatar-select").on("change", function () {
+    $("#avatar-select").on("change", () => {
         const filename = $("#avatar-select").val();
         let extension = filename.replace(/^.*\./, "");
 
@@ -37,7 +43,7 @@ $("document").ready(function () {
         $(this).next(".custom-file-label").html(filename.replace("C:\\fakepath\\", ""));
     });
 
-    $("#avatar").submit(function (e) {
+    $("#avatar").submit((e) => {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");
@@ -50,7 +56,7 @@ $("document").ready(function () {
             contentType: false,
             enctype: "multipart/form-data",
             data: new FormData(form[0]),
-            success: function () {
+            success: () => {
                 alert("Profile photo uploaded successfully.");
                 window.location.reload();
             }
