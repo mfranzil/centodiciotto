@@ -55,7 +55,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             stm.setString(4, chemist.getWorkingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "ChemistDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "ChemistDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Chemist: ", e);
         }
@@ -71,7 +71,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             stm.setString(4, chemist.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "ChemistDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "ChemistDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Chemist: ", e);
         }
@@ -83,7 +83,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             stm.setString(1, chemist.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "ChemistDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "ChemistDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Chemist: ", e);
         }

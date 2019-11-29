@@ -53,7 +53,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(2, healthService.getOperatingProvince().getAbbreviation());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "HealthServiceDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "HealthServiceDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Health Service: ", e);
         }
@@ -67,7 +67,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(2, healthService.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "HealthServiceDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "HealthServiceDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating HealthService: ", e);
         }
@@ -79,7 +79,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(1, healthService.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "HealthServiceDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "HealthServiceDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting HealthService: ", e);
         }

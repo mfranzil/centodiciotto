@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * PasswordResetServlet for handling requests to /restricted/health_service/recalls.
@@ -95,10 +97,13 @@ public class PasswordResetServlet extends HttpServlet {
         } else {
             String requestType = request.getParameter("requestType");
             String userID = request.getParameter("userID");
+            String json;
 
             if (requestType == null || userID == null) {
                 response.setStatus(400);
-                writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+                json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").log(Level.SEVERE, json);
                 return;
             }
 
@@ -108,7 +113,9 @@ public class PasswordResetServlet extends HttpServlet {
 
                     if (newPassword == null || newPassword.length() < 8 || newPassword.length() > 64) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Password must be between 8 and 64 characters.\"}");
+                        json = "{\"error\": \"Password must be between 8 and 64 characters.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").log(Level.SEVERE, json);
                     } else {
                         try {
                             cryptoService.changePassword(userID, newPassword);

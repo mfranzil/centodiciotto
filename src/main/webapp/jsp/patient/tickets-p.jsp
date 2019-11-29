@@ -68,7 +68,7 @@
         $("document").ready(() => {
             const url = window.location.href;
 
-            $("form").submit(e => {
+            $("form").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);

@@ -5,7 +5,7 @@
  */
 
 $("document").ready(() => {
-    $("#password-change").submit((e) => {
+    $("#password-change").submit(function(e) {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");
@@ -29,7 +29,7 @@ $("document").ready(() => {
         });
     });
 
-    $("#avatar-select").on("change", () => {
+    $("#avatar-select").on("change", function () {
         const filename = $("#avatar-select").val();
         let extension = filename.replace(/^.*\./, "");
 
@@ -43,7 +43,7 @@ $("document").ready(() => {
         $(this).next(".custom-file-label").html(filename.replace("C:\\fakepath\\", ""));
     });
 
-    $("#avatar").submit((e) => {
+    $("#avatar").submit(function(e) {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");

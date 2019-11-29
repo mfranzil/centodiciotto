@@ -51,7 +51,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             stm.setTimestamp(3, passwordReset.getExpiringDate());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "PasswordResetDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "PasswordResetDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting PasswordReset: ", e);
         }
@@ -66,7 +66,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             stm.setString(3, passwordReset.getUserID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "PasswordResetDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "PasswordResetDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating PasswordReset: ", e);
         }
@@ -79,7 +79,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             stm.setString(1, passwordReset.getUserID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "PasswordResetDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "PasswordResetDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting PasswordReset: ", e);
         }

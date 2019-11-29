@@ -66,7 +66,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
                 Integer recallID = rs.getInt("recall_id");
 
                 recall.setID(recallID);
-                Logger.getGlobal().log(Level.INFO, "RecallDAO::insert row affected returned " + recallID);
+                Logger.getLogger("C18").log(Level.INFO, "RecallDAO::insert row affected returned " + recallID);
             } else {
                 throw new DAOException("Error inserting Recall, query returnet an empty ResultSet.");
             }
@@ -87,7 +87,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             stm.setInt(6, recall.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "RecallDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "RecallDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Recall: ", e);
         }
@@ -99,7 +99,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             stm.setInt(1, recall.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "RecallDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "RecallDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Recall: ", e);
         }

@@ -69,7 +69,7 @@
                     $("#main-table").slideUp();
                 });
 
-            $("#send-recall").submit(e => {
+            $("#send-recall").submit(function (e) {
                 e.preventDefault();
 
                 let maxAge = parseInt($("#max-age").val());

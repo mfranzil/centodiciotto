@@ -66,7 +66,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setBoolean(6, visit.getBooked());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "VisitDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "VisitDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Visit: ", e);
         }
@@ -85,7 +85,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setInt(7, visit.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "VisitDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "VisitDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Visit: ", e);
         }
@@ -97,7 +97,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setInt(1, visit.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "VisitDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "VisitDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Visit: ", e);
         }

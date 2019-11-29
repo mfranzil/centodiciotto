@@ -7,7 +7,9 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script>
         $(document).ready(() => {
-            $(".photo-path").each(() => $(this).val(getID($(this).val())));
+            $(".photo-path").each(function () {
+                $(this).val(getID($(this).val()));
+            });
 
             function getID(photoPath) {
                 return parseInt(photoPath.split("/").slice(-1).toString().split(".")[0]);

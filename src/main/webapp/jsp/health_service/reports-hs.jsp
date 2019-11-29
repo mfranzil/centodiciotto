@@ -28,7 +28,7 @@
                 }
             });
 
-            $("#generate").submit(e => {
+            $("#generate").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);
@@ -55,16 +55,27 @@
                         $(".datepicker").prop("disabled", true);
                         $("#download").click(() => {
                             e.preventDefault();
+                            $(this).html("Download started.");
                             window.location.href = json.path;
                         });
-                    },// TODO evitare i reload
-                    error: () => window.location.reload()
+                    },
+                    error: () => {
+                        restart();
+                    }
                 });
             });
 
             $("#generate-new").click(() => {
-                window.location.reload();
+                restart();
             });
+
+            function restart() {
+                $("#include,#generate-new,#download,#loading-container").slideUp();
+                $("#choose-date").slideDown();
+                $("#submit").prop("disabled", false).html("Generate report");
+                $(".datepicker").val("");
+                $("input,.datepicker").prop("disabled", false);
+            }
         });
     </script>
     <style>

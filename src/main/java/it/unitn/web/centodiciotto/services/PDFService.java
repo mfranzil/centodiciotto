@@ -4,6 +4,7 @@ import be.quodlibet.boxable.utils.PDStreamUtils;
 import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
 import it.unitn.web.centodiciotto.persistence.entities.GeneralPractitioner;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.QRCodeCreator;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -18,10 +19,7 @@ import javax.servlet.ServletContext;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,21 +69,23 @@ public class PDFService {
     }
 
     /**
-     * Util method for evenly spacing characters in the PDF.
+     * Wrapper method for evenly spacing characters in the PDF.
      *
-     * @param string the string to be spaced out
-     * @param spaces the number of spaces to be inserted
-     * @return an evenly spaced string
+     * @param stream   the PDPageContentStream
+     * @param text     the text to be inserted
+     * @param font     the font to be used
+     * @param fontSize the fontSize to be used
+     * @param x        the x coordinate on the pdf for printing
+     * @param y        the y coordinate on the pdf for printing
+     * @param color    the color to be used
+     * @param space    the space between each character
      */
-    private String insertSpaces(String string, int spaces) {
-        StringBuilder res = new StringBuilder();
-
-        for (char c : string.toCharArray()) {
-            res.append(c);
-            res.append(" ".repeat(spaces));
+    private void spacedWrite(PDPageContentStream stream, String text,
+                             PDFont font, float fontSize, float x, float y, Color color, int space) {
+        char[] arr = text.toCharArray();
+        for (int i = 0; i < arr.length; i++) {
+            PDStreamUtils.write(stream, String.valueOf(arr[i]), font, fontSize, x + (float) i * (space + fontSize), y, color);
         }
-
-        return res.toString();
     }
 
     /**
@@ -106,11 +106,6 @@ public class PDFService {
         for (int i = 0; i < arr.length; i++) {
             PDStreamUtils.write(stream, arr[i], font, fontSize, x, (float) (y - (i * fontSize * 1.6)), color);
         }
-    }
-
-    private String dateTimeFormatter(Timestamp ts, String pattern) {
-        return insertSpaces(DateTimeFormatter.ofPattern(pattern)
-                .withZone(ZoneId.systemDefault()).format(ts.toInstant()), 3);
     }
 
     /**
@@ -185,17 +180,17 @@ public class PDFService {
                     contents, pat.getLivingProvince().getRegion(),
                     PDType1Font.HELVETICA, 28, 616, 698, Color.BLACK);
             // SSN
-            PDStreamUtils.write(
-                    contents, insertSpaces(pat.getSSN(), 2),
-                    PDType1Font.HELVETICA, 21, 536, 610, Color.BLACK);
+            this.spacedWrite(
+                    contents, pat.getSSN(),
+                    PDType1Font.HELVETICA, 21, 536, 610, Color.BLACK, 6);
             // Province
-            PDStreamUtils.write(
-                    contents, insertSpaces(pat.getLivingProvince().getAbbreviation(), 2),
-                    PDType1Font.HELVETICA, 21, 562, 560, Color.BLACK);
+            this.spacedWrite(
+                    contents, pat.getLivingProvince().getAbbreviation(),
+                    PDType1Font.HELVETICA, 21, 562, 560, Color.BLACK, 6);
             // Prescription date and time
-            PDStreamUtils.write(
-                    contents, dateTimeFormatter(dp.getDatePrescribed(), "ddMMyyHHMM"),
-                    PDType1Font.HELVETICA, 21, 397, 320, Color.BLACK);
+            this.spacedWrite(
+                    contents, CustomDTFormatter.formatCustom(dp.getDatePrescribed(), "ddMMyyHHMM"),
+                    PDType1Font.HELVETICA, 21, 397, 320, Color.BLACK, 9);
             // Prescription ID
             PDStreamUtils.write(
                     contents, dp.getID().toString(),
@@ -211,10 +206,9 @@ public class PDFService {
                         PDType1Font.HELVETICA, 21, 380, 500, Color.BLACK, 26);
             }
             // Ticket
-            PDStreamUtils.write(
-                    contents, insertSpaces(((float) dp.getTicket() / 10.0 <= 1 ? " " : "")
-                            + dp.getTicket() + "00", 3),
-                    PDType1Font.HELVETICA, 21, 820, 56, Color.BLACK);
+            this.spacedWrite(
+                    contents, ((float) dp.getTicket() / 10.0 <= 1 ? " " : "") + dp.getTicket() + "00",
+                    PDType1Font.HELVETICA, 21, 820, 56, Color.BLACK, 9);
             contents.close();
             return doc;
         } catch (IOException e) {

@@ -14,8 +14,6 @@ import java.io.IOException;
  */
 public class AuthenticationFilter implements Filter {
 
-    private FilterConfig filterConfig = null;
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) req;
@@ -81,12 +79,10 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void destroy() {
-        this.filterConfig = null;
     }
 
     @Override
     public void init(FilterConfig filterConfig) {
-        this.filterConfig = filterConfig;
     }
 
 }

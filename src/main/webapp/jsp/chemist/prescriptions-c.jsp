@@ -102,7 +102,7 @@
             $(document).ajaxSuccess(() => activateForm());
 
             function activateForm() {
-                $(".serve-prescription").submit(e => {
+                $(".serve-prescription").submit(function (e) {
                     e.preventDefault();
 
                     $("#submit-serve").prop("disabled", true);

@@ -27,7 +27,7 @@
     <script>
         $("document").ready(() => {
             const url = window.location.href;
-            $("#book-visit").submit(e => {
+            $("#book-visit").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);

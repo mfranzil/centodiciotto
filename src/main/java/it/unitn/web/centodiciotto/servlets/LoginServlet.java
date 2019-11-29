@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -74,7 +73,7 @@ public class LoginServlet extends HttpServlet {
 
                 String json;
 
-                if (userID == null || password == null || role == null || rememberMe == null) {
+                if (userID == null || password == null || role == null) {
                     response.setStatus(400);
                     json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
                 } else {
@@ -84,7 +83,7 @@ public class LoginServlet extends HttpServlet {
                         response.setStatus(400);
                         json = "{\"error\":\"Invalid username or password.\"}";
                     } else {
-                        if (rememberMe.equals("on")) {
+                        if (rememberMe != null && rememberMe.equals("on")) {
                             request.getSession().setMaxInactiveInterval(2592000);
                         }
 
@@ -94,20 +93,19 @@ public class LoginServlet extends HttpServlet {
 
                         // To avoid corner cases in which the user tries to visit the logout page,
                         // which is restricted, and would be redirected immediately to it upon login
-                        if (!Objects.equals(referrer, null) &&
-                                referrer.equals(request.getContextPath() + "restricted/logout_handler")) {
-                            json = "{\"url\":\"" + response.encodeRedirectURL(
-                                    contextPath + "restricted/user") + "\"}";
+
+                        if (referrer == null || referrer.equals("")
+                                || referrer.equals(request.getContextPath() + "restricted/logout_handler")) {
+                            json = "{\"url\":\"" + response.encodeRedirectURL(contextPath + "restricted/user") + "\"}";
                         } else {
                             json = "{\"url\":\"" + referrer.replace('$', '&') + "\"}";
                         }
 
-                        Logger.getGlobal().log(Level.INFO,
-                                "User " + userID + " logged in with role "
-                                        + role + " - redirected with JSON " + json);
+                        Logger.getLogger("C18").log(Level.INFO, "User " + userID + " logged in with role " + role);
                     }
                 }
                 writer.write(json);
+                Logger.getLogger("C18").log(Level.SEVERE, json);
             } catch (ServiceException e) {
                 throw new ServletException("Failed to authenticate user: ", e);
             }

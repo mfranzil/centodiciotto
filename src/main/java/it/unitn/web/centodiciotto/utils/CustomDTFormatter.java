@@ -47,4 +47,16 @@ public class CustomDTFormatter {
         return DateTimeFormatter.ofPattern("MMMM d, YYYY HH:mm").withLocale(Locale.UK)
                 .withZone(ZoneId.systemDefault()).format(date.toInstant());
     }
+
+    /**
+     * Gets a date and time representation of the time since epoch with an arbitrary formatting.
+     *
+     * @param date the date
+     * @param format the format string (see {@link DateTimeFormatter})
+     * @return the formatted date time
+     */
+    public static String formatCustom(Date date, String format) {
+        return DateTimeFormatter.ofPattern(format).withLocale(Locale.UK)
+                .withZone(ZoneId.systemDefault()).format(date.toInstant());
+    }
 }

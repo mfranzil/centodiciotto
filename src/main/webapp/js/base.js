@@ -6,14 +6,14 @@
  * Enables popup button openers once the page has been loaded up.
  */
 function enablePopup() {
-    $(".popup-opener").click(() => {
+    $(".popup-opener").click(function() {
         $(this).next().fadeIn();
     });
-    $(".popup-closer").click((e) => {
+    $(".popup-closer").click(function(e) {
         e.preventDefault();
         $(".popup-window").fadeOut();
     });
-    $(".popup-window").click((e) => {
+    $(".popup-window").click(function(e) {
         if ($(this).is(e.target)) {
             $(this).fadeOut();
         }
@@ -57,7 +57,7 @@ $("document").ready(() => {
     /**
      * Enables responsive behavior (globally set to <= 992px). Primarily affects the navbar.
      */
-    $(window).on("resize", () => {
+    $(window).on("resize", function(){
         var win = $(this);
         if (win.width() >= 992) {
             $("#log-menu-closed").show();
@@ -79,7 +79,7 @@ $("document").ready(() => {
     /**
      * Highlights links pointing to current page.
      */
-    $("a").each(() => {
+    $("a").each(function() {
         if ($(this).prop("href") === window.location.href) {
             $(this).addClass("current");
         }

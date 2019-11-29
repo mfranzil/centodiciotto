@@ -110,7 +110,7 @@ $("document").ready(() => {
      * @param headers an Array of objects (see description)
      * @returns {$} this (for method chaining)
      */
-    $.fn.createTableHeaders = (headers) => {
+    $.fn.createTableHeaders = function(headers) {
         this.html("");
         let headersDiv = document.createElement("div");
         headersDiv.classList.add("table-personal");
@@ -139,7 +139,7 @@ $("document").ready(() => {
      * @param url the url to send post requests to in case of popup buttons
      * @returns {$} this (for method chaining)
      */
-    $.fn.insertRows = (headers, data, url) => {
+    $.fn.insertRows = function (headers, data, url) {
         let mainTable = this;
 
         $.each(data, (index, item) => {

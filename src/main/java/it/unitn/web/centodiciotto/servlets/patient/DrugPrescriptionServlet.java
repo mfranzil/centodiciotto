@@ -73,8 +73,6 @@ public class DrugPrescriptionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        PrintWriter writer = response.getWriter();
-        response.setContentType("application/json");
 
         if (user instanceof Patient) {
             String practitionerID = request.getParameter("practitionerID");
@@ -85,12 +83,18 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
             } catch (NumberFormatException | NullPointerException e) {
                 response.setStatus(400);
+
+                PrintWriter writer = response.getWriter();
+                response.setContentType("application/json");
                 writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
                 return;
             }
 
             if (practitionerID == null || patientID == null) {
                 response.setStatus(400);
+
+                PrintWriter writer = response.getWriter();
+                response.setContentType("application/json");
                 writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
                 return;
             }

@@ -10,7 +10,7 @@
     <script>
         $("document").ready(() => {
             const url = window.location.href;
-            $("#password-reset").submit(e => {
+            $("#password-reset").submit(function (e) {
                 e.preventDefault();
                 let form = $(this);
 

@@ -48,7 +48,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(3, user.getSalt());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "UserDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "UserDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting User: ", e);
         }
@@ -63,7 +63,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(3, user.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "UserDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "UserDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating User: ", e);
         }
@@ -75,7 +75,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(1, user.getID());
 
             int row = stm.executeUpdate();
-            Logger.getGlobal().log(Level.INFO, "UserDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").log(Level.INFO, "UserDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting User: ", e);
         }

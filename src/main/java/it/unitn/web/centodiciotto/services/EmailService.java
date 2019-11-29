@@ -128,7 +128,7 @@ public class EmailService {
             throw new ServiceException(throwableWrapper.tr);
         }
 
-        Logger.getGlobal().log(Level.INFO, "Email successfully sent to " + recipient + " with subject " + subject);
+        Logger.getLogger("C18").log(Level.INFO, "Email successfully sent to " + recipient + " with subject " + subject);
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")

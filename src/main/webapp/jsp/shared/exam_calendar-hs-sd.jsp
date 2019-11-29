@@ -33,7 +33,7 @@
         $("document").ready(() => {
             const url = window.location.href;
 
-            $(".mark-completed").submit(e => {
+            $(".mark-completed").submit(function (e) {
                 e.preventDefault();
 
                 let form = $(this);

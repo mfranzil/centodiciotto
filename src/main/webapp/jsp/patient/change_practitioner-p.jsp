@@ -30,12 +30,12 @@
     <script>
         $("document").ready(() => {
             const url = window.location.href;
-            $("#table-select div").click(() => {
+            $("#table-select div").click(function () {
                 $(this).find("input[type=radio]").prop("checked", true);
                 $("#submit").removeAttr("disabled");
             });
 
-            $("#practitioner").submit(e => {
+            $("#practitioner").submit(function (e) {
                 e.preventDefault();
                 $("#submit").prop("disabled", true).html("Requesting change...");
 

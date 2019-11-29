@@ -67,7 +67,7 @@
             $(document).ajaxSuccess(() => activateForm());
 
             function activateForm() {
-                $(".submit-result").submit(e => {
+                $(".submit-result").submit(function (e) {
                     e.preventDefault();
 
                     let form = $(this);

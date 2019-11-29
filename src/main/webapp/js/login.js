@@ -13,7 +13,7 @@ $("document").ready(() => {
 
     $("#loading-container").hide();
 
-    $(".hover-button").click(() => {
+    $(".hover-button").click(function () {
         let id = this.id;
         let role = getNameFromID(id);
         $("#form-image").attr("src", getContextPath() + "img/classes/" + id + ".png");
@@ -22,7 +22,7 @@ $("document").ready(() => {
         $("#role").val(id);
     });
 
-    $("#login").submit((e) => {
+    $("#login").submit(function(e) {
         e.preventDefault();
 
         $("#login").slideUp();
@@ -72,7 +72,7 @@ $("document").ready(() => {
         });
     });
 
-    $("#recovery").submit((e) => {
+    $("#recovery").submit(function (e){
         e.preventDefault();
 
         $("#recovery").slideUp();
