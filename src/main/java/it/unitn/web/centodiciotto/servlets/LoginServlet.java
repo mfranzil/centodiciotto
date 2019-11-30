@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -76,12 +75,16 @@ public class LoginServlet extends HttpServlet {
                 if (userID == null || password == null || role == null) {
                     response.setStatus(400);
                     json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
                 } else {
                     User user = cryptoService.authenticate(userID, password, role);
 
                     if (user == null) {
                         response.setStatus(400);
                         json = "{\"error\":\"Invalid username or password.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                     } else {
                         if (rememberMe != null && rememberMe.equals("on")) {
                             request.getSession().setMaxInactiveInterval(2592000);
@@ -101,11 +104,11 @@ public class LoginServlet extends HttpServlet {
                             json = "{\"url\":\"" + referrer.replace('$', '&') + "\"}";
                         }
 
-                        Logger.getLogger("C18").log(Level.INFO, "User " + userID + " logged in with role " + role);
+                        Logger.getLogger("C18").info( "User " + userID + " logged in with role "
+                                + role + " with JSON " + json);
+                        writer.write(json);
                     }
                 }
-                writer.write(json);
-                Logger.getLogger("C18").log(Level.SEVERE, json);
             } catch (ServiceException e) {
                 throw new ServletException("Failed to authenticate user: ", e);
             }

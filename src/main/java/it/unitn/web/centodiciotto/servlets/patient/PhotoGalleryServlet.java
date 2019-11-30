@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.logging.Logger;
 
 /**
  * PhotoGalleryRequest for handling requests to /restricted/patient/photo_gallery.
@@ -71,7 +72,9 @@ public class PhotoGalleryServlet extends HttpServlet {
                 photoID = Integer.valueOf(request.getParameter("photoID"));
             } catch (NumberFormatException | NullPointerException e) {
                 response.setStatus(400);
-                writer.write("{\"error\": \"Malformed input. Please try the photo again.\"}");
+                String json = "{\"error\": \"Malformed input. Please try the photo again.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 

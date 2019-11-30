@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * VisitCalendarServlet for handling requests to /restricted/general_practitioner/visit_calendar
@@ -78,7 +79,9 @@ public class VisitCalendarServlet extends HttpServlet {
                 visitID = Integer.valueOf(request.getParameter("visitID"));
             } catch (NumberFormatException | NullPointerException e) {
                 response.setStatus(400);
-                writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+                String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 

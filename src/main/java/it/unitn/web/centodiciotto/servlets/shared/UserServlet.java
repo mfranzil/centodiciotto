@@ -22,6 +22,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.util.logging.Logger;
 
 /**
  * UserSerlvet for handling requests to /restricted/user.
@@ -82,7 +83,9 @@ public class UserServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -96,8 +99,10 @@ public class UserServlet extends HttpServlet {
                         if (oldPassword == null || newPassword == null ||
                                 newPassword.length() < 8 || newPassword.length() > 64) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. " +
-                                    "Please insert your old password and a new one wtih 8 to 64 characters.\"}");
+                            String json = "{\"error\": \"Malformed input. " +
+                                    "Please insert your old password and a new one wtih 8 to 64 characters.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                         } else {
                             if (cryptoService.isCurrentPassword(user.getID(), oldPassword)) {
                                 cryptoService.changePassword(user.getID(), newPassword);
@@ -115,8 +120,10 @@ public class UserServlet extends HttpServlet {
                                 writer.write("{}");
                             } else {
                                 response.setStatus(400);
-                                writer.write("{\"error\": \"Invalid existing password. " +
-                                        "Please type your current password.\"}");
+                                String json = "{\"error\": \"Invalid existing password. " +
+                                        "Please type your current password.\"}";
+                                writer.write(json);
+                                Logger.getLogger("C18").severe(json);
                             }
                         }
                     } catch (ServiceException e) {
@@ -135,7 +142,9 @@ public class UserServlet extends HttpServlet {
 
                     if (filePart == null || extension == null) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"File upload failed. Please try again.\"}");
+                        String json = "{\"error\": \"File upload failed. Please try again.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 

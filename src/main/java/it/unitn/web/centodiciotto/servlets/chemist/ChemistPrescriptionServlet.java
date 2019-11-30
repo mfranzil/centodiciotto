@@ -30,7 +30,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -113,7 +112,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
                 } catch (NumberFormatException | NullPointerException e) {
                     response.setStatus(400);
-                    writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                    String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
                     return;
                 }
 
@@ -156,7 +157,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -169,7 +172,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
                     } catch (NumberFormatException | NullPointerException e) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input.\"}");
+                        String json = "{\"error\": \"Malformed input.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 
@@ -182,7 +187,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             dp.setPatientID(null);
                             drugPrescriptionDAO.update(dp);
 
-                            Logger.getLogger("C18").log(Level.INFO,
+                            Logger.getLogger("C18").info(
                                     "Succesfully activated prescription with ID " + prescriptionID);
 
                             Patient patient = patientDAO.getByPrimaryKey(dp.getPatientID());
@@ -208,8 +213,10 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                             writer.write("{\"patientID\": \"" + dp.getPatientID() + "\"}");
                         } else {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Prescription is invalid " +
-                                    "or has already been activated.\"}");
+                            String json = "{\"error\": \"Prescription is invalid " +
+                                    "or has already been activated.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                         }
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
@@ -258,7 +265,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
                         if (patientID == null) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                             return;
                         }
 
@@ -331,7 +340,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         throw new ServletException("Error in DAO usage: ", e);
                     } catch (NumberFormatException e) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please select a valid prescription.\"}");
+                        String json = "{\"error\": \"Malformed input. Please select a valid prescription.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
                     break;

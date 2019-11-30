@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * ExamHistoryServlet for handling requests to /restricted/patient/exam_history.
@@ -69,7 +70,9 @@ public class ExamHistoryServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -105,7 +108,9 @@ public class ExamHistoryServlet extends HttpServlet {
 
                         if (examID == null) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                            String json = "{\"error\": \"Malformed input. Please choose a valid exam.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                             return;
                         }
 

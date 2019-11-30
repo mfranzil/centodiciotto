@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * ExamCalendarServlet for handling requests to /restricted/role/visit_calendar,
@@ -77,7 +78,9 @@ public class ExamCalendarServlet extends HttpServlet {
                 examID = Integer.valueOf(request.getParameter("examID"));
             } catch (NumberFormatException e) {
                 response.setStatus(400);
-                writer.write("{\"error\": \"Malformed input. Please try again.\"}");
+                String json = "{\"error\": \"Malformed input. Please try again.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 

@@ -6,16 +6,21 @@
  * Enables popup button openers once the page has been loaded up.
  */
 function enablePopup() {
+    $(this).on()
     $(".popup-opener").click(function() {
         $(this).next().fadeIn();
+        //$(".container,nav,.footer").css("filter", "blur(2px)");
+        //$(".popup-window > *").css("filter", "blur(0px)");
     });
     $(".popup-closer").click(function(e) {
         e.preventDefault();
         $(".popup-window").fadeOut();
+        //$(".container,nav,.footer").css("filter", "blur(0px)");
     });
     $(".popup-window").click(function(e) {
         if ($(this).is(e.target)) {
             $(this).fadeOut();
+            //$(".container,nav,.footer").css("filter", "blur(0px)");
         }
     });
 }

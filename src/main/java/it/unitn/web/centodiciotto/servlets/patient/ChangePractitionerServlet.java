@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * ChangePractitionerServlet for handling requests to /restricted/patient/change_practitioner.
@@ -82,7 +83,9 @@ public class ChangePractitionerServlet extends HttpServlet {
 
                 if (newPractitionerID == null) {
                     response.setStatus(400);
-                    writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                    String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
                     return;
                 }
 

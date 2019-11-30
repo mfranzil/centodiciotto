@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * VisitRequestsServlet for handling requests to /restricted/general_practitioner/visit_requests.
@@ -88,7 +89,9 @@ public class VisitRequestsServlet extends HttpServlet {
             if (visitDate == null || visitTime == null || patientID == null
                     || visitTime.equals("") || visitDate.equals("")) {
                 response.setStatus(400);
-                writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 
@@ -119,7 +122,9 @@ public class VisitRequestsServlet extends HttpServlet {
                     writer.write("{}");
                 } else {
                     response.setStatus(400);
-                    writer.write("{\"error\": \"Requested visit is not pending. Cannot assign a date and time.\"}");
+                    String json = "{\"error\": \"Requested visit is not pending. Cannot assign a date and time.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
                 }
             } catch (DAOException e) {
                 throw new ServletException("Error in DAO usage: ", e);

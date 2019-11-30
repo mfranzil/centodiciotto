@@ -59,7 +59,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(5, generalPractitioner.getWorkingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").log(Level.INFO, "GeneralPractitionerDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info( "GeneralPractitionerDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting GeneralPractitioner: ", e);
         }
@@ -76,7 +76,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(5, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").log(Level.INFO, "GeneralPractitionerDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info( "GeneralPractitionerDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating GeneralPractitioner: ", e);
         }
@@ -88,7 +88,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(1, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").log(Level.INFO, "GeneralPractitionerDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info( "GeneralPractitionerDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting GeneralPractitioner: ", e);
         }

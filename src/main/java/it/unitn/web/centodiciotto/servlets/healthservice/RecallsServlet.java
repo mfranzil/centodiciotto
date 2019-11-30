@@ -29,6 +29,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -106,7 +107,9 @@ public class RecallsServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -199,7 +202,9 @@ public class RecallsServlet extends HttpServlet {
                             writer.write("{}");
                         } else {
                             response.setStatus(400);
-                            writer.write("{\"error\":\"Invalid input (age range must be between 0 and 130).\"}");
+                            String json = "{\"error\":\"Invalid input (age range must be between 0 and 130).\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                         }
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
@@ -207,7 +212,9 @@ public class RecallsServlet extends HttpServlet {
                         throw new ServletException("Error in email sending: ", e);
                     } catch (NumberFormatException | NullPointerException e) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
                     break;

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * TicketServlet for handling requests to /restricted/patient/tickets.
@@ -82,7 +83,9 @@ public class TicketServlet extends HttpServlet {
 
                     if (selectedExam.getTicketPaid()) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Selected exam has already been paid.\"}");
+                        String json = "{\"error\": \"Selected exam has already been paid.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                     } else {
                         selectedExam.setTicketPaid(true);
                         examDAO.update(selectedExam);
@@ -112,7 +115,10 @@ public class TicketServlet extends HttpServlet {
 
                     if (selectedPrescription.getTicketPaid()) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Selected prescription has already been paid.\"}");
+                        String json = "{\"error\": \"Selected prescription has already been paid.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
+
                     } else {
                         selectedPrescription.setTicketPaid(true);
                         drugPrescriptionDAO.update(selectedPrescription);
@@ -138,7 +144,9 @@ public class TicketServlet extends HttpServlet {
                 }
             } else {
                 response.setStatus(400);
-                writer.write("{\"error\": \"Malformed input. Only drug prescriptions and exams can be paid.\"}");
+                String json = "{\"error\": \"Malformed input. Only drug prescriptions and exams can be paid.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
             }
         }
     }

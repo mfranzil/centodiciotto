@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * ExamRequestsServlet for handling requests to /restricted/role/exam_requests,
@@ -100,7 +101,7 @@ public class ExamRequestsServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
             return;
         }
 
@@ -115,8 +116,9 @@ public class ExamRequestsServlet extends HttpServlet {
                     if (examDate == null || examTime == null || patientID == null
                             || examTime.equals("") || examDate.equals("") || examID == null) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please insert a valid date" +
-                                " and time.\"}");
+                        String json = "{\"error\": \"Malformed input. Please insert a valid date and time.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                     } else {
                         try {
                             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
@@ -154,8 +156,9 @@ public class ExamRequestsServlet extends HttpServlet {
                                 writer.write("{}");
                             } else {
                                 response.setStatus(400);
-                                writer.write("{\"error\": \"Requested exam is not pending." +
-                                        " Cannot assign a date and time.\"}");
+                                String json = "{\"error\": \"Requested exam is not pending. Cannot assign a date and time.\"}";
+                                writer.write(json);
+                                Logger.getLogger("C18").severe(json);
                             }
                         } catch (DAOException e) {
                             throw new ServletException("Error in DAO usage: ", e);
@@ -204,7 +207,9 @@ public class ExamRequestsServlet extends HttpServlet {
 
                 if (patientIDExamID == null) {
                     response.setStatus(400);
-                    writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                    String json = "{\"error\": \"Malformed input. Please choose a valid exam.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
                     return;
                 }
 

@@ -55,7 +55,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             int photoID = stm.executeUpdate();
 
             photo.setID(photoID);
-            Logger.getLogger("C18").log(Level.INFO, "PhotoDAO::insert row affected returned " + photoID);
+            Logger.getLogger("C18").info( "PhotoDAO::insert row affected returned " + photoID);
         } catch (SQLException e) {
             throw new DAOException("Error inserting Photo: ", e);
         }
@@ -69,7 +69,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             stm.setInt(2, photo.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").log(Level.INFO, "PhotoDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info( "PhotoDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Photo: ", e);
         }
@@ -81,7 +81,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             stm.setInt(1, photo.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").log(Level.INFO, "PhotoDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info( "PhotoDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Photo: ", e);
         }

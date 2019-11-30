@@ -79,7 +79,7 @@
             <input name="role" id="role" type="hidden" value="none">
             <input name="referrer" id="referrer" type="hidden" value="${param.referrer}">
             <button class="btn btn-lg btn-block btn-personal" id="form-name" type="submit">Login</button>
-            <button class="btn btn-lg btn-block btn-secondary" type="button" id="close-form">Cancel</button>
+            <button class="btn btn-lg btn-block btn-secondary popup-closer" type="button" id="close-form">Cancel</button>
         </form>
         <form action="${pageContext.request.contextPath}/password_reset"
               id="recovery" method="POST" style="display: none">

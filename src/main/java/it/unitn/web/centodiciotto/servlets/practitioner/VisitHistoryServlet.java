@@ -27,6 +27,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * VisitHistoryServlet for handling requests to /restricted/general_practitioner/visit_history.
@@ -95,7 +96,9 @@ public class VisitHistoryServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json ="{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -133,7 +136,9 @@ public class VisitHistoryServlet extends HttpServlet {
 
                         if (visitID == null) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please choose a valid visit.\"}");
+                            String json = "{\"error\": \"Malformed input. Please choose a valid visit.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                             return;
                         }
 
@@ -189,13 +194,17 @@ public class VisitHistoryServlet extends HttpServlet {
                         visitID = Integer.valueOf(request.getParameter("examID"));
                     } catch (NumberFormatException | NullPointerException e) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 
                     if (reportText == null) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                        String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 

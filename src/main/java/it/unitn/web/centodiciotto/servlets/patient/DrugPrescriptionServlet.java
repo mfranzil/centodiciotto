@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 /**
  * DrugPrescriptionServlet for handling requests to /restricted/patient/prescriptions.
@@ -86,7 +87,10 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
                 PrintWriter writer = response.getWriter();
                 response.setContentType("application/json");
-                writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+
+                String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 
@@ -95,7 +99,10 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
                 PrintWriter writer = response.getWriter();
                 response.setContentType("application/json");
-                writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+
+                String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                writer.write(json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 

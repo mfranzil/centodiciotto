@@ -19,6 +19,7 @@ $("document").ready(() => {
         $("#form-image").attr("src", getContextPath() + "img/classes/" + id + ".png");
         $("#form-name").html("Log in as " + role);
         $("#form-window").show();
+        //$(".container,nav,.footer").css("filter", "blur(2px)");
         $("#role").val(id);
     });
 

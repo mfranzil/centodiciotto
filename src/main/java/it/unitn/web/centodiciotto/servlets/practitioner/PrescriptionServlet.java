@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * PrescriptionServlet for handling requests to /restricted/general_practitioner/prescriptions.
@@ -119,7 +120,9 @@ public class PrescriptionServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -167,7 +170,9 @@ public class PrescriptionServlet extends HttpServlet {
 
                     if (patientID == null) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please choose a valid patient.\"}");
+                        String json = "{\"error\": \"Malformed input. Please choose a valid patient.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 
@@ -258,13 +263,17 @@ public class PrescriptionServlet extends HttpServlet {
                             examID = Integer.valueOf(request.getParameter("examID"));
                         } catch (NumberFormatException | NullPointerException e) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                             return;
                         }
 
                         if (patientID == null) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                             return;
                         }
 
@@ -329,13 +338,17 @@ public class PrescriptionServlet extends HttpServlet {
                             drugID = Integer.valueOf(request.getParameter("drugID"));
                         } catch (NumberFormatException | NullPointerException e) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                             return;
                         }
 
                         if (patientID == null) {
                             response.setStatus(400);
-                            writer.write("{\"error\": \"Malformed input. Please fill all parameters correctly.\"}");
+                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
                         }
 
                         DrugType drugType = drugTypeDAO.getByPrimaryKey(drugID);
@@ -372,6 +385,8 @@ public class PrescriptionServlet extends HttpServlet {
                     }
                     break;
                 }
+                default:
+                    throw new IllegalStateException("Unexpected value: " + requestType);
             }
         }
     }

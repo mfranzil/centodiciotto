@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -103,7 +102,7 @@ public class PasswordResetServlet extends HttpServlet {
                 response.setStatus(400);
                 json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
                 writer.write(json);
-                Logger.getLogger("C18").log(Level.SEVERE, json);
+                Logger.getLogger("C18").severe(json);
                 return;
             }
 
@@ -115,7 +114,7 @@ public class PasswordResetServlet extends HttpServlet {
                         response.setStatus(400);
                         json = "{\"error\": \"Password must be between 8 and 64 characters.\"}";
                         writer.write(json);
-                        Logger.getLogger("C18").log(Level.SEVERE, json);
+                        Logger.getLogger("C18").severe(json);
                     } else {
                         try {
                             cryptoService.changePassword(userID, newPassword);

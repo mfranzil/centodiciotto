@@ -24,6 +24,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -96,7 +97,9 @@ public class PatientsServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -146,7 +149,9 @@ public class PatientsServlet extends HttpServlet {
 
                     if (patientID == null) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please choose a valid patient.\"}");
+                        String json = "{\"error\": \"Malformed input. Please choose a valid patient.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 

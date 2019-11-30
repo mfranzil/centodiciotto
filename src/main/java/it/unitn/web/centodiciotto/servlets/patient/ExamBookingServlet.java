@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * ExamBookingServlet for handling requests to /restricted/patient/exam_booking.
@@ -110,7 +111,9 @@ public class ExamBookingServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            writer.write("{\"error\": \"Malformed input. Please insert a valid requestType.\"}");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
             return;
         }
 
@@ -230,7 +233,9 @@ public class ExamBookingServlet extends HttpServlet {
                         examID = Integer.valueOf(request.getParameter("examID"));
                     } catch (NumberFormatException e) {
                         response.setStatus(400);
-                        writer.write("{\"error\":\"Malformed input. Please choose a valid exam.\"}");
+                        String json = "{\"error\":\"Malformed input. Please choose a valid exam.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 
@@ -268,8 +273,10 @@ public class ExamBookingServlet extends HttpServlet {
                                 writer.write("{}");
                             } else {
                                 response.setStatus(400);
-                                writer.write("{\"error\":\"" +
-                                        "Requested exam is not pending and cannot be booked.\"}");
+                                String json = "{\"error\":\"" +
+                                        "Requested exam is not pending and cannot be booked.\"}";
+                                writer.write(json);
+                                Logger.getLogger("C18").severe(json);
                             }
                         } catch (DAOException e) {
                             throw new ServletException("Error in DAO usage: ", e);
@@ -278,7 +285,9 @@ public class ExamBookingServlet extends HttpServlet {
                         }
                     } else {
                         response.setStatus(400);
-                        writer.write("{\"error\":\"Malformed input. Please try again.\"}");
+                        String json = "{\"error\":\"Malformed input. Please try again.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                     }
                     break;
                 }
@@ -287,7 +296,9 @@ public class ExamBookingServlet extends HttpServlet {
 
                     if (examID == null) {
                         response.setStatus(400);
-                        writer.write("{\"error\": \"Malformed input. Please choose a valid exam.\"}");
+                        String json = "{\"error\": \"Malformed input. Please choose a valid exam.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
 
