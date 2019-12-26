@@ -58,7 +58,7 @@
 <div class="jumbotron mt-4">
     <h1>Visit Calendar</h1>
     <p class="lead mt-4 mx-4">
-        In this section you can see all the visits to be completed.
+        In this section you can see all the visits to be completed.<br>
         You can mark them as done and they will be moved in your visit history, where you may add a report.
     </p>
 </div>

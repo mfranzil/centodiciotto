@@ -12,8 +12,8 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
+import it.unitn.web.centodiciotto.utils.json.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,10 +30,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
- * RecallsServlet for handling requests to /restricted/health_service/recalls.
+ * RecallServlet for handling requests to /restricted/health_service/recalls.
  * <p>
  * GET requests pass through.
  * <p>
@@ -50,7 +49,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/health_service/recalls")
-public class RecallsServlet extends HttpServlet {
+public class RecallServlet extends HttpServlet {
     private static final List<ExamSearchResult> ALL_INTERNAL_EXAMS = new ArrayList<>();
 
     private ExamDAO examDAO;
@@ -253,17 +252,18 @@ public class RecallsServlet extends HttpServlet {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
+                    List<ExamSearchResult> tmpResults = new ArrayList<>();
 
                     if (userInput == null) {
                         results = ALL_INTERNAL_EXAMS;
                     } else {
-                        results = ALL_INTERNAL_EXAMS.stream().filter(examSearchResult
+                        ALL_INTERNAL_EXAMS.stream().filter(examSearchResult
                                 -> examSearchResult.getText().toLowerCase().contains(userInput.toLowerCase()))
-                                .collect(Collectors.toList());
+                                .forEach(tmpResults::add);
                     }
 
                     Gson gson = new Gson();
-                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResults<>(tmpResults.toArray(new ExamSearchResult[0]))));
                 }
                 break;
             }

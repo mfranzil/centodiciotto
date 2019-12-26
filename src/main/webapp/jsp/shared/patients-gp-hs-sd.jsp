@@ -118,7 +118,7 @@
                 <div id="main-table"></div>
                 <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                 </div>
             </div>
         </div>

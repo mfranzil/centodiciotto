@@ -12,7 +12,7 @@
 
             datepicker.datepicker({
                 dateFormat: "dd/mm/yy",
-                maxDate: -1,
+                maxDate: 0,
                 firstDay: 1,
                 changeMonth: true,
                 changeYear: true,
@@ -48,14 +48,23 @@
                     url: url,
                     cache: false,
                     data: data,
-                    success: (data, textStatus, jqXHR) => {
+                    success: function (data, textStatus, jqXHR) {
                         let json = jqXHR.responseJSON;
                         $("#submit,#loading-container").slideUp();
                         $("#generate-new,#download").slideDown();
                         $(".datepicker").prop("disabled", true);
                         $("#download").click(() => {
                             e.preventDefault();
-                            $(this).html("Download started.");
+
+                            let downloadButton = $("#download");
+
+                            downloadButton.html("Download started");
+                            setTimeout(() => downloadButton.html("Download started."), 500);
+                            setTimeout(() => downloadButton.html("Download started.."), 1000);
+                            setTimeout(() => downloadButton.html("Download started..."), 1500);
+                            setTimeout(() => downloadButton.html("Download started...."), 2000);
+                            setTimeout(() => downloadButton.html("Download report"), 3000);
+
                             window.location.href = json.path;
                         });
                     },
@@ -73,6 +82,7 @@
                 $("#include,#generate-new,#download,#loading-container").slideUp();
                 $("#choose-date").slideDown();
                 $("#submit").prop("disabled", false).html("Generate report");
+                $("#download").prop("disabled", false).html("Download report");
                 $(".datepicker").val("");
                 $("input,.datepicker").prop("disabled", false);
             }
@@ -137,7 +147,7 @@
                         <div class="justify-content-center loading mt-2" id="loading-container"
                              style="text-align: center;">
                             <img class="rotating" role="status" style="width: 64px"
-                                 src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                                 src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                         </div>
                     </div>
                     <button type="button" id="download" class="btn btn-block btn-personal mt-2">Download report</button>

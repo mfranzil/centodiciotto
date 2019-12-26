@@ -9,10 +9,10 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.JSONUtils;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.JSONUtils;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,10 +25,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
- * PatientsServlet for handling requests to /restricted/role/patients,
+ * PatientListServlet for handling requests to /restricted/role/patients,
  * where role can be health_service, specialized_doctor, or general_practitioner.
  * <p>
  * GET requests pass through.
@@ -47,7 +46,7 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = {"/restricted/general_practitioner/patients",
         "/restricted/health_service/patients",
         "/restricted/specialized_doctor/patients"})
-public class PatientsServlet extends HttpServlet {
+public class PatientListServlet extends HttpServlet {
 
     private PatientDAO patientDAO;
     private GeneralPractitionerDAO practitionerDAO;
@@ -132,7 +131,7 @@ public class PatientsServlet extends HttpServlet {
                                     patient.getSSN(),
                                     photoPath,
                                     patient.getID(),
-                                    new Action("Patient Data", true)));
+                                    new HTMLAction("Patient Data", true)));
                         }
 
                         Gson gson = new Gson();
@@ -272,15 +271,17 @@ public class PatientsServlet extends HttpServlet {
                                     patient.getID()));
                         }
 
+                        List<PatientSearchResult> chosenResults = new ArrayList<>();
+
                         if (userInput != null) {
-                            results = results.stream().filter(patientSearchResult
+                            results.stream().filter(patientSearchResult
                                     -> (patientSearchResult.getText().toLowerCase().contains(
-                                    userInput.toLowerCase()))).collect(Collectors.toList());
+                                    userInput.toLowerCase()))).forEach(chosenResults::add);
                         }
 
                         Gson gson = new Gson();
                         writer.write(gson.toJson(
-                                new JSONResults<>(results.toArray(new PatientSearchResult[0]))));
+                                new JSONResults<>(chosenResults.toArray(new PatientSearchResult[0]))));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
@@ -297,7 +298,7 @@ public class PatientsServlet extends HttpServlet {
         private String name;
         private String ssn;
         private String avt;
-        private Action action;
+        private HTMLAction action;
         private String ID;
 
         /**
@@ -309,7 +310,7 @@ public class PatientsServlet extends HttpServlet {
          * @param ID     the id
          * @param action the action
          */
-        public PatientListElement(String name, String ssn, String avt, String ID, Action action) {
+        public PatientListElement(String name, String ssn, String avt, String ID, HTMLAction action) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;

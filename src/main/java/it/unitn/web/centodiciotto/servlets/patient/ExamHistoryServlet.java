@@ -9,8 +9,8 @@ import it.unitn.web.centodiciotto.persistence.entities.Exam;
 import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -89,7 +89,7 @@ public class ExamHistoryServlet extends HttpServlet {
                                     exam.getType().getDescription(),
                                     CustomDTFormatter.formatDateTime(exam.getDate()),
                                     exam.getDone(),
-                                    new Action("See report", exam.getDone()),
+                                    new HTMLAction("See report", exam.getDone()),
                                     exam.getID()));
                         }
 
@@ -138,7 +138,7 @@ public class ExamHistoryServlet extends HttpServlet {
         private String exam;
         private String date;
         private Boolean reportstate;
-        private Action action;
+        private HTMLAction action;
         private Integer ID;
 
         /**
@@ -150,7 +150,7 @@ public class ExamHistoryServlet extends HttpServlet {
          * @param action      the action
          * @param ID          the id
          */
-        ExamHistoryElement(String exam, String date, Boolean reportstate, Action action, Integer ID) {
+        ExamHistoryElement(String exam, String date, Boolean reportstate, HTMLAction action, Integer ID) {
             this.exam = exam;
             this.date = date;
             this.reportstate = reportstate;

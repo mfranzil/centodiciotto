@@ -48,7 +48,7 @@
         <div class="justify-content-center loading" id="loading-container"
              style="text-align: center; display: none !important">
             <img class="rotating" role="status" style="width: 64px"
-                 src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                 src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
         </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
             <div style="display: flex">

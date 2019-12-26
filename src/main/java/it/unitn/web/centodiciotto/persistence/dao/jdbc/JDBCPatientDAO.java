@@ -13,8 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -22,6 +22,9 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
+
+    final private HashMap<String, Province> cache = new HashMap<>();
+    private ProvinceDAO provinceDAO;
 
     final private String INSERT = "INSERT INTO patient" +
             "(patient_id, first_name, last_name, birth_date, birth_place, " +
@@ -50,6 +53,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
      */
     public JDBCPatientDAO(Connection con) throws DAOFactoryException {
         super(con);
+        provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
     }
 
     @Override
@@ -68,7 +72,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(10, patient.getLivingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "PatientDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("PatientDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting User: ", e);
         }
@@ -90,7 +94,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(10, patient.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "PatientDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("PatientDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Patient: ", e);
         }
@@ -102,7 +106,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(1, patient.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "PatientDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("PatientDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Patient: ", e);
         }
@@ -193,10 +197,15 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     protected Patient mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Patient patient = new Patient();
+            Province province;
 
-            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
-            Province province = provinceDAO.getByAbbreviation(
-                    rs.getString("living_province"));
+            String provinceAbbreviation = rs.getString("living_province");
+            if (cache.containsKey(provinceAbbreviation)) {
+                province = cache.get(provinceAbbreviation);
+            } else {
+                province = provinceDAO.getByAbbreviation(provinceAbbreviation);
+                cache.put(provinceAbbreviation, province);
+            }
 
             patient.setID(rs.getString("patient_id"));
             patient.setFirstName(rs.getString("first_name"));
@@ -210,7 +219,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             patient.setLivingPlace(rs.getString("living_place"));
 
             return patient;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to Patient: ", e);
         }
     }

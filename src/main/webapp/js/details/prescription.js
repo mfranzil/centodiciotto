@@ -8,7 +8,7 @@ $("document").ready(() => {
         placeholder: "Select an exam",
         allowClear: true,
         closeOnSelect: true,
-        minimumInputSize: 6,
+        minimumInputLength: 6,
         ajax: {
             type: "POST",
             data: params => ({
@@ -24,7 +24,7 @@ $("document").ready(() => {
         placeholder: "Select a drug",
         allowClear: true,
         closeOnSelect: true,
-        minimumInputSize: 6,
+        minimumInputLength: 6,
         ajax: {
             type: "POST",
             data: params => ({

@@ -15,12 +15,12 @@ public class CustomDTFormatter {
     /**
      * Gets a date-only representation of the time since epoch.
      * <p>
-     * The Date is formatted as "MMMM dd, YYYY" (example: December 19, 2000)
+     * The Date is formatted as "MMMM dd, yyyy" (example: December 19, 2000)
      *
      * @return the formatted date
      */
     public static String formatDate(Date date) {
-        return DateTimeFormatter.ofPattern("MMMM d, YYYY").withLocale(Locale.UK)
+        return DateTimeFormatter.ofPattern("MMMM d, yyyy").withLocale(Locale.UK)
                 .withZone(ZoneId.systemDefault()).format(date.toInstant());
     }
 
@@ -39,12 +39,12 @@ public class CustomDTFormatter {
     /**
      * Gets a date and time representation of the time since epoch.
      * <p>
-     * The Date is formatted as "MMMM dd, YYYY HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
+     * The Date is formatted as "MMMM dd, yyyy HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
      *
      * @return the formatted date time
      */
     public static String formatDateTime(Date date) {
-        return DateTimeFormatter.ofPattern("MMMM d, YYYY HH:mm").withLocale(Locale.UK)
+        return DateTimeFormatter.ofPattern("MMMM d, yyyy HH:mm").withLocale(Locale.UK)
                 .withZone(ZoneId.systemDefault()).format(date.toInstant());
     }
 

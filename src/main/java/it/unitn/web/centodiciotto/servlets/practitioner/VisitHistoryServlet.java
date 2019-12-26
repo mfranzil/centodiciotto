@@ -14,8 +14,8 @@ import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -112,9 +112,9 @@ public class VisitHistoryServlet extends HttpServlet {
                         for (Visit visit : visitList) {
                             Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            Action action = visit.getReport() == null
-                                    ? new Action("Insert report", true)
-                                    : new Action("Edit report", true);
+                            HTMLAction action = visit.getReport() == null
+                                    ? new HTMLAction("Insert report", true)
+                                    : new HTMLAction("Edit report", true);
                             visitListElements.add(new VisitListElement(
                                     patient.toString(), patient.getSSN(),
                                     photoPath, CustomDTFormatter.formatDateTime(visit.getDate()),
@@ -246,7 +246,7 @@ public class VisitHistoryServlet extends HttpServlet {
         private String ssn;
         private String avt;
         private String date;
-        private Action action;
+        private HTMLAction action;
         private String ID;
 
         /**
@@ -259,7 +259,7 @@ public class VisitHistoryServlet extends HttpServlet {
          * @param action the action
          * @param ID     the id
          */
-        VisitListElement(String name, String ssn, String avt, String date, Action action, String ID) {
+        VisitListElement(String name, String ssn, String avt, String date, HTMLAction action, String ID) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;

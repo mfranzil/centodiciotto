@@ -1,6 +1,4 @@
-package it.unitn.web.centodiciotto.utils;
-
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+package it.unitn.web.centodiciotto.utils.json;
 
 import java.util.ArrayList;
 import java.util.List;

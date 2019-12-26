@@ -48,29 +48,12 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      * Returns a {@link List} of not pending {@link Exam}s from a given {@code patientID}.
      * <p>
      * An {@link Exam} is considered pending if a date hasn't been assigned yet.
-     * <p>
-     * An SQL UNION between this and {@link #getPendingByPatient(String)} must yield the
-     * same results as {@link #getByPatient(String)}.
      *
      * @param patientID the {@code patientID}
      * @return a {@link List} of not pending {@link Exam}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getNotPendingByPatient(String patientID) throws DAOException;
-
-    /**
-     * Returns a {@link List} of not pending {@link Exam}s from a given {@code patientID}.
-     * <p>
-     * An {@link Exam} is considered pending if a date hasn't been assigned yet.
-     * <p>
-     * An SQL UNION between this and {@link #getNotPendingByPatient(String)} must yield the
-     * same results as {@link #getByPatient(String)}.
-     *
-     * @param patientID the {@code patientID}
-     * @return a {@link List} of not pending {@link Exam}s from a given {@code patientID}
-     * @throws DAOException in case of a malformed input or query
-     */
-    List<Exam> getPendingByPatient(String patientID) throws DAOException;
 
     /**
      * Returns a {@link List} of {@link Exam}s from a given {@code patientID} and {@code examID}.
@@ -163,34 +146,6 @@ public interface ExamDAO extends DAO<Exam, Integer> {
      * @throws DAOException in case of a malformed input or query
      */
     List<Exam> getDoneByHS(String healthServiceID) throws DAOException;
-
-    /**
-     * Returns a {@link List} of pending {@link Exam}s from a given
-     * {@code doctorID}, {@code patientID} and {@code examType}.
-     * <p>
-     * An {@link Exam} is considered pending if a date hasn't been assigned yet.
-     *
-     * @param doctorID  the {@code doctorID}
-     * @param patientID the {@code patientID}
-     * @param examType  the {@code examType}
-     * @return a {@link List} of pending {@link Exam}s from a given {@code doctorID}, {@code patientID} and {@code examType}.
-     * @throws DAOException in case of a malformed input or query
-     */
-    Exam getPendingByDoctorPatientType(String doctorID, String patientID, Integer examType) throws DAOException;
-
-    /**
-     * Returns a {@link List} of pending {@link Exam}s from a given
-     * {@code healthServiceID}, {@code patientID} and {@code examType}.
-     * <p>
-     * An {@link Exam} is considered pending if a date hasn't been assigned yet.
-     *
-     * @param healthServiceID the {@code healthServiceID}
-     * @param patientID       the {@code patientID}
-     * @param examType        the {@code examType}
-     * @return a {@link List} of pending {@link Exam}s from a given {@code healthServiceID}, {@code patientID} and {@code examType}.
-     * @throws DAOException in case of a malformed input or query
-     */
-    Exam getPendingByHSPatientType(String healthServiceID, String patientID, Integer examType) throws DAOException;
 
     /**
      * Returns a {@link List} of {@link Exam}s from a given {@link Timestamp}.

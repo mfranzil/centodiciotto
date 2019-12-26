@@ -11,8 +11,8 @@ import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 /**
- * ExamRequestsServlet for handling requests to /restricted/role/exam_requests,
+ * ExamRequestServlet for handling requests to /restricted/role/exam_requests,
  * where role can be health_service or specialized_doctor.
  * <p>
  * GET requests pass through.
@@ -48,7 +48,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet(urlPatterns = {"/restricted/specialized_doctor/exam_requests", "/restricted/health_service/exam_requests"})
-public class ExamRequestsServlet extends HttpServlet {
+public class ExamRequestServlet extends HttpServlet {
     private ExamDAO examDAO;
     private PatientDAO patientDAO;
 
@@ -108,13 +108,22 @@ public class ExamRequestsServlet extends HttpServlet {
         switch (requestType) {
             case "requestBook": {
                 if (user instanceof SpecializedDoctor || user instanceof HealthService) {
-                    String patientID = request.getParameter("patientID");
-                    String examID = request.getParameter("examID");
-                    String examDate = request.getParameter("examDate");
-                    String examTime = request.getParameter("examTime");
+                    Integer progressiveExamID;
+                    String examDate, examTime;
 
-                    if (examDate == null || examTime == null || patientID == null
-                            || examTime.equals("") || examDate.equals("") || examID == null) {
+                    try {
+                        progressiveExamID = Integer.valueOf(request.getParameter("progressiveExamID"));
+                        examDate = request.getParameter("examDate");
+                        examTime = request.getParameter("examTime");
+                    } catch (NumberFormatException | NullPointerException e) {
+                        response.setStatus(400);
+                        String json = "{\"error\": \"Malformed input. Please choose a valid exam.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
+                        return;
+                    }
+
+                    if (examDate == null || examTime == null || examTime.equals("") || examDate.equals("")) {
                         response.setStatus(400);
                         String json = "{\"error\": \"Malformed input. Please insert a valid date and time.\"}";
                         writer.write(json);
@@ -123,23 +132,16 @@ public class ExamRequestsServlet extends HttpServlet {
                         try {
                             DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm");
                             Date date = formatter.parse(examDate + " " + examTime);
-                            Exam pendingExam;
+                            Exam pendingExam = examDAO.getByPrimaryKey(progressiveExamID);
 
-                            if (user instanceof SpecializedDoctor) {
-                                pendingExam = examDAO.getPendingByDoctorPatientType(user.getID(),
-                                        patientID, Integer.valueOf(examID));
-                            } else { // HealthService
-                                pendingExam = examDAO.getPendingByHSPatientType(user.getID(),
-                                        patientID, Integer.valueOf(examID));
-                            }
-
-                            if (pendingExam != null) {
+                            if (pendingExam != null && pendingExam.getDate() == null && !pendingExam.getBooked()) {
                                 pendingExam.setDate(new Timestamp(date.getTime()));
                                 pendingExam.setBooked(true);
                                 examDAO.update(pendingExam);
 
                                 Patient patient = patientDAO.getByPrimaryKey(pendingExam.getPatientID());
-                                String handler = user instanceof SpecializedDoctor ? "Specialized Doctor" : "Local Health Service";
+                                String handler = user instanceof SpecializedDoctor ?
+                                        "Specialized Doctor" : "Local Health Service";
 
                                 String recipient = patient.getID();
                                 String message = "Dear " + patient.toString() + ",\n\n" +
@@ -188,8 +190,8 @@ public class ExamRequestsServlet extends HttpServlet {
                             String photoPath = photoService.getLastPhoto(patient.getID());
                             examRequestListElements.add(new ExamRequestListElement(
                                     photoPath, patient.toString(), exam.getType().getDescription(),
-                                    new Action("Choose date and time", true),
-                                    patient.getID() + ";" + exam.getType().getID()));
+                                    new HTMLAction("Choose date and time", true),
+                                    exam.getID().toString()));
                         }
 
                         Gson gson = new Gson();
@@ -203,9 +205,11 @@ public class ExamRequestsServlet extends HttpServlet {
                 break;
             }
             case "detailedInfo": {
-                String patientIDExamID = request.getParameter("item");
+                Integer progressiveExamID;
 
-                if (patientIDExamID == null) {
+                try {
+                    progressiveExamID = Integer.parseInt(request.getParameter("item"));
+                } catch (NumberFormatException | NullPointerException e) {
                     response.setStatus(400);
                     String json = "{\"error\": \"Malformed input. Please choose a valid exam.\"}";
                     writer.write(json);
@@ -215,66 +219,55 @@ public class ExamRequestsServlet extends HttpServlet {
 
                 List<Object> jsonResponse = new ArrayList<>();
 
-                try {
-                    String patientID = patientIDExamID.split(";")[0];
-                    String examID = patientIDExamID.split(";")[1];
+                jsonResponse.add(new HTMLElement().setElementType("form").
+                        setElementClass("set-exam")
+                        .setElementFormMethod("POST"));
 
-                    Patient patient = patientDAO.getByPrimaryKey(patientID);
+                List<Object> setExamForm = new ArrayList<>();
+                setExamForm.add(new HTMLElement().setElementType("p")
+                        .setElementContent("Insert a date and time for " +
+                                "the appointment, then confirm."));
+                setExamForm.add(new HTMLElement().setElementType("div")
+                        .setElementStyle("display: flex; width: 100%;"));
 
-                    jsonResponse.add(new HTMLElement().setElementType("form").
-                            setElementClass("set-exam")
-                            .setElementFormMethod("POST"));
+                List<Object> div = new ArrayList<>();
 
-                    List<Object> setExamForm = new ArrayList<>();
-                    setExamForm.add(new HTMLElement().setElementType("p")
-                            .setElementContent("Insert a date and time for " +
-                                    "the appointment, then confirm."));
-                    setExamForm.add(new HTMLElement().setElementType("div")
-                            .setElementStyle("display: flex; width: 100%;"));
+                div.add(new HTMLElement().setElementType("label")
+                        .setElementStyle("flex: 50%").setElementClass("mb-2 mr-1"));
+                List<HTMLElement> firstLabel = new ArrayList<>();
+                firstLabel.add(new HTMLElement().setElementType("input")
+                        .setElementInputName("examDate").setElementInputType("text")
+                        .setElementInputAutocomplete("off")
+                        .setElementClass("form-control datepicker exam-date"));
+                div.add(firstLabel);
 
-                    List<Object> div = new ArrayList<>();
+                div.add(new HTMLElement().setElementType("label")
+                        .setElementStyle("flex: 50%").setElementClass("mb-2 ml-1"));
+                List<HTMLElement> secondLabel = new ArrayList<>();
+                secondLabel.add(new HTMLElement().setElementType("input")
+                        .setElementInputName("examTime").setElementInputType("text")
+                        .setElementInputAutocomplete("off")
+                        .setElementClass("form-control timepicker exam-time"));
+                div.add(secondLabel);
 
-                    div.add(new HTMLElement().setElementType("label")
-                            .setElementStyle("flex: 50%").setElementClass("my-2 mr-1"));
-                    List<HTMLElement> firstLabel = new ArrayList<>();
-                    firstLabel.add(new HTMLElement().setElementType("input")
-                            .setElementInputName("examDate").setElementInputType("text")
-                            .setElementInputAutocomplete("off")
-                            .setElementClass("form-control datepicker exam-date"));
-                    div.add(firstLabel);
+                setExamForm.add(div);
+                setExamForm.add(new HTMLElement().setElementType("input")
+                        .setElementInputType("hidden").setElementInputValue(String.valueOf(progressiveExamID))
+                        .setElementInputName("progressiveExamID"));
+                setExamForm.add(new HTMLElement().setElementType("button")
+                        .setElementClass("btn btn-lg btn-block btn-personal submit")
+                        .setElementButtonType("submit")
+                        .setElementID(String.valueOf(progressiveExamID))
+                        .setElementContent("Confirm the appointment"));
 
-                    div.add(new HTMLElement().setElementType("label")
-                            .setElementStyle("flex: 50%").setElementClass("my-2 ml-1"));
-                    List<HTMLElement> secondLabel = new ArrayList<>();
-                    secondLabel.add(new HTMLElement().setElementType("input")
-                            .setElementInputName("examTime").setElementInputType("text")
-                            .setElementInputAutocomplete("off")
-                            .setElementClass("form-control timepicker exam-time"));
-                    div.add(secondLabel);
+                jsonResponse.add(setExamForm);
 
-                    setExamForm.add(div);
-                    setExamForm.add(new HTMLElement().setElementType("input")
-                            .setElementInputType("hidden").setElementInputValue(patientID)
-                            .setElementInputName("patientID"));
-                    setExamForm.add(new HTMLElement().setElementType("input")
-                            .setElementInputType("hidden").setElementInputValue(examID)
-                            .setElementInputName("examID"));
-                    setExamForm.add(new HTMLElement().setElementType("button")
-                            .setElementClass("btn btn-lg btn-block btn-personal submit")
-                            .setElementButtonType("submit")
-                            .setElementContent("Confirm the appointment"));
+                jsonResponse.add(new HTMLElement().setElementType("script")
+                        .setElementScriptType("text/javascript")
+                        .setElementScriptSrc(contextPath + "js/details/examRequests.js"));
 
-                    jsonResponse.add(setExamForm);
-
-                    jsonResponse.add(new HTMLElement().setElementType("script")
-                            .setElementScriptType("text/javascript")
-                            .setElementScriptSrc(contextPath + "js/details/examRequests.js"));
-
-                    Gson gson = new Gson();
-                    writer.write(gson.toJson(jsonResponse));
-                } catch (DAOException e) {
-                    throw new ServletException("Error in DAO usage: ", e);
-                }
+                Gson gson = new Gson();
+                writer.write(gson.toJson(jsonResponse));
                 break;
             }
         }
@@ -287,10 +280,10 @@ public class ExamRequestsServlet extends HttpServlet {
         private String avt;
         private String patient;
         private String exam;
-        private Action action;
+        private HTMLAction action;
         private String ID;
 
-        ExamRequestListElement(String avt, String patient, String exam, Action action, String ID) {
+        ExamRequestListElement(String avt, String patient, String exam, HTMLAction action, String ID) {
             this.avt = avt;
             this.patient = patient;
             this.exam = exam;

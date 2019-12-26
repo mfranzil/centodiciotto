@@ -11,8 +11,8 @@ import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * JavaBean representing a {@link PatientDAO} bound to a {@link Patient}.
@@ -280,6 +280,7 @@ public class PatientDAOBean implements Serializable {
      */
     public List<GeneralPractitioner> getAvailablePractitioners() throws BeanException {
         List<GeneralPractitioner> practitioners;
+        List<GeneralPractitioner> chosenPractitioners = new ArrayList<>();
 
         if (patientID == null) {
             throw new BeanException("Patient is null");
@@ -288,12 +289,13 @@ public class PatientDAOBean implements Serializable {
         try {
             GeneralPractitioner currentPractitioner = getPractitioner();
             practitioners = practitionerDAO.getByProvince(getPatient().getLivingProvince().getAbbreviation());
-            practitioners = practitioners.stream().filter(practitioner ->
-                    !practitioner.getID().equals(currentPractitioner.getID())).collect(Collectors.toList());
+
+            practitioners.stream().filter(practitioner -> !practitioner.getID().equals(currentPractitioner.getID()))
+                    .forEach(chosenPractitioners::add);
         } catch (DAOException e) {
             throw new BeanException("Error getting unpaid Exams in patientDaoBean: ", e);
         }
-        return practitioners;
+        return chosenPractitioners;
     }
 
 }

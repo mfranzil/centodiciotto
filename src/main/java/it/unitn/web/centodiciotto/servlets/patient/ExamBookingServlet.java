@@ -8,10 +8,10 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -132,7 +132,7 @@ public class ExamBookingServlet extends HttpServlet {
                         if (examID == null) {
                             if (onlyAvailable) {
                                 for (Exam exam : patientExamList) {
-                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new Action("Book Now", true), exam.getType().getID()));
+                                    examListElements.add(new ExamListElement(exam.getType().getDescription(), new HTMLAction("Book Now", true), exam.getType().getID()));
                                 }
                             } else {
                                 List<Integer> examListIDs = new ArrayList<>();
@@ -142,7 +142,7 @@ public class ExamBookingServlet extends HttpServlet {
                                 }
 
                                 for (ExamType examType : ALL_EXAMS) {
-                                    examListElements.add(new ExamListElement(examType.getDescription(), new Action("Book Now", examListIDs.contains(examType.getID())), examType.getID()));
+                                    examListElements.add(new ExamListElement(examType.getDescription(), new HTMLAction("Book Now", examListIDs.contains(examType.getID())), examType.getID()));
                                 }
                             }
                         } else {
@@ -156,7 +156,7 @@ public class ExamBookingServlet extends HttpServlet {
                                 }
                             }
                             ExamType examType = examTypeDAO.getByPrimaryKey(integerExamID);
-                            examListElements.add(new ExamListElement(examType.getDescription(), new Action("Book Now", found), examType.getID()));
+                            examListElements.add(new ExamListElement(examType.getDescription(), new HTMLAction("Book Now", found), examType.getID()));
                         }
 
                         Gson gson = new Gson();
@@ -331,7 +331,7 @@ public class ExamBookingServlet extends HttpServlet {
      */
     private static class ExamListElement implements Serializable {
         private String exam;
-        private Action action;
+        private HTMLAction action;
         private Integer ID;
 
         /**
@@ -341,7 +341,7 @@ public class ExamBookingServlet extends HttpServlet {
          * @param action the action
          * @param ID     the id
          */
-        ExamListElement(String exam, Action action, Integer ID) {
+        ExamListElement(String exam, HTMLAction action, Integer ID) {
             this.exam = exam;
             this.action = action;
             this.ID = ID;

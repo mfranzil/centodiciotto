@@ -63,7 +63,7 @@
 <div class="jumbotron mt-4">
     <h1>Exam Calendar</h1>
     <p class="lead mt-4 mx-4">
-        In this section you can see all the exams to be completed.
+        In this section you can see all the exams to be completed.<br>
         You can mark them as done and they will be moved in your exam history, where you may add a report.
     </p>
 </div>
@@ -123,7 +123,7 @@
                                  alt="">
                         </div>
                         <div class="table-cell patient">${patient}</div>
-                        <div class="table-cell patient">${exam.type.description}</div>
+                        <div class="table-cell exam">${exam.type.description}</div>
                         <div class="table-cell date">${examDate.formattedDateTime}</div>
                         <div class="table-cell action">
                             <form class="mark-completed" method="POST">

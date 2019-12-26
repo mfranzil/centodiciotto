@@ -58,31 +58,6 @@
                 });
             }
 
-            $(".set-exam").submit(function (e) {
-                e.preventDefault();
-
-                let form = $(this);
-                let inputExamID = form.find("input[name='progressiveExamID']").val();
-                let button = form.find("button.submit");
-
-                let data = form.serializeArray();
-                data.push({name: "requestType", value: "requestBook"});
-
-                button.prop("disabled", true).html("Confirming..");
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    cache: false,
-                    data: data,
-                    success: () => {
-                        button.html("Confirmed");
-                        $(".popup-window").fadeOut();
-                        $("#confirm-e-" + inputExamID).html("Confirmed").prop("disabled", true);
-                    }
-                });
-            });
-
             $(".datepicker").datepicker({
                 dateFormat: "dd/mm/yy",
                 beforeShowDay: $.datepicker.noWeekends,
@@ -122,86 +97,10 @@
         <div class="row">
             <div class="col-md">
                 <div id="requests-table">
-                    <div class="table-personal table-header">
-                        <div class="table-cell avt">&nbsp;</div>
-                        <div class="table-cell patient">Patient</div>
-                        <div class="table-cell exam">Exam</div>
-                        <div class="table-cell action">&nbsp;</div>
-                    </div>
-                    <jsp:useBean id="patientDAO"
-                                 class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
-                    <jsp:setProperty name="patientDAO" property="init" value=""/>
-
-                    <c:choose>
-                        <c:when test="${sessionScope.role eq 'specialized_doctor'}">
-                            <jsp:useBean id="doctorDAO"
-                                         class="it.unitn.web.centodiciotto.beans.entities.SpecializedDoctorDAOBean"/>
-                            <jsp:setProperty name="doctorDAO" property="doctorID" value="${sessionScope.user.ID}"/>
-                            <jsp:setProperty name="doctorDAO" property="init" value=""/>
-                        </c:when>
-                        <c:when test="${sessionScope.role eq 'health_service'}">
-                            <jsp:useBean id="healthServiceDAO"
-                                         class="it.unitn.web.centodiciotto.beans.entities.HealthServiceDAOBean"/>
-                            <jsp:setProperty name="healthServiceDAO" property="healthServiceID"
-                                             value="${sessionScope.user.ID}"/>
-                            <jsp:setProperty name="healthServiceDAO" property="init" value=""/>
-                        </c:when>
-                    </c:choose>
-
-                    <c:choose>
-                        <c:when test="${sessionScope.role eq 'specialized_doctor'}">
-                            <c:set var="chosenDAO" value="${doctorDAO}"/>
-                        </c:when>
-                        <c:when test="${sessionScope.role eq 'health_service'}">
-                            <c:set var="chosenDAO" value="${healthServiceDAO}"/>
-                        </c:when>
-                    </c:choose>
-
-                    <c:forEach items="${chosenDAO.pendingExams}" var="exam">
-                        <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
-                        <c:set var="patient" value="${patientDAO.patient}"/>
-                        <div class="table-personal">
-                            <div class="table-cell avt">
-                                <img class="avatar-small" alt=""
-                                     src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
-                            </div>
-                            <div class="table-cell patient">${patient}</div>
-                            <div class="table-cell exam">${exam.type.description}</div>
-                            <div class="table-cell action">
-                                <button class="btn btn-block btn-personal popup-opener" id="confirm-e-${exam.ID}">
-                                    Choose date and time
-                                </button>
-                                <div class="popup-window">
-                                    <div class="popup animate-in">
-                                        <form class="set-exam" method="POST">
-                                            Insert a date and time for the appointment, then confirm.
-                                            <div style="display: flex; width: 100%;">
-                                                <label style="flex: 50%" class="my-2 mr-1">
-                                                    <input class="form-control datepicker exam-date" autocomplete="off"
-                                                           type="text" name="examDate">
-                                                </label>
-                                                <label style="flex: 50%" class="my-2 ml-1">
-                                                    <input class="form-control timepicker exam-time" autocomplete="off"
-                                                           type="text" name="examTime">
-                                                </label>
-                                            </div>
-                                            <input type="hidden" value="${patient.ID}" name="patientID">
-                                            <input type="hidden" value="${exam.type.ID}" name="examID">
-                                            <input type="hidden" value="${exam.ID}" name="progressiveExamID">
-                                            <button class="btn btn-lg btn-block btn-personal submit" type="submit">
-                                                Confirm the appointment
-                                            </button>
-                                            <button class="btn btn-lg btn-block popup-closer btn-secondary"
-                                                    type="button">
-                                                Cancel
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                    </c:forEach>
+                </div>
+                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                    <img class="rotating" role="status" style="width: 64px"
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                 </div>
             </div>
         </div>

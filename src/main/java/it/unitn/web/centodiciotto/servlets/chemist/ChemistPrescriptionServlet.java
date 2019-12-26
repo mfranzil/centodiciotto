@@ -13,10 +13,10 @@ import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.JSONUtils;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.JSONUtils;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * ChemistPrescriptionServlet for handling requests to /restricted/chemist/prescriptions.
@@ -184,7 +183,6 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         if (!dp.getTicketPaid() && dp.getChemistID() == null && dp.getDateSold() == null) {
                             dp.setDateSold(new Timestamp(System.currentTimeMillis()));
                             dp.setChemistID(user.getID());
-                            dp.setPatientID(null);
                             drugPrescriptionDAO.update(dp);
 
                             Logger.getLogger("C18").info(
@@ -232,16 +230,17 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
                         List<PatientSearchResult> results = new ArrayList<>();
                         List<Patient> allPatients = patientDAO.getByProvince(province.getAbbreviation());
+                        List<Patient> selectedPatients = new ArrayList<>();
 
                         if (userInput != null) {
-                            allPatients = allPatients.stream().filter(patient
-                                    -> (patient.toString() + patient.getSSN()).toLowerCase()
+                            allPatients.stream().filter(patient
+                                    -> (patient.toString() + " " + patient.getSSN()).toLowerCase()
                                     .contains(userInput.toLowerCase()))
-                                    .collect(Collectors.toList());
+                                    .forEach(selectedPatients::add);
                         }
 
                         int id = 0;
-                        for (Patient patient : allPatients) {
+                        for (Patient patient : selectedPatients) {
                             results.add(new PatientSearchResult(
                                     id++, patient.toString() + " - " + patient.getSSN(),
                                     patient.getID(),
@@ -390,7 +389,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
         private String pract;
         private String drug;
         private String date;
-        private Action action;
+        private HTMLAction action;
         private Integer ID;
 
         /**
@@ -407,7 +406,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             this.drug = drug;
             this.date = date;
             this.ID = ID;
-            this.action = new Action(action, true);
+            this.action = new HTMLAction(action, true);
         }
     }
 }

@@ -16,9 +16,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
- * HealthServiceReportServlet for handling requests to /restricted/health_service/reports.
+ * ReportServlet for handling requests to /restricted/health_service/reports.
  * <p>
  * GET requests pass through.
  * <p>
@@ -27,7 +28,7 @@ import java.util.Objects;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/health_service/reports")
-public class HealthServiceReportServlet extends HttpServlet {
+public class ReportServlet extends HttpServlet {
 
     private ExcelService excelService;
 
@@ -67,6 +68,14 @@ public class HealthServiceReportServlet extends HttpServlet {
                 Date date = new Date(new SimpleDateFormat("dd/MM/yyyy").parse(
                         request.getParameter("date")
                 ).getTime());
+
+                if (date.getTime() >= new Date(System.currentTimeMillis()).getTime()) {
+                    response.setStatus(400);
+                    String json = "{\"error\": \"Please select a date in the past starting from today.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
+                    return;
+                }
 
                 String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
                         includeDoctorExams, includeHealthServiceExams, includePrescriptions);

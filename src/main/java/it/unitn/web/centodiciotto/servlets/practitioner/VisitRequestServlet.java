@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 /**
- * VisitRequestsServlet for handling requests to /restricted/general_practitioner/visit_requests.
+ * VisitRequestServlet for handling requests to /restricted/general_practitioner/visit_requests.
  * <p>
  * GET requests pass through.
  * <p>
@@ -37,7 +37,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/general_practitioner/visit_requests")
-public class VisitRequestsServlet extends HttpServlet {
+public class VisitRequestServlet extends HttpServlet {
 
     private VisitDAO visitDAO;
     private PatientDAO patientDAO;

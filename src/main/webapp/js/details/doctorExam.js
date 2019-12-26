@@ -7,7 +7,7 @@ $("document").ready(() => {
         placeholder: "Select a Specialized Doctor",
         allowClear: true,
         closeOnSelect: true,
-        minimumInputSize: 6,
+        minimumInputLength: 6,
         ajax: {
             type: "POST",
             data: function (params) {

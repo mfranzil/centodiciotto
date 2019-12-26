@@ -35,7 +35,7 @@
                 let button = form.find("button.submit");
                 let data = form.serialize();
 
-                button.prop("disabled", true).html("Confirming..");
+                button.prop("disabled", true).html("Confirming...");
 
                 $.ajax({
                     type: "POST",

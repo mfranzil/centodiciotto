@@ -9,10 +9,10 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.ExamSearchResult;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.JSONResults;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -142,7 +142,7 @@ public class PrescriptionServlet extends HttpServlet {
                                 patientListElements.add(new PatientListElement(patient.toString(),
                                         patient.getSSN(),
                                         photoPath,
-                                        new Action("Prescribe Exam or Drug", true),
+                                        new HTMLAction("Prescribe Exam or Drug", true),
                                         patient.getID()));
                             }
                         } else {
@@ -152,7 +152,7 @@ public class PrescriptionServlet extends HttpServlet {
                                 patientListElements.add(new PatientListElement(patient.toString(),
                                         patient.getSSN(),
                                         photoPath,
-                                        new Action("Prescribe Exam or Drug", true),
+                                        new HTMLAction("Prescribe Exam or Drug", true),
                                         patient.getID()));
                             }
                         }
@@ -398,7 +398,7 @@ public class PrescriptionServlet extends HttpServlet {
         private String name;
         private String ssn;
         private String avt;
-        private Action action;
+        private HTMLAction action;
         private String ID;
 
         /**
@@ -410,7 +410,7 @@ public class PrescriptionServlet extends HttpServlet {
          * @param action the action
          * @param ID     the id
          */
-        PatientListElement(String name, String ssn, String avt, Action action, String ID) {
+        PatientListElement(String name, String ssn, String avt, HTMLAction action, String ID) {
             this.name = name;
             this.ssn = ssn;
             this.avt = avt;

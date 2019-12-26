@@ -33,7 +33,7 @@ public class CustomDTFormatterBean implements Serializable {
     /**
      * Gets a date-only representation of the time since epoch.
      * <p>
-     * The Date is formatted as "MMMM dd, YYYY" (example: December 19, 2000)
+     * The Date is formatted as "MMMM dd, yyyy" (example: December 19, 2000)
      *
      * @return the formatted date
      */
@@ -55,7 +55,7 @@ public class CustomDTFormatterBean implements Serializable {
     /**
      * Gets a date and time representation of the time since epoch.
      * <p>
-     * The Date is formatted as "MMMM dd, YYYY HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
+     * The Date is formatted as "MMMM dd, yyyy HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
      *
      * @return the formatted date time
      */

@@ -15,11 +15,15 @@ $("document").ready(() => {
 
         let form = $(this);
         let button = form.find("button.submit");
+        let inputProgressiveExamID = button.attr("id");
 
         let data = form.serializeArray();
-        data.push({name: "requestType", value: "requestBook"});
+        data.push({
+            name: "requestType",
+            value: "requestBook"
+        });
 
-        button.prop("disabled", true).html("Confirming..");
+        button.prop("disabled", true).html("Confirming...");
 
         $.ajax({
             type: "POST",
@@ -28,6 +32,8 @@ $("document").ready(() => {
             data: data,
             success: () => {
                 button.html("Confirmed");
+                $(".popup-window").fadeOut();
+                $("#btn-" + inputProgressiveExamID).html("Confirmed").prop("disabled", true);
             }
         });
     });

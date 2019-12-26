@@ -11,8 +11,8 @@ import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.Action;
-import it.unitn.web.centodiciotto.utils.entities.jsonelements.HTMLElement;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
+import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -110,9 +110,9 @@ public class ExamHistoryServlet extends HttpServlet {
                         for (Exam exam : examList) {
                             Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());
                             String photoPath = photoService.getLastPhoto(patient.getID());
-                            Action action = ((exam.getResult() == null)
-                                    ? new Action("Insert result", true)
-                                    : new Action("Edit result", true));
+                            HTMLAction action = ((exam.getResult() == null)
+                                    ? new HTMLAction("Insert result", true)
+                                    : new HTMLAction("Edit result", true));
                             examListElements.add(new ExamListElement(
                                     exam.getID().toString(),
                                     patient.toString(),
@@ -252,10 +252,10 @@ public class ExamHistoryServlet extends HttpServlet {
         private String exam;
         private String avt;
         private String date;
-        private Action action;
+        private HTMLAction action;
         private String ID;
 
-        ExamListElement(String ID, String name, String exam, String avt, String date, Action action) {
+        ExamListElement(String ID, String name, String exam, String avt, String date, HTMLAction action) {
             this.ID = ID;
             this.name = name;
             this.exam = exam;

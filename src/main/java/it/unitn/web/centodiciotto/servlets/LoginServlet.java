@@ -81,7 +81,7 @@ public class LoginServlet extends HttpServlet {
                     User user = cryptoService.authenticate(userID, password, role);
 
                     if (user == null) {
-                        response.setStatus(400);
+                        response.setStatus(422);
                         json = "{\"error\":\"Invalid username or password.\"}";
                         writer.write(json);
                         Logger.getLogger("C18").severe(json);

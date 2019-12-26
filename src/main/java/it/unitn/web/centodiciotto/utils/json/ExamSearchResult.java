@@ -1,4 +1,4 @@
-package it.unitn.web.centodiciotto.utils.entities.jsonelements;
+package it.unitn.web.centodiciotto.utils.json;
 
 import com.google.gson.Gson;
 

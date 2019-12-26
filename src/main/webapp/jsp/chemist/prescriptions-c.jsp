@@ -47,7 +47,7 @@
                     placeholder: "Select a patient",
                     allowClear: true,
                     closeOnSelect: true,
-                    minimumInputSize: 6,
+                    minimumInputLength: 6,
                     ajax: {
                         type: "POST",
                         data: params => ({
@@ -58,7 +58,7 @@
                         dataType: "json",
                     }
                 })
-                .val("")
+                .val(null)
                 .trigger("change")
                 .on("select2:select", e => {
                     $("#main-loading-container").slideDown();
@@ -176,7 +176,7 @@
                 <div class="justify-content-center loading mt-2" id="main-loading-container"
                      style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading.."/>
+                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                 </div>
                 <div id="main-table"></div>
             </div>

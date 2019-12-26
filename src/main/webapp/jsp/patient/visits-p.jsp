@@ -33,7 +33,7 @@
                 let form = $(this);
                 let button = form.find("button");
 
-                button.prop("disabled", true).html("Requesting..");
+                button.prop("disabled", true).html("Requesting...");
 
                 $.ajax({
                     type: "POST",
