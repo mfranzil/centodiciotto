@@ -115,7 +115,7 @@ public class PatientListServlet extends HttpServlet {
                                 patientList = patientDAO.getByPractitioner(user.getID());
                             } else if (user instanceof HealthService) {
                                 patientList = patientDAO.getByProvince
-                                        (((HealthService) user).getOperatingProvince().getAbbreviation());
+                                        (((HealthService) user).getOperatingProvince().getID());
                             } else { // SpecializedDoctor
                                 patientList = patientDAO.getAll();
                             }
@@ -170,12 +170,15 @@ public class PatientListServlet extends HttpServlet {
                         jsonResponse.add(JSONUtils.createTableEntry("Name", patient.getFirstName()));
                         jsonResponse.add(JSONUtils.createTableEntry("Surname", patient.getLastName()));
                         jsonResponse.add(JSONUtils.createTableEntry("SSN", patient.getSSN()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Gender",
+                                patient.getFullGender()));
                         jsonResponse.add(JSONUtils.createTableEntry("Birthdate",
                                 CustomDTFormatter.formatDate(patient.getBirthDate())));
-                        jsonResponse.add(JSONUtils.createTableEntry("Gender",
-                                patient.getGender().toString()));
-                        jsonResponse.add(JSONUtils.createTableEntry("Province",
-                                patient.getLivingProvince().getName()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Birthplace", patient.getBirthPlace()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Living city",
+                                patient.getLivingPlace()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Living province",
+                                patient.getLivingProvince().toString()));
                         jsonResponse.add(JSONUtils.createTableEntry("Practitioner", practitioner.toString()));
 
                         // Last visit
@@ -256,7 +259,7 @@ public class PatientListServlet extends HttpServlet {
                             allPatients = patientDAO.getByPractitioner(user.getID());
                         } else if (user instanceof HealthService) {
                             allPatients = patientDAO.getByProvince(
-                                    ((HealthService) user).getOperatingProvince().getAbbreviation());
+                                    ((HealthService) user).getOperatingProvince().getID());
                         } else { // SpecializedDoctor
                             allPatients = patientDAO.getAll();
                         }

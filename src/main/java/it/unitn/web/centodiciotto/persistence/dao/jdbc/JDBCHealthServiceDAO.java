@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -36,13 +35,20 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     final private String GET_BY_PROVINCE = "SELECT *  FROM health_service WHERE operating_province = ?;";
 
     /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private ProvinceDAO provinceDAO;
+
+    /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
      * @param con the {@link Connection} to the database
      * @throws DAOFactoryException in case of DAO instantiation or connection failures
      */
     public JDBCHealthServiceDAO(Connection con) throws DAOFactoryException {
+
         super(con);
+        provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
     }
 
     @Override
@@ -50,10 +56,10 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, healthService.getID());
-            stm.setString(2, healthService.getOperatingProvince().getAbbreviation());
+            stm.setString(2, healthService.getOperatingProvince().getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "HealthServiceDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("HealthServiceDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Health Service: ", e);
         }
@@ -63,11 +69,11 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
     public void update(HealthService healthService) throws DAOException {
         try {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
-            stm.setString(1, healthService.getOperatingProvince().getAbbreviation());
+            stm.setString(1, healthService.getOperatingProvince().getID());
             stm.setString(2, healthService.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "HealthServiceDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("HealthServiceDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating HealthService: ", e);
         }
@@ -79,7 +85,7 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
             stm.setString(1, healthService.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "HealthServiceDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("HealthServiceDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting HealthService: ", e);
         }
@@ -156,15 +162,13 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         try {
             HealthService healthService = new HealthService();
 
-            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
-            Province province = provinceDAO.getByAbbreviation(
-                    rs.getString("operating_province"));
+            Province province = provinceDAO.getByPrimaryKey(rs.getString("operating_province"));
 
             healthService.setID(rs.getString("health_service_id"));
             healthService.setOperatingProvince(province);
 
             return healthService;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to HealthService: ", e);
         }
     }

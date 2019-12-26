@@ -177,7 +177,7 @@ public class PDFService {
                     PDType1Font.HELVETICA, 28, 30, 698, Color.BLACK);
             // Region
             PDStreamUtils.write(
-                    contents, pat.getLivingPlace() + " (" + pat.getLivingProvince().getAbbreviation() + "), " +
+                    contents, pat.getLivingPlace() + " (" + pat.getLivingProvince().getID() + "), " +
                             pat.getLivingProvince().getRegion(),
                     PDType1Font.HELVETICA, 28, 616, 698, Color.BLACK);
             // SSN
@@ -186,7 +186,7 @@ public class PDFService {
                     PDType1Font.HELVETICA, 21, 536, 610, Color.BLACK, 6);
             // Province
             this.spacedWrite(
-                    contents, pat.getLivingProvince().getAbbreviation(),
+                    contents, pat.getLivingProvince().getID(),
                     PDType1Font.HELVETICA, 21, 562, 560, Color.BLACK, 6);
             this.spacedWrite(
                     contents, CustomDTFormatter.formatCustom(dp.getDatePrescribed(), "ddMMyyHHmm"),

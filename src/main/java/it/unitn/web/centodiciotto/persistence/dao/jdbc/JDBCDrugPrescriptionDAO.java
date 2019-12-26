@@ -11,7 +11,6 @@ import it.unitn.web.centodiciotto.persistence.entities.DrugType;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +44,11 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             "WHERE date_sold::date = ?::date";
 
     /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private DrugTypeDAO drugTypeDAO;
+
+    /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
      * @param con the {@link Connection} to the database
@@ -52,6 +56,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
      */
     public JDBCDrugPrescriptionDAO(Connection con) throws DAOFactoryException {
         super(con);
+        drugTypeDAO = DAOFACTORY.getDAO(DrugTypeDAO.class);
     }
 
     @Override
@@ -219,7 +224,6 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
         try {
             DrugPrescription drugPrescription = new DrugPrescription();
 
-            DrugTypeDAO drugTypeDAO = DAOFACTORY.getDAO(DrugTypeDAO.class);
             DrugType drugType = drugTypeDAO.getByPrimaryKey(rs.getInt("drug_type"));
 
             drugPrescription.setID(rs.getInt("drug_prescription_id"));
@@ -234,7 +238,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             drugPrescription.setDescription(rs.getString("description"));
 
             return drugPrescription;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to DrugPrescription: ", e);
         }
     }

@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -36,6 +35,11 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     final private String GET_BY_PROVINCE = "SELECT * FROM chemist WHERE chemist_province = ?;";
 
     /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private ProvinceDAO provinceDAO;
+
+    /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
      * @param con the {@link Connection} to the database
@@ -43,6 +47,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
      */
     public JDBCChemistDAO(Connection con) throws DAOFactoryException {
         super(con);
+        provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
     }
 
     @Override
@@ -51,11 +56,11 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, chemist.getID());
             stm.setString(2, chemist.getName());
-            stm.setString(3, chemist.getProvince().getAbbreviation());
+            stm.setString(3, chemist.getProvince().getID());
             stm.setString(4, chemist.getWorkingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "ChemistDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("ChemistDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Chemist: ", e);
         }
@@ -66,12 +71,12 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, chemist.getName());
-            stm.setString(2, chemist.getProvince().getAbbreviation());
+            stm.setString(2, chemist.getProvince().getID());
             stm.setString(3, chemist.getWorkingPlace());
             stm.setString(4, chemist.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "ChemistDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("ChemistDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Chemist: ", e);
         }
@@ -83,7 +88,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             stm.setString(1, chemist.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "ChemistDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("ChemistDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Chemist: ", e);
         }
@@ -162,8 +167,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
         try {
             Chemist chemist = new Chemist();
 
-            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
-            Province province = provinceDAO.getByAbbreviation(rs.getString("chemist_province"));
+            Province province = provinceDAO.getByPrimaryKey(rs.getString("chemist_province"));
 
             chemist.setID(rs.getString("chemist_id"));
             chemist.setName(rs.getString("name"));
@@ -171,7 +175,7 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
             chemist.setWorkingPlace(rs.getString("working_place"));
 
             return chemist;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to Chemist: ", e);
         }
     }

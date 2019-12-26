@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -41,6 +40,11 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             "ORDER BY start_date DESC;";
 
     /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private ExamTypeDAO examTypeDAO;
+
+    /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
      * @param con the {@link Connection} to the database
@@ -48,6 +52,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
      */
     public JDBCRecallDAO(Connection con) throws DAOFactoryException {
         super(con);
+        examTypeDAO = DAOFACTORY.getDAO(ExamTypeDAO.class);
     }
 
     @Override
@@ -66,7 +71,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
                 Integer recallID = rs.getInt("recall_id");
 
                 recall.setID(recallID);
-                Logger.getLogger("C18").info( "RecallDAO::insert row affected returned " + recallID);
+                Logger.getLogger("C18").info("RecallDAO::insert row affected returned " + recallID);
             } else {
                 throw new DAOException("Error inserting Recall, query returnet an empty ResultSet.");
             }
@@ -87,7 +92,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             stm.setInt(6, recall.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "RecallDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("RecallDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Recall: ", e);
         }
@@ -99,7 +104,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             stm.setInt(1, recall.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "RecallDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("RecallDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Recall: ", e);
         }
@@ -195,7 +200,6 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
         try {
             Recall recall = new Recall();
 
-            ExamTypeDAO examTypeDAO = DAOFACTORY.getDAO(ExamTypeDAO.class);
             ExamType examType = examTypeDAO.getByPrimaryKey(rs.getInt("exam_type"));
 
             recall.setID(rs.getInt("recall_id"));
@@ -206,7 +210,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
             recall.setHealthServiceID(rs.getString("health_service_id"));
 
             return recall;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to Recall: ", e);
         }
     }

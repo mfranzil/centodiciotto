@@ -164,7 +164,7 @@ public class RecallServlet extends HttpServlet {
                             emailService.sendEmail(recipient, message, subject);
 
                             List<Patient> allPatients = patientDAO.getByProvince(
-                                    ((HealthService) user).getOperatingProvince().getAbbreviation());
+                                    ((HealthService) user).getOperatingProvince().getID());
 
                             for (Patient patient : allPatients) {
                                 if (isWithinAgeRange(patient.getBirthDate(), minAge, maxAge)) {

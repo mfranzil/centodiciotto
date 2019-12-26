@@ -229,7 +229,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         Province province = ((Chemist) user).getProvince();
 
                         List<PatientSearchResult> results = new ArrayList<>();
-                        List<Patient> allPatients = patientDAO.getByProvince(province.getAbbreviation());
+                        List<Patient> allPatients = patientDAO.getByProvince(province.getID());
                         List<Patient> selectedPatients = new ArrayList<>();
 
                         if (userInput != null) {
@@ -306,7 +306,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         jsonResponse.add(JSONUtils.createTableEntry("Patient name", patient.toString()));
                         jsonResponse.add(JSONUtils.createTableEntry("Patient SSN", patient.getSSN()));
                         jsonResponse.add(JSONUtils.createTableEntry("Practitioner name", practitioner.toString()));
-                        jsonResponse.add(JSONUtils.createTableEntry("Province", patient.getLivingProvince().getName()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Province", patient.getLivingProvince().toString()));
                         jsonResponse.add(JSONUtils.createTableEntry("Prescription ID", prescription.getID().toString()));
                         jsonResponse.add(JSONUtils.createTableEntry("Prescription drug", prescription.getType().getDescription()));
                         jsonResponse.add(JSONUtils.createTableEntry("Description",

@@ -65,6 +65,11 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             "AND health_service_id = ? AND patient_id = ? AND recall IS NOT null ORDER BY date desc;";
 
     /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private ExamTypeDAO examTypeDAO;
+
+    /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
      *
      * @param con the {@link Connection} to the database
@@ -72,6 +77,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
      */
     public JDBCExamDAO(Connection con) throws DAOFactoryException {
         super(con);
+        examTypeDAO = DAOFACTORY.getDAO(ExamTypeDAO.class);
     }
 
     @Override
@@ -97,7 +103,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             }
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "ExamDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("ExamDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Exam: ", e);
         }
@@ -128,7 +134,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(13, exam.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "ExamDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("ExamDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating Exam: ", e);
         }
@@ -140,7 +146,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             stm.setInt(1, exam.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "ExamDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("ExamDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting Exam: ", e);
         }
@@ -471,7 +477,6 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         try {
             Exam exam = new Exam();
 
-            ExamTypeDAO examTypeDAO = DAOFACTORY.getDAO(ExamTypeDAO.class);
             ExamType examType = examTypeDAO.getByPrimaryKey(rs.getInt("exam_type"));
 
             exam.setID(rs.getInt("exam_id"));
@@ -489,7 +494,7 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
             exam.setRecall(rs.getInt("recall"));
 
             return exam;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to Exam: ", e);
         }
     }

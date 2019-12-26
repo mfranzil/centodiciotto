@@ -204,7 +204,7 @@ public class ExamBookingServlet extends HttpServlet {
                                         specializedDoctor.toString(), false));
                             }
                             HealthService livingHealthService = healthServiceDAO.getByProvince(((Patient) user)
-                                    .getLivingProvince().getAbbreviation());
+                                    .getLivingProvince().getID());
                             results.add(new DoctorSearchResult(livingHealthService.getID(),
                                     livingHealthService.toString(), true));
 

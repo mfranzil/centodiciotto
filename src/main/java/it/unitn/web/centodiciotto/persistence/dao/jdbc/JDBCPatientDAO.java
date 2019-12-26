@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,9 +21,6 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientDAO {
-
-    final private HashMap<String, Province> cache = new HashMap<>();
-    private ProvinceDAO provinceDAO;
 
     final private String INSERT = "INSERT INTO patient" +
             "(patient_id, first_name, last_name, birth_date, birth_place, " +
@@ -35,15 +31,18 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             " ssn, gender, practitioner_id, living_province, living_place)" +
             " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
-
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
     final private String GET_ALL = "SELECT * FROM patient ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
-
     final private String GET_BY_PRACTITIONER = "SELECT * FROM patient " +
             "WHERE practitioner_id = ? ORDER BY last_name ASC;";
     final private String GET_BY_PROVINCE = "SELECT * FROM patient " +
             "WHERE living_province = ? ORDER BY last_name ASC;";
+
+    /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private ProvinceDAO provinceDAO;
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
@@ -68,7 +67,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(6, patient.getSSN());
             stm.setString(7, String.valueOf(patient.getGender()));
             stm.setString(8, patient.getPractitionerID());
-            stm.setString(9, patient.getLivingProvince().getAbbreviation());
+            stm.setString(9, patient.getLivingProvince().getID());
             stm.setString(10, patient.getLivingPlace());
 
             int row = stm.executeUpdate();
@@ -89,7 +88,7 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             stm.setString(5, patient.getSSN());
             stm.setString(6, String.valueOf(patient.getGender()));
             stm.setString(7, patient.getPractitionerID());
-            stm.setString(8, patient.getLivingProvince().getAbbreviation());
+            stm.setString(8, patient.getLivingProvince().getID());
             stm.setString(9, patient.getLivingPlace());
             stm.setString(10, patient.getID());
 
@@ -197,15 +196,10 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     protected Patient mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Patient patient = new Patient();
-            Province province;
 
             String provinceAbbreviation = rs.getString("living_province");
-            if (cache.containsKey(provinceAbbreviation)) {
-                province = cache.get(provinceAbbreviation);
-            } else {
-                province = provinceDAO.getByAbbreviation(provinceAbbreviation);
-                cache.put(provinceAbbreviation, province);
-            }
+            Province province = provinceDAO.getByPrimaryKey(provinceAbbreviation);
+            patient.setLivingProvince(province);
 
             patient.setID(rs.getString("patient_id"));
             patient.setFirstName(rs.getString("first_name"));
@@ -215,7 +209,6 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             patient.setSSN(rs.getString("ssn"));
             patient.setGender(rs.getString("gender").charAt(0));
             patient.setPractitionerID(rs.getString("practitioner_id"));
-            patient.setLivingProvince(province);
             patient.setLivingPlace(rs.getString("living_place"));
 
             return patient;

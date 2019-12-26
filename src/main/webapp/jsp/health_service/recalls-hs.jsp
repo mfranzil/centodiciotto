@@ -75,8 +75,7 @@
                 let maxAge = parseInt($("#max-age").val());
                 let minAge = parseInt($("#min.age").val());
 
-                if ((typeof maxAge !== "number") || (typeof minAge !== "number") ||
-                    (minAge < 0) || (maxAge > 130) || (minAge >= maxAge)) {
+                if (typeof maxAge !== "number" || typeof minAge !== "number" || minAge < 0 || maxAge > 130 || minAge >= maxAge) {
                     $("#max-age,#min-age").css("background", "rgba(255, 0, 0, 0.2)").css("outline", "none");
 
                     setTimeout(() => {

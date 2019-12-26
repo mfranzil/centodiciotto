@@ -116,6 +116,10 @@ public class Patient extends User {
         return gender;
     }
 
+    public String getFullGender() {
+        return gender == 'F' ? "Female" : gender == 'M' ? "Male" : "Not specified";
+    }
+
     /**
      * Sets the gender.
      *

@@ -288,7 +288,7 @@ public class PatientDAOBean implements Serializable {
 
         try {
             GeneralPractitioner currentPractitioner = getPractitioner();
-            practitioners = practitionerDAO.getByProvince(getPatient().getLivingProvince().getAbbreviation());
+            practitioners = practitionerDAO.getByProvince(getPatient().getLivingProvince().getID());
 
             practitioners.stream().filter(practitioner -> !practitioner.getID().equals(currentPractitioner.getID()))
                     .forEach(chosenPractitioners::add);

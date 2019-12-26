@@ -4,26 +4,25 @@ package it.unitn.web.centodiciotto.persistence.entities;
  * Province entity for modelling real-world administrative divisions.
  */
 public class Province {
-    private Integer ID;
+    private String ID;
     private String name;
-    private String abbreviation;
     private String region;
 
     /**
-     * Gets the ID.
+     * Gets the ID of the Province, represented as a captial two-letter abbreviation (AA to ZZ).
      *
      * @return the ID
      */
-    public Integer getID() {
+    public String getID() {
         return ID;
     }
 
     /**
-     * Sets the ID.
+     * Sets the abbreviation of the Province. The abbreviation MUST be a capital two-letter abbreviation (AA to ZZ).
      *
      * @param ID the ID
      */
-    public void setID(Integer ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
@@ -46,24 +45,6 @@ public class Province {
     }
 
     /**
-     * Gets the abbreviation.
-     *
-     * @return the abbreviation
-     */
-    public String getAbbreviation() {
-        return abbreviation;
-    }
-
-    /**
-     * Sets the abbreviation.
-     *
-     * @param abbreviation the abbreviation
-     */
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
-    }
-
-    /**
      * Gets the region.
      *
      * @return the region
@@ -83,6 +64,6 @@ public class Province {
 
     @Override
     public String toString() {
-        return name + " (" + abbreviation + ")";
+        return name + " (" + ID + ")";
     }
 }

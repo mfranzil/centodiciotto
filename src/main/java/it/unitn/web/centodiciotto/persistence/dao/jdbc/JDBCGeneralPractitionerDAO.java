@@ -14,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -30,13 +29,16 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             "(first_name, last_name, working_province, working_place) =" +
             " (?, ?, ?, ?) WHERE practitioner_id = ?;";
     final private String DELETE = "DELETE FROM general_practitioner WHERE practitioner_id = ?;";
-
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM general_practitioner WHERE practitioner_id = ?;";
     final private String GET_ALL = "SELECT * FROM general_practitioner ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM general_practitioner;";
-
     final private String GET_BY_PROVINCE = "SELECT * FROM general_practitioner " +
             "WHERE working_province = ? ORDER BY last_name ASC;";
+
+    /**
+     * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
+     */
+    private ProvinceDAO provinceDAO;
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
@@ -46,6 +48,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
      */
     public JDBCGeneralPractitionerDAO(Connection con) throws DAOFactoryException {
         super(con);
+        provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
     }
 
     @Override
@@ -55,11 +58,11 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(1, generalPractitioner.getID());
             stm.setString(2, generalPractitioner.getFirstName());
             stm.setString(3, generalPractitioner.getLastName());
-            stm.setString(4, generalPractitioner.getWorkingProvince().getAbbreviation());
+            stm.setString(4, generalPractitioner.getWorkingProvince().getID());
             stm.setString(5, generalPractitioner.getWorkingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "GeneralPractitionerDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("GeneralPractitionerDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting GeneralPractitioner: ", e);
         }
@@ -71,12 +74,12 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setString(1, generalPractitioner.getFirstName());
             stm.setString(2, generalPractitioner.getLastName());
-            stm.setString(3, generalPractitioner.getWorkingProvince().getAbbreviation());
+            stm.setString(3, generalPractitioner.getWorkingProvince().getID());
             stm.setString(4, generalPractitioner.getWorkingPlace());
             stm.setString(5, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "GeneralPractitionerDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("GeneralPractitionerDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating GeneralPractitioner: ", e);
         }
@@ -88,7 +91,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             stm.setString(1, generalPractitioner.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "GeneralPractitionerDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("GeneralPractitionerDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting GeneralPractitioner: ", e);
         }
@@ -167,9 +170,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
         try {
             GeneralPractitioner generalPractitioner = new GeneralPractitioner();
 
-            ProvinceDAO provinceDAO = DAOFACTORY.getDAO(ProvinceDAO.class);
-            Province province = provinceDAO.getByAbbreviation(
-                    rs.getString("working_province"));
+            Province province = provinceDAO.getByPrimaryKey(rs.getString("working_province"));
 
             generalPractitioner.setID(rs.getString("practitioner_id"));
             generalPractitioner.setFirstName(rs.getString("first_name"));
@@ -178,7 +179,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
             generalPractitioner.setWorkingPlace(rs.getString("working_place"));
 
             return generalPractitioner;
-        } catch (SQLException | DAOFactoryException e) {
+        } catch (SQLException e) {
             throw new DAOException("Error mapping row to GeneralPractitioner: ", e);
         }
     }
