@@ -177,7 +177,8 @@ public class PDFService {
                     PDType1Font.HELVETICA, 28, 30, 698, Color.BLACK);
             // Region
             PDStreamUtils.write(
-                    contents, pat.getLivingProvince().getRegion(),
+                    contents, pat.getLivingPlace() + " (" + pat.getLivingProvince().getAbbreviation() + "), " +
+                            pat.getLivingProvince().getRegion(),
                     PDType1Font.HELVETICA, 28, 616, 698, Color.BLACK);
             // SSN
             this.spacedWrite(
@@ -187,9 +188,8 @@ public class PDFService {
             this.spacedWrite(
                     contents, pat.getLivingProvince().getAbbreviation(),
                     PDType1Font.HELVETICA, 21, 562, 560, Color.BLACK, 6);
-            // Prescription date and time
             this.spacedWrite(
-                    contents, CustomDTFormatter.formatCustom(dp.getDatePrescribed(), "ddMMyyHHMM"),
+                    contents, CustomDTFormatter.formatCustom(dp.getDatePrescribed(), "ddMMyyHHmm"),
                     PDType1Font.HELVETICA, 21, 397, 320, Color.BLACK, 9);
             // Prescription ID
             PDStreamUtils.write(

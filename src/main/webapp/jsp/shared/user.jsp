@@ -174,7 +174,7 @@
                                required type="password">
                         <input type="hidden" name="requestType" value="request">
                     </div>
-                    <button id="password-change-button" class="btn btn-block mt-4 btn-personal" disabled type="submit">
+                    <button id="password-change-button" class="btn btn-block mt-2 btn-personal" disabled type="submit">
                         Change password
                     </button>
                 </form>
@@ -185,20 +185,20 @@
                     <div class="input-group">
                         <form action="${pageContext.request.contextPath}/restricted/user"
                               id="avatar" class="center-100" method="POST" enctype="multipart/form-data">
-                            <div class="custom-file" style="z-index: 0;">
+                            <div class="custom-file" style="z-index: 0; text-align: left">
                                 <input type="file" class="custom-file-input"
                                        name="avatarSelect" id="avatar-select" accept="image/png, image/jpeg">
                                 <label class="custom-file-label" for="avatar-select">Choose file</label>
                                 <input id="extension" type="hidden" name="extension" value="none">
                                 <input type="hidden" name="requestType" value="uploadPhoto">
                             </div>
-                            <button class="btn btn-block mt-4 btn-personal" type="submit">
+                            <button class="btn btn-block mt-2 btn-personal" type="submit">
                                 Upload
                             </button>
                         </form>
                         <form class="center-100"
                               action="${pageContext.request.contextPath}/restricted/patient/photo_gallery">
-                            <button class="btn btn-block mt-4 btn-personal" type="submit">
+                            <button class="btn btn-block mt-2 btn-personal" type="submit">
                                 See gallery
                             </button>
                         </form>

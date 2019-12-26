@@ -39,7 +39,7 @@
                 let form = $(this);
                 let button = form.find("button");
 
-                button.prop("disabled", true).html("Sending..");
+                button.prop("disabled", true).html("Completing...");
 
                 $.ajax({
                     type: "POST",
@@ -48,6 +48,9 @@
                     data: form.serialize(),
                     success: () => {
                         button.html("Completed");
+                    },
+                    error: () => {
+                        button.prop("disabled", false).html("Mark as completed");
                     }
                 });
             });
@@ -107,6 +110,8 @@
 
                 <jsp:useBean id="examDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
+                <jsp:useBean id="currentDate" class="java.util.Date"/>
+
                 <c:forEach items="${chosenDAO.bookedExams}" var="exam">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
@@ -123,7 +128,16 @@
                         <div class="table-cell action">
                             <form class="mark-completed" method="POST">
                                 <input type="hidden" value="${exam.ID}" name="examID">
-                                <button type="submit" class="btn btn-block btn-personal">Mark as completed</button>
+                                <c:if test="${exam.date.time le currentDate.time}">
+                                    <button type="submit" class="btn btn-block btn-personal">
+                                        Mark as completed
+                                    </button>
+                                </c:if>
+                                <c:if test="${exam.date.time gt currentDate.time}">
+                                    <button type="button" class="btn btn-block btn-personal disabled">
+                                        Exam not completed yet
+                                    </button>
+                                </c:if>
                             </form>
                         </div>
                     </div>

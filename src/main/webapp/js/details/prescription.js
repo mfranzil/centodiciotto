@@ -36,11 +36,11 @@ $("document").ready(() => {
         },
     }).val(null);
 
-    $(".exam-form").submit((e) => {
+    $(".exam-form").submit(function (e) {
         e.preventDefault();
 
         let form = $(this);
-        let url = form.attr("action");
+        let url = getContextPath() + "restricted/general_practitioner/prescriptions";
 
         let exam = form.find(".exam-search");
         let label = form.find(".exam-prescribe-label");
@@ -60,11 +60,11 @@ $("document").ready(() => {
         }
     });
 
-    $(".drug-form").submit((e) => {
+    $(".drug-form").submit(function (e) {
         e.preventDefault();
 
         let form = $(this);
-        let url = form.attr("action");
+        let url = getContextPath() + "restricted/general_practitioner/prescriptions";
 
         let drug = form.find(".drug-search");
         let label = form.find(".drug-prescribe-label");

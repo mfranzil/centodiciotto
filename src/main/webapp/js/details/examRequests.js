@@ -10,7 +10,7 @@
 $("document").ready(() => {
     const url = window.location.href;
 
-    $(".set-exam").submit((e) => {
+    $(".set-exam").submit(function (e) {
         e.preventDefault();
 
         let form = $(this);

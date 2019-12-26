@@ -62,6 +62,7 @@
                 e.preventDefault();
 
                 let form = $(this);
+                let inputExamID = form.find("input[name='progressiveExamID']").val();
                 let button = form.find("button.submit");
 
                 let data = form.serializeArray();
@@ -76,6 +77,8 @@
                     data: data,
                     success: () => {
                         button.html("Confirmed");
+                        $(".popup-window").fadeOut();
+                        $("#confirm-e-" + inputExamID).html("Confirmed").prop("disabled", true);
                     }
                 });
             });
@@ -165,7 +168,7 @@
                             <div class="table-cell patient">${patient}</div>
                             <div class="table-cell exam">${exam.type.description}</div>
                             <div class="table-cell action">
-                                <button class="btn btn-block btn-personal popup-opener">
+                                <button class="btn btn-block btn-personal popup-opener" id="confirm-e-${exam.ID}">
                                     Choose date and time
                                 </button>
                                 <div class="popup-window">
@@ -184,6 +187,7 @@
                                             </div>
                                             <input type="hidden" value="${patient.ID}" name="patientID">
                                             <input type="hidden" value="${exam.type.ID}" name="examID">
+                                            <input type="hidden" value="${exam.ID}" name="progressiveExamID">
                                             <button class="btn btn-lg btn-block btn-personal submit" type="submit">
                                                 Confirm the appointment
                                             </button>

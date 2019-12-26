@@ -66,7 +66,6 @@ public class PasswordResetServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             response.sendRedirect(response.encodeRedirectURL(contextPath));
         } else {
@@ -151,7 +150,9 @@ public class PasswordResetServlet extends HttpServlet {
                             prDAO.update(pr);
                         }
 
-                        String url = "http://localhost:8080" + contextPath + "password_reset?token=" + pr.getToken();
+                        String start = request.getScheme() + "://"
+                                + request.getServerName() + ":" + request.getServerPort();
+                        String url = start + contextPath + "password_reset?token=" + pr.getToken();
                         String message =
                                 "Somebody (hopefully you) requested a new password for Centodiciotto for "
                                         + userID + ". No changes have been done to your account, yet.\n\n" +

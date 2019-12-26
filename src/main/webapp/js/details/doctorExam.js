@@ -10,17 +10,19 @@ $("document").ready(() => {
         minimumInputSize: 6,
         ajax: {
             type: "POST",
-            data: (params) => ({
-                term: params.term,
-                examID: this.parent().find("input[name='examID']").val(),
-                requestType: "doctorSearch"
-            }),
+            data: function (params) {
+                return ({
+                    term: params.term,
+                    examID: this.parent().find("input[name='examID']").val(),
+                    requestType: "doctorSearch"
+                });
+            },
             url: getContextPath() + "restricted/patient/exam_booking",
             dataType: "json",
         },
     }).val(null);
 
-    $(".doctor-form").submit((e) => {
+    $(".doctor-form").submit(function (e) {
         e.preventDefault();
 
         let form = $(this);

@@ -31,6 +31,7 @@
                 e.preventDefault();
 
                 let form = $(this);
+                let inputVisitID = form.find("input[name='visitID']").val();
                 let button = form.find("button.submit");
                 let data = form.serialize();
 
@@ -43,6 +44,8 @@
                     data: data,
                     success: () => {
                         button.html("Confirmed");
+                        $(".popup-window").fadeOut();
+                        $("#confirm-v-" + inputVisitID).html("Confirmed").prop("disabled", true);
                     }
                 });
             });
@@ -100,8 +103,8 @@
                              class="it.unitn.web.centodiciotto.beans.entities.PatientDAOBean"/>
                 <jsp:setProperty name="patientDAO" property="init" value=""/>
 
-                <c:forEach items="${practitionerDAO.pendingVisits}" var="exam">
-                    <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
+                <c:forEach items="${practitionerDAO.pendingVisits}" var="visit">
+                    <jsp:setProperty name="patientDAO" property="patientID" value="${visit.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">
                         <div class="table-cell avt">
@@ -111,7 +114,7 @@
                         <div class="table-cell patient">${patient}</div>
                         <div class="table-cell ssn">${patient.SSN}</div>
                         <div class="table-cell action">
-                            <button class="btn btn-block btn-personal popup-opener">
+                            <button class="btn btn-block btn-personal popup-opener" id="confirm-v-${visit.ID}">
                                 Choose date and time
                             </button>
                             <div class="popup-window">
@@ -129,6 +132,7 @@
                                             </label>
                                         </div>
                                         <input type="hidden" value="${patient.ID}" name="patientID">
+                                        <input type="hidden" value="${visit.ID}" name="visitID">
                                         <button class="btn btn-lg btn-block btn-personal submit" type="submit">
                                             Confirm the appointment
                                         </button>

@@ -34,7 +34,7 @@
                 let form = $(this);
                 let button = form.find("button");
 
-                button.prop("disabled", true).html("Sending..");
+                button.prop("disabled", true).html("Completing...");
 
                 $.ajax({
                     type: "POST",
@@ -43,6 +43,9 @@
                     data: form.serialize(),
                     success: () => {
                         button.html("Completed");
+                    },
+                    error: () => {
+                        button.prop("disabled", false).html("Mark as completed");
                     }
                 });
             });
@@ -82,11 +85,13 @@
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${practitionerID.bookedVisits}" var="exam">
-                    <jsp:setProperty name="patientDAO" property="patientID" value="${exam.patientID}"/>
+                <jsp:useBean id="currentDate" class="java.util.Date"/>
+
+                <c:forEach items="${practitionerID.bookedVisits}" var="visit">
+                    <jsp:setProperty name="patientDAO" property="patientID" value="${visit.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
 
-                    <jsp:setProperty name="visitDate" property="date" value="${exam.date.time}"/>
+                    <jsp:setProperty name="visitDate" property="date" value="${visit.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell avt">
                             <img class="avatar-small" src="${pageContext.request.contextPath}/${patientDAO.photoPath}"
@@ -97,8 +102,15 @@
                         <div class="table-cell date">${visitDate.formattedDateTime}</div>
                         <div class="table-cell action">
                             <form class="mark-completed" method="POST">
-                                <input type="hidden" value="${exam.ID}" name="visitID">
-                                <button type="submit" class="btn btn-block btn-personal">Mark as completed</button>
+                                <input type="hidden" value="${visit.ID}" name="visitID">
+                                <c:if test="${visit.date.time le currentDate.time}">
+                                    <button type="submit" class="btn btn-block btn-personal">Mark as completed</button>
+                                </c:if>
+                                <c:if test="${visit.date.time gt currentDate.time}">
+                                    <button type="button"
+                                            class="btn btn-block btn-personal disabled">Visit not completed yet
+                                    </button>
+                                </c:if>
                             </form>
                         </div>
                     </div>

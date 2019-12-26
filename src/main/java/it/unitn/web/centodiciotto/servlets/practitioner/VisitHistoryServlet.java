@@ -149,7 +149,7 @@ public class VisitHistoryServlet extends HttpServlet {
                         jsonResponse.add(new HTMLElement()
                                 .setElementType("form")
                                 .setElementClass("submit-report")
-                                .setElementFormAction(contextPath + "/restricted/general_practitioner/visit_history")
+                                .setElementFormAction(contextPath + "restricted/general_practitioner/visit_history")
                                 .setElementFormMethod("POST"));
 
                         List<HTMLElement> form = new ArrayList<>();
@@ -191,7 +191,7 @@ public class VisitHistoryServlet extends HttpServlet {
                     String reportText = request.getParameter("reportText");
 
                     try {
-                        visitID = Integer.valueOf(request.getParameter("examID"));
+                        visitID = Integer.valueOf(request.getParameter("visitID"));
                     } catch (NumberFormatException | NullPointerException e) {
                         response.setStatus(400);
                         String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";

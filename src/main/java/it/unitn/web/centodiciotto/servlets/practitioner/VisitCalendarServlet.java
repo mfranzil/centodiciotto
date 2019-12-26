@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -87,6 +88,15 @@ public class VisitCalendarServlet extends HttpServlet {
 
             try {
                 Visit visit = visitDAO.getByPrimaryKey(visitID);
+
+                if (visit.getDate().getTime() >= new Date(System.currentTimeMillis()).getTime()) {
+                    response.setStatus(400);
+                    String json = "{\"error\": \"Cannot set a visit happening in the future as completed.\"}";
+                    writer.write(json);
+                    Logger.getLogger("C18").severe(json);
+                    return;
+                }
+
                 visit.setReportAvailable(true);
                 visitDAO.update(visit);
 

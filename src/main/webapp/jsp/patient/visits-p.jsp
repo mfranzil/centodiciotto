@@ -103,34 +103,34 @@
 
                 <jsp:useBean id="visitDate" class="it.unitn.web.centodiciotto.beans.CustomDTFormatterBean"/>
 
-                <c:forEach items="${patientDAO.doneVisits}" var="exam">
-                    <c:if test="${exam.practitionerID ne practitioner.ID}">
+                <c:forEach items="${patientDAO.doneVisits}" var="visit">
+                    <c:if test="${visit.practitionerID ne practitioner.ID}">
                         <jsp:setProperty name="practitionerDAO" property="practitionerID"
-                                         value="${exam.practitionerID}"/>
+                                         value="${visit.practitionerID}"/>
                         <c:set var="visitPractitioner" value="${practitionerDAO.practitioner}"/>
                     </c:if>
 
-                    <jsp:setProperty name="visitDate" property="date" value="${exam.date.time}"/>
+                    <jsp:setProperty name="visitDate" property="date" value="${visit.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell practitioner">
-                            <c:if test="${exam.practitionerID ne practitioner.ID}">
+                            <c:if test="${visit.practitionerID ne practitioner.ID}">
                                 ${visitPractitioner}
                             </c:if>
-                            <c:if test="${exam.practitionerID eq practitioner.ID}">
+                            <c:if test="${visit.practitionerID eq practitioner.ID}">
                                 ${practitioner}
                             </c:if>
                         </div>
                         <div class="table-cell date">${visitDate.formattedDateTime}</div>
-                        <div class="table-cell report-state">${exam.reportAvailable ? "Available" : "Not available"}</div>
+                        <div class="table-cell report-state">${visit.reportAvailable ? "Available" : "Not available"}</div>
                         <div class="table-cell action">
                             <button type="button" class="btn btn-block btn-personal popup-opener"
-                                ${exam.reportAvailable ? "" : "disabled"} >See Report
+                                ${visit.reportAvailable ? "" : "disabled"} >See Report
                             </button>
                             <div class="popup-window">
                                 <div class="popup animate-in">
                                     <div>
                                         <h5>Visit report:</h5>
-                                        <p>${exam.report}</p>
+                                        <p>${visit.report}</p>
                                     </div>
                                     <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                                 </div>

@@ -178,9 +178,9 @@ public class PrescriptionServlet extends HttpServlet {
 
                     List<Object> jsonResponse = new ArrayList<>();
 
-                    jsonResponse.add(new HTMLElement().setElementType("form").
-                            setElementClass("exam-form")
-                            .setElementFormAction(contextPath + "/restricted/general_practitioner/prescriptions")
+                    jsonResponse.add(new HTMLElement().setElementType("form")
+                            .setElementClass("exam-form")
+                            .setElementFormAction(contextPath + "restricted/general_practitioner/prescriptions")
                             .setElementFormMethod("POST"));
 
                     List<HTMLElement> examForm = new ArrayList<>();
@@ -203,7 +203,7 @@ public class PrescriptionServlet extends HttpServlet {
 
                     jsonResponse.add(new HTMLElement().setElementType("form")
                             .setElementClass("drug-form")
-                            .setElementFormAction(contextPath + "/restricted/general_practitioner/prescriptions")
+                            .setElementFormAction(contextPath + "restricted/general_practitioner/prescriptions")
                             .setElementFormMethod("POST"));
 
                     List<HTMLElement> drugForm = new ArrayList<>();
@@ -228,7 +228,7 @@ public class PrescriptionServlet extends HttpServlet {
 
                     jsonResponse.add(new HTMLElement().setElementType("script")
                             .setElementScriptType("text/javascript")
-                            .setElementScriptSrc(contextPath + "/js/details/prescription.js"));
+                            .setElementScriptSrc(contextPath + "js/details/prescription.js"));
 
                     Gson gson = new Gson();
                     writer.write(gson.toJson(jsonResponse));
@@ -255,28 +255,28 @@ public class PrescriptionServlet extends HttpServlet {
                     break;
                 }
                 case "examAdd": {
+                    Integer examID;
+                    String patientID = request.getParameter("patientID");
+
                     try {
-                        Integer examID;
-                        String patientID = request.getParameter("patientID");
+                        examID = Integer.valueOf(request.getParameter("examID"));
+                    } catch (NumberFormatException | NullPointerException e) {
+                        response.setStatus(400);
+                        String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
+                        return;
+                    }
 
-                        try {
-                            examID = Integer.valueOf(request.getParameter("examID"));
-                        } catch (NumberFormatException | NullPointerException e) {
-                            response.setStatus(400);
-                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
-                            writer.write(json);
-                            Logger.getLogger("C18").severe(json);
-                            return;
-                        }
+                    if (patientID == null) {
+                        response.setStatus(400);
+                        String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
+                        return;
+                    }
 
-                        if (patientID == null) {
-                            response.setStatus(400);
-                            String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
-                            writer.write(json);
-                            Logger.getLogger("C18").severe(json);
-                            return;
-                        }
-
+                    try {
                         ExamType examType = examTypeDAO.getByPrimaryKey(examID);
 
                         Exam newExam = new Exam();

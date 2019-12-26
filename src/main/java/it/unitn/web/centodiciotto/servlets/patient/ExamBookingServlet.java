@@ -304,7 +304,7 @@ public class ExamBookingServlet extends HttpServlet {
 
                     List<Object> jsonResponse = new ArrayList<>();
 
-                    jsonResponse.add(new HTMLElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "/restricted/patient/exam_booking").setElementFormMethod("POST"));
+                    jsonResponse.add(new HTMLElement().setElementType("form").setElementClass("doctor-form").setElementFormAction(contextPath + "restricted/patient/exam_booking").setElementFormMethod("POST"));
 
                     List<HTMLElement> examForm = new ArrayList<>();
                     examForm.add(new HTMLElement().setElementType("input").setElementInputType("hidden").setElementInputName("examID").setElementInputValue(examID));
@@ -316,7 +316,7 @@ public class ExamBookingServlet extends HttpServlet {
 
                     jsonResponse.add(examForm);
 
-                    jsonResponse.add(new HTMLElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "/js/details/doctorExam.js"));
+                    jsonResponse.add(new HTMLElement().setElementType("script").setElementScriptType("text/javascript").setElementScriptSrc(contextPath + "js/details/doctorExam.js"));
 
                     Gson gson = new Gson();
                     writer.write(gson.toJson(jsonResponse));

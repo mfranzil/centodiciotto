@@ -268,7 +268,7 @@ public class ExamRequestsServlet extends HttpServlet {
 
                     jsonResponse.add(new HTMLElement().setElementType("script")
                             .setElementScriptType("text/javascript")
-                            .setElementScriptSrc(contextPath + "/js/details/examRequests.js"));
+                            .setElementScriptSrc(contextPath + "js/details/examRequests.js"));
 
                     Gson gson = new Gson();
                     writer.write(gson.toJson(jsonResponse));
