@@ -90,7 +90,7 @@ public class ExcelService {
     }
 
     /**
-     * Creates a new XLS report for an Health Service.
+     * Creates a new XLS report for an Health Service and returns the location on the web server.
      *
      * @param healthServiceID           the {@code healthServiceID} requesting the report
      * @param date                      the date of the report
@@ -179,12 +179,13 @@ public class ExcelService {
                 }
             }
 
-            String path = sc.getRealPath("/") + File.separator +  sc.getInitParameter("excel-folder") + File.separator;
+            String filePath = sc.getRealPath("/") + File.separator
+                    + sc.getInitParameter("excel-folder") + File.separator;
             String fileName = new SimpleDateFormat("yyyyMMdd").format(date) + "_"
                     + healthService.getOperatingProvince().getID() + ".xlsx";
 
-            try (InputStream is = new FileInputStream(path + "report.xlsx")) {
-                try (OutputStream os = new FileOutputStream(path + fileName)) {
+            try (InputStream is = new FileInputStream(filePath + "report.xlsx")) {
+                try (OutputStream os = new FileOutputStream(filePath + fileName)) {
                     Context context = new Context();
                     context.putVar("report", report);
                     context.putVar("entries", entries);
@@ -192,7 +193,7 @@ public class ExcelService {
                 }
             }
 
-            return sc.getContextPath() + File.separator + sc.getInitParameter("excel-folder") + File.separator + fileName;
+            return sc.getInitParameter("excel-folder") + File.separator + fileName;
         } catch (DAOException e) {
             throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
         } catch (IOException e) {

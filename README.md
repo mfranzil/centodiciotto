@@ -154,6 +154,7 @@ The following is a list of requirements for the project.
 
 ### Maven Dependencies
 
+- Apache Commons Text `org.apache.commons:commons-text:1.8`
 - JavaX Mail `com.sun.mail:javax.mail:1.6.2`
 - JSTL `jstl:jstl:1.2`
 - JavaEE Web Api `javax:javaee-web-api:7.0`

@@ -112,15 +112,13 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
                 Patient patient = patientDAO.getByPrimaryKey(patientID);
 
-                String fileName = getServletContext().getRealPath("/") +
-                        getServletContext().getInitParameter("pdf-folder")
-                        + File.separator + prescription.getDatePrescribed().getTime()
-                        + "-" + prescription.getID() + ".pdf";
+                String filePath = getServletContext().getRealPath("/") +
+                        getServletContext().getInitParameter("pdf-folder");
+                String fileName = prescription.getDatePrescribed().getTime() + "-" + prescription.getID() + ".pdf";
 
-                System.out.println(fileName);
-
-                if (new File(fileName).exists()) {
-                    PDDocument.load(new File(fileName)).save(response.getOutputStream());
+                if (new File(filePath + File.separator + fileName).exists()) {
+                    PDDocument.load(new File(filePath + File.separator + fileName)).save(response.getOutputStream());
+                    Logger.getLogger("C18").info("Supplying already-generated PDF prescription " + filePath + File.separator + fileName);
                     return;
                 }
 
@@ -132,9 +130,11 @@ public class DrugPrescriptionServlet extends HttpServlet {
                         prescription, patient, practitioner, qrCodeURL);
 
                 response.setContentType("application/pdf");
-                response.setHeader("Content-disposition", "inline; filename='prescription.pdf'");
+                response.setHeader("Content-disposition", "inline; filename='" + fileName + "'");
 
-                prescriptionDoc.save(fileName);
+                Logger.getLogger("C18").info("Supplying new PDF prescription " + filePath + File.separator + fileName);
+
+                prescriptionDoc.save(filePath + File.separator + fileName);
                 prescriptionDoc.save(response.getOutputStream());
             } catch (DAOException e) {
                 throw new ServletException("Error in DAO usage: ", e);

@@ -13,6 +13,7 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -212,7 +213,7 @@ public class ExamHistoryServlet extends HttpServlet {
 
                     try {
                         Exam exam = examDAO.getByPrimaryKey(examID);
-                        exam.setResult(resultText);
+                        exam.setResult(StringEscapeUtils.escapeHtml4(resultText));
                         examDAO.update(exam);
 
                         Patient patient = patientDAO.getByPrimaryKey(exam.getPatientID());

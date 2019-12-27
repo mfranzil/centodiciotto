@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -77,8 +78,9 @@ public class ReportServlet extends HttpServlet {
                     return;
                 }
 
-                String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
-                        includeDoctorExams, includeHealthServiceExams, includePrescriptions);
+                String reportPath = getServletContext().getContextPath() + File.separator +
+                        excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
+                                includeDoctorExams, includeHealthServiceExams, includePrescriptions);
 
                 writer.write("{\"path\": \"" + reportPath.replace("\\", "\\\\") + "\"}");
             } catch (ParseException e) {

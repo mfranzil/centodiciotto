@@ -16,6 +16,7 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -210,7 +211,7 @@ public class VisitHistoryServlet extends HttpServlet {
 
                     try {
                         Visit visit = visitDAO.getByPrimaryKey(visitID);
-                        visit.setReport(reportText);
+                        visit.setReport(StringEscapeUtils.escapeHtml4(reportText));
                         visitDAO.update(visit);
 
                         Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());

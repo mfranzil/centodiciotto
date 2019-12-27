@@ -116,7 +116,7 @@ public class EmailService {
         Runnable runnable = () -> {
             try {
                 process(recipient, message, subject);
-            } catch (MessagingException | UnsupportedEncodingException e) {
+            } catch (Exception e) {
                 throwableWrapper.tr = e;
             }
         };
@@ -126,8 +126,6 @@ public class EmailService {
         if (throwableWrapper.tr != null) {
             throw new ServiceException(throwableWrapper.tr);
         }
-
-        Logger.getLogger("C18").info("Email successfully sent to " + recipient + " with subject " + subject);
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")
@@ -162,5 +160,7 @@ public class EmailService {
         msg.setSentDate(new java.util.Date());
         msg.setContent(multipart);
         Transport.send(msg);
+
+        Logger.getLogger("C18").info("Email sent to " + recipient + " with subject " + subject);
     }
 }
