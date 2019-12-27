@@ -11,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -128,7 +127,7 @@ public class EmailService {
             throw new ServiceException(throwableWrapper.tr);
         }
 
-        Logger.getLogger("C18").info( "Email successfully sent to " + recipient + " with subject " + subject);
+        Logger.getLogger("C18").info("Email successfully sent to " + recipient + " with subject " + subject);
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")

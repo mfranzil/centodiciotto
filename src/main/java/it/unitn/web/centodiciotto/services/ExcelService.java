@@ -179,7 +179,7 @@ public class ExcelService {
                 }
             }
 
-            String path = sc.getRealPath("/") + File.separator + "xls" + File.separator;
+            String path = sc.getRealPath("/") + File.separator +  sc.getInitParameter("excel-folder") + File.separator;
             String fileName = new SimpleDateFormat("yyyyMMdd").format(date) + "_"
                     + healthService.getOperatingProvince().getID() + ".xlsx";
 
@@ -192,15 +192,18 @@ public class ExcelService {
                 }
             }
 
-            return sc.getContextPath() + File.separator + "xls" + File.separator + fileName;
-        } catch (DAOException | IOException e) {
-            throw new ServiceException("Failure in XLS Report creation: ", e);
+            return sc.getContextPath() + File.separator + sc.getInitParameter("excel-folder") + File.separator + fileName;
+        } catch (DAOException e) {
+            throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
+        } catch (IOException e) {
+            throw new ServiceException("Failed to write to an XLS file during creation: ", e);
         }
     }
 
     /**
      * The type Report, to be serialized and fed to the {@link JxlsHelper}.
      */
+    @SuppressWarnings("WeakerAccess")
     public static class Report {
         /**
          * The Region.
@@ -232,6 +235,7 @@ public class ExcelService {
     /**
      * The type Entry, to be serialized and fed to the {@link JxlsHelper}.
      */
+    @SuppressWarnings("WeakerAccess")
     public static class Entry {
         /**
          * The Id.

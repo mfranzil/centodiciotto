@@ -96,7 +96,7 @@ public class VisitHistoryServlet extends HttpServlet {
 
         if (requestType == null) {
             response.setStatus(400);
-            String json ="{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
             writer.write(json);
             Logger.getLogger("C18").severe(json);
             return;

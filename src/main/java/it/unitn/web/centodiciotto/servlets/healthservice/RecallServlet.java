@@ -13,7 +13,7 @@ import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
-import it.unitn.web.centodiciotto.utils.json.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.JSONResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -263,7 +263,7 @@ public class RecallServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    writer.write(gson.toJson(new JSONResults<>(tmpResults.toArray(new ExamSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResult<>(tmpResults.toArray(new ExamSearchResult[0]))));
                 }
                 break;
             }

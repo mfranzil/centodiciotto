@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +50,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             stm.setTimestamp(3, passwordReset.getExpiringDate());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "PasswordResetDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("PasswordResetDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting PasswordReset: ", e);
         }
@@ -66,7 +65,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             stm.setString(3, passwordReset.getUserID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "PasswordResetDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("PasswordResetDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating PasswordReset: ", e);
         }
@@ -79,7 +78,7 @@ public class JDBCPasswordResetDAO extends JDBCDAO<PasswordReset, String> impleme
             stm.setString(1, passwordReset.getUserID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "PasswordResetDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("PasswordResetDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting PasswordReset: ", e);
         }

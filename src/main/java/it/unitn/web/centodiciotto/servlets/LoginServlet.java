@@ -104,7 +104,7 @@ public class LoginServlet extends HttpServlet {
                             json = "{\"url\":\"" + referrer.replace('$', '&') + "\"}";
                         }
 
-                        Logger.getLogger("C18").info( "User " + userID + " logged in with role "
+                        Logger.getLogger("C18").info("User " + userID + " logged in with role "
                                 + role + " with JSON " + json);
                         writer.write(json);
                     }

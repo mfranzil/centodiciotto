@@ -9,10 +9,10 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
-import it.unitn.web.centodiciotto.utils.json.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.JSONResult;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -251,7 +251,7 @@ public class PrescriptionServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new ExamSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResult<>(results.toArray(new ExamSearchResult[0]))));
                     break;
                 }
                 case "examAdd": {
@@ -325,7 +325,7 @@ public class PrescriptionServlet extends HttpServlet {
                     }
 
                     Gson gson = new Gson();
-                    writer.write(gson.toJson(new JSONResults<>(results.toArray(new DrugSearchResult[0]))));
+                    writer.write(gson.toJson(new JSONResult<>(results.toArray(new DrugSearchResult[0]))));
 
                     break;
                 }

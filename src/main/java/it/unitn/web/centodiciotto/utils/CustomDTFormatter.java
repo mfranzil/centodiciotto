@@ -51,7 +51,7 @@ public class CustomDTFormatter {
     /**
      * Gets a date and time representation of the time since epoch with an arbitrary formatting.
      *
-     * @param date the date
+     * @param date   the date
      * @param format the format string (see {@link DateTimeFormatter})
      * @return the formatted date time
      */

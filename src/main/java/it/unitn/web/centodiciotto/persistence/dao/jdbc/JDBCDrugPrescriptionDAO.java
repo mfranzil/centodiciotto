@@ -74,7 +74,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setString(9, drugPrescription.getDescription());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "DrugPrescriptionDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("DrugPrescriptionDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting DrugPrescription: ", e);
         }
@@ -96,7 +96,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(10, drugPrescription.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "DrugPrescriptionDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("DrugPrescriptionDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating DrugPrescription: ", e);
         }
@@ -108,7 +108,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             stm.setInt(1, drugPrescription.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "DrugPrescriptionDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("DrugPrescriptionDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting DrugPrescription: ", e);
         }

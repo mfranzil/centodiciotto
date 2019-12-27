@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +50,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(4, specializedDoctor.getWorkingPlace());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "SpecializedDoctorDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("SpecializedDoctorDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting Specialized Doctor: ", e);
         }
@@ -67,7 +66,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(4, specializedDoctor.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "SpecializedDoctorDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("SpecializedDoctorDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating SpecializedDoctor: ", e);
         }
@@ -79,7 +78,7 @@ public class JDBCSpecializedDoctorDAO extends JDBCDAO<SpecializedDoctor, String>
             stm.setString(1, specializedDoctor.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "SpecializedDoctorDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("SpecializedDoctorDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting SpecializedDoctor: ", e);
         }

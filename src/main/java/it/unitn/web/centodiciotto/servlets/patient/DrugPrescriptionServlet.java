@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Logger;
@@ -111,6 +112,18 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
                 Patient patient = patientDAO.getByPrimaryKey(patientID);
 
+                String fileName = getServletContext().getRealPath("/") +
+                        getServletContext().getInitParameter("pdf-folder")
+                        + File.separator + prescription.getDatePrescribed().getTime()
+                        + "-" + prescription.getID() + ".pdf";
+
+                System.out.println(fileName);
+
+                if (new File(fileName).exists()) {
+                    PDDocument.load(new File(fileName)).save(response.getOutputStream());
+                    return;
+                }
+
                 // Inserisco l'indirizzo corrente, possibile soltanto a livello di richiesta
                 // in modo da aggiungerlo al codice QR
                 String qrCodeURL = getCurrentURL(request);
@@ -120,6 +133,8 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
                 response.setContentType("application/pdf");
                 response.setHeader("Content-disposition", "inline; filename='prescription.pdf'");
+
+                prescriptionDoc.save(fileName);
                 prescriptionDoc.save(response.getOutputStream());
             } catch (DAOException e) {
                 throw new ServletException("Error in DAO usage: ", e);

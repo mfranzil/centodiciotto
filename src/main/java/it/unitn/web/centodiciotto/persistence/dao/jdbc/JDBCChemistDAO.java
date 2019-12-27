@@ -144,11 +144,11 @@ public class JDBCChemistDAO extends JDBCDAO<Chemist, String> implements ChemistD
     }
 
     @Override
-    public List<Chemist> getByProvince(String province_abbreviation) throws DAOException {
+    public List<Chemist> getByProvince(String provinceID) throws DAOException {
         List<Chemist> res = new ArrayList<>();
         Chemist tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
-            stm.setString(1, province_abbreviation);
+            stm.setString(1, provinceID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -48,7 +47,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(3, user.getSalt());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "UserDAO::insert affected " + row + " rows");
+            Logger.getLogger("C18").info("UserDAO::insert affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error inserting User: ", e);
         }
@@ -63,7 +62,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(3, user.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "UserDAO::update affected " + row + " rows");
+            Logger.getLogger("C18").info("UserDAO::update affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error updating User: ", e);
         }
@@ -75,7 +74,7 @@ public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
             stm.setString(1, user.getID());
 
             int row = stm.executeUpdate();
-            Logger.getLogger("C18").info( "UserDAO::delete affected " + row + " rows");
+            Logger.getLogger("C18").info("UserDAO::delete affected " + row + " rows");
         } catch (SQLException e) {
             throw new DAOException("Error deleting User: ", e);
         }

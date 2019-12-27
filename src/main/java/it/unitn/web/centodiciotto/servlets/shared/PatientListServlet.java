@@ -10,9 +10,9 @@ import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
-import it.unitn.web.centodiciotto.utils.json.JSONUtils;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
-import it.unitn.web.centodiciotto.utils.json.JSONResults;
+import it.unitn.web.centodiciotto.utils.json.JSONResult;
+import it.unitn.web.centodiciotto.utils.json.JSONUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -284,7 +284,7 @@ public class PatientListServlet extends HttpServlet {
 
                         Gson gson = new Gson();
                         writer.write(gson.toJson(
-                                new JSONResults<>(chosenResults.toArray(new PatientSearchResult[0]))));
+                                new JSONResult<>(chosenResults.toArray(new PatientSearchResult[0]))));
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }

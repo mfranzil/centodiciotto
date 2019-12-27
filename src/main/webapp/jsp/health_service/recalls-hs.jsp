@@ -49,6 +49,7 @@
                     placeholder: "Choose an exam",
                     allowClear: true,
                     closeOnSelect: true,
+                    minimumInputLength: 3,
                     ajax: {
                         type: "POST",
                         data: params => ({

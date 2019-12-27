@@ -1,0 +1,4 @@
+# Auto detect text files and perform LF normalization
+*.sql linguist-detectable=true
+*.md linguist-detectable=true
+* text=auto

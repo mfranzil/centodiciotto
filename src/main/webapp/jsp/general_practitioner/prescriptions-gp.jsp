@@ -42,6 +42,7 @@
                     placeholder: "Select a patient",
                     allowClear: true,
                     closeOnSelect: true,
+                    minimumInputLength: 5,
                     ajax: {
                         type: "POST",
                         data: params => ({

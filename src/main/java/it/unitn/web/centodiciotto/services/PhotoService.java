@@ -125,28 +125,26 @@ public class PhotoService {
      * @return a file path representing the relative position of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}
      */
     private String getPhotoPath(Photo photo) {
-        int id;
         String avatarFolder = getAvatarFolder();
 
         if (photo == null) {
-            return avatarFolder + "default.png";
-        } else {
-            id = photo.getID();
+            return avatarFolder + File.separator + "default.png";
         }
 
-        String context = sc.getRealPath("/");
-        String patientID = photo.getPatientID();
-        String photoPath = avatarFolder + patientID + File.separator + id;
+        String patientAvatarFolder = getPatientAvatarFolder(photo.getPatientID());
 
-        if (new File(context + photoPath + ".jpg").exists()) {
-            photoPath = avatarFolder + patientID + File.separator + id + ".jpg";
-        } else if (new File(context + photoPath + ".png").exists()) {
-            photoPath = avatarFolder + patientID + File.separator + id + ".png";
-        } else {
-            return avatarFolder + "default.png";
+        String systemPath = sc.getRealPath("/");
+        String photoPath = patientAvatarFolder + File.separator + photo.getID();
+
+        String[] extensions = {".jpg", ".jpeg", ".png", ".jfif"};
+
+        for (String extension : extensions) {
+            if (new File(systemPath + photoPath + extension).exists()) {
+                return photoPath.replace('\\', '/').replace("//", "/") + extension;
+            }
         }
 
-        return photoPath.replace('\\', '/');
+        return avatarFolder + File.separator + "default.png";
     }
 
     /**
@@ -155,7 +153,7 @@ public class PhotoService {
      * @return the avatar folder as a relative path
      */
     public String getAvatarFolder() {
-        return File.separator + sc.getInitParameter("avatar-folder") + File.separator;
+        return File.separator + sc.getInitParameter("avatar-folder");
     }
 
     /**

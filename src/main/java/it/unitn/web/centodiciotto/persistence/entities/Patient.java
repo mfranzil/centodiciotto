@@ -116,10 +116,6 @@ public class Patient extends User {
         return gender;
     }
 
-    public String getFullGender() {
-        return gender == 'F' ? "Female" : gender == 'M' ? "Male" : "Not specified";
-    }
-
     /**
      * Sets the gender.
      *
@@ -127,6 +123,14 @@ public class Patient extends User {
      */
     public void setGender(Character gender) {
         this.gender = gender;
+    }
+
+    /**
+     * Returns a full string representation of the gender.
+     * @return the gender as a string form
+     */
+    public String getFullGender() {
+        return gender == 'F' ? "Female" : gender == 'M' ? "Male" : "Not specified";
     }
 
     /**
