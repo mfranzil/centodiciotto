@@ -147,11 +147,11 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     }
 
     @Override
-    public List<GeneralPractitioner> getByProvince(String provinceAbbreviation) throws DAOException {
+    public List<GeneralPractitioner> getByProvince(String provinceID) throws DAOException {
         List<GeneralPractitioner> res = new ArrayList<>();
         GeneralPractitioner tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
-            stm.setString(1, provinceAbbreviation);
+            stm.setString(1, provinceID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

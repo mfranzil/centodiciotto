@@ -11,11 +11,11 @@ import it.unitn.web.centodiciotto.persistence.entities.Province;
 public interface HealthServiceDAO extends DAO<HealthService, String> {
 
     /**
-     * Returns the {@link HealthService} associated to a {@link Province}, indexed by this {@code provinceAbbreviation}.
+     * Returns the {@link HealthService} associated to a {@link Province}, indexed by this {@code provinceID}.
      *
-     * @param provinceAbbreviation the {@code provinceAbbreviation}
-     * @return the {@link HealthService} associated to a {@link Province}, indexed by this {@code provinceAbbreviation}.
+     * @param provinceID the {@code provinceID}
+     * @return the {@link HealthService} associated to a {@link Province}, indexed by this {@code provinceID}.
      * @throws DAOException in case of a malformed input or query
      */
-    HealthService getByProvince(String provinceAbbreviation) throws DAOException;
+    HealthService getByProvince(String provinceID) throws DAOException;
 }

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>My patients - CentoDiciotto</title>
+    <title>Patients - CentoDiciotto</title>
     <%@ include file="/jsp/fragments/head.jsp" %>
     <script src="${pageContext.request.contextPath}/vendor/select2.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendor/select2.min.css">
@@ -38,6 +38,13 @@
     <script>
         $("document").ready(() => {
             const url = window.location.href;
+            const SET_LIMIT = 20;
+
+            let limit = SET_LIMIT;
+            let offset = 0;
+            let order = "asc";
+            let currentRequest = undefined;
+
             $("#patient-search")
                 .select2({
                     placeholder: "Select a patient",
@@ -57,12 +64,12 @@
                 .val(null)
                 .trigger("change")
                 .on("select2:select", e => {
-                    $("#main-table").children().not("first").remove();
                     renderPatientsRows(e.params.data.patientID);
                 })
                 .on("select2:unselect", () => {
-                    $("#main-table").children().not("first").remove();
-                    renderPatientsRows();
+                    limit = SET_LIMIT;
+                    offset = 0;
+                    renderPatientsRows(undefined, limit, offset, order);
                 });
 
             let tableHeaders = [
@@ -73,17 +80,61 @@
             ];
 
             $("#main-table").createTableHeaders(tableHeaders);
-            renderPatientsRows();
 
-            function renderPatientsRows(patientID) {
+            $(".table-header > .table-cell.name").html(
+                'Name&nbsp;<span class="dropdown-toggle" id="alphabetical-order"></span>'
+            );
+
+            $("#alphabetical-order").click(function() {
+                if (order === "asc") {
+                    order = "desc";
+                    $(this).attr("aria-expanded", "true");
+                    limit = SET_LIMIT;
+                    offset = 0;
+                    if (typeof currentRequest !== "undefined") {
+                        currentRequest.abort();
+                    }
+                    renderPatientsRows(undefined, limit, offset, order);
+                } else {
+                    order = "asc";
+                    $(this).attr("aria-expanded", "false");
+                    limit = SET_LIMIT;
+                    offset = 0;
+                    if (typeof currentRequest !== "undefined") {
+                        currentRequest.abort();
+                    }
+                    renderPatientsRows(undefined, limit, offset, order);
+                }
+            });
+
+            renderPatientsRows(undefined, limit, offset, order);
+
+            $(window).scroll(function () {
+                if ($(window).scrollTop() === $(document).height() - $(window).height()
+                    && typeof currentRequest === "undefined") {
+                    if (offset + limit <= ${requestScope.total}) {
+                        offset += limit;
+                        renderPatientsRows(undefined, limit, offset, order);
+                    }
+                }
+            });
+
+            function renderPatientsRows(patientID, limit, offset, order) {
+                //console.log("R() ", patientID, limit, offset, order);
                 $("#main-loading-container").slideDown();
+                if (offset === 0 || typeof offset === "undefined") {
+                    $("#main-table").children().not(".table-header").remove();
+                }
 
-                $.ajax({
+                currentRequest = $.ajax({
                     type: "POST",
                     dataType: "json",
                     data: {
                         requestType: "patientList",
-                        patientID: patientID
+                        patientID: patientID,
+                        limit: limit,
+                        offset: offset,
+                        order: order
                     },
                     url: url,
                     success: (data, textStatus, jqXHR) => {
@@ -91,6 +142,7 @@
                         $("#main-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
                         enablePopup();
+                        currentRequest = undefined;
                     }
                 });
             }
@@ -117,7 +169,7 @@
                     </select>
                 </div>
                 <div id="main-table"></div>
-                <div class="justify-content-center loading" id="main-loading-container" style="text-align: center;">
+                <div class="justify-content-center loading my-2" id="main-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                 </div>

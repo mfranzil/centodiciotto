@@ -56,11 +56,11 @@
                 .val(null)
                 .trigger("change")
                 .on("select2:select", e => {
-                    $("#patient-table").children().not("first").remove();
+                    $("#patient-table").children().not(".table-header").remove();
                     renderPatientsRows(e.params.data.patientID);
                 })
                 .on("select2:unselect", () => {
-                    $("#patient-table").children().not("first").remove();
+                    $("#patient-table").children().not(".table-header").remove();
                     renderPatientsRows();
                 });
 

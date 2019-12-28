@@ -40,6 +40,7 @@
                 {field: "action", type: "button", text: "&nbsp;"}
             ];
 
+            $("#main-table").createTableHeaders(tableHeaders);
             $("#patient-info,#main-loading-container").hide();
 
             $("#patient-search")
@@ -62,7 +63,6 @@
                 .trigger("change")
                 .on("select2:select", e => {
                     $("#main-loading-container").slideDown();
-                    $("#main-table").children().not("first").remove();
                     $("#patient-name").html(e.params.data.fullName);
                     $("#patient-ssn").html(e.params.data.SSN);
                     $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
@@ -72,12 +72,13 @@
                 .on("select2:unselect", () => {
                     $("#main-loading-container").slideUp();
                     $("#patient-info").slideUp();
-                    $("#main-table").children().not("first").remove();
-                    renderPrescriptions();
+                    $("#main-table").children().not(".table-header").remove();
                 });
 
             function renderPrescriptions(patientID) {
                 $("#main-loading-container").slideDown();
+                $("#main-table").children().not(".table-header").remove();
+
                 $.ajax({
                     type: "POST",
                     dataType: "json",
@@ -88,9 +89,9 @@
                     url: url,
                     success: (data, textStatus, jqXHR) => {
                         let json = jqXHR.responseJSON;
-                        $("#main-table").createTableHeaders(tableHeaders).insertRows(tableHeaders, json, url);
-                        enablePopup();
+                        $("#main-table").insertRows(tableHeaders, json, url);
                         $("#main-loading-container").slideUp();
+                        enablePopup();
 
                         if (action === "qr") {
                             $("#btn-${requestScope.prescription.ID}").click();
@@ -122,7 +123,7 @@
                             setTimeout(() => {
                                 $(".popup-window").hide();
                                 $("#main-loading-container").slideDown();
-                                $("#main-table").children().not("first").remove();
+                                $("#main-table").children().not(".table-header").remove();
                             }, 750);
 
                             setTimeout(() => {
@@ -139,7 +140,6 @@
 
             if (action === "qr") {
                 $("#main-loading-container").slideDown();
-                $("#main-table").children().not("first").remove();
                 $("#patient-name").html("${requestScope.patient}");
                 $("#patient-ssn").html("${requestScope.patient.SSN}");
                 $("#patient-avatar").prop("src", getContextPath() + "${requestScope.patientPhoto}");
@@ -162,7 +162,7 @@
 <div class="container">
     <div class="body-content">
         <div class="row">
-            <div class="col-md" style="overflow-y: hidden">
+            <div class="col-md">
                 <div class="form-label-group my-4 mx-4 ls-search">
                     <select id="patient-search" name="patientSearch" class="select2-allow-clear form-control"
                             autofocus>
@@ -173,12 +173,12 @@
                     <div id="patient-name" class="mt-2"></div>
                     <div id="patient-ssn" class="mb-2"></div>
                 </div>
+                <div id="main-table"></div>
                 <div class="justify-content-center loading mt-2" id="main-loading-container"
                      style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                 </div>
-                <div id="main-table"></div>
             </div>
         </div>
     </div>

@@ -31,13 +31,29 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
             " ssn, gender, practitioner_id, living_province, living_place)" +
             " = (?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE patient_id = ?;";
     final private String DELETE = "DELETE FROM patient WHERE patient_id = ?;";
+
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM patient WHERE patient_id = ? LIMIT 1;";
     final private String GET_ALL = "SELECT * FROM patient ORDER BY last_name ASC;";
     final private String COUNT = "SELECT COUNT(*) FROM patient;";
+
     final private String GET_BY_PRACTITIONER = "SELECT * FROM patient " +
             "WHERE practitioner_id = ? ORDER BY last_name ASC;";
     final private String GET_BY_PROVINCE = "SELECT * FROM patient " +
             "WHERE living_province = ? ORDER BY last_name ASC;";
+
+    final private String GET_ALL_PAG_ASC = "SELECT * FROM patient ORDER BY last_name ASC LIMIT ? OFFSET ?;";
+    final private String GET_ALL_PAG_DESC = "SELECT * FROM patient ORDER BY last_name DESC LIMIT ? OFFSET ?;";
+    final private String GET_BY_PRACTITIONER_PAG_ASC = "SELECT * FROM patient " +
+            "WHERE practitioner_id = ? ORDER BY last_name ASC LIMIT ? OFFSET ?;";
+    final private String GET_BY_PRACTITIONER_PAG_DESC = "SELECT * FROM patient " +
+            "WHERE practitioner_id = ? ORDER BY last_name DESC LIMIT ? OFFSET ?;";
+    final private String GET_BY_PROVINCE_PAG_ASC = "SELECT * FROM patient " +
+            "WHERE living_province = ? ORDER BY last_name ASC LIMIT ? OFFSET ?;";
+    final private String GET_BY_PROVINCE_PAG_DESC = "SELECT * FROM patient " +
+            "WHERE living_province = ? ORDER BY last_name DESC LIMIT ? OFFSET ?;";
+
+    final private String COUNT_PRACTITIONER = "SELECT COUNT(*) FROM patient WHERE practitioner_id = ?;";
+    final private String COUNT_PROVINCE = "SELECT COUNT(*) FROM patient WHERE living_province = ?;";
 
     /**
      * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
@@ -171,15 +187,15 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
                 return res;
             }
         } catch (SQLException e) {
-            throw new DAOException("Error getting Patients by primary key: ", e);
+            throw new DAOException("Error getting Patients by practitioner: ", e);
         }
     }
 
-    public List<Patient> getByProvince(String provinceAbbreviation) throws DAOException {
+    public List<Patient> getByProvince(String provinceID) throws DAOException {
         List<Patient> res = new ArrayList<>();
         Patient tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
-            stm.setString(1, provinceAbbreviation);
+            stm.setString(1, provinceID);
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {
                     tmp = mapRowToEntity(rs);
@@ -193,12 +209,106 @@ public class JDBCPatientDAO extends JDBCDAO<Patient, String> implements PatientD
     }
 
     @Override
+    public List<Patient> getAll(Integer limit, Integer offset, Boolean isAscending) throws DAOException {
+        List<Patient> res = new ArrayList<>();
+        Patient tmp;
+        try (PreparedStatement stm = CON.prepareStatement(isAscending ? GET_ALL_PAG_ASC : GET_ALL_PAG_DESC)) {
+            stm.setInt(1, limit);
+            stm.setInt(2, offset);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting all Patients with pagination: ", e);
+        }
+    }
+
+    @Override
+    public List<Patient> getByPractitioner(String practitionerID, Integer limit, Integer offset, Boolean isAscending) throws DAOException {
+        List<Patient> res = new ArrayList<>();
+        Patient tmp;
+        try (PreparedStatement stm = CON.prepareStatement(isAscending ?
+                GET_BY_PRACTITIONER_PAG_ASC : GET_BY_PRACTITIONER_PAG_DESC)) {
+            stm.setString(1, practitionerID);
+            stm.setInt(2, limit);
+            stm.setInt(3, offset);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Patients by Practitioner with pagination: ", e);
+        }
+    }
+
+    @Override
+    public List<Patient> getByProvince(String provinceID, Integer limit, Integer offset, Boolean isAscending) throws DAOException {
+        List<Patient> res = new ArrayList<>();
+        Patient tmp;
+        try (PreparedStatement stm = CON.prepareStatement(isAscending ?
+                GET_BY_PROVINCE_PAG_ASC : GET_BY_PROVINCE_PAG_DESC)) {
+            stm.setString(1, provinceID);
+            stm.setInt(2, limit);
+            stm.setInt(3, offset);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Patients by Province with pagination: ", e);
+        }
+    }
+
+    @Override
+    public Long getCountByPractitioner(String practitionerID) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT_PRACTITIONER)) {
+            stm.setString(1, practitionerID);
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting Patients: ", e);
+        }
+        return -1L;
+    }
+
+    @Override
+    public Long getCountByProvince(String provinceID) throws DAOException {
+        try (PreparedStatement stm = CON.prepareStatement(COUNT_PROVINCE)) {
+            stm.setString(1, provinceID);
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    return Integer.toUnsignedLong(rs.getInt("count"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error counting Patients: ", e);
+        }
+        return -1L;
+    }
+
+    @Override
     protected Patient mapRowToEntity(ResultSet rs) throws DAOException {
         try {
             Patient patient = new Patient();
 
-            String provinceAbbreviation = rs.getString("living_province");
-            Province province = provinceDAO.getByPrimaryKey(provinceAbbreviation);
+            String provinceID = rs.getString("living_province");
+            Province province = provinceDAO.getByPrimaryKey(provinceID);
             patient.setLivingProvince(province);
 
             patient.setID(rs.getString("patient_id"));

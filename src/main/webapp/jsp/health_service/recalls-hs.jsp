@@ -139,7 +139,7 @@
 
             function renderHistory() {
                 $("#history-loading-container").slideDown();
-                $("#history-table").children().not("first").remove();
+                $("#history-table").children().not(".table-header").remove();
 
                 $.ajax({
                     type: "POST",

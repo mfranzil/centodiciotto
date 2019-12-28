@@ -51,6 +51,10 @@ body {
     overflow-wrap: break-word;
 }
 
+.col-md {
+    overflow-y: hidden;
+}
+
 /*noinspection CssFloatPxLength*/
 @media (max-width: 991.8px) {
     .table {
@@ -184,6 +188,7 @@ body {
 /* Rotazione della freccetta dei dropdown */
 
 .dropdown-toggle[aria-expanded="true"]::after {
+    cursor: pointer;
     -webkit-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
@@ -191,6 +196,7 @@ body {
 }
 
 .dropdown-toggle::after {
+    cursor: pointer;
     -webkit-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;
     transition: all ease 0.5s;

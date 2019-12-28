@@ -657,9 +657,8 @@ ALTER SEQUENCE public.photo_new_photo_id_seq OWNED BY public.photo.photo_id;
 --
 
 CREATE TABLE public.province (
-    province_id integer NOT NULL,
     province_name character varying(128) NOT NULL,
-    province_abbreviation character varying(5) NOT NULL,
+    province_id character varying(2) NOT NULL,
     province_region character varying(128) DEFAULT NULL::character varying
 );
 
@@ -17258,7 +17257,14 @@ laura.lettiere@yahoo.it	2830
 --
 
 COPY public.drug_prescription (drug_prescription_id, practitioner_id, patient_id, drug_type, date_prescribed, date_sold, chemist_id, ticket, ticket_paid, description) FROM stdin;
-31	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2	2019-12-26 12:06:54.654	2019-12-26 17:54:15.576	ippazio.gabbana@libero.it	3	f	 
+31	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2	2019-12-26 12:06:54.654	2019-12-26 17:54:15.576	ippazio.gabbana@libero.it	3	t	 
+32	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	10	2019-12-27 11:49:14.926	\N	\N	3	f	 
+33	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-27 11:49:21.278	\N	\N	3	f	 
+34	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-28 16:07:49.657	\N	\N	3	f	 
+35	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-28 16:08:13.755	\N	\N	3	f	 
+36	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	11	2019-12-28 16:14:47.174	\N	\N	3	f	 
+37	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	11	2019-12-28 16:26:08.457	\N	\N	3	f	 
+38	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	10	2019-12-28 16:29:04.858	\N	\N	3	f	 
 \.
 
 
@@ -17958,7 +17964,6 @@ COPY public.drug_type (drug_id, drug_description) FROM stdin;
 
 COPY public.exam (exam_id, patient_id, doctor_id, exam_type, done, date, result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) FROM stdin;
 123	alberico.marcacci@virgilio.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
-82	orlando.boito@virgilio.it	sabatino.bettin@hotmail.com	1428	t	2019-12-26 08:30:00	L'esame è stato completato con successo.	\N	50	f	giorgio.barcaccia@yahoo.it	t	\N
 83	livia.agostini@libero.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 84	ornella.altera@gmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 85	costantino.andreozzi@hotmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
@@ -18030,6 +18035,7 @@ COPY public.exam (exam_id, patient_id, doctor_id, exam_type, done, date, result,
 152	giosuè.vigorelli@libero.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 153	tatiana.villarosa@hotmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 154	mauro.visintini@libero.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
+82	orlando.boito@virgilio.it	sabatino.bettin@hotmail.com	1428	t	2019-12-26 08:30:00	L'esame è stato completato con successo.	\N	50	t	giorgio.barcaccia@yahoo.it	t	\N
 \.
 
 
@@ -21136,6 +21142,351 @@ ida.moresi@yahoo.it	Ida	Moresi	1940-04-02 00:00:00	San Giovanni Bianco	MRSDIA40D
 --
 
 COPY public.photo (photo_id, patient_id, upload_date) FROM stdin;
+0	pompeo.pizzetti@virgilio.it	2019-12-14 00:00:00
+1	elmo.murialdo@gmail.com	2019-10-27 00:00:00
+2	antonello.detti@gmail.com	2019-10-06 00:00:00
+3	letizia.dibiasi@libero.it	2019-10-10 00:00:00
+4	rosina.abba@yahoo.it	2019-04-11 00:00:00
+5	gioacchino.antonetti@hotmail.com	2019-05-01 00:00:00
+6	michelangelo.gaiatto@virgilio.it	2019-06-01 00:00:00
+7	fortunata.gozzano@libero.it	2019-11-29 00:00:00
+8	fortunata.novaro@virgilio.it	2019-02-24 00:00:00
+9	etta.andreozzi@gmail.com	2019-05-15 00:00:00
+10	concetta.maccanelli@hotmail.com	2019-05-26 00:00:00
+11	giada.niggli@libero.it	2019-12-21 00:00:00
+12	zaira.zaguri@virgilio.it	2019-10-22 00:00:00
+13	paolo.valmarana@virgilio.it	2019-04-28 00:00:00
+14	matteo.prada@virgilio.it	2019-08-18 00:00:00
+15	rosa.pincherle@libero.it	2019-01-10 00:00:00
+16	caterina.taliani@yahoo.it	2019-09-01 00:00:00
+17	melina.micca@hotmail.com	2019-06-10 00:00:00
+18	annunziata.luzi@yahoo.it	2019-09-02 00:00:00
+19	roberto.pigafetta@hotmail.com	2019-03-25 00:00:00
+20	laureano.piazzi@virgilio.it	2019-07-09 00:00:00
+21	amalia.ravaglioli@gmail.com	2019-01-27 00:00:00
+22	rossana.battaglia@virgilio.it	2019-10-07 00:00:00
+23	martina.carducci@yahoo.it	2019-08-23 00:00:00
+24	serena.giannetti@virgilio.it	2019-10-01 00:00:00
+25	tullio.terragni@yahoo.it	2019-11-02 00:00:00
+26	napoleone.bellucci@libero.it	2019-01-16 00:00:00
+27	durante.grifeo@virgilio.it	2019-09-07 00:00:00
+28	paoletta.salandra@hotmail.com	2019-09-28 00:00:00
+29	adelasia.vespa@virgilio.it	2019-06-25 00:00:00
+30	severino.baresi@yahoo.it	2019-12-05 00:00:00
+31	rosalia.morosini@libero.it	2019-10-29 00:00:00
+32	napoleone.crespi@yahoo.it	2019-08-02 00:00:00
+33	rembrandt.respighi@libero.it	2019-05-01 00:00:00
+34	rosa.lercari@hotmail.com	2019-03-25 00:00:00
+35	serafina.respighi@hotmail.com	2019-08-14 00:00:00
+36	letizia.ruggeri@yahoo.it	2019-04-30 00:00:00
+37	gemma.forza@libero.it	2019-08-20 00:00:00
+38	giacobbe.lucarelli@gmail.com	2019-02-11 00:00:00
+39	vincenza.lombroso@yahoo.it	2019-08-21 00:00:00
+40	livio.camicione@yahoo.it	2019-04-01 00:00:00
+41	rosina.vento@yahoo.it	2019-02-24 00:00:00
+42	liberto.ricci@virgilio.it	2019-01-01 00:00:00
+43	lucia.sibilia@virgilio.it	2019-07-30 00:00:00
+44	eva.bonolis@hotmail.com	2019-03-04 00:00:00
+45	fiorenzo.falier@yahoo.it	2019-01-19 00:00:00
+46	isa.lollobrigida@libero.it	2019-12-14 00:00:00
+47	aria.castioni@hotmail.com	2019-12-18 00:00:00
+48	mauro.visintini@libero.it	2019-11-19 00:00:00
+49	dante.gagliardi@libero.it	2019-05-07 00:00:00
+50	lamberto.treves@gmail.com	2019-11-19 00:00:00
+51	sergius.polani@virgilio.it	2019-08-03 00:00:00
+52	amadeo.toscanini@libero.it	2019-01-28 00:00:00
+53	dolores.trillini@gmail.com	2019-02-04 00:00:00
+54	santino.micheletti@yahoo.it	2019-05-13 00:00:00
+55	antonina.filzi@hotmail.com	2019-04-19 00:00:00
+56	orlando.boito@virgilio.it	2019-12-05 00:00:00
+57	patrizia.bonomo@virgilio.it	2019-11-27 00:00:00
+58	manuel.grossi@yahoo.it	2019-09-23 00:00:00
+59	tatiana.villarosa@hotmail.com	2019-04-23 00:00:00
+60	virginia.manzoni@libero.it	2019-12-05 00:00:00
+61	milena.cerutti@gmail.com	2019-08-21 00:00:00
+62	maria.muratori@virgilio.it	2019-02-02 00:00:00
+63	lorenzo.pagliaro@hotmail.com	2019-10-09 00:00:00
+64	tullio.cundari@virgilio.it	2019-04-19 00:00:00
+65	gianluca.cainero@gmail.com	2019-01-14 00:00:00
+66	armando.bianchi@virgilio.it	2019-12-25 00:00:00
+67	griselda.cilea@yahoo.it	2019-01-09 00:00:00
+68	germana.benussi@yahoo.it	2019-01-31 00:00:00
+69	cipriano.antonello@hotmail.com	2019-12-26 00:00:00
+70	coriolano.ferrara@hotmail.com	2019-10-20 00:00:00
+71	emma.guidone@libero.it	2019-07-24 00:00:00
+72	giacobbe.bertolucci@libero.it	2019-03-13 00:00:00
+73	rosario.roero@libero.it	2019-03-30 00:00:00
+74	adelasia.castiglione@hotmail.com	2019-07-27 00:00:00
+75	sylvia.raimondi@yahoo.it	2019-07-07 00:00:00
+76	pasquale.scaduto@libero.it	2019-09-06 00:00:00
+77	agnolo.farnese@virgilio.it	2019-07-17 00:00:00
+78	amanda.mattarella@gmail.com	2019-03-05 00:00:00
+79	guido.baggio@gmail.com	2019-12-14 00:00:00
+80	renzo.gianetti@libero.it	2019-10-02 00:00:00
+81	ottavio.longhena@gmail.com	2019-12-10 00:00:00
+82	delfino.rosmini@gmail.com	2019-04-22 00:00:00
+83	maria.scotto@virgilio.it	2019-10-11 00:00:00
+84	benedetto.venturi@yahoo.it	2019-02-09 00:00:00
+85	fiamma.iannelli@gmail.com	2019-12-11 00:00:00
+86	melissa.navarria@hotmail.com	2019-12-12 00:00:00
+87	ruggero.dossetti@gmail.com	2019-08-27 00:00:00
+88	tiziana.iannuzzi@yahoo.it	2019-04-02 00:00:00
+89	gioachino.balbi@yahoo.it	2019-01-22 00:00:00
+90	tullio.beffa@hotmail.com	2019-04-14 00:00:00
+91	maura.mascagni@hotmail.com	2019-01-05 00:00:00
+92	olga.moschino@yahoo.it	2019-03-13 00:00:00
+93	adelasia.disdero@virgilio.it	2019-04-26 00:00:00
+94	alessandra.giulietti@hotmail.com	2019-12-10 00:00:00
+95	milo.mussolini@gmail.com	2019-12-10 00:00:00
+96	lara.vattimo@virgilio.it	2019-04-17 00:00:00
+97	nicolò.lovato@gmail.com	2019-10-07 00:00:00
+98	milo.borgia@yahoo.it	2019-11-13 00:00:00
+99	irma.manolesso@hotmail.com	2019-11-04 00:00:00
+100	ivan.raurica@yahoo.it	2019-01-24 00:00:00
+101	gioffre.tasso@virgilio.it	2019-05-29 00:00:00
+102	bianca.visintini@gmail.com	2019-06-22 00:00:00
+103	raimondo.ortolani@libero.it	2019-01-06 00:00:00
+104	laureano.bignardi@yahoo.it	2019-02-24 00:00:00
+105	ornella.altera@gmail.com	2019-04-11 00:00:00
+106	marta.guidone@virgilio.it	2019-03-21 00:00:00
+107	niccolò.blasi@virgilio.it	2019-06-22 00:00:00
+108	paulina.pizzo@yahoo.it	2019-07-21 00:00:00
+109	livia.agostini@libero.it	2019-01-25 00:00:00
+110	bruno.guariento@libero.it	2019-09-26 00:00:00
+111	graziella.leone@virgilio.it	2019-05-15 00:00:00
+112	tina.monicelli@yahoo.it	2019-09-20 00:00:00
+113	leonardo.chiappetta@gmail.com	2019-09-06 00:00:00
+114	piergiuseppe.piccinni@libero.it	2019-05-11 00:00:00
+115	annunziata.badoglio@gmail.com	2019-09-21 00:00:00
+116	annunziata.goldstein@gmail.com	2019-07-15 00:00:00
+117	stefano.dulbecco@libero.it	2019-02-21 00:00:00
+118	federigo.guarneri@gmail.com	2019-02-21 00:00:00
+119	sante.storladi@virgilio.it	2019-02-28 00:00:00
+120	massimiliano.fagotto@libero.it	2019-10-28 00:00:00
+121	giosuè.vigorelli@libero.it	2019-02-11 00:00:00
+122	vittoria.gucci@hotmail.com	2019-02-12 00:00:00
+123	fiorenzo.berlusconi@yahoo.it	2019-01-11 00:00:00
+124	stefani.castellitto@libero.it	2019-08-07 00:00:00
+125	nina.verdi@yahoo.it	2019-11-01 00:00:00
+126	ruggiero.simeoni@yahoo.it	2019-10-10 00:00:00
+127	michelangelo.garobbio@hotmail.com	2019-06-05 00:00:00
+128	alberico.marcacci@virgilio.it	2019-08-08 00:00:00
+129	giovanni.flaiano@virgilio.it	2019-04-20 00:00:00
+130	melania.bruscantini@virgilio.it	2019-11-20 00:00:00
+131	adelmo.stein@hotmail.com	2019-11-23 00:00:00
+132	cecilia.baracca@libero.it	2019-03-23 00:00:00
+133	massimo.troisi@hotmail.com	2019-08-17 00:00:00
+134	nanni.saffi@virgilio.it	2019-01-23 00:00:00
+135	gloria.staglieno@hotmail.com	2019-01-28 00:00:00
+136	fulvio.blasi@gmail.com	2019-10-11 00:00:00
+137	matilda.tutino@virgilio.it	2019-05-17 00:00:00
+138	lucia.corbo@yahoo.it	2019-03-24 00:00:00
+139	martino.falcone@virgilio.it	2019-06-10 00:00:00
+140	silvestro.dibiasi@yahoo.it	2019-02-01 00:00:00
+141	roberto.guarneri@gmail.com	2019-12-02 00:00:00
+142	salvi.renzi@libero.it	2019-06-17 00:00:00
+143	rosaria.dellucci@yahoo.it	2019-08-12 00:00:00
+144	luciana.argenti@virgilio.it	2019-09-11 00:00:00
+145	sandra.valier@virgilio.it	2019-03-27 00:00:00
+146	corrado.donarelli@gmail.com	2019-09-17 00:00:00
+147	beppe.campanella@virgilio.it	2019-04-29 00:00:00
+148	silvio.morucci@yahoo.it	2019-04-08 00:00:00
+149	giacobbe.filangieri@yahoo.it	2019-12-18 00:00:00
+150	mariana.tebaldi@virgilio.it	2019-05-05 00:00:00
+151	ezio.contrafatto@yahoo.it	2019-05-17 00:00:00
+152	arnaldo.guidotti@gmail.com	2019-06-22 00:00:00
+153	pierpaolo.galeati@gmail.com	2019-10-08 00:00:00
+154	ernesto.dallapé@hotmail.com	2019-02-09 00:00:00
+155	leone.marrone@hotmail.com	2019-06-08 00:00:00
+156	piermaria.jacuzzi@libero.it	2019-09-06 00:00:00
+157	annamaria.mazzocchi@yahoo.it	2019-02-19 00:00:00
+158	orazio.paolucci@libero.it	2019-11-20 00:00:00
+159	bettina.morucci@hotmail.com	2019-02-20 00:00:00
+160	lisa.carosone@yahoo.it	2019-06-19 00:00:00
+161	adele.volterra@gmail.com	2019-08-20 00:00:00
+162	lidia.leonetti@libero.it	2019-12-19 00:00:00
+163	lidia.rastelli@libero.it	2019-05-04 00:00:00
+164	rosaria.gussoni@yahoo.it	2019-09-22 00:00:00
+165	melissa.cipolla@hotmail.com	2019-05-20 00:00:00
+166	melania.necci@virgilio.it	2019-10-05 00:00:00
+167	fabrizia.fusani@libero.it	2019-03-21 00:00:00
+168	francesco.basadonna@hotmail.com	2019-07-18 00:00:00
+169	aurora.emo@gmail.com	2019-04-10 00:00:00
+170	francesco.tropea@yahoo.it	2019-06-01 00:00:00
+171	ronaldo.spallanzani@gmail.com	2019-05-01 00:00:00
+172	antonia.bellucci@gmail.com	2019-10-31 00:00:00
+173	agostino.ceri@gmail.com	2019-11-11 00:00:00
+174	eliana.parri@yahoo.it	2019-09-09 00:00:00
+175	giulietta.troisi@virgilio.it	2019-02-27 00:00:00
+176	gioachino.argurio@hotmail.com	2019-08-24 00:00:00
+177	tiziano.ciampi@gmail.com	2019-03-12 00:00:00
+178	livia.sonnino@yahoo.it	2019-01-26 00:00:00
+179	susanna.viola@libero.it	2019-07-26 00:00:00
+180	toni.trupiano@libero.it	2019-12-16 00:00:00
+181	cecilia.costanzi@yahoo.it	2019-03-19 00:00:00
+182	annunziata.disdero@libero.it	2019-03-30 00:00:00
+183	coriolano.lattuada@virgilio.it	2019-03-27 00:00:00
+184	ramona.bonaventura@gmail.com	2019-10-03 00:00:00
+185	osvaldo.falcone@virgilio.it	2019-01-16 00:00:00
+186	enrico.santoro@gmail.com	2019-02-12 00:00:00
+187	galasso.baglioni@gmail.com	2019-07-17 00:00:00
+188	aurora.faugno@yahoo.it	2019-04-15 00:00:00
+189	costantino.bresciani@yahoo.it	2019-09-22 00:00:00
+190	licia.pignatti@gmail.com	2019-10-27 00:00:00
+191	lisa.soprano@gmail.com	2019-11-23 00:00:00
+192	luisa.bertoli@libero.it	2019-06-05 00:00:00
+193	giacobbe.dovara@yahoo.it	2019-05-01 00:00:00
+194	sonia.cipolla@hotmail.com	2019-06-10 00:00:00
+195	fulvio.ritacca@yahoo.it	2019-12-26 00:00:00
+196	adelasia.sommaruga@gmail.com	2019-04-15 00:00:00
+197	mirco.gaito@gmail.com	2019-09-05 00:00:00
+198	fiamma.tarantino@hotmail.com	2019-11-08 00:00:00
+199	elisa.ioppi@libero.it	2019-06-07 00:00:00
+200	chiara.travaglia@gmail.com	2019-02-21 00:00:00
+201	mattia.soranzo@yahoo.it	2019-04-02 00:00:00
+202	beppe.falcone@hotmail.com	2019-08-05 00:00:00
+203	umberto.jovinelli@virgilio.it	2019-08-11 00:00:00
+204	piergiuseppe.ortese@virgilio.it	2019-09-29 00:00:00
+205	sonia.cerquiglini@gmail.com	2019-12-03 00:00:00
+206	serafina.napolitano@hotmail.com	2019-11-15 00:00:00
+207	nicola.ferragamo@libero.it	2019-05-26 00:00:00
+208	orlando.tarantini@yahoo.it	2019-05-10 00:00:00
+209	marissa.busoni@libero.it	2019-12-23 00:00:00
+210	imelda.rapisardi@virgilio.it	2019-12-19 00:00:00
+211	veronica.polesel@hotmail.com	2019-03-31 00:00:00
+212	vincenzo.roth@libero.it	2019-04-23 00:00:00
+213	maurizio.treves@hotmail.com	2019-02-12 00:00:00
+214	raffaele.salvemini@hotmail.com	2019-01-30 00:00:00
+215	durante.corradi@yahoo.it	2019-01-10 00:00:00
+216	loretta.bersani@virgilio.it	2019-10-26 00:00:00
+217	tonia.mazzi@yahoo.it	2019-11-15 00:00:00
+218	pasqual.pezzali@virgilio.it	2019-02-11 00:00:00
+219	filippo.bernetti@yahoo.it	2019-11-17 00:00:00
+220	ugo.interminelli@virgilio.it	2019-11-14 00:00:00
+221	berenice.gioberti@virgilio.it	2019-07-19 00:00:00
+222	santino.randazzo@yahoo.it	2019-04-02 00:00:00
+223	hugo.basadonna@yahoo.it	2019-10-15 00:00:00
+224	mauro.dallara@libero.it	2019-01-05 00:00:00
+225	leone.verdi@virgilio.it	2019-12-05 00:00:00
+226	concetta.botticelli@gmail.com	2019-10-10 00:00:00
+227	sonia.fabrizi@libero.it	2019-01-24 00:00:00
+228	gianpietro.bajardi@virgilio.it	2019-07-25 00:00:00
+229	angelina.sermonti@libero.it	2019-02-19 00:00:00
+230	aria.vergassola@virgilio.it	2019-08-03 00:00:00
+231	nadia.giusti@yahoo.it	2019-12-20 00:00:00
+232	ubaldo.totino@gmail.com	2019-05-10 00:00:00
+233	filippo.piccinni@yahoo.it	2019-07-24 00:00:00
+234	cassandra.crispi@virgilio.it	2019-10-14 00:00:00
+235	ezio.soffici@virgilio.it	2019-02-13 00:00:00
+236	costantino.andreozzi@hotmail.com	2019-02-03 00:00:00
+237	enzo.fittipaldi@libero.it	2019-10-15 00:00:00
+238	corrado.perozzo@yahoo.it	2019-10-30 00:00:00
+239	gemma.gagliano@gmail.com	2019-03-21 00:00:00
+240	margherita.baracca@gmail.com	2019-12-20 00:00:00
+241	tonia.bossi@gmail.com	2019-12-05 00:00:00
+242	rosa.nicolini@virgilio.it	2019-08-08 00:00:00
+243	ubaldo.bocelli@hotmail.com	2019-01-01 00:00:00
+244	benvenuto.tozzi@hotmail.com	2019-01-04 00:00:00
+245	vincenzo.angiolello@gmail.com	2019-06-08 00:00:00
+246	ugolino.nosiglia@libero.it	2019-08-23 00:00:00
+247	marta.casarin@libero.it	2019-11-11 00:00:00
+248	raffaella.tonisto@gmail.com	2019-03-19 00:00:00
+249	ruggero.muratori@gmail.com	2019-02-26 00:00:00
+250	pasquale.tarantino@hotmail.com	2019-09-27 00:00:00
+251	agnolo.mussolini@virgilio.it	2019-06-03 00:00:00
+252	veronica.cilea@hotmail.com	2019-01-20 00:00:00
+253	martina.fracci@virgilio.it	2019-08-30 00:00:00
+254	pierluigi.capone@virgilio.it	2019-08-20 00:00:00
+255	fabrizio.tiepolo@gmail.com	2019-07-02 00:00:00
+256	antonino.visintini@hotmail.com	2019-12-02 00:00:00
+257	luciano.falier@yahoo.it	2019-11-30 00:00:00
+258	lara.lanfranchi@hotmail.com	2019-01-06 00:00:00
+259	ugolino.cesarotti@hotmail.com	2019-03-05 00:00:00
+260	bianca.malatesta@virgilio.it	2019-09-13 00:00:00
+261	licia.biagi@virgilio.it	2019-09-10 00:00:00
+262	amleto.bombieri@libero.it	2019-10-01 00:00:00
+263	lucio.callegaro@yahoo.it	2019-09-09 00:00:00
+264	giuseppe.nugnes@hotmail.com	2019-05-26 00:00:00
+265	dante.pometta@gmail.com	2019-01-03 00:00:00
+266	fortunata.trotta@virgilio.it	2019-05-05 00:00:00
+267	raffaellino.busoni@yahoo.it	2019-11-18 00:00:00
+268	milo.nosiglia@libero.it	2019-10-09 00:00:00
+269	lolita.gentili@hotmail.com	2019-06-11 00:00:00
+270	alphons.finzi@virgilio.it	2019-12-17 00:00:00
+271	damiano.schiaparelli@hotmail.com	2019-02-03 00:00:00
+272	ivo.tartaglia@gmail.com	2019-02-13 00:00:00
+273	gelsomina.greco@libero.it	2019-04-29 00:00:00
+274	melina.sagredo@gmail.com	2019-04-24 00:00:00
+275	ronaldo.dandolo@hotmail.com	2019-06-22 00:00:00
+276	rita.tarantini@hotmail.com	2019-08-23 00:00:00
+277	marta.marrone@gmail.com	2019-09-07 00:00:00
+278	lucia.pisano@hotmail.com	2019-08-15 00:00:00
+279	ivan.favata@gmail.com	2019-09-25 00:00:00
+280	fredo.ruberto@libero.it	2019-08-18 00:00:00
+281	coriolano.pastine@hotmail.com	2019-03-19 00:00:00
+282	alessia.morandi@libero.it	2019-02-25 00:00:00
+283	coluccio.cammarata@hotmail.com	2019-12-13 00:00:00
+284	roman.leopardi@libero.it	2019-10-20 00:00:00
+285	barbara.celentano@virgilio.it	2019-09-04 00:00:00
+286	vittorio.poerio@libero.it	2019-05-17 00:00:00
+287	santino.tartaglia@gmail.com	2019-03-11 00:00:00
+288	fortunata.bignami@yahoo.it	2019-11-18 00:00:00
+289	stefani.gangemi@yahoo.it	2019-12-06 00:00:00
+290	vito.cilea@virgilio.it	2019-08-22 00:00:00
+291	teresa.tirabassi@virgilio.it	2019-06-05 00:00:00
+292	martino.spinola@libero.it	2019-04-14 00:00:00
+293	guglielmo.togliatti@yahoo.it	2019-09-12 00:00:00
+294	giulio.bragaglia@gmail.com	2019-07-21 00:00:00
+295	vito.campano@hotmail.com	2019-07-19 00:00:00
+296	michela.sabatini@libero.it	2019-07-16 00:00:00
+297	fabio.aloisio@libero.it	2019-06-11 00:00:00
+298	fulvio.pedroni@virgilio.it	2019-07-28 00:00:00
+299	guglielmo.curci@libero.it	2019-09-21 00:00:00
+300	stefani.dandolo@libero.it	2019-02-21 00:00:00
+301	etta.gemito@libero.it	2019-03-18 00:00:00
+302	uberto.turchi@gmail.com	2019-11-30 00:00:00
+303	lorenzo.vigliotti@yahoo.it	2019-05-20 00:00:00
+304	patrizia.ramazzotti@gmail.com	2019-12-05 00:00:00
+305	simonetta.zaccagnini@gmail.com	2019-02-26 00:00:00
+306	marcella.ruggieri@hotmail.com	2019-01-17 00:00:00
+307	diana.scarfoglio@hotmail.com	2019-03-01 00:00:00
+308	goffredo.pagliaro@gmail.com	2019-08-01 00:00:00
+309	giuseppe.garzoni@gmail.com	2019-08-05 00:00:00
+310	veronica.pietrangeli@virgilio.it	2019-11-15 00:00:00
+311	marco.papetti@yahoo.it	2019-08-17 00:00:00
+312	durante.fermi@yahoo.it	2019-10-28 00:00:00
+313	antonella.roero@virgilio.it	2019-11-21 00:00:00
+314	fabia.garozzo@hotmail.com	2019-03-21 00:00:00
+315	raimondo.onisto@gmail.com	2019-03-15 00:00:00
+316	gelsomina.comeriato@yahoo.it	2019-06-29 00:00:00
+317	berenice.capecchi@virgilio.it	2019-09-13 00:00:00
+318	ruggiero.juvara@hotmail.com	2019-08-27 00:00:00
+319	ernesto.tomasetti@hotmail.com	2019-03-20 00:00:00
+320	loretta.balbo@gmail.com	2019-07-09 00:00:00
+321	napoleone.tiepolo@virgilio.it	2019-05-24 00:00:00
+322	lidia.tutino@libero.it	2019-08-19 00:00:00
+323	piergiuseppe.corradi@libero.it	2019-10-31 00:00:00
+324	lara.cassarà@yahoo.it	2019-10-30 00:00:00
+325	tina.giannone@yahoo.it	2019-10-21 00:00:00
+326	greca.boitani@hotmail.com	2019-05-11 00:00:00
+327	michele.prodi@yahoo.it	2019-11-09 00:00:00
+328	antonella.petrocelli@yahoo.it	2019-01-11 00:00:00
+329	franco.salvemini@yahoo.it	2019-01-01 00:00:00
+330	romina.bellini@virgilio.it	2019-08-26 00:00:00
+331	ennio.benedetti@yahoo.it	2019-08-31 00:00:00
+332	serena.briccialdi@virgilio.it	2019-06-23 00:00:00
+333	flavio.galilei@hotmail.com	2019-09-30 00:00:00
+334	lilla.parini@virgilio.it	2019-11-19 00:00:00
+335	giorgia.calbo@gmail.com	2019-09-19 00:00:00
+336	alfio.camuccini@yahoo.it	2019-03-14 00:00:00
+337	barbara.murialdo@gmail.com	2019-06-03 00:00:00
+338	alessandra.bettoni@libero.it	2019-07-31 00:00:00
+339	ludovico.pratesi@virgilio.it	2019-09-16 00:00:00
+340	laureano.comboni@hotmail.com	2019-10-17 00:00:00
+341	flavia.bellocchio@virgilio.it	2019-02-20 00:00:00
+342	alfredo.desio@yahoo.it	2019-08-21 00:00:00
+343	massimiliano.maggioli@virgilio.it	2019-02-23 00:00:00
+344	ida.moresi@yahoo.it	2019-03-20 00:00:00
 \.
 
 
@@ -21143,114 +21494,114 @@ COPY public.photo (photo_id, patient_id, upload_date) FROM stdin;
 -- Data for Name: province; Type: TABLE DATA; Schema: public; Owner: guhncjua
 --
 
-COPY public.province (province_id, province_name, province_abbreviation, province_region) FROM stdin;
-1	Agrigento	AG	Sicilia
-2	Alessandria	AL	Piemonte
-3	Ancona	AN	Marche
-4	Arezzo	AR	Toscana
-5	Ascoli Piceno	AP	Marche
-6	Asti	AT	Piemonte
-7	Avellino	AV	Campania
-8	Bari	BA	Puglia
-9	Barletta-Andria-Trani	BT	Puglia
-10	Belluno	BL	Veneto
-11	Benevento	BN	Campania
-12	Bergamo	BG	Lombardia
-13	Biella	BI	Piemonte
-14	Bologna	BO	Emilia-Romagna
-15	Bolzano	BZ	Trentino-Alto Adige
-16	Brescia	BS	Lombardia
-17	Brindisi	BR	Puglia
-18	Cagliari	CA	Sardegna
-19	Caltanissetta	CL	Sicilia
-20	Campobasso	CB	Molise
-22	Caserta	CE	Campania
-23	Catania	CT	Sicilia
-24	Catanzaro	CZ	Calabria
-25	Chieti	CH	Abruzzo
-26	Como	CO	Lombardia
-27	Cosenza	CS	Calabria
-28	Cremona	CR	Lombardia
-29	Crotone	KR	Calabria
-30	Cuneo	CN	Piemonte
-31	Enna	EN	Sicilia
-32	Fermo	FM	Marche
-33	Ferrara	FE	Emilia-Romagna
-34	Firenze	FI	Toscana
-35	Foggia	FG	Puglia
-36	Forlì-Cesena	FC	Emilia-Romagna
-37	Frosinone	FR	Lazio
-38	Genova	GE	Liguria
-39	Gorizia	GO	Friuli-Venezia Giulia
-40	Grosseto	GR	Toscana
-41	Imperia	IM	Liguria
-42	Isernia	IS	Molise
-44	La Spezia	SP	Liguria
-45	Latina	LT	Lazio
-46	Lecce	LE	Puglia
-47	Lecco	LC	Lombardia
-48	Livorno	LI	Toscana
-49	Lodi	LO	Lombardia
-50	Lucca	LU	Toscana
-51	Macerata	MC	Marche
-52	Mantova	MN	Lombardia
-53	Massa e Carrara	MS	Toscana
-54	Matera	MT	Basilicata
-56	Messina	ME	Sicilia
-57	Milano	MI	Lombardia
-58	Modena	MO	Emilia-Romagna
-59	Monza e Brianza	MB	Lombardia
-60	Napoli	NA	Campania
-61	Novara	NO	Piemonte
-62	Nuoro	NU	Sardegna
-65	Oristano	OR	Sardegna
-66	Padova	PD	Veneto
-67	Palermo	PA	Sicilia
-68	Parma	PR	Emilia-Romagna
-69	Pavia	PV	Lombardia
-70	Perugia	PG	Umbria
-71	Pesaro e Urbino	PU	Marche
-72	Pescara	PE	Abruzzo
-73	Piacenza	PC	Emilia-Romagna
-74	Pisa	PI	Toscana
-75	Pistoia	PT	Toscana
-76	Pordenone	PN	Friuli-Venezia Giulia
-77	Potenza	PZ	Basilicata
-78	Prato	PO	Toscana
-79	Ragusa	RG	Sicilia
-80	Ravenna	RA	Emilia-Romagna
-82	Reggio Emilia	RE	Emilia-Romagna
-83	Rieti	RI	Lazio
-84	Rimini	RN	Emilia-Romagna
-85	Roma	RM	Lazio
-86	Rovigo	RO	Veneto
-87	Salerno	SA	Campania
-88	Sassari	SS	Sardegna
-89	Savona	SV	Liguria
-90	Siena	SI	Toscana
-91	Siracusa	SR	Sicilia
-92	Sondrio	SO	Lombardia
-93	Taranto	TA	Puglia
-94	Teramo	TE	Abruzzo
-95	Terni	TR	Umbria
-96	Torino	TO	Piemonte
-97	Trapani	TP	Sicilia
-98	Trento	TN	Trentino-Alto Adige
-99	Treviso	TV	Veneto
-100	Trieste	TS	Friuli-Venezia Giulia
-101	Udine	UD	Friuli-Venezia Giulia
-102	Aosta	AO	Valle dAosta
-103	Varese	VA	Lombardia
-104	Venezia	VE	Veneto
-105	Verbano-Cusio-Ossola	VB	Piemonte
-106	Vercelli	VC	Piemonte
-107	Verona	VR	Veneto
-108	Vibo Valentia	VV	Calabria
-109	Vicenza	VI	Veneto
-110	Viterbo	VT	Lazio
-111	Sud Sardegna	SU	Sardegna
-43	L'Aquila	AQ	Abruzzo
-81	Reggio Calabria	RC	Calabria
+COPY public.province (province_name, province_id, province_region) FROM stdin;
+Agrigento	AG	Sicilia
+Alessandria	AL	Piemonte
+Ancona	AN	Marche
+Arezzo	AR	Toscana
+Ascoli Piceno	AP	Marche
+Asti	AT	Piemonte
+Avellino	AV	Campania
+Bari	BA	Puglia
+Barletta-Andria-Trani	BT	Puglia
+Belluno	BL	Veneto
+Benevento	BN	Campania
+Bergamo	BG	Lombardia
+Biella	BI	Piemonte
+Bologna	BO	Emilia-Romagna
+Bolzano	BZ	Trentino-Alto Adige
+Brescia	BS	Lombardia
+Brindisi	BR	Puglia
+Cagliari	CA	Sardegna
+Caltanissetta	CL	Sicilia
+Campobasso	CB	Molise
+Caserta	CE	Campania
+Catania	CT	Sicilia
+Catanzaro	CZ	Calabria
+Chieti	CH	Abruzzo
+Como	CO	Lombardia
+Cosenza	CS	Calabria
+Cremona	CR	Lombardia
+Crotone	KR	Calabria
+Cuneo	CN	Piemonte
+Enna	EN	Sicilia
+Fermo	FM	Marche
+Ferrara	FE	Emilia-Romagna
+Firenze	FI	Toscana
+Foggia	FG	Puglia
+Forlì-Cesena	FC	Emilia-Romagna
+Frosinone	FR	Lazio
+Genova	GE	Liguria
+Gorizia	GO	Friuli-Venezia Giulia
+Grosseto	GR	Toscana
+Imperia	IM	Liguria
+Isernia	IS	Molise
+La Spezia	SP	Liguria
+Latina	LT	Lazio
+Lecce	LE	Puglia
+Lecco	LC	Lombardia
+Livorno	LI	Toscana
+Lodi	LO	Lombardia
+Lucca	LU	Toscana
+Macerata	MC	Marche
+Mantova	MN	Lombardia
+Massa e Carrara	MS	Toscana
+Matera	MT	Basilicata
+Messina	ME	Sicilia
+Milano	MI	Lombardia
+Modena	MO	Emilia-Romagna
+Monza e Brianza	MB	Lombardia
+Napoli	NA	Campania
+Novara	NO	Piemonte
+Nuoro	NU	Sardegna
+Oristano	OR	Sardegna
+Padova	PD	Veneto
+Palermo	PA	Sicilia
+Parma	PR	Emilia-Romagna
+Pavia	PV	Lombardia
+Perugia	PG	Umbria
+Pesaro e Urbino	PU	Marche
+Pescara	PE	Abruzzo
+Piacenza	PC	Emilia-Romagna
+Pisa	PI	Toscana
+Pistoia	PT	Toscana
+Pordenone	PN	Friuli-Venezia Giulia
+Potenza	PZ	Basilicata
+Prato	PO	Toscana
+Ragusa	RG	Sicilia
+Ravenna	RA	Emilia-Romagna
+Reggio Emilia	RE	Emilia-Romagna
+Rieti	RI	Lazio
+Rimini	RN	Emilia-Romagna
+Roma	RM	Lazio
+Rovigo	RO	Veneto
+Salerno	SA	Campania
+Sassari	SS	Sardegna
+Savona	SV	Liguria
+Siena	SI	Toscana
+Siracusa	SR	Sicilia
+Sondrio	SO	Lombardia
+Taranto	TA	Puglia
+Teramo	TE	Abruzzo
+Terni	TR	Umbria
+Torino	TO	Piemonte
+Trapani	TP	Sicilia
+Trento	TN	Trentino-Alto Adige
+Treviso	TV	Veneto
+Trieste	TS	Friuli-Venezia Giulia
+Udine	UD	Friuli-Venezia Giulia
+Aosta	AO	Valle dAosta
+Varese	VA	Lombardia
+Venezia	VE	Veneto
+Verbano-Cusio-Ossola	VB	Piemonte
+Vercelli	VC	Piemonte
+Verona	VR	Veneto
+Vibo Valentia	VV	Calabria
+Vicenza	VI	Veneto
+Viterbo	VT	Lazio
+Sud Sardegna	SU	Sardegna
+L'Aquila	AQ	Abruzzo
+Reggio Calabria	RC	Calabria
 \.
 
 
@@ -22036,7 +22387,8 @@ ida.moresi@yahoo.it	3DDD58B2159F127022E586D1174929A312C1F18FBB613D92D122158E97A5
 --
 
 COPY public.visit (visit_id, practitioner_id, patient_id, visit_date, report_available, report, booked) FROM stdin;
-20	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2019-12-26 11:34:00	t	Il paziente è in un ottimo stato di salute.	t
+21	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	\N	f	\N	f
+20	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2019-12-26 11:34:00	t	Mi viene un colpo al cuore, sono Post Malore	t
 \.
 
 
@@ -22051,7 +22403,7 @@ SELECT pg_catalog.setval('public.drug_list_drug_id_seq', 682, true);
 -- Name: drug_prescription_drug_prescription_id_seq; Type: SEQUENCE SET; Schema: public; Owner: guhncjua
 --
 
-SELECT pg_catalog.setval('public.drug_prescription_drug_prescription_id_seq', 31, true);
+SELECT pg_catalog.setval('public.drug_prescription_drug_prescription_id_seq', 38, true);
 
 
 --
@@ -22093,7 +22445,7 @@ SELECT pg_catalog.setval('public.temp_id_seq', 15828, true);
 -- Name: visit_visit_id_seq; Type: SEQUENCE SET; Schema: public; Owner: guhncjua
 --
 
-SELECT pg_catalog.setval('public.visit_visit_id_seq', 20, true);
+SELECT pg_catalog.setval('public.visit_visit_id_seq', 21, true);
 
 
 --
@@ -22197,7 +22549,7 @@ ALTER TABLE ONLY public.photo
 --
 
 ALTER TABLE ONLY public.province
-    ADD CONSTRAINT province_pkey PRIMARY KEY (province_abbreviation);
+    ADD CONSTRAINT province_pkey PRIMARY KEY (province_id);
 
 
 --
@@ -22259,7 +22611,7 @@ CREATE UNIQUE INDEX unique_pending_visit ON public.visit USING btree (practition
 --
 
 ALTER TABLE ONLY public.chemist
-    ADD CONSTRAINT chemist_chemist_province_fkey FOREIGN KEY (chemist_province) REFERENCES public.province(province_abbreviation);
+    ADD CONSTRAINT chemist_chemist_province_fkey FOREIGN KEY (chemist_province) REFERENCES public.province(province_id);
 
 
 --
@@ -22275,7 +22627,7 @@ ALTER TABLE ONLY public.chemist
 --
 
 ALTER TABLE ONLY public.comune
-    ADD CONSTRAINT comune_province_fkey FOREIGN KEY (province) REFERENCES public.province(province_abbreviation);
+    ADD CONSTRAINT comune_province_fkey FOREIGN KEY (province) REFERENCES public.province(province_id);
 
 
 --
@@ -22371,7 +22723,7 @@ ALTER TABLE ONLY public.general_practitioner
 --
 
 ALTER TABLE ONLY public.general_practitioner
-    ADD CONSTRAINT general_practitioner_working_province_fkey FOREIGN KEY (working_province) REFERENCES public.province(province_abbreviation);
+    ADD CONSTRAINT general_practitioner_working_province_fkey FOREIGN KEY (working_province) REFERENCES public.province(province_id);
 
 
 --
@@ -22387,7 +22739,7 @@ ALTER TABLE ONLY public.health_service
 --
 
 ALTER TABLE ONLY public.health_service
-    ADD CONSTRAINT health_service_operating_province_fkey FOREIGN KEY (operating_province) REFERENCES public.province(province_abbreviation);
+    ADD CONSTRAINT health_service_operating_province_fkey FOREIGN KEY (operating_province) REFERENCES public.province(province_id);
 
 
 --
@@ -22419,7 +22771,7 @@ ALTER TABLE ONLY public.patient
 --
 
 ALTER TABLE ONLY public.patient
-    ADD CONSTRAINT patient_living_province_fkey FOREIGN KEY (living_province) REFERENCES public.province(province_abbreviation);
+    ADD CONSTRAINT patient_living_province_fkey FOREIGN KEY (living_province) REFERENCES public.province(province_id);
 
 
 --

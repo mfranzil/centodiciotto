@@ -140,10 +140,10 @@ public class JDBCHealthServiceDAO extends JDBCDAO<HealthService, String> impleme
         return -1L;
     }
 
-    public HealthService getByProvince(String provinceAbbreviation) throws DAOException {
+    public HealthService getByProvince(String provinceID) throws DAOException {
         HealthService res;
         try (PreparedStatement stm = CON.prepareStatement(GET_BY_PROVINCE)) {
-            stm.setString(1, provinceAbbreviation);
+            stm.setString(1, provinceID);
 
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {

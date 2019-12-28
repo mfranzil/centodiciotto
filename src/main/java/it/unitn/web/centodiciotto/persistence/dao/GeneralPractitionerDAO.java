@@ -12,11 +12,11 @@ import java.util.List;
 public interface GeneralPractitionerDAO extends DAO<GeneralPractitioner, String> {
 
     /**
-     * Returns a {@link List} of {@link GeneralPractitioner}s from a given {@code provinceAbbreviation}.
+     * Returns a {@link List} of {@link GeneralPractitioner}s from a given {@code provinceID}.
      *
-     * @param provinceAbbreviation the {@code provinceAbbreviation}
-     * @return a {@link List} of {@link GeneralPractitioner}s from a given {@code provinceAbbreviation}
+     * @param provinceID the {@code provinceID}
+     * @return a {@link List} of {@link GeneralPractitioner}s from a given {@code provinceID}
      * @throws DAOException in case of a malformed input or query
      */
-    List<GeneralPractitioner> getByProvince(String provinceAbbreviation) throws DAOException;
+    List<GeneralPractitioner> getByProvince(String provinceID) throws DAOException;
 }

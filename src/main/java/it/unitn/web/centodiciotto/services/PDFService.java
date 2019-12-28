@@ -149,7 +149,8 @@ public class PDFService {
         parameters.add(Pair.makePair("patientID", pat.getID()));
 
         File file = QRCodeCreator.createQRCodeURL(
-                qrCodeURL + sc.getContextPath() + "restricted/chemist/prescriptions", parameters,
+                qrCodeURL + sc.getContextPath() + File.separator +
+                        "restricted/chemist/prescriptions", parameters,
                 220, 220).file();
 
         try {

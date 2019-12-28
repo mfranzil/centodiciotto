@@ -9,7 +9,7 @@ public class Province {
     private String region;
 
     /**
-     * Gets the ID of the Province, represented as a captial two-letter abbreviation (AA to ZZ).
+     * Gets the ID of the Province, represented as two capital letters (AA to ZZ).
      *
      * @return the ID
      */
@@ -18,7 +18,7 @@ public class Province {
     }
 
     /**
-     * Sets the abbreviation of the Province. The abbreviation MUST be a capital two-letter abbreviation (AA to ZZ).
+     * Sets the ID of the Province. The ID MUST be composed of two capital letters (AA to ZZ).
      *
      * @param ID the ID
      */

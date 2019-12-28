@@ -84,6 +84,20 @@ public class PatientListServlet extends HttpServlet {
         User user = (User) request.getSession().getAttribute("user");
 
         if (user instanceof GeneralPractitioner || user instanceof HealthService || user instanceof SpecializedDoctor) {
+            Long total;
+            try {
+                if (user instanceof GeneralPractitioner) {
+                    total = patientDAO.getCountByPractitioner(user.getID());
+                } else if (user instanceof HealthService) {
+                    total = patientDAO.getCountByProvince(((HealthService) user).getOperatingProvince().getID());
+                } else { // if user instanceof SpecializedDoctor
+                    total = patientDAO.getCount();
+                }
+            } catch (DAOException e) {
+                throw new ServletException("Error in DAO usage: ", e);
+            }
+
+            request.setAttribute("total", total);
             request.getRequestDispatcher("/jsp/shared/patients-gp-hs-sd.jsp").forward(request, response);
         }
     }
@@ -105,24 +119,53 @@ public class PatientListServlet extends HttpServlet {
         if (user instanceof GeneralPractitioner || user instanceof HealthService || user instanceof SpecializedDoctor) {
             switch (requestType) {
                 case "patientList": {
-                    try {
-                        String patientID = request.getParameter("patientID");
+                    Integer limit;
+                    Integer offset;
+                    Boolean isAscending;
+                    String patientID = request.getParameter("patientID");
 
-                        List<Patient> patientList = new ArrayList<>();
+                    List<Patient> patientList = new ArrayList<>();
 
-                        if (patientID == null) {
-                            if (user instanceof GeneralPractitioner) {
-                                patientList = patientDAO.getByPractitioner(user.getID());
-                            } else if (user instanceof HealthService) {
-                                patientList = patientDAO.getByProvince
-                                        (((HealthService) user).getOperatingProvince().getID());
-                            } else { // SpecializedDoctor
-                                patientList = patientDAO.getAll();
-                            }
-                        } else {
-                            patientList.add(patientDAO.getByPrimaryKey(patientID));
+                    // If no patientID is provided, then limit, offset and order parameters are
+                    // expected to provide pagination within the request, else they can be discarded.
+                    if (patientID == null) {
+                        try {
+                            limit = Integer.parseInt(request.getParameter("limit"));
+                            offset = Integer.parseInt(request.getParameter("offset"));
+                            isAscending = request.getParameter("order").toUpperCase().equals("ASC");
+                        } catch (NullPointerException | NumberFormatException e) {
+                            response.setStatus(406);
+                            String json = "{\"error\": \"Malformed input. Please refresh the page and try again.\"}";
+                            writer.write(json);
+                            Logger.getLogger("C18").severe(json);
+                            return;
                         }
 
+                        // Which patients are supplied are decided depending on the role.
+                        // SpecializedDoctors have access to all patients in the system.
+                        // GeneralPractitioners have access to their patients and only them.
+                        // HealthServices have access to all patients residing in that province.
+                        try {
+                            if (user instanceof GeneralPractitioner) {
+                                patientList = patientDAO.getByPractitioner(user.getID(), limit, offset, isAscending);
+                            } else if (user instanceof HealthService) {
+                                patientList = patientDAO.getByProvince(((HealthService) user).getOperatingProvince().getID(),
+                                        limit, offset, isAscending);
+                            } else { // if user instanceof SpecializedDoctor
+                                patientList = patientDAO.getAll(limit, offset, isAscending);
+                            }
+                        } catch (DAOException e) {
+                            throw new ServletException("Error in DAO usage: ", e);
+                        }
+                    } else {
+                        try {
+                            patientList.add(patientDAO.getByPrimaryKey(patientID));
+                        } catch (DAOException e) {
+                            throw new ServletException("Error in DAO usage: ", e);
+                        }
+                    }
+
+                    try {
                         List<PatientListElement> patientListElements = new ArrayList<>();
                         for (Patient patient : patientList) {
                             String photoPath = photoService.getLastPhoto(patient.getID());
@@ -136,8 +179,6 @@ public class PatientListServlet extends HttpServlet {
 
                         Gson gson = new Gson();
                         writer.write(gson.toJson(patientListElements));
-                    } catch (DAOException e) {
-                        throw new ServletException("Error in DAO usage: ", e);
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Photo path retrieval: ", e);
                     }

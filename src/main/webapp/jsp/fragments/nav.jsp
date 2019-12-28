@@ -68,7 +68,7 @@
                         <li class="nav-item">
                             <a class="nav-link nav-link-personal"
                                href="${pageContext.request.contextPath}/restricted/general_practitioner/patients">
-                                My patients
+                                Patients
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -96,7 +96,7 @@
                         <li class="nav-item">
                             <a class="nav-link nav-link-personal"
                                href="${pageContext.request.contextPath}/restricted/specialized_doctor/patients">
-                                My patients
+                                Patients
                             </a>
                         </li>
                         <li class="nav-item dropdown">

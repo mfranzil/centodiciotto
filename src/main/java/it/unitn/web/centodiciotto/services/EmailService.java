@@ -62,7 +62,7 @@ public class EmailService {
                 }
             });
 
-            session.setDebug(false);
+            //session.setDebug(false);
         } catch (IOException e) {
             throw new ServiceException("Error sending email", e);
         }
