@@ -160,7 +160,7 @@ public class RecallServlet extends HttpServlet {
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
                             String subject = "CentoDiciotto - Recall start notification";
 
-                            // Avviso l'HS dell'avvenuto inizio del recall
+                            // Notifies the HS of the successful recall start
                             emailService.sendEmail(recipient, message, subject);
 
                             List<Patient> allPatients = patientDAO.getByProvince(
@@ -192,7 +192,7 @@ public class RecallServlet extends HttpServlet {
                                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                                         subject = "CentoDiciotto - Recall exam notification";
 
-                                        // Avviso il paziente dell'inizio del recall
+                                        // Notifies the patient of the incoming recall
                                         emailService.sendEmail(recipient, message, subject);
                                     }
                                 }

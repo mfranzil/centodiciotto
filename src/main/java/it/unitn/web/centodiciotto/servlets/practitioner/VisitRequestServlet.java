@@ -116,7 +116,7 @@ public class VisitRequestServlet extends HttpServlet {
                             "\n\nYours,\nThe CentoDiciotto team.\n";
                     String subject = "CentoDiciotto - Visit appointment notification";
 
-                    // Avviso il paziente dell'avvenuta aggiunta di data e ora
+                    // Notifying patient of the date-time change
                     emailService.sendEmail(recipient, message, subject);
 
                     writer.write("{}");

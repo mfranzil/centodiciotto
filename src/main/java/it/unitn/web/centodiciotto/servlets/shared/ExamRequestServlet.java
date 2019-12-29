@@ -152,7 +152,7 @@ public class ExamRequestServlet extends HttpServlet {
                                         "\n\nYours,\nThe CentoDiciotto team.\n";
                                 String subject = "CentoDiciotto - Exam appointment notification";
 
-                                // Avviso il paziente dell'avvenuta aggiunta di data e ora
+                                // Notifies the patient of the addition of date and time
                                 emailService.sendEmail(recipient, message, subject);
 
                                 writer.write("{}");

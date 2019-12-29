@@ -19,23 +19,7 @@
         <param-value>xls</param-value>
     </context-param>
 
-    <!-- Filtri -->
-    <filter>
-        <filter-name>AuthenticationFilter</filter-name>
-        <filter-class>it.unitn.web.centodiciotto.filters.AuthenticationFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthenticationFilter</filter-name>
-        <url-pattern>/restricted/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
-
-    <!-- Listener -->
-    <listener>
-        <description>ServletContextListener</description>
-        <listener-class>it.unitn.web.centodiciotto.listeners.WebAppContextListener</listener-class>
-    </listener>
-
+    <!-- Pages directly served to the user -->
     <servlet>
         <servlet-name>Cookies</servlet-name>
         <jsp-file>/jsp/cookies.jsp</jsp-file>
@@ -54,7 +38,7 @@
         <url-pattern>/privacy</url-pattern>
     </servlet-mapping>
 
-    <!-- Config aggiuntive e pagine di errore -->
+    <!-- Session duration and error pages -->
     <session-config>
         <session-timeout>
             5
@@ -77,12 +61,22 @@
         <location>/jsp/errors/405.jsp</location>
     </error-page>
 
-    <!-- Blocco l'accesso diretto alle jsp -->
+    <!-- Direct access block to /jsp and /pdf -->
     <security-constraint>
         <display-name>JSP direct access block</display-name>
         <web-resource-collection>
             <web-resource-name>JSP</web-resource-name>
             <url-pattern>/jsp/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description>No direct access</description>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>PDF direct access block</display-name>
+        <web-resource-collection>
+            <web-resource-name>PDF</web-resource-name>
+            <url-pattern>/pdf/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>No direct access</description>

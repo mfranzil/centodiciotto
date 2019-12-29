@@ -1,9 +1,3 @@
-/*
- * AA 2018-2019
- * Introduction to Web Programming
- * Lab 08 - Commons - DAO interface
- * UniTN
- */
 package it.unitn.web.centodiciotto.persistence.dao.factories;
 
 import it.unitn.web.centodiciotto.persistence.base.DAO;

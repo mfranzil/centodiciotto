@@ -109,7 +109,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Patient change notification";
 
-                // Avviso il vecchio practitioner
+                // Notifies the old practitioner
                 emailService.sendEmail(recipient, message, subject);
 
                 recipient = newPract.getID();
@@ -120,7 +120,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - New patient notification";
 
-                // Avviso il nuovo practitioner
+                // Notifies the new practitioner
                 emailService.sendEmail(recipient, message, subject);
 
                 recipient = user.getID();
@@ -131,7 +131,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - Practitioner change notification";
 
-                // Avviso il paziente
+                // Notifies the patient
                 emailService.sendEmail(recipient, message, subject);
 
                 writer.write("{}");

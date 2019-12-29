@@ -5,7 +5,7 @@
  */
 
 $("document").ready(() => {
-    $("#password-change").submit(function(e) {
+    $("#password-change").submit(function (e) {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");
@@ -43,7 +43,7 @@ $("document").ready(() => {
         $(this).next(".custom-file-label").html(filename.replace("C:\\fakepath\\", ""));
     });
 
-    $("#avatar").submit(function(e) {
+    $("#avatar").submit(function (e) {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");

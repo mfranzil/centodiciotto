@@ -114,7 +114,7 @@ public class UserServlet extends HttpServlet {
                                         "\n\nYours,\nThe CentoDiciotto team.\n";
                                 String subject = "CentoDiciotto - Password change notification";
 
-                                // Avviso l'utente del cambio password
+                                // Notifies the user of the password change
                                 emailService.sendEmail(recipient, message, subject);
 
                                 writer.write("{}");

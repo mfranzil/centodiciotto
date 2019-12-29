@@ -113,7 +113,7 @@ public class VisitCalendarServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Visit completion notification";
 
-                // Avviso il paziente del completamento della visita
+                // Notifies the patient about the visit completion
                 emailService.sendEmail(recipient, message, subject);
 
                 writer.write("{}");

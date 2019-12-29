@@ -225,7 +225,7 @@ public class VisitHistoryServlet extends HttpServlet {
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Visit report update notification";
 
-                        // Avviso il paziente dell'aggiornamento del report
+                        // Notifies the patient about the report update
                         emailService.sendEmail(recipient, message, subject);
 
                         writer.write("{}");

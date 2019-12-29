@@ -229,7 +229,7 @@ public class ExamHistoryServlet extends HttpServlet {
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Exam report update notification";
 
-                        // Avviso il paziente dell'aggiornamento del risultato
+                        // Notifies the patient of the result update
                         emailService.sendEmail(recipient, message, subject);
 
                         writer.write("{}");

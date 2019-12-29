@@ -99,7 +99,7 @@ public class TicketServlet extends HttpServlet {
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Ticket payment notification";
 
-                        // Avviso il paziente dell'avvenuto pagamento
+                        // Notifies the patient of the successful payment
                         emailService.sendEmail(recipient, message, subject);
 
                         writer.write("{}");
@@ -132,7 +132,7 @@ public class TicketServlet extends HttpServlet {
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Ticket payment notification";
 
-                        // Avviso il paziente dell'avvenuto pagamento
+                        // Notifies the patient of the successful payment
                         emailService.sendEmail(recipient, message, subject);
 
                         writer.write("{}");

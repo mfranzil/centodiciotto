@@ -298,7 +298,7 @@ public class PrescriptionServlet extends HttpServlet {
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Exam prescription notification";
 
-                        // Avviso il paziente dell'abilitazione dell'esame
+                        // Notifies the patient about the exam prescription
                         emailService.sendEmail(patientID, message, subject);
 
                         writer.write("{}");

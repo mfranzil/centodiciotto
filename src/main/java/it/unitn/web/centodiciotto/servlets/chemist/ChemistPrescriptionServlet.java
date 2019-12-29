@@ -205,7 +205,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
                             String subject = "CentoDiciotto - Drug disptach notification";
 
-                            // Avviso il paziente dell'avvenuta ricezione del farmaco
+                            // Notifies the patient of the successful drug dispatch
                             emailService.sendEmail(recipient, message, subject);
 
                             writer.write("{\"patientID\": \"" + dp.getPatientID() + "\"}");

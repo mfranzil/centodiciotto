@@ -110,7 +110,7 @@ $("document").ready(() => {
      * @param headers an Array of objects (see description)
      * @returns {$} this (for method chaining)
      */
-    $.fn.createTableHeaders = function(headers) {
+    $.fn.createTableHeaders = function (headers) {
         this.html("");
         let headersDiv = document.createElement("div");
         headersDiv.classList.add("table-personal");

@@ -122,15 +122,15 @@ public class DrugPrescriptionServlet extends HttpServlet {
                     return;
                 }
 
-                // Inserisco l'indirizzo corrente, possibile soltanto a livello di richiesta
-                // in modo da aggiungerlo al codice QR
+                // Saves the current URL, which is possible only at request level,
+                // in order to let the service generate the QR code properly
                 String qrCodeURL = getCurrentURL(request);
 
                 PDDocument prescriptionDoc = pdfService.createDrugPrescription(
                         prescription, patient, practitioner, qrCodeURL);
 
                 response.setContentType("application/pdf");
-                response.setHeader("Content-disposition", "inline; filename='" + fileName + "'");
+                response.setHeader("Content-Disposition", "inline; filename='prescription.pdf'");
 
                 Logger.getLogger("C18").info("Supplying new PDF prescription " + filePath + File.separator + fileName);
 

@@ -127,6 +127,7 @@ public class Patient extends User {
 
     /**
      * Returns a full string representation of the gender.
+     *
      * @return the gender as a string form
      */
     public String getFullGender() {

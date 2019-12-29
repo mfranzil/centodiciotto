@@ -93,7 +93,7 @@ public class VisitServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Visit request notification";
 
-                // Avviso il medico della richiesta di visita
+                // Notifies the practitioner about the visit request
                 emailService.sendEmail(practitionerID, message, subject);
 
                 writer.write("{}");

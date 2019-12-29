@@ -1,4 +1,4 @@
-/* Dichiarazioni dei colori */
+/* Color declarations with CSS vars */
 
 :root {
     --118-light: 230, 247, 255;
@@ -37,14 +37,10 @@ body {
     justify-content: space-between;
 }
 
-/* Allineamenti delle tabelle generici, spaziature per mobile */
+/* Table alignments, mobile spacings */
 
 .table td, .table th {
     vertical-align: middle !important;
-}
-
-.row {
-    /* align-items: center !important; */
 }
 
 .row > div {
@@ -67,7 +63,7 @@ body {
     }
 }
 
-/* Evidenzia il link corrente ovunque */
+/* Highlights the current link with a bold face everywhere in the page */
 
 .current {
     font-weight: bold !important;
@@ -142,7 +138,7 @@ body {
     width: 20px;
 }
 
-/* Dropdown della navbar; si comporta diversamente a seconda della dimensione */
+/* Navbar dropdown, which works differently depending on window size */
 
 .dropdown-item:hover {
     background-color: rgba(var(--118-dark), 1);
@@ -152,7 +148,7 @@ body {
     cursor: pointer;
 }
 
-/* Dichiarazioni extra per la navbar e i layout mobile (logo in orizzontale, padding, etc...) */
+/* Extra declaration for navbar and mobile layouts (padding, logo size, ...) */
 
 @media (min-width: 992px) {
     .landscape-logo {
@@ -185,7 +181,7 @@ body {
     }
 }
 
-/* Rotazione della freccetta dei dropdown */
+/* Dropdown arrow rotation (global) */
 
 .dropdown-toggle[aria-expanded="true"]::after {
     cursor: pointer;
@@ -203,7 +199,7 @@ body {
     vertical-align: .128em !important;
 }
 
-/* Bottone logo della navbar */
+/* Navbar logo button */
 
 /*noinspection CssOverwrittenProperties*/
 .navbar-logo, .landscape-logo {
@@ -226,7 +222,7 @@ body {
     transform: rotate(360deg);
 }
 
-/* Rende gli avatar tondi */
+/* Round avatars */
 
 .avatar {
     width: 175px;
@@ -264,7 +260,7 @@ body {
     object-fit: cover;
 }
 
-/* Titolone di ogni pagina */
+/* Jumbotron fixes for page titles */
 
 .jumbotron {
     font-size: 21px;
@@ -276,7 +272,7 @@ body {
     background-color: transparent !important;
 }
 
-/* Bottoni e input */
+/* Buttons and inputs */
 
 .btn-personal {
     background-color: rgba(var(--118-medium-dark), 1);
@@ -349,7 +345,7 @@ body {
     }
 }
 
-/* Animazione del popup */
+/* Popup animations */
 
 .animate-in {
     -webkit-animation: animate-zoom-in 0.6s;
@@ -376,7 +372,7 @@ body {
     }
 }
 
-/* Tabelle e ricerca */
+/* Responsive tables and searches */
 
 .ls-search {
     margin: auto;
@@ -473,7 +469,7 @@ textarea:focus {
     border-radius: .5em;
 }
 
-/* Rotazioni */
+/* Rotations */
 
 @-webkit-keyframes rotating /* Safari and Chrome */
 {
@@ -533,7 +529,7 @@ footer a {
     z-index: 5 !important;
 }
 
-/* Colori */
+/* Colors */
 
 .green {
     color: #5cb85c;
@@ -547,7 +543,7 @@ footer a {
     color: rgb(var(--118-medium-dark));
 }
 
-/* Sfondi */
+/* Backgrounds */
 
 .chosen-practitioner {
     background-color: rgba(120, 255, 120, 0.3);

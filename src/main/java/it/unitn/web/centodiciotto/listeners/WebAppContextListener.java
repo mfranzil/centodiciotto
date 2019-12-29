@@ -8,6 +8,7 @@ import it.unitn.web.centodiciotto.services.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 /**
  * ContextListener for this web application.
@@ -17,6 +18,7 @@ import javax.servlet.ServletContextListener;
  * <p>
  * At the moment of Context destruction, it calls the {@link DAOFactory} destructor.
  */
+@WebListener
 public class WebAppContextListener implements ServletContextListener {
 
     @Override

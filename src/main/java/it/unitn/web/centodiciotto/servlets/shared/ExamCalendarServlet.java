@@ -104,7 +104,7 @@ public class ExamCalendarServlet extends HttpServlet {
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Exam completion notification";
 
-                // Avviso il paziente del completamento dell'esame
+                // Notifies the patient about the exam completion
                 emailService.sendEmail(recipient, message, subject);
 
                 writer.write("{}");

@@ -181,8 +181,10 @@ public class ExcelService {
 
             String filePath = sc.getRealPath("/") + File.separator
                     + sc.getInitParameter("excel-folder") + File.separator;
-            String fileName = new SimpleDateFormat("yyyyMMdd").format(date) + "_"
-                    + healthService.getOperatingProvince().getID() + ".xlsx";
+
+            // Format: AA_20200101.xlsx
+            String fileName = healthService.getOperatingProvince().getID() + "_"
+                    + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
 
             try (InputStream is = new FileInputStream(filePath + "report.xlsx")) {
                 try (OutputStream os = new FileOutputStream(filePath + fileName)) {

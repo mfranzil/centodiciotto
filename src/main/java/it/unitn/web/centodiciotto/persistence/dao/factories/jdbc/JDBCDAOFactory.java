@@ -1,9 +1,3 @@
-/*
- * AA 2018-2019
- * Introduction to Web Programming
- * Lab 08 - Commons - DAO JDBC Implementation
- * UniTN
- */
 package it.unitn.web.centodiciotto.persistence.dao.factories.jdbc;
 
 import it.unitn.web.centodiciotto.persistence.base.DAO;

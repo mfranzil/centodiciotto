@@ -85,7 +85,7 @@
                 'Name&nbsp;<span class="dropdown-toggle" id="alphabetical-order"></span>'
             );
 
-            $("#alphabetical-order").click(function() {
+            $("#alphabetical-order").click(function () {
                 if (order === "asc") {
                     order = "desc";
                     $(this).attr("aria-expanded", "true");
@@ -120,7 +120,6 @@
             });
 
             function renderPatientsRows(patientID, limit, offset, order) {
-                //console.log("R() ", patientID, limit, offset, order);
                 $("#main-loading-container").slideDown();
                 if (offset === 0 || typeof offset === "undefined") {
                     $("#main-table").children().not(".table-header").remove();
@@ -169,7 +168,8 @@
                     </select>
                 </div>
                 <div id="main-table"></div>
-                <div class="justify-content-center loading my-2" id="main-loading-container" style="text-align: center;">
+                <div class="justify-content-center loading my-2" id="main-loading-container"
+                     style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
                          src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                 </div>

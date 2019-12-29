@@ -6,21 +6,17 @@
  * Enables popup button openers once the page has been loaded up.
  */
 function enablePopup() {
-    $(this).on()
-    $(".popup-opener").click(function() {
+    $(this).on();
+    $(".popup-opener").click(function () {
         $(this).next().fadeIn();
-        //$(".container,nav,.footer").css("filter", "blur(2px)");
-        //$(".popup-window > *").css("filter", "blur(0px)");
     });
-    $(".popup-closer").click(function(e) {
+    $(".popup-closer").click(function (e) {
         e.preventDefault();
         $(".popup-window").fadeOut();
-        //$(".container,nav,.footer").css("filter", "blur(0px)");
     });
-    $(".popup-window").click(function(e) {
+    $(".popup-window").click(function (e) {
         if ($(this).is(e.target)) {
             $(this).fadeOut();
-            //$(".container,nav,.footer").css("filter", "blur(0px)");
         }
     });
 }
@@ -62,7 +58,7 @@ $("document").ready(() => {
     /**
      * Enables responsive behavior (globally set to <= 992px). Primarily affects the navbar.
      */
-    $(window).on("resize", function(){
+    $(window).on("resize", function () {
         var win = $(this);
         if (win.width() >= 992) {
             $("#log-menu-closed").show();
@@ -73,6 +69,9 @@ $("document").ready(() => {
         }
     });
 
+    /**
+     * Opens the navbar with an animation on mobile devices
+     */
     $("#nav-logo-container").click(() => {
         if ($("#nav-logo-container").attr("aria-expanded") === "false") {
             $("#nav-log").detach().appendTo("#log-menu-open");
@@ -82,9 +81,24 @@ $("document").ready(() => {
     });
 
     /**
+     * Closes the navbar if the user clicks elsewhere.
+     */
+    $(document).mouseup(function (e) {
+        let container = $(".navbar");
+        let nav = $("#nav-logo-container");
+
+        if (nav.attr("aria-expanded") !== "false") {
+            // Checks if the target is or is contained in the navbar
+            if (!container.is(e.target) && container.has(e.target).length === 0) {
+                nav.click();
+            }
+        }
+    });
+
+    /**
      * Highlights links pointing to current page.
      */
-    $("a").each(function() {
+    $("a").each(function () {
         if ($(this).prop("href") === window.location.href) {
             $(this).addClass("current");
         }

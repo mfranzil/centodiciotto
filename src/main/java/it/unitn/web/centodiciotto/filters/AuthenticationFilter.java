@@ -3,15 +3,17 @@ package it.unitn.web.centodiciotto.filters;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Only filter present for the web application. Its job is to filter incoming requests depending on the
- * requesting account's {@link User} type and on the URL requested.
+ * Filter for generic incoming requests. They get filtered depending on the requesting account's
+ * {@link User} type and on the URL requested.
  */
+@WebFilter("/restricted/*")
 public class AuthenticationFilter implements Filter {
 
     @Override

@@ -1,4 +1,4 @@
-/* Spaziature extra per la home page */
+/* Extra spacing for the Home Page */
 
 .container {
     padding: 40px 0;
@@ -36,7 +36,7 @@ footer a {
     font-weight: bold !important;
 }
 
-/* Il css seguente è preso da un template. */
+/* The following CSS is picked up from a default Bootstrap template. */
 
 #portfolio .container-fluid {
     max-width: 1920px;

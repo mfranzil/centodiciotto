@@ -23,7 +23,7 @@ $("document").ready(() => {
         $("#role").val(id);
     });
 
-    $("#login").submit(function(e) {
+    $("#login").submit(function (e) {
         e.preventDefault();
 
         $("#login").slideUp();
@@ -73,7 +73,7 @@ $("document").ready(() => {
         });
     });
 
-    $("#recovery").submit(function (e){
+    $("#recovery").submit(function (e) {
         e.preventDefault();
 
         $("#recovery").slideUp();

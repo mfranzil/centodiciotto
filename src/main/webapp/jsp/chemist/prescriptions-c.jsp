@@ -10,7 +10,7 @@
     <script src="${pageContext.request.contextPath}/js/table.js"></script>
     <style>
         @media (min-width: 992px) {
-            /* Tabella principale */
+            /* Main table */
             .table-cell.pract {
                 width: 40%;
             }
