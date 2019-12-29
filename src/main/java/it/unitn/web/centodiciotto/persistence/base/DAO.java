@@ -14,7 +14,7 @@ import java.util.List;
 public interface DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
 
     /**
-     * Gets an {@code ENTITY_CLASS as a parameter and inserts it into the database.
+     * Gets an {@code ENTITY_CLASS} as a parameter and inserts it into the database.
      * <p>
      * If the entity has a {@code SERIAL} type as a primary key, then returns it internally
      * from the query and tries to assign it.
@@ -25,7 +25,7 @@ public interface DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
     void insert(ENTITY_CLASS entityClass) throws DAOException;
 
     /**
-     * Gets an {@code ENTITY_CLASS as a parameter and updates it in the database, if it exists.
+     * Gets an {@code ENTITY_CLASS} as a parameter and updates it in the database, if it exists.
      *
      * @param entityClass the entity class
      * @throws DAOException in case of a malformed input or query
@@ -33,7 +33,7 @@ public interface DAO<ENTITY_CLASS, PRIMARY_KEY_CLASS> {
     void update(ENTITY_CLASS entityClass) throws DAOException;
 
     /**
-     * Gets an {@code ENTITY_CLASS as a parameter and deletes it from the database, if it exists.
+     * Gets an {@code ENTITY_CLASS} as a parameter and deletes it from the database, if it exists.
      *
      * @param entityClass the entity class
      * @throws DAOException in case of a malformed input or query

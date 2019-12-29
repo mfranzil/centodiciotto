@@ -17,6 +17,7 @@ public class CustomDTFormatter {
      * <p>
      * The Date is formatted as "MMMM dd, yyyy" (example: December 19, 2000)
      *
+     * @param date the {@link Date} to be formatted
      * @return the formatted date
      */
     public static String formatDate(Date date) {
@@ -29,6 +30,7 @@ public class CustomDTFormatter {
      * <p>
      * The time is formatted as "HH:MM" in 24H format (example: 20:05)
      *
+     * @param date the {@link Date} to be formatted
      * @return the formatted time
      */
     public static String formatTime(Date date) {
@@ -41,6 +43,7 @@ public class CustomDTFormatter {
      * <p>
      * The Date is formatted as "MMMM dd, yyyy HH:MM" with the time in 24H format (example: December 19, 2000 20:05)
      *
+     * @param date the {@link Date} to be formatted
      * @return the formatted date time
      */
     public static String formatDateTime(Date date) {

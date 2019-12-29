@@ -2,7 +2,6 @@ package it.unitn.web.centodiciotto.beans.entities;
 
 import it.unitn.web.centodiciotto.beans.BeanException;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
-import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
 import it.unitn.web.centodiciotto.persistence.dao.VisitDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
@@ -19,7 +18,6 @@ import java.util.List;
  */
 public class GeneralPractitionerDAOBean implements Serializable {
     private VisitDAO visitDAO = null;
-    private PatientDAO patientDAO = null;
     private GeneralPractitionerDAO generalPractitionerDAO = null;
 
     private String practitionerID = null;
@@ -30,12 +28,12 @@ public class GeneralPractitionerDAOBean implements Serializable {
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
      * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
+     * @throws BeanException if errors during the DAO initialization occur
      */
     public void setInit(String initializer) throws BeanException {
         try {
             DAOFactory daoFactory = JDBCDAOFactory.getInstance();
 
-            patientDAO = daoFactory.getDAO(PatientDAO.class);
             generalPractitionerDAO = daoFactory.getDAO(GeneralPractitionerDAO.class);
             visitDAO = daoFactory.getDAO(VisitDAO.class);
         } catch (DAOFactoryException e) {

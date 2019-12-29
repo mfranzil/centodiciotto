@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * Filter for requests directed to the XLS folder. Users are given access if and only if
+ * they are an Health Service trying to access their reports (which are identified by the Province ID).
+ */
 @WebFilter("/xls/*")
 public class ReportAccessFilter implements Filter {
 

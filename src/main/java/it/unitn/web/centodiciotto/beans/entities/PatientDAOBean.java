@@ -34,6 +34,7 @@ public class PatientDAOBean implements Serializable {
      * Retrieves a DAOFactory implementation and then retrieves the DAOS.
      *
      * @param initializer a parameter required by the JavaBeans implementation that can be left to null.
+     * @throws BeanException if errors during the DAO initialization occur
      */
     public void setInit(String initializer) throws BeanException {
         try {
