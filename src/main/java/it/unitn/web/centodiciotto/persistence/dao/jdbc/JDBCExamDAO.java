@@ -19,11 +19,11 @@ import java.util.logging.Logger;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
 
-    final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) " +
-            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    final private String UPDATE = "UPDATE exam SET (patient_id, doctor_id, exam_type, done, date," +
-            " result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) " +
+    final private String INSERT = "INSERT INTO exam (patient_id, doctor_id, exam_type, done, date, " +
+            "result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) " +
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    final private String UPDATE = "UPDATE exam SET (patient_id, doctor_id, exam_type, done, date, " +
+            "result, health_service_id, ticket, ticket_paid, practitioner_id, booked, recall) " +
             "= (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) WHERE exam_id = ?;";
     final private String DELETE = "DELETE FROM exam WHERE exam_id = ?;";
 
@@ -276,12 +276,12 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
         }
     }
 
-    public Exam getPendingByPatientAndExamType(String patientID, Integer examID) throws DAOException {
+    public Exam getPendingByPatientAndExamType(String patientID, Integer examType) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_PENDING_BY_PATIENT_AND_TYPE)) {
             stm.setString(1, patientID);
-            stm.setInt(2, examID);
+            stm.setInt(2, examType);
 
             try (ResultSet rs = stm.executeQuery()) {
                 while (rs.next()) {

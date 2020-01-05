@@ -2,6 +2,8 @@ package it.unitn.web.centodiciotto.servlets.patient;
 
 import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
+import it.unitn.web.centodiciotto.persistence.dao.HealthServiceDAO;
+import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
@@ -40,6 +42,8 @@ import java.util.logging.Logger;
 public class ExamHistoryServlet extends HttpServlet {
 
     private ExamDAO examDAO;
+    private HealthServiceDAO healthServiceDAO;
+    private SpecializedDoctorDAO specializedDoctorDAO;
 
     @Override
     public void init() throws ServletException {
@@ -49,6 +53,8 @@ public class ExamHistoryServlet extends HttpServlet {
         }
         try {
             examDAO = daoFactory.getDAO(ExamDAO.class);
+            healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
+            specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -117,7 +123,21 @@ public class ExamHistoryServlet extends HttpServlet {
                         List<Object> jsonResponse = new ArrayList<>();
                         Exam currentExam = examDAO.getByPrimaryKey(Integer.valueOf(examID));
 
-                        jsonResponse.add(new HTMLElement().setElementType("h5").setElementContent("Exam Result:"));
+
+                        User performer;
+                        String performerType;
+
+                        if (currentExam.getHealthServiceID() != null) {
+                            performer = healthServiceDAO.getByPrimaryKey(currentExam.getHealthServiceID());
+                            performerType = "Local Health Service";
+                        } else {
+                            performer = specializedDoctorDAO.getByPrimaryKey(currentExam.getDoctorID());
+                            performerType = "Specialized Doctor";
+                        }
+
+                        jsonResponse.add(new HTMLElement().setElementType("h5").setElementContent(performerType + ":"));
+                        jsonResponse.add(new HTMLElement().setElementType("p").setElementContent(performer.toString()));
+                        jsonResponse.add(new HTMLElement().setElementType("h5").setElementContent("Exam result:"));
                         jsonResponse.add(new HTMLElement().setElementType("p").setElementContent(currentExam.getResult()));
 
                         Gson gson = new Gson();

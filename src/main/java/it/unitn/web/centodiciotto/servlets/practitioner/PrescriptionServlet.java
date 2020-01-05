@@ -279,16 +279,21 @@ public class PrescriptionServlet extends HttpServlet {
                     try {
                         ExamType examType = examTypeDAO.getByPrimaryKey(examID);
 
-                        Exam newExam = new Exam();
-                        newExam.setPatientID(patientID);
-                        newExam.setPractitionerID(user.getID());
-                        newExam.setBooked(false);
-                        newExam.setType(examType);
-                        newExam.setDone(false);
-                        newExam.setTicket(-1);
-
-                        examDAO.insert(newExam);
-
+                        Exam possiblePendingExam = examDAO.getPendingByPatientAndExamType(
+                                patientID, examType.getID());
+                        if (possiblePendingExam == null) {
+                            Exam newExam = new Exam();
+                            newExam.setPatientID(patientID);
+                            newExam.setPractitionerID(user.getID());
+                            newExam.setBooked(false);
+                            newExam.setType(examType);
+                            newExam.setDone(false);
+                            newExam.setTicket(-1);
+                            examDAO.insert(newExam);
+                        } else {
+                            possiblePendingExam.setPractitionerID(user.getID());
+                            examDAO.update(possiblePendingExam);
+                        }
                         Patient patient = patientDAO.getByPrimaryKey(patientID);
 
                         String message = "Dear " + patient.toString() + ",\n\n" +

@@ -56,14 +56,14 @@ public interface ExamDAO extends DAO<Exam, Integer> {
     List<Exam> getNotPendingByPatient(String patientID) throws DAOException;
 
     /**
-     * Returns a {@link List} of {@link Exam}s from a given {@code patientID} and {@code examID}.
+     * Returns a {@link List} of {@link Exam}s from a given {@code patientID} and {@code examType}.
      *
      * @param patientID the {@code patientID}
-     * @param examID    the {@code examID}
+     * @param examType    the {@code examType}
      * @return a {@link List} of {@link Exam}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
-    Exam getPendingByPatientAndExamType(String patientID, Integer examID) throws DAOException;
+    Exam getPendingByPatientAndExamType(String patientID, Integer examType) throws DAOException;
 
     /**
      * Returns a {@link List} of unassigned {@link Exam}s from a given {@code patientID}.

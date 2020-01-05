@@ -26,6 +26,11 @@ public class EmailService {
     private final transient Session session;
     private final transient InternetAddress sender;
 
+    private final transient String host;
+    private final transient String port;
+    private final transient String username;
+    private final transient String password;
+
     private transient ExecutorService executorService;
 
     private EmailService() throws ServiceException {
@@ -38,10 +43,10 @@ public class EmailService {
 
         try {
             data.load(stream);
-            final String host = data.getProperty("smtp-hostname");
-            final String port = data.getProperty("smtp-port");
-            final String username = data.getProperty("smtp-username");
-            final String password = data.getProperty("smtp-password");
+            host = data.getProperty("smtp-hostname");
+            port = data.getProperty("smtp-port");
+            username = data.getProperty("smtp-username");
+            password = data.getProperty("smtp-password");
 
             sender = new InternetAddress(username, username.trim());
 
@@ -49,18 +54,11 @@ public class EmailService {
 
             systemProperties.setProperty("mail.smtp.host", host);
             systemProperties.setProperty("mail.smtp.port", port);
-            systemProperties.setProperty("mail.smtp.socketFactory.port", port);
-            systemProperties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
             systemProperties.setProperty("mail.smtp.auth", "true");
-            systemProperties.setProperty("mail.smtp.starttls.enable", "true");
+            systemProperties.setProperty("mail.smtp.ssl.enable", "true");
             systemProperties.setProperty("mail.debug", "true");
 
-            this.session = Session.getInstance(systemProperties, new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
+            this.session = Session.getInstance(systemProperties);
 
             session.setDebug(false);
         } catch (IOException e) {
@@ -159,7 +157,11 @@ public class EmailService {
         msg.setSubject(subject);
         msg.setSentDate(new java.util.Date());
         msg.setContent(multipart);
-        Transport.send(msg);
+
+        Transport transport = session.getTransport("smtps");
+        transport.connect(host, Integer.parseInt(port), username, password);
+        msg.saveChanges();
+        transport.sendMessage(msg, msg.getAllRecipients());
 
         Logger.getLogger("C18").info("Email sent to " + recipient + " with subject " + subject);
     }

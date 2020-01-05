@@ -246,13 +246,21 @@ public class ExamBookingServlet extends HttpServlet {
                                     user.getID(), examType.getID());
 
                             if (toUpdate != null) {
+                                User performer;
+                                String performerType;
+
                                 if (Boolean.parseBoolean(isHealthService)) {
                                     toUpdate.setHealthServiceID(doctorID);
                                     toUpdate.setTicket(11);
+                                    performer = healthServiceDAO.getByPrimaryKey(doctorID);
+                                    performerType = "Local Health Service";
                                 } else {
                                     toUpdate.setDoctorID(doctorID);
                                     toUpdate.setTicket(50);
+                                    performer = specializedDoctorDAO.getByPrimaryKey(doctorID);
+                                    performerType = "Specialized Doctor";
                                 }
+
                                 toUpdate.setBooked(false);
                                 toUpdate.setType(examType);
                                 toUpdate.setDone(false);
@@ -262,8 +270,10 @@ public class ExamBookingServlet extends HttpServlet {
                                 String recipient = user.getID();
                                 String message = "Dear " + user.toString() + ",\n\n" +
                                         "your exam booking request for the following exam has been accepted:\n\n" +
-                                        examType.getDescription() + "\n\nYou will receieve an email once " +
-                                        "the Specialized Doctor sets a date and time for this exam." +
+                                        "Exam: " + examType.getDescription() + "\n\n" +
+                                        performerType + ": " + performer.toString() + "\n\n" +
+                                        "You will receieve an email once " +
+                                        "the " + performerType + " sets a date and time for this exam." +
                                         "\n\nYours,\nThe CentoDiciotto team.\n";
                                 String subject = "CentoDiciotto - Exam request notification";
 

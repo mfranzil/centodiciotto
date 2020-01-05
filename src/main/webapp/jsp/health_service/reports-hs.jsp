@@ -81,7 +81,7 @@
             function restart() {
                 $("#include,#generate-new,#download,#loading-container").slideUp();
                 $("#choose-date").slideDown();
-                $("#submit").prop("disabled", false).html("Generate report");
+                $("#submit").prop("disabled", false).html("Generate report").slideDown();
                 $("#download").prop("disabled", false).html("Download report");
                 $(".datepicker").val("");
                 $("input,.datepicker").prop("disabled", false);
