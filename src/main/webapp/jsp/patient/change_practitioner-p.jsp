@@ -57,7 +57,8 @@
                         $("#title").html("Your practitioner change request has been receieved. " +
                             "You will receive a confirmation email soon.");
                         $("#message,#subtitle").slideUp();
-                        $("#submit").html("Practitioner changed.")
+                        $("#submit").html("Practitioner changed.");
+                        $("#table-select div").unbind();
                     }
                 });
             });
