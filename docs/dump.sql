@@ -383,16 +383,16 @@ CREATE TABLE public.comune (
 ALTER TABLE public.comune OWNER TO guhncjua;
 
 --
--- Name: doctor_exams; Type: TABLE; Schema: public; Owner: guhncjua
+-- Name: doctor_exam; Type: TABLE; Schema: public; Owner: guhncjua
 --
 
-CREATE TABLE public.doctor_exams (
+CREATE TABLE public.doctor_exam (
     doctor_id character varying(254) NOT NULL,
     exam_id integer NOT NULL
 );
 
 
-ALTER TABLE public.doctor_exams OWNER TO guhncjua;
+ALTER TABLE public.doctor_exam OWNER TO guhncjua;
 
 --
 -- Name: drug_type; Type: TABLE; Schema: public; Owner: guhncjua
@@ -8885,11 +8885,10 @@ COPY public.comune (comune_id, name, province, belfiore) FROM stdin;
 
 
 --
--- Data for Name: doctor_exams; Type: TABLE DATA; Schema: public; Owner: guhncjua
+-- Data for Name: doctor_exam; Type: TABLE DATA; Schema: public; Owner: guhncjua
 --
 
-COPY public.doctor_exams (doctor_id, exam_id) FROM stdin;
-matteo.pugliese@hotmail.com	1154
+COPY public.doctor_exam (doctor_id, exam_id) FROM stdin;
 matteo.pugliese@hotmail.com	86
 matteo.pugliese@hotmail.com	1003
 matteo.pugliese@hotmail.com	330
@@ -8905,7 +8904,6 @@ matteo.pugliese@hotmail.com	840
 matteo.pugliese@hotmail.com	2728
 matteo.pugliese@hotmail.com	1443
 matteo.pugliese@hotmail.com	1142
-matteo.pugliese@hotmail.com	1693
 matteo.pugliese@hotmail.com	422
 matteo.pugliese@hotmail.com	2149
 matteo.pugliese@hotmail.com	1491
@@ -8953,7 +8951,6 @@ matteo.pugliese@hotmail.com	1282
 matteo.pugliese@hotmail.com	1588
 matteo.pugliese@hotmail.com	1237
 matteo.pugliese@hotmail.com	1278
-matteo.pugliese@hotmail.com	2027
 matteo.pugliese@hotmail.com	219
 matteo.pugliese@hotmail.com	421
 matteo.pugliese@hotmail.com	1964
@@ -9003,7 +9000,6 @@ irma.cimini@hotmail.com	460
 irma.cimini@hotmail.com	649
 irma.cimini@hotmail.com	2138
 irma.cimini@hotmail.com	2228
-irma.cimini@hotmail.com	1694
 irma.cimini@hotmail.com	1695
 irma.cimini@hotmail.com	1747
 irma.cimini@hotmail.com	2561
@@ -9128,7 +9124,6 @@ nicolò.tedesco@gmail.com	2056
 nicolò.tedesco@gmail.com	2551
 nicolò.tedesco@gmail.com	112
 nicolò.tedesco@gmail.com	1518
-nicolò.tedesco@gmail.com	2031
 nicolò.tedesco@gmail.com	45
 nicolò.tedesco@gmail.com	898
 nicolò.tedesco@gmail.com	1994
@@ -9424,7 +9419,6 @@ fernanda.blasi@libero.it	372
 fernanda.blasi@libero.it	460
 fernanda.blasi@libero.it	2104
 fernanda.blasi@libero.it	733
-fernanda.blasi@libero.it	1159
 fernanda.blasi@libero.it	812
 fernanda.blasi@libero.it	65
 fernanda.blasi@libero.it	2579
@@ -9675,7 +9669,6 @@ luchino.mannoia@gmail.com	1898
 luchino.mannoia@gmail.com	2142
 luchino.mannoia@gmail.com	1282
 luchino.mannoia@gmail.com	657
-luchino.mannoia@gmail.com	2031
 luchino.mannoia@gmail.com	1822
 luchino.mannoia@gmail.com	1963
 luchino.mannoia@gmail.com	375
@@ -9935,7 +9928,6 @@ gianpietro.venturi@yahoo.it	673
 gianpietro.venturi@yahoo.it	248
 gianpietro.venturi@yahoo.it	700
 gianpietro.venturi@yahoo.it	2767
-gianpietro.venturi@yahoo.it	2023
 gianpietro.venturi@yahoo.it	1866
 gianpietro.venturi@yahoo.it	1631
 gianpietro.venturi@yahoo.it	1031
@@ -10061,7 +10053,6 @@ liberto.cannizzaro@hotmail.com	314
 liberto.cannizzaro@hotmail.com	22
 liberto.cannizzaro@hotmail.com	1586
 liberto.cannizzaro@hotmail.com	591
-liberto.cannizzaro@hotmail.com	2141
 liberto.cannizzaro@hotmail.com	842
 liberto.cannizzaro@hotmail.com	2506
 liberto.cannizzaro@hotmail.com	2773
@@ -10222,7 +10213,6 @@ dante.mantegazza@yahoo.it	1183
 dante.mantegazza@yahoo.it	1381
 dante.mantegazza@yahoo.it	1064
 dante.mantegazza@yahoo.it	2767
-dante.mantegazza@yahoo.it	1759
 dante.mantegazza@yahoo.it	2832
 dante.mantegazza@yahoo.it	1888
 dante.mantegazza@yahoo.it	1643
@@ -10238,7 +10228,6 @@ dante.mantegazza@yahoo.it	1965
 dante.mantegazza@yahoo.it	607
 dante.mantegazza@yahoo.it	2263
 dante.mantegazza@yahoo.it	1513
-dante.mantegazza@yahoo.it	1910
 dante.mantegazza@yahoo.it	2358
 dante.mantegazza@yahoo.it	419
 dante.mantegazza@yahoo.it	381
@@ -10533,7 +10522,6 @@ micheletto.saragat@hotmail.com	108
 micheletto.saragat@hotmail.com	576
 micheletto.saragat@hotmail.com	699
 micheletto.saragat@hotmail.com	1821
-micheletto.saragat@hotmail.com	1175
 micheletto.saragat@hotmail.com	520
 micheletto.saragat@hotmail.com	247
 micheletto.saragat@hotmail.com	74
@@ -10607,7 +10595,6 @@ pierpaolo.cerquiglini@virgilio.it	1235
 pierpaolo.cerquiglini@virgilio.it	2716
 pierpaolo.cerquiglini@virgilio.it	1206
 pierpaolo.cerquiglini@virgilio.it	2269
-pierpaolo.cerquiglini@virgilio.it	1160
 pierpaolo.cerquiglini@virgilio.it	2135
 pierpaolo.cerquiglini@virgilio.it	1708
 pierpaolo.cerquiglini@virgilio.it	1468
@@ -10732,7 +10719,6 @@ elmo.barbarigo@yahoo.it	2672
 elmo.barbarigo@yahoo.it	435
 elmo.barbarigo@yahoo.it	1996
 elmo.barbarigo@yahoo.it	2551
-elmo.barbarigo@yahoo.it	2033
 elmo.barbarigo@yahoo.it	2529
 elmo.barbarigo@yahoo.it	510
 elmo.barbarigo@yahoo.it	1781
@@ -10790,7 +10776,6 @@ elmo.barbarigo@yahoo.it	1172
 elmo.barbarigo@yahoo.it	1014
 elmo.barbarigo@yahoo.it	361
 eliana.peano@libero.it	2090
-eliana.peano@libero.it	2027
 eliana.peano@libero.it	2460
 eliana.peano@libero.it	51
 eliana.peano@libero.it	521
@@ -10861,7 +10846,6 @@ eliana.peano@libero.it	227
 eliana.peano@libero.it	705
 eliana.peano@libero.it	1277
 eliana.peano@libero.it	1901
-eliana.peano@libero.it	1552
 eliana.peano@libero.it	2484
 eliana.peano@libero.it	277
 eliana.peano@libero.it	33
@@ -11283,7 +11267,6 @@ giacinto.scarfoglio@yahoo.it	2652
 giacinto.scarfoglio@yahoo.it	2640
 giacinto.scarfoglio@yahoo.it	2463
 giacinto.scarfoglio@yahoo.it	2145
-giacinto.scarfoglio@yahoo.it	1552
 giacinto.scarfoglio@yahoo.it	1470
 giacinto.scarfoglio@yahoo.it	763
 giacinto.scarfoglio@yahoo.it	72
@@ -11435,7 +11418,6 @@ lamberto.ferrata@libero.it	1433
 lamberto.ferrata@libero.it	2083
 lamberto.ferrata@libero.it	2399
 lamberto.ferrata@libero.it	1637
-lamberto.ferrata@libero.it	1162
 lamberto.ferrata@libero.it	1702
 lamberto.ferrata@libero.it	2339
 lamberto.ferrata@libero.it	1312
@@ -11471,7 +11453,6 @@ lamberto.ferrata@libero.it	540
 lamberto.ferrata@libero.it	2312
 lamberto.ferrata@libero.it	1198
 lamberto.ferrata@libero.it	1907
-lamberto.ferrata@libero.it	2141
 lamberto.ferrata@libero.it	891
 lamberto.ferrata@libero.it	1293
 lamberto.ferrata@libero.it	91
@@ -11795,7 +11776,6 @@ vincenza.salandra@yahoo.it	2438
 vincenza.salandra@yahoo.it	2462
 vincenza.salandra@yahoo.it	2776
 vincenza.salandra@yahoo.it	393
-vincenza.salandra@yahoo.it	1160
 vincenza.salandra@yahoo.it	1683
 vincenza.salandra@yahoo.it	347
 vincenza.salandra@yahoo.it	913
@@ -11828,7 +11808,6 @@ vincenza.salandra@yahoo.it	2486
 vincenza.salandra@yahoo.it	1678
 vincenza.salandra@yahoo.it	2770
 silvia.camanni@virgilio.it	2265
-silvia.camanni@virgilio.it	1152
 silvia.camanni@virgilio.it	557
 silvia.camanni@virgilio.it	2391
 silvia.camanni@virgilio.it	707
@@ -11875,7 +11854,6 @@ silvia.camanni@virgilio.it	242
 silvia.camanni@virgilio.it	2229
 silvia.camanni@virgilio.it	1831
 silvia.camanni@virgilio.it	2703
-silvia.camanni@virgilio.it	1156
 silvia.camanni@virgilio.it	2306
 silvia.camanni@virgilio.it	2293
 silvia.camanni@virgilio.it	2090
@@ -11933,7 +11911,6 @@ calcedonio.scarponi@libero.it	238
 calcedonio.scarponi@libero.it	750
 calcedonio.scarponi@libero.it	23
 calcedonio.scarponi@libero.it	1642
-calcedonio.scarponi@libero.it	1162
 calcedonio.scarponi@libero.it	2368
 calcedonio.scarponi@libero.it	493
 calcedonio.scarponi@libero.it	748
@@ -11972,7 +11949,6 @@ calcedonio.scarponi@libero.it	463
 calcedonio.scarponi@libero.it	878
 calcedonio.scarponi@libero.it	1770
 calcedonio.scarponi@libero.it	1782
-calcedonio.scarponi@libero.it	1910
 calcedonio.scarponi@libero.it	753
 calcedonio.scarponi@libero.it	335
 calcedonio.scarponi@libero.it	745
@@ -12043,7 +12019,6 @@ cristina.tedesco@yahoo.it	940
 cristina.tedesco@yahoo.it	1947
 cristina.tedesco@yahoo.it	950
 cristina.tedesco@yahoo.it	1241
-cristina.tedesco@yahoo.it	2272
 cristina.tedesco@yahoo.it	1044
 cristina.tedesco@yahoo.it	2717
 cristina.tedesco@yahoo.it	2060
@@ -12387,7 +12362,6 @@ vincenza.turati@hotmail.com	661
 vincenza.turati@hotmail.com	1907
 vincenza.turati@hotmail.com	2813
 vincenza.turati@hotmail.com	2266
-vincenza.turati@hotmail.com	499
 vincenza.turati@hotmail.com	1474
 vincenza.turati@hotmail.com	1632
 vincenza.turati@hotmail.com	2130
@@ -12398,7 +12372,6 @@ vincenza.turati@hotmail.com	486
 vincenza.turati@hotmail.com	2306
 vincenza.turati@hotmail.com	537
 vincenza.turati@hotmail.com	950
-vincenza.turati@hotmail.com	1162
 vincenza.turati@hotmail.com	923
 vincenza.turati@hotmail.com	653
 vincenza.turati@hotmail.com	326
@@ -12676,7 +12649,6 @@ vito.petrocelli@hotmail.com	1578
 vito.petrocelli@hotmail.com	1561
 vito.petrocelli@hotmail.com	1814
 vito.petrocelli@hotmail.com	1753
-vito.petrocelli@hotmail.com	1159
 vito.petrocelli@hotmail.com	919
 vito.petrocelli@hotmail.com	547
 vito.petrocelli@hotmail.com	654
@@ -12754,7 +12726,6 @@ michelangelo.antonetti@gmail.com	75
 michelangelo.antonetti@gmail.com	2001
 michelangelo.antonetti@gmail.com	710
 michelangelo.antonetti@gmail.com	227
-michelangelo.antonetti@gmail.com	2023
 michelangelo.antonetti@gmail.com	521
 michelangelo.antonetti@gmail.com	2741
 michelangelo.antonetti@gmail.com	1144
@@ -12826,7 +12797,6 @@ michelangelo.antonetti@gmail.com	1013
 michelangelo.antonetti@gmail.com	2038
 michelangelo.antonetti@gmail.com	810
 michelangelo.antonetti@gmail.com	956
-michelangelo.antonetti@gmail.com	2141
 silvio.cutuli@yahoo.it	2679
 silvio.cutuli@yahoo.it	40
 silvio.cutuli@yahoo.it	1285
@@ -13014,7 +12984,6 @@ michelotto.alfieri@hotmail.com	176
 michelotto.alfieri@hotmail.com	199
 michelotto.alfieri@hotmail.com	591
 michelotto.alfieri@hotmail.com	2421
-michelotto.alfieri@hotmail.com	1160
 michelotto.alfieri@hotmail.com	2144
 michelotto.alfieri@hotmail.com	484
 michelotto.alfieri@hotmail.com	241
@@ -13082,7 +13051,6 @@ eliana.accardo@virgilio.it	619
 eliana.accardo@virgilio.it	378
 eliana.accardo@virgilio.it	220
 eliana.accardo@virgilio.it	1669
-eliana.accardo@virgilio.it	499
 eliana.accardo@virgilio.it	2422
 eliana.accardo@virgilio.it	2674
 eliana.accardo@virgilio.it	1657
@@ -13146,7 +13114,6 @@ patrizia.cutrufo@virgilio.it	2816
 patrizia.cutrufo@virgilio.it	896
 patrizia.cutrufo@virgilio.it	1833
 patrizia.cutrufo@virgilio.it	671
-patrizia.cutrufo@virgilio.it	2141
 patrizia.cutrufo@virgilio.it	943
 patrizia.cutrufo@virgilio.it	878
 patrizia.cutrufo@virgilio.it	2084
@@ -13220,7 +13187,6 @@ patrizia.cutrufo@virgilio.it	2535
 patrizia.cutrufo@virgilio.it	879
 patrizia.cutrufo@virgilio.it	977
 patrizia.cutrufo@virgilio.it	1424
-patrizia.cutrufo@virgilio.it	1162
 patrizia.cutrufo@virgilio.it	675
 patrizia.cutrufo@virgilio.it	2389
 patrizia.cutrufo@virgilio.it	487
@@ -13453,7 +13419,6 @@ nicoletta.gabbana@gmail.com	780
 nicoletta.gabbana@gmail.com	2704
 nicoletta.gabbana@gmail.com	2318
 nicoletta.gabbana@gmail.com	2541
-nicoletta.gabbana@gmail.com	2029
 nicoletta.gabbana@gmail.com	756
 nicoletta.gabbana@gmail.com	2448
 nicoletta.gabbana@gmail.com	1965
@@ -13492,7 +13457,6 @@ nicoletta.gabbana@gmail.com	740
 nicoletta.gabbana@gmail.com	815
 nicoletta.gabbana@gmail.com	103
 nicoletta.gabbana@gmail.com	846
-nicoletta.gabbana@gmail.com	2027
 nicoletta.gabbana@gmail.com	533
 nicoletta.gabbana@gmail.com	2714
 nicoletta.gabbana@gmail.com	1496
@@ -13625,7 +13589,6 @@ ninetta.spanevello@yahoo.it	143
 ninetta.spanevello@yahoo.it	1219
 ninetta.spanevello@yahoo.it	178
 ninetta.spanevello@yahoo.it	2066
-ninetta.spanevello@yahoo.it	2029
 ninetta.spanevello@yahoo.it	874
 massimo.sermonti@libero.it	1105
 massimo.sermonti@libero.it	1085
@@ -13960,7 +13923,6 @@ elena.agazzi@libero.it	23
 elena.agazzi@libero.it	1088
 elena.agazzi@libero.it	2192
 elena.agazzi@libero.it	2666
-elena.agazzi@libero.it	2031
 elena.agazzi@libero.it	1500
 elena.agazzi@libero.it	2208
 elena.agazzi@libero.it	323
@@ -14595,7 +14557,6 @@ hugo.morpurgo@hotmail.com	1457
 hugo.morpurgo@hotmail.com	2163
 hugo.morpurgo@hotmail.com	2791
 hugo.morpurgo@hotmail.com	2442
-hugo.morpurgo@hotmail.com	1759
 hugo.morpurgo@hotmail.com	667
 hugo.morpurgo@hotmail.com	2466
 hugo.morpurgo@hotmail.com	2359
@@ -14918,7 +14879,6 @@ arsenio.cortese@libero.it	824
 arsenio.cortese@libero.it	402
 arsenio.cortese@libero.it	1047
 arsenio.cortese@libero.it	2660
-arsenio.cortese@libero.it	1160
 arsenio.cortese@libero.it	1050
 arsenio.cortese@libero.it	2360
 arsenio.cortese@libero.it	1420
@@ -15022,7 +14982,6 @@ roman.marrone@libero.it	1422
 roman.marrone@libero.it	345
 roman.marrone@libero.it	1266
 roman.marrone@libero.it	2735
-roman.marrone@libero.it	2141
 roman.marrone@libero.it	1485
 roman.marrone@libero.it	622
 roman.marrone@libero.it	1744
@@ -15128,7 +15087,6 @@ costanzo.bosurgi@virgilio.it	374
 costanzo.bosurgi@virgilio.it	1831
 costanzo.bosurgi@virgilio.it	537
 costanzo.bosurgi@virgilio.it	2062
-costanzo.bosurgi@virgilio.it	1694
 costanzo.bosurgi@virgilio.it	1646
 costanzo.bosurgi@virgilio.it	135
 paoletta.crespi@yahoo.it	230
@@ -15615,7 +15573,6 @@ lilla.ceci@virgilio.it	654
 lilla.ceci@virgilio.it	4
 lilla.ceci@virgilio.it	2487
 lilla.ceci@virgilio.it	911
-lilla.ceci@virgilio.it	1152
 lilla.ceci@virgilio.it	160
 lilla.ceci@virgilio.it	116
 lilla.ceci@virgilio.it	2225
@@ -15716,7 +15673,6 @@ roberto.lussu@yahoo.it	1212
 roberto.lussu@yahoo.it	1187
 roberto.lussu@yahoo.it	1676
 roberto.lussu@yahoo.it	689
-roberto.lussu@yahoo.it	559
 roberto.lussu@yahoo.it	1602
 roberto.lussu@yahoo.it	1768
 roberto.lussu@yahoo.it	2123
@@ -15807,7 +15763,6 @@ bettina.scarlatti@yahoo.it	222
 bettina.scarlatti@yahoo.it	2144
 bettina.scarlatti@yahoo.it	2146
 bettina.scarlatti@yahoo.it	2155
-bettina.scarlatti@yahoo.it	1759
 bettina.scarlatti@yahoo.it	2589
 bettina.scarlatti@yahoo.it	721
 bettina.scarlatti@yahoo.it	2793
@@ -15816,7 +15771,6 @@ bettina.scarlatti@yahoo.it	2790
 bettina.scarlatti@yahoo.it	2259
 bettina.scarlatti@yahoo.it	2296
 bettina.scarlatti@yahoo.it	2123
-bettina.scarlatti@yahoo.it	2031
 bettina.scarlatti@yahoo.it	2557
 bettina.scarlatti@yahoo.it	1432
 bettina.scarlatti@yahoo.it	1189
@@ -15976,7 +15930,6 @@ antonia.ramazzotti@hotmail.com	917
 antonia.ramazzotti@hotmail.com	2197
 antonia.ramazzotti@hotmail.com	2078
 antonia.ramazzotti@hotmail.com	2681
-antonia.ramazzotti@hotmail.com	1159
 antonia.ramazzotti@hotmail.com	119
 antonia.ramazzotti@hotmail.com	853
 antonia.ramazzotti@hotmail.com	806
@@ -16026,7 +15979,6 @@ antonia.ramazzotti@hotmail.com	2242
 antonia.ramazzotti@hotmail.com	393
 antonia.ramazzotti@hotmail.com	2096
 antonia.ramazzotti@hotmail.com	1746
-antonia.ramazzotti@hotmail.com	499
 antonia.ramazzotti@hotmail.com	694
 antonia.ramazzotti@hotmail.com	1573
 antonia.ramazzotti@hotmail.com	606
@@ -16038,7 +15990,6 @@ luigi.borgia@virgilio.it	1534
 luigi.borgia@virgilio.it	1069
 luigi.borgia@virgilio.it	2646
 luigi.borgia@virgilio.it	1914
-luigi.borgia@virgilio.it	2029
 luigi.borgia@virgilio.it	1744
 luigi.borgia@virgilio.it	2425
 luigi.borgia@virgilio.it	2711
@@ -16051,7 +16002,6 @@ luigi.borgia@virgilio.it	102
 luigi.borgia@virgilio.it	662
 luigi.borgia@virgilio.it	229
 luigi.borgia@virgilio.it	441
-luigi.borgia@virgilio.it	1783
 luigi.borgia@virgilio.it	304
 luigi.borgia@virgilio.it	837
 luigi.borgia@virgilio.it	1041
@@ -16060,7 +16010,6 @@ luigi.borgia@virgilio.it	472
 luigi.borgia@virgilio.it	1476
 luigi.borgia@virgilio.it	16
 luigi.borgia@virgilio.it	1969
-luigi.borgia@virgilio.it	1175
 luigi.borgia@virgilio.it	1839
 luigi.borgia@virgilio.it	1454
 luigi.borgia@virgilio.it	991
@@ -16195,7 +16144,6 @@ paoletta.pirandello@yahoo.it	303
 paoletta.pirandello@yahoo.it	2561
 paoletta.pirandello@yahoo.it	2551
 paoletta.pirandello@yahoo.it	1024
-paoletta.pirandello@yahoo.it	1159
 paoletta.pirandello@yahoo.it	109
 paoletta.pirandello@yahoo.it	2858
 paoletta.pirandello@yahoo.it	735
@@ -16257,12 +16205,10 @@ ivan.fantozzi@virgilio.it	222
 ivan.fantozzi@virgilio.it	2011
 ivan.fantozzi@virgilio.it	1646
 ivan.fantozzi@virgilio.it	2686
-ivan.fantozzi@virgilio.it	1152
 ivan.fantozzi@virgilio.it	829
 ivan.fantozzi@virgilio.it	1980
 ivan.fantozzi@virgilio.it	2557
 ivan.fantozzi@virgilio.it	1426
-ivan.fantozzi@virgilio.it	2141
 ivan.fantozzi@virgilio.it	2134
 ivan.fantozzi@virgilio.it	933
 ivan.fantozzi@virgilio.it	2039
@@ -16296,7 +16242,6 @@ ivan.fantozzi@virgilio.it	184
 ivan.fantozzi@virgilio.it	889
 ivan.fantozzi@virgilio.it	675
 ivan.fantozzi@virgilio.it	2352
-ivan.fantozzi@virgilio.it	1160
 ivan.fantozzi@virgilio.it	517
 ivan.fantozzi@virgilio.it	358
 ivan.fantozzi@virgilio.it	599
@@ -16309,7 +16254,6 @@ ivan.fantozzi@virgilio.it	2653
 ivan.fantozzi@virgilio.it	1660
 ivan.fantozzi@virgilio.it	1665
 ivan.fantozzi@virgilio.it	1079
-ivan.fantozzi@virgilio.it	2576
 ivan.fantozzi@virgilio.it	47
 ivan.fantozzi@virgilio.it	1277
 ivan.fantozzi@virgilio.it	2510
@@ -16388,7 +16332,6 @@ jolanda.marenzio@virgilio.it	2771
 jolanda.marenzio@virgilio.it	2488
 jolanda.marenzio@virgilio.it	866
 jolanda.marenzio@virgilio.it	801
-jolanda.marenzio@virgilio.it	2576
 jolanda.marenzio@virgilio.it	1852
 jolanda.marenzio@virgilio.it	695
 jolanda.marenzio@virgilio.it	326
@@ -16551,7 +16494,6 @@ elena.cortese@virgilio.it	2131
 elena.cortese@virgilio.it	1983
 elena.cortese@virgilio.it	1454
 elena.cortese@virgilio.it	2584
-elena.cortese@virgilio.it	2023
 elena.cortese@virgilio.it	1447
 elena.cortese@virgilio.it	2842
 elena.cortese@virgilio.it	895
@@ -16598,7 +16540,6 @@ elena.cortese@virgilio.it	1629
 elena.cortese@virgilio.it	2446
 elena.cortese@virgilio.it	1916
 elena.cortese@virgilio.it	566
-elena.cortese@virgilio.it	1910
 elena.cortese@virgilio.it	1545
 elena.cortese@virgilio.it	437
 elena.cortese@virgilio.it	1697
@@ -16860,7 +16801,6 @@ dino.dallara@hotmail.com	2671
 dino.dallara@hotmail.com	2091
 dino.dallara@hotmail.com	2533
 dino.dallara@hotmail.com	125
-dino.dallara@hotmail.com	1175
 dino.dallara@hotmail.com	2268
 dino.dallara@hotmail.com	1033
 dino.dallara@hotmail.com	1408
@@ -17096,9 +17036,6 @@ gianluca.carriera@hotmail.com	1611
 pierpaolo.cerquiglini@virgilio.it	1671
 tiziano.pederiva@hotmail.com	1671
 paoletta.pirandello@yahoo.it	1671
-lara.grimani@virgilio.it	1672
-salvatore.togliatti@virgilio.it	1672
-pierina.asprucci@virgilio.it	1672
 lilla.ceci@virgilio.it	1767
 calcedonio.scarponi@libero.it	1767
 vincenza.turati@hotmail.com	1767
@@ -17150,9 +17087,6 @@ lisa.parmitano@libero.it	1988
 giacinto.scarfoglio@yahoo.it	2003
 tiziano.pederiva@hotmail.com	2003
 silvio.cutuli@yahoo.it	2003
-eva.carullo@gmail.com	2025
-calcedonio.scarponi@libero.it	2025
-liberto.cannizzaro@hotmail.com	2025
 irma.cimini@hotmail.com	2036
 patrizia.cutrufo@virgilio.it	2036
 irma.cimini@hotmail.com	377
@@ -17258,13 +17192,28 @@ laura.lettiere@yahoo.it	2830
 
 COPY public.drug_prescription (drug_prescription_id, practitioner_id, patient_id, drug_type, date_prescribed, date_sold, chemist_id, ticket, ticket_paid, description) FROM stdin;
 31	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2	2019-12-26 12:06:54.654	2019-12-26 17:54:15.576	ippazio.gabbana@libero.it	3	t	 
-32	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	10	2019-12-27 11:49:14.926	\N	\N	3	f	 
 33	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-27 11:49:21.278	\N	\N	3	f	 
-34	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-28 16:07:49.657	\N	\N	3	f	 
-35	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-28 16:08:13.755	\N	\N	3	f	 
 36	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	11	2019-12-28 16:14:47.174	\N	\N	3	f	 
-37	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	11	2019-12-28 16:26:08.457	\N	\N	3	f	 
 38	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	10	2019-12-28 16:29:04.858	\N	\N	3	f	 
+39	carolina.malatesta@libero.it	rosaria.dellucci@yahoo.it	585	2019-12-31 11:15:18.792	\N	\N	3	f	 
+40	carolina.malatesta@libero.it	rosaria.dellucci@yahoo.it	622	2019-12-31 11:15:31.555	\N	\N	3	f	 
+41	carolina.malatesta@libero.it	rosaria.dellucci@yahoo.it	507	2019-12-31 11:15:38.881	\N	\N	3	f	 
+37	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	11	2019-12-28 16:26:08.457	2019-12-31 11:20:23.754	giulio.bettin@virgilio.it	3	f	 
+42	raffaello.nicoletti@gmail.com	ruggiero.juvara@hotmail.com	466	2019-12-31 18:27:55.757	\N	\N	3	f	 
+43	raffaello.nicoletti@gmail.com	ruggiero.juvara@hotmail.com	476	2019-12-31 18:27:59.731	\N	\N	3	f	 
+44	raffaello.nicoletti@gmail.com	antonella.petrocelli@yahoo.it	202	2019-12-31 18:28:15.264	\N	\N	3	f	 
+45	raffaello.nicoletti@gmail.com	antonella.petrocelli@yahoo.it	412	2019-12-31 18:28:19.568	\N	\N	3	f	 
+46	raffaello.nicoletti@gmail.com	antonella.petrocelli@yahoo.it	538	2019-12-31 18:28:24.127	\N	\N	3	f	 
+32	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	10	2019-12-27 11:49:14.926	2019-12-31 11:20:53.021	giulio.bettin@virgilio.it	3	t	 
+34	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-28 16:07:49.657	2019-12-31 11:19:18.077	giulio.bettin@virgilio.it	3	t	 
+35	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	15	2019-12-28 16:08:13.755	2019-12-31 11:20:47.701	giulio.bettin@virgilio.it	3	t	 
+47	raffaello.nicoletti@gmail.com	greca.boitani@hotmail.com	218	2019-12-31 18:30:19.285	\N	\N	3	f	 
+48	raffaello.nicoletti@gmail.com	greca.boitani@hotmail.com	466	2019-12-31 18:30:29.564	\N	\N	3	f	 
+49	raffaello.nicoletti@gmail.com	loretta.balbo@gmail.com	392	2019-12-31 18:31:21.581	\N	\N	3	f	 
+50	raffaello.nicoletti@gmail.com	loretta.balbo@gmail.com	166	2019-12-31 18:31:30.902	\N	\N	3	f	 
+51	raffaello.nicoletti@gmail.com	antonella.petrocelli@yahoo.it	181	2019-12-31 18:32:10.135	\N	\N	3	f	 
+52	giorgio.barcaccia@yahoo.it	antonina.filzi@hotmail.com	202	2019-12-31 18:34:43.609	2019-12-31 18:45:50.382	lucia.satta@libero.it	3	t	 
+53	giorgio.barcaccia@yahoo.it	antonina.filzi@hotmail.com	56	2019-12-31 18:34:50.633	2019-12-31 18:45:45.593	lucia.satta@libero.it	3	t	 
 \.
 
 
@@ -17974,7 +17923,6 @@ COPY public.exam (exam_id, patient_id, doctor_id, exam_type, done, date, result,
 90	fiorenzo.berlusconi@yahoo.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 91	niccolò.blasi@virgilio.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 92	ubaldo.bocelli@hotmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
-93	orlando.boito@virgilio.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 94	patrizia.bonomo@virgilio.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 95	tonia.bossi@gmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 96	concetta.botticelli@gmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
@@ -18034,8 +17982,22 @@ COPY public.exam (exam_id, patient_id, doctor_id, exam_type, done, date, result,
 151	aria.vergassola@virgilio.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 152	giosuè.vigorelli@libero.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 153	tatiana.villarosa@hotmail.com	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
+93	orlando.boito@virgilio.it	\N	2831	t	2020-01-05 08:30:00	The exam was completed successfully.	ssp.nuoro@gmail.com	0	f	\N	t	31
 154	mauro.visintini@libero.it	\N	2831	f	\N	\N	ssp.nuoro@gmail.com	0	f	\N	f	31
 82	orlando.boito@virgilio.it	sabatino.bettin@hotmail.com	1428	t	2019-12-26 08:30:00	L'esame è stato completato con successo.	\N	50	t	giorgio.barcaccia@yahoo.it	t	\N
+155	gloria.staglieno@hotmail.com	\N	801	f	\N	\N	\N	-1	f	carolina.malatesta@libero.it	f	\N
+156	salvi.renzi@libero.it	lara.grimani@virgilio.it	42	f	2020-01-01 09:15:00	\N	\N	50	f	carolina.malatesta@libero.it	t	\N
+157	ruggiero.juvara@hotmail.com	\N	778	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+158	ruggiero.juvara@hotmail.com	\N	2791	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+159	ruggiero.juvara@hotmail.com	\N	817	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+160	antonella.petrocelli@yahoo.it	\N	2704	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+161	antonella.petrocelli@yahoo.it	\N	817	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+162	greca.boitani@hotmail.com	\N	2329	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+163	greca.boitani@hotmail.com	\N	1790	f	\N	\N	\N	-1	f	raffaello.nicoletti@gmail.com	f	\N
+164	antonina.filzi@hotmail.com	\N	778	f	\N	\N	\N	-1	f	giorgio.barcaccia@yahoo.it	f	\N
+165	antonina.filzi@hotmail.com	\N	513	f	\N	\N	\N	-1	f	giorgio.barcaccia@yahoo.it	f	\N
+167	orlando.boito@virgilio.it	\N	27	f	\N	\N	\N	-1	f	giorgio.barcaccia@yahoo.it	f	\N
+166	orlando.boito@virgilio.it	\N	20	f	\N	\N	\N	-1	f	giorgio.barcaccia@yahoo.it	f	\N
 \.
 
 
@@ -18046,1241 +18008,39 @@ COPY public.exam (exam_id, patient_id, doctor_id, exam_type, done, date, result,
 COPY public.exam_type (exam_id, exam_description) FROM stdin;
 3	Acidi biliari
 4	Acido 5 idrossi 3 indolacetico
-247	Creatinuria
-691	Cistografia
-964	Colposcopia
-1068	Vcp
-1281	Adroterapia (a seduta)
-1961	Adesiolisi
-2157	Asportazione della fistola
-1	Anticorpi anti bordetella pertussis ig totali
-2831	Ablazione tartaro
-1428	Ablazione transcatetere
-2445	Aborto terapeutico
-1490	Accesso periferico per posizionamento di catetere venoso
-5	Acido delta ammino levulinico
-6	Acido folico
-7	Acido lattico
-8	Acido ossalico
-9	Acido vanilmandelico (vma)
-2316	Acromioplastica anteriore
-2556	Adduttori, intervento per paralisi degli
-2503	Adenoidectomia
-2504	Adenotonsillectomia
-10	Adrenalina plasmatica
-11	Adrenalina urinaria
-1376	Aferesi terapeutica, eritro aferesi con sacche multiple
-13	Agglutinazione per brucella (wright)
-12	Agglutinazione per brucella abortus
-15	Agglutinazione per tifo e paratifo (widal)
-14	Agglutinazione per tifo e paratifo più melitense
-16	Agglutinazione per tifo petecchiale (weil-felix)
-960	Agoaspirati o biopsie di lesioni superficiali escluso esame citoistologico
-1491	Agoaspirati/agobiopsie, di qualsiasi parte anatomica, salvo i casi descritti
-942	Agoaspirato ecoguidato tiroide
-747	Agoaspirato mammario ecoguidato
-2317	Agoaspirato osseo
-2683	Agoaspirato/agobiopsia prostata
-944	Agobiopsia epatica percutanea
-1825	Agobiopsia pleurica/puntura esplorativa
-1111	Agobiopsia prostatica (tru cut)
-1112	Agobiopsia renale percutanea
-2622	Agobiopsia renale percutanea
-1826	Agobiopsia tc guidata
-1729	Agobiopsia/agoaspirato
-1652	Agobiopsia/agoaspirato pancreas
-1962	Agobiopsie/agoaspirati parti anatomiche profonde
-1226	Agopuntura (per seduta)
-17	Aldolasi sierica
-18	Aldosterone
-19	Aldosterone urinario
-20	Alfa 1 antitripsina
-21	Alfa 1 fetoproteina
-22	Alfa 1 fetoproteina nel liquido amniotico
-23	Alfa 1 glicoproteina acida
-24	Alfa 1 microglobulina
-25	Alfa 2 macroglobulina
-26	Alfa 3 androstanediolo
-2	Alfa idrossi progesterone (17 ohp)
-27	Alfa lattoalbumina
-1777	Allestimento lembo peduncolato
-2318	Alluce valgo
-2319	Allungamento arti superiori e/o inferiori (per segmento, trattamento completo)
-539	Altri batteri eseguibili con metodica pcr
-540	Altri virus eseguibili con metodica pcr
-28	Amilasi isoenzimi ematica (frazione pancreatica)
-29	Amilasi isoenzimi urinaria (frazione pancreatica)
-30	Amilasi sierica
-31	Amilasi urinaria
-32	Ammonio plasmatici
-977	Amniocentesi (cariotipo su liquido amniotico compreso prelievo)
-2446	Amnioscopia
-2320	Amputazione grandi segmenti (trattamento completo)
-2321	Amputazione medi segmenti (trattamento completo)
-2734	Amputazione parziale del pene
-2322	Amputazione piccoli segmenti (trattamento completo)
-2735	Amputazione totale con linfoadenectomia pene
-2736	Amputazione totale del pene
-2832	Amputazioni radicolari (per radice escluso il lembo di accesso)
-564	Analisi del gene del fattore viii per l'emofilia a
-566	Analisi di mutazione del collagene di tipo 11
-565	Analisi di mutazione del gene vdr della vitamina d
-1035	Analisi fibre nervo ottico (gdx, hrt) - ciascuno
-567	Analisi genetica per fibrosi cistica
-1730	Anastomosi porto-cava o spleno-renale o mesenterica-cava
-2046	Anastomosi spino-facciale e simili
-2047	Anastomosi vasi intra-extra cranici
-593	Anatomia ed istologia patologica
-945	Anestesia/ sedazione per endoscopia
-1887	Aneurisma aorta addominale (trattamento con stent endovascolare)
-1888	Aneurismi aorta addominale + dissecazione: resezione e trapianto
-1889	Aneurismi arterie distali degli arti
-1890	Aneurismi, resezione e trapianto: arterie glutee, arterie viscerali e tronchi sovraortici
-808	Angio rm (1 distretto) (1 sequenza)
-778	Angio tc distretti esocranici
-779	Angio tc distretti intracranici
-827	Angiocardioscintigrafia all'equilibrio con calcolo parametri funzionali
-828	Angiocardioscintigrafia all'equilibrio con test
-829	Angiocardioscintigrafia primo transito con calcolo parametri funzionali
-830	Angiocardioscintigrafia primo transito con test
-1779	Angiomi del tronco e arti grandi dimensioni (più di 7 cm). Con laser, (trattamento totale)
-1778	Angiomi del tronco e arti grandi dimensioni (più di 7 cm). Con tecnica tradizionale, (escluso espansore)
-1781	Angiomi del tronco e arti piccole/medie dimensioni (meno di 7 cm). Con laser, (trattamento totale)
-1780	Angiomi del tronco e arti piccole/medie dimensioni (meno di 7 cm). Con tecnica tradizionale
-1782	Angiomi del viso grandi dimensioni (più di 4 cm). Con laser, (trattamento totale)
-1783	Angiomi del viso grandi dimensioni (più di 4 cm). Con tecnica tradizionale (escluso espansore)
-1784	Angiomi del viso piccole dimensioni (meno di 4 cm). Con laser, (trattamento totale)
-1785	Angiomi del viso piccole dimensioni (meno di 4 cm). Con tecnica tradizionale
-1892	Angioplastica arteriosa (carotidea, arti inferiori - come unico intervento)
-1429	Angioplastica coronarica multipla
-1430	Angioplastica coronarica singola
-1891	Angioplastica di arterie viscerali (come unico intervento)
-869	Angioscintigrafia cerebrale con calcolo di indici emodinamici
-870	Angioscintigrafia più scintigrafia cerebrale
-33	Angiotensin converting enzyme (ace)
-34	Angiotensina 1
-1575	Ano preternaturale, chiusura, ricostruzione continuità
-36	Antibiogramma (almeno 10 antibiotici con mic)
-37	Antibiogramma (almeno 10 antibiotici)
-35	Antibiogramma per micobatteri (almeno 3 antibiotici)
-38	Anticorpi anti adenovirus
-39	Anticorpi anti asca (anti - saccharomyces - cerevisiae) iga
-40	Anticorpi anti asca (anti - saccharomyces - cerevisiae) igg
-41	Anticorpi anti asca (anti - saccharomyces - cerevisiae) igm
-42	Anticorpi anti bordetella pertussis iga
-43	Anticorpi anti bordetella pertussis igg
-44	Anticorpi anti bordetella pertussis igm
-45	Anticorpi anti borrelia burgdoferi
-46	Anticorpi anti candida iga
-47	Anticorpi anti candida igg
-48	Anticorpi anti candida igm
-49	Anticorpi anti cardiolipina iga
-50	Anticorpi anti cardiolipina igg
-51	Anticorpi anti cardiolipina igm
-52	Anticorpi anti cellule apicali dello stomaco (apca)
-53	Anticorpi anti centromero (aca)
-54	Anticorpi anti citomegalovirus ig totali
-55	Anticorpi anti citomegalovirus igg
-56	Anticorpi anti citomegalovirus igm
-58	Anticorpi anti clamydia iga
-59	Anticorpi anti clamydia igg
-60	Anticorpi anti clamydia igm
-61	Anticorpi anti colon
-63	Anticorpi anti coxackie (b1/b2/b3/b4/b5/b6) - ciascuno
-62	Anticorpi anti coxackie (b1+b2+b3+b4+b5+b6) - tutti
-64	Anticorpi anti dotti salivari
-65	Anticorpi anti echinococco (echinotest)
-66	Anticorpi anti echo virus
-67	Anticorpi anti echo virus neurotropi ig totali
-68	Anticorpi anti endomisio (iga,igm per ciascuno)
-69	Anticorpi anti endotelio
-70	Anticorpi anti entamoeba
-74	Anticorpi anti epstein barr virus antigene capsidico (vca) igg
-75	Anticorpi anti epstein barr virus antigene capsidico (vca) igm
-76	Anticorpi anti epstein barr virus antigene early (ea)
-77	Anticorpi anti epstein barr virus antigene nucleare (ebna)
-71	Anticorpi anti epstein barr virus iga
-72	Anticorpi anti epstein barr virus igg
-73	Anticorpi anti epstein barr virus igm
-78	Anticorpi anti eritrocitari attivi a freddo (crioagglutine)
-79	Anticorpi anti fattore intrinseco
-80	Anticorpi anti febbre q (per ogni anticorpo)
-81	Anticorpi anti fosfolipidi (beta 2 glicoproteina igg/igm) - ciascuno
-83	Anticorpi anti gad
-84	Anticorpi anti giardia lamblia
-85	Anticorpi anti gliadina iga
-86	Anticorpi anti gliadina igg
-87	Anticorpi anti gor (epitopo core dell'hcv)
-88	Anticorpi anti hav igg
-89	Anticorpi anti hav igm
-90	Anticorpi anti hav totali
-91	Anticorpi anti hbcag
-92	Anticorpi anti hbcag igm
-93	Anticorpi anti hbeag
-94	Anticorpi anti hbs con titolazione
-95	Anticorpi anti hbsag
-96	Anticorpi anti hcv
-97	Anticorpi anti hcv igm
-98	Anticorpi anti helicobacter pylori igaanticorpi anti helicobacter pylori igg
-99	Anticorpi anti helicobacter pylori igm
-102	Anticorpi anti herpes simplex virus 1 e 2
-100	Anticorpi anti herpes simplex virus 1 igg
-101	Anticorpi anti herpes simplex virus 1 igm
-103	Anticorpi anti herpes simplex virus 2 igg
-104	Anticorpi anti herpes simplex virus 2 igm
-105	Anticorpi anti hiv i e ii
-106	Anticorpi anti htlv i e ii
-107	Anticorpi anti ia2
-108	Anticorpi anti influenza
-109	Anticorpi anti insula pancreatica
-110	Anticorpi anti insulina (aiaa)
-111	Anticorpi anti istoni
-112	Anticorpi anti legionelle (iga,igm per ciascuno)
-113	Anticorpi anti leishmaniosi
-114	Anticorpi anti leptospira
-115	Anticorpi anti leucocitari (ricerca ed eventuale titolo)
-116	Anticorpi anti listeria (4 anticorpi)
-117	Anticorpi anti listeria (4 anticorpi) / ciascuno
-118	Anticorpi anti membrana
-119	Anticorpi anti micoplasma igg
-120	Anticorpi anti micoplasma igm
-121	Anticorpi anti microsoma epatico renale (lkm)
-122	Anticorpi anti microsomiali (abtms)
-123	Anticorpi anti mitocondri
-124	Anticorpi anti morbillo ig totali
-125	Anticorpi anti morbillo igg
-126	Anticorpi anti morbillo igm
-127	Anticorpi anti muscolo liscio
-128	Anticorpi anti muscolo striato (cuore)
-129	Anticorpi anti ndna
-131	Anticorpi anti nucleo
-132	Anticorpi anti nucleo estraibili (anti ena / 6 anticorpi)
-133	Anticorpi anti ovaio
-134	Anticorpi anti pancreas
-137	Anticorpi anti parotite ig totali
-135	Anticorpi anti parotite igg
-136	Anticorpi anti parotite igm
-139	Anticorpi anti parvovirus
-138	Anticorpi anti perossidasi (abtpo)
-140	Anticorpi anti piastrine (ricerca ed eventuale titolo)
-141	Anticorpi anti plasmodi (anti malaria)
-142	Anticorpi anti pneumococco
-143	Anticorpi anti polisaccaride c streptococco b emol. Gr a
-144	Anticorpi anti recettore del tsh (tr ab)
-145	Anticorpi anti recettore per acetilcolina
-146	Anticorpi anti rickettsie
-147	Anticorpi anti rna
-148	Anticorpi anti rosolia igg
-149	Anticorpi anti rosolia igm
-150	Anticorpi anti schistosoma
-151	Anticorpi anti spermatozoi: plasma seminale
-152	Anticorpi anti spermatozoi: sangue periferico
-153	Anticorpi anti streptokinasi
-154	Anticorpi anti surrene
+1778	Angiomi del tronco e arti grandi dimensioni
+1924	Asportazione con laser di tumori benigni cutanei
+2190	Asportazione ed impianto di cristallino artificiale
+1286	Brachiterapia interstiziale
+2663	Cistectomia totale
+1439	Coronarografia circolo nativo
+2142	Correzione ernia palpebrale
+1757	Cura neoformazioni endossee di piccole dimensioni
+1928	Diatermocoagulazione
+1697	Intervento chirurgico per lussazione mandibolare o menisco monolaterale
+2077	Intervento per malformazione aneurismatica
+1905	Legatura e/o sutura di medi vasi
+584	Ricerca di mutazioni geniche in endocrinopatie congenite
+1443	Riprogrammazione elettronica del pace-maker
+2531	Setto-etmoidostenotomia decompressiva neurovascolare
+1101	Spirometria di base
+498	Test per ricerca di intolleranze alimentari
+1489	Trattamento microchirurgico delle lesioni del plesso brachiale
+78	Anticorpi anti eritrocitari attivi a freddo
+1291	Immobilizzazione con casco stereotassico
 155	Anticorpi anti testicoloanticorpi anti tetano
-156	Anticorpi anti tireoglobulina (abtg)
-157	Anticorpi anti toxoplasma iga
-158	Anticorpi anti toxoplasma igg
-159	Anticorpi anti toxoplasma igm
-160	Anticorpi anti transglutaminasi
-161	Anticorpi anti treponema pallido igg (fta abs)
-162	Anticorpi anti treponema pallido igm (fta igm)
-163	Anticorpi anti tripanosoma cruzi
-164	Anticorpi anti varicella zoster virus ig totali
-165	Anticorpi anti varicella zoster virus igg
-166	Anticorpi anti varicella zoster virus igm
-167	Anticorpi anti virus respiratorio sinciziale
-57	Anticorpi anticitrullina
-82	Anticorpi antifosfolipidici (ricerca)
-130	Anticorpi anti-neutrofili citoplasmatici
-168	Anticorpi igg/igm specifici (qualunque virus)
-169	Antigene carboidratico 125 (ca 125 - antigene tumori ovarici)
-170	Antigene carboidratico 15-3 (ca 15-3 / antigene tumori mammari)
-171	Antigene carboidratico 195 (ca 195 / antigene tumori mammari)
-172	Antigene carboidratico 19-9 (ca 19-9 - gica - antigene tumori gastrointestinali)
-173	Antigene carboidratico 50 (ca 50)
-174	Antigene carboidratico 549
-175	Antigene carboidratico tag 72-4 (antigene tumori polmonare e gastrico)
-176	Antigene carcinoembrionario (cea)
-177	Antigene e virus epatite b (hbeag)
-178	Antigene hla b27
-179	Antigene p24 dell'hiv
-180	Antigene polipeptidico tissutale (tpa) (specifico tps)
-181	Antigene prostatico specifico (psa)
-182	Antigene prostatico specifico free (free psa)
-183	Antigene s virus epatite b (hbsag) (antigene australia)
-184	Antigene ta 4 (scc)
-185	Antigene tumorale vescicale (bta)
-186	Antigene von willebrand
-188	Antitrombina iii
-187	Antitrombina iii qualitativa
-2469	Antroatticotomia con labirintectomia
-2801	Apicectomia (compresa cura canalare)
-189	Apolipoproteina a
-190	Apolipoproteina b
-1465	Aponeurectomia, morbo di dupuytren
-2548	Aportazione di leucoplachia
-2748	Apparecchio laringofono
-2821	Apparecchio scheletrato (struttura lnp o lp, comprensivo di elementi - per arcata)
-1576	Appendicectomia con peritonite diffusa
-1577	Appendicectomia semplice a freddo
-2695	Applcazione di sfinteri artificiali incontinenza urinaria
-2293	Applicazione di filo o chiodo transcheletrico
-2709	Applicazione di protesi testicolare (come unico intervento)
-2294	Applicazione di skin traction
-1431	Applicazione di stent intracoronarico a completamento di angioplastica
-191	Aptoglobina
-1183	Areoionoterapia (per seduta)
-1184	Areosolterapia (per seduta)
-2272	Arto inferiore: coscia, gamba, piede (pelvipedidio) arto inferiore: gamba, piede (gambaletto)
-2273	Arto inferiore: ginocchiera
-2274	Arto superiore: avambraccio e mano
-2275	Arto superiore: braccio, avambraccio e mano
-2276	Arto superiore: torace ed arto superiore (toraco brachiale)
-2323	Artrocentesi
-2324	Artrocentesi con introduzione di medicamento
-1466	Artrodesi carpale
-1467	Artrodesi metacarpo-falangea e/o interfalangea
-2325	Artrodesi vertebrale per via anteriore o spondilolistesi
-2326	Artrodesi vertebrale per via posteriore
-2327	Artrodesi vertebrale per via posteriore e anteriore
-2328	Artrodesi: grandi articolazioni
-2329	Artrodesi: medie articolazioni
-2330	Artrodesi: piccole articolazioni
-2331	Artrolisi: grandi articolazioni
-2332	Artrolisi: medie articolazioni
-2333	Artrolisi: piccole articolazioni
-1468	Artroplastica
-2334	Artroplastiche con materiali biologici: grandi articolazioni
-2335	Artroplastiche con materiali biologici: medie articolazioni
-2336	Artroplastiche con materiali biologici: piccole articolazioni
-1469	Artroprotesi carpale
-1470	Artroprotesi metacarpo-falangea e/o interfalangea
-2340	Artroprotesi: anca parziale (trattamento completo)
-2341	Artroprotesi: anca totale (trattamento completo)
-2344	Artroprotesi: ginocchio
-2345	Artroprotesi: gomito, tibiotarsica
-2337	Artroprotesi: polso
-2338	Artroprotesi: spalla, parziale
-2339	Artroprotesi: spalla, totale
-809	Artro-rm (grandi articolazioni) (compreso contrasto)
-2348	Artroscopia diagnostica (come unico intervento)
-2346	Artroscopia operativa
-2347	Artroscopia operativa anca
-1669	Artroscopia, artocentesi temporo-mandibolare
-780	Artro-tc (grandi articolazioni)
-2470	Ascesso cerebrale, apertura per via transmastoidea
-2471	Ascesso del condotto, incisione di
-1698	Ascesso del douglas, drenaggio
-2557	Ascesso dell'epiglottide, incisione
-2660	Ascesso dello spazio prevescicale del retzius
-2472	Ascesso extradurale, apertura per via transmastoidea
-2349	Ascesso freddo, drenaggio di
-1492	Ascesso o flemmone diffuso, incisione di
-1494	Ascesso o flemmone superficiale, incisione di
-2133	Ascesso palpebre, incisione di
-1968	Ascesso pelvico, trattamento chirurgico
-2544	Ascesso peritonsillare, incisione
-2545	Ascesso retro-faringeo o latero-faringeo
-1699	Ascesso sub-frenico, drenaggio
-1969	Aspirazione ecoguidata di cisti ovarica
-2802	Asportazione cisti mascellari (per seduta)
-1923	Asportazione con laser di cheratosi seborroiche (per seduta, qualunque numero)
-1924	Asportazione con laser di tumori benigni cutanei o delle mucose esclusi quelli del viso (unica seduta)
-1925	Asportazione con laser di tumori benigni del viso (unica seduta)
-2149	Asportazione con plastica di tumori per innesto
-2150	Asportazione con plastica di tumori per scorrimento
-2152	Asportazione con plastica per scorrimento dello xantelasma
-2160	Asportazione del sacco lacrimale o della ghiandola lacrimale
-1670	Asportazione di calcolo salivare
-1832	Asportazione di cisti (echinococco od altre)
-2358	Asportazione di cisti del becker
-1972	Asportazione di cisti della ghiandola del bartolini
-2506	Asportazione di cisti e piccoli tumori benigni delle fosse nasali
-2357	Asportazione di cisti meniscale o parameniscale
-2127	Asportazione di cisti o corpi estranei
-1523	Asportazione di cisti o fistola congenita
-1973	Asportazione di cisti ovarica intralegamentosa
-1497	Asportazione di cisti pilonidale
-2121	Asportazione di cisti profonde o neoplasie contorno orbita
-1974	Asportazione di cisti vaginale
-2507	Asportazione di corpi estranei
-2360	Asportazione di corpi estranei e mobili endoarticolari (come unico intervento)
-2122	Asportazione di corpi estranei endoorbitali
-1674	Asportazione di corpi estranei profondi di tessuti molli, cavità orale e/o faccia
-1675	Asportazione di corpi estranei superficiali dei tessuti molli, cavità orale e/o faccia
-2054	Asportazione di corpo estraneo intracranico
-2803	Asportazione di epulide (per seduta)
-2375	Asportazione di esostosi semplice
-2478	Asportazione di fistole congenite
-2434	Asportazione di gangli tendinei e/o artrogeni
-1459	Asportazione di neoplasie e/o cisti benigne
-2078	Asportazione di neoplasie endocraniche
-2079	Asportazione di neoplasie endorachidee extradurali
-1759	Asportazione di neoplasie maligne del labbro/guancia con svuotamento della loggia sottomascellare
-1760	Asportazione di neoplasie maligne del labbro/guancia senza svuotamento della loggia sottomascellare
-2488	Asportazione di osteomi del condotto
-2144	Asportazione di piccoli tumori o cisti
-2011	Asportazione di polipi cervicali
-2491	Asportazione di polipi o cisti del padiglione o retroauricolari
-1612	Asportazione di polipo rettale
-1770	Asportazione di ranula
-2551	Asportazione di tumore benigno faringotonsillare
-1541	Asportazione di tumore maligno del collo
-2552	Asportazione di tumore maligno faringotonsillare
-1516	Asportazione di tumore profondo extracavitario
-1926	Asportazione di tumore superficiale maligno (trattamento completo)
-2535	Asportazione di tumori benigni dei seni paranasali
-2115	Asportazione di tumori dei nervi periferici
-2501	Asportazione di tumori dell'orecchio medio
-2536	Asportazione di tumori maligni del naso o dei seni
-2425	Asportazione di tumori ossei e forme pseudo tumorali, grandi segmenti o articolazioni
-2426	Asportazione di tumori ossei e forme pseudo tumorali, medi segmenti o articolazioni
-2427	Asportazione di tumori ossei e forme pseudo tumorali, piccoli segmenti o articolazioni
-2428	Asportazione di tumori ossei e forme pseudo tumorali, vertebrali
-1518	Asportazione di unghia incarnita,
-2151	Asportazione di xantelasma semplice
-2219	Asportazione e plastica di cisti iridee
-2190	Asportazione ed impianto di cristallino artificiale pseudo accomodativo in camera anteriore o posteriore con correzione di difetti visivi e impianto di lente correttiva per cataratta
-1731	Asportazione endoscopica litiasi biliare
-1526	Asportazione per tumori maligni di ghiandola sottomascellare
-1621	Asportazione per via sacrale di tumore del retto
-1498	Asportazione radicale di cisti sinoviale
-2516	Asportazione semplice di polipi nasali o coanali
-2227	Asportazione, cerchiaggio, rimozione materiali usati durante l'intervento di distacco
-2447	Assistenza al parto a domicilio da parte di ostetrica professionista
-2448	Assistenza al parto a domicilio da parte di specialista ostetrico ginecologo
-897	Assistenza anestesiologica agli esami radiologici
-898	Assistenza anestesiologica agli esami radiologici (per seduta) compresa eventuale sedazione
-831	Assistenza cardiologica a parte
-921	Assistenza cardiologica intra-operatoria
-2473	Atresia auris congenita completa
-2474	Atresia auris congenita incompletacateterismo tubarico (per seduta)
-192	Attività reninica attiva
-193	Attività reninica plasmatici
-194	Azotemia
-195	Bacillo di koch: ricerca microscopica ed esame colturale
-1212	Bagnoterapia (per seduta)
-2258	Bendaggio alla colla di zinco: coscia, gamba e piede
-2259	Bendaggio alla colla di zinco: gamba e piede
-2260	Bendaggio collare di schanz
-2261	Bendaggio con doccia di immobilizzazione: gomito e polso
-2262	Bendaggio con doccia di immobilizzazione: in abduzione per arto superiore
-2263	Bendaggio con doccia di immobilizzazione: per arto inferiore
-2264	Bendaggio con medicazione
-1893	Bendaggio elasto-compressivo arti inferiori
-1718	Bendaggio gastrico regolabile per via laparoscopica
-2265	Bendaggio secondo desault: amidato o gessato
-2266	Bendaggio secondo desault: semplice
-2267	Bendaggio semplice con ovatta e garza
-2268	Bendaggio torace senza arto superiore
-196	Beta 2 microglobulina nelle urine delle 24 ore
-197	Beta 2 microglobulina plasmatici
-1282	Betaterapia superficiale con radioisotopi artificiali (per seduta)
-198	Bicarbonati
-199	Bilirubina nel liquido amniotico (curva spettrofotometrica)
-201	Bilirubinemia totale
-200	Bilirubinemia totale e frazionata
-1244	Biofeedback (per seduta)
-538	Biologia molecolare
-1036	Biometria
-2350	Biopsia articolare
-1654	Biopsia con laparotomia (come unico intervento)
-893	Biopsia del linfonodo sentinella
-1971	Biopsia della portio, vulva, vagina, endometrio
-748	Biopsia ecoguidata (escluso esame citoistologico)
-1432	Biopsia endomiocardica destra
-1433	Biopsia endomiocardica sinistra
-1732	Biopsia epatica con laparotomia (come unico intervento)
-1495	Biopsia escissionale come unico atto chirurgico, qualsiasi parte anatomica, salvo i casi descritti
-2804	Biopsia generica
-946	Biopsia in corso di endoscopia escluso esame citoistologico
-2558	Biopsia in laringoscopia
-2559	Biopsia in microlaringoscopia
-1829	Biopsia laterocervicale
-1010	Biopsia muscolare
-2119	Biopsia orbitaria
-2351	Biopsia ossea
-1522	Biopsia prescalenica
-1113	Biopsia prostatica
-1830	Biopsia sopraclaveare
-781	Biopsia tac guidata escluso esame citoistologico
-1114	Biopsia testicolare bilaterale
-1115	Biopsia testicolare monolaterale
-2352	Biopsia trans-peduncolare somi vertebrale
-2353	Biopsia vertebrale a cielo aperto
-1496	Biopsie (ogni tipo) successive alla prima
-2849	Bite wing (massimo 4 per ogni piano di cura)
-2134	Blefarocalasi o traumi o ferite, intervento di blefaroplastica: 1 palpebra
-2135	Blefarocalasi o traumi o ferite, intervento di blefaroplastica: ogni altra palpebra
-1168	Blocchi antalgici dei nervi periferici
-1169	Blocchi antalgici del ganglio
-1170	Blocchi antalgici del plesso
-1167	Blocchi antalgici nervi cranici e loro rami
-1166	Blocchi antalgici periarticolari e/o intrarticolari
-1171	Blocchi antalgici tronculari del nervo
-2354	Borsectomia
-1283	Brachiterapia (courieterapia) interstiziale od endocavitaria o coronarica (prima seduta)
-1284	Brachiterapia (courieterapia) interstiziale od endocavitaria o coronarica (sedute successive)
-1285	Brachiterapia (courieterapia) superficiale (apparecchi modellati)
-1286	Brachiterapia interstiziale con impianto permanente di semi radioattivi nella prostata (compreso costo dei semi)
-202	Brain natriuretic peptide (bnp)
-203	Breath test
-1831	Broncoinstillazione endoscopica
-1116	Brushing citologico compresa citoscopia
-2589	Brushing citologico in cistoscopia (come unico intervento)
-1406	Bypass aorto coronarici multipli
-1407	Bypass aorto coronarico singolo
-1895	By-pass aorto-anonima, aorto-carotideo, carotido-succlavio
-1894	By-pass aorto-iliaco o aorto-femorale
-1896	By-pass aorto-renale, aorto-mesenterico o celiaco ed eventuale tea e plastica vasale
-1897	By-pass arterie periferiche: femoro-tibiali, axillo-femorale, femoro-femorale, femoro-popliteo
-1580	By-pass gastro intestinali o intestinali per patologie maligne
-1719	By-pass intestinali per il trattamento obesità patologica
-948	C.p.r.e. Diagnostica
-2136	Calazio
-2355	Calcaneo stop
-204	Calcemia
-205	Calcio intraeritrocitario
-206	Calcio ionizzato
-207	Calcio nelle urine delle 24 ore
-208	Calcitonina
-2277	Calco di gesso per protesi arti
-2597	Calcoli ureterali, estrazione con sonde apposite
-209	Calcolo renale (analisi chimica)
-210	Calprotectina fecale
-211	Cam 26 (marcatore tumorale)
-212	Cam 29 (marcatore tumorale)
-2581	Cambio tubo cistostomico cambio tubo pielostomico
-1037	Campimetria
-2137	Cantoplastica
-911	Capillaroscopia
-912	Capillaroscopia con videoregistrazione
-1273	Carbossiterapia
-1408	Cardiochirurgia a cuore aperto, compresi aneurismi e sostituzioni valvolari multiple (c.e.c.)
-1410	Cardiochirurgia a cuore chiuso (senza c.e.c.) - interventi di, salvo gli interventi descritti
-979	Cardiotocografia (monitoraggio fetale)
-980	Cariotipo su aborto
-568	Cariotipo su sangue periferico (mappa cromosomica)
-2049	Carotide endocranica, legatura della
-2689	Caruncola uretrale
-213	Catecolamine totali urinariecellule l.e. (ricerca nel sangue periferico)
-1434	Cateterismo destro e sinistro, e calcolo portate e gradienti con coronarografia
-1172	Cateterismo plessico per blocco continuo
-2583	Cateterismo vescicale nella donna (come unico trattamento)
-2582	Cateterismo vescicale nell'uomo con patologia stenotica (unico trattamento)
-2560	Cauterizzazione endolaringea
-2449	Cerchiaggio cervicale
-214	Ch50
-1787	Cheloidi di grandi dimensioni, asportazione di: con laser, (trattamento totale)
-1786	Cheloidi di grandi dimensioni, asportazione di: con tecnica tradizionale
-1788	Cheloidi piccole dimensioni asportazione di: con laser, (trattamento totale)
-1789	Cheloidi piccole dimensioni asportazione di: con tecnica tradizionale
-1142	Chemioterapia ambulatoriale antineoplastica (per seduta)
-2356	Chemonucleolisi per ernia discale
-1038	Cheratometria (come unico atto medico)
-2175	Cheratoplastica a tutto spessore
-2176	Cheratoplastica lamellare
-1230	Chinesiterapia (per seduta)
-2833	Chirurgia gengivale, per arcata (incluso qualsiasi tipo di lembo, inclusa sutura)
-2834	Chirurgia muco gengivale o abbassamento di fornice, per arcata (incluso qualsiasi tipo di lembo, inclusa sutura)
-2836	Chirurgia ossea (incluso il lembo di accesso, inclusa sutura) trattamento completo per quadrante
-2248	Chirurgia refrattiva (qualunque tecnica) per 1 occhio
-2249	Chirurgia refrattiva (qualunque tecnica) per 2 occhi
-1436	Chiusura del forame ovale
-2154	Chiusura del puntino lacrimale
-2155	Chiusura del puntino lacrimale con protesi
-2205	Ciclodialisi
-2206	Ciclodiatermia perforante
-810	Cine rm cuore
-847	Cinetica leucocitaria con misure sulle sedi di cateresi
-848	Cinetica piastrinica con misure sulle sedi di cateresi
-2716	Circoncisione per fimosi con frenulo plastica
-557	Cish: solo su prescrizione di specialista oncologo o chirurgo operante presso struttura pubblica
-2661	Cistectomia parziale con ureterocistoneostomia
-2662	Cistectomia parziale semplice
-2663	Cistectomia totale compresa linfoadenectomia e prostatovesciculectomia o uteroannessectomia con ureterosigmoidostomia bilaterale o ureterocutaneostomia
-2665	Cistectomia totale compresa linfoadenectomia e prostatovesciculectomia o uteroannessiectomia con ileo o colobladder
-2666	Cistectomia totale compresa linfoadenectomia e prostatovessciculectomia o uteroannessiectomia con neovescica rettale compresa
-1734	Cisti da echinococco multiple, pericistectomia
-1735	Cisti da echinococco, ascessi epatici
-1411	Cisti del cuore o del pericardio
-2623	Cisti renale per via percutanea, puntura di
-2624	Cisti renale, puntura evacuativa percutanea con iniezione di sostanze sclerosanti
-2625	Cisti renale, resezione
-2431	Cisti tendinea (come unico intervento)
-1624	Cisti, ematomi, ascessi, neoplasia benigna, flemmoni parete addominale
-692	Cistografia doppio contrasto
-2668	Cistolitotomia (come uico intervento)
-2669	Cistopessi
-2670	Cistorrafia per rottura traumatica
-1117	Cistoscopia compresa eventuale biopsia
-2590	Cistoscopia ed eventuale biopsia
-2671	Cistostomia sovrapubica
-693	Cistoureterografia minzionale
-215	Citologia urinaria
-216	Citotossicità spontanea t e k / ciascuno
-217	Citrato urinario nelle 24 ore
-218	Clamydia (ricerca dna)
-219	Clamydia (ricerca ed identificazione)
-961	Clamydia su striscio vaginale: prelievo per ricerca
-613	Clisma opaco
-614	Clisma opaco a doppio contrasto
-220	Cloremia
-221	Cloro nelle urine
-541	Cmv (citomegalovirus)
-2698	Coagulazione di polipi del meato
-222	Cobalto
-949	Colangiografia retrograda endoscopica
-811	Colangio-rm
-1736	Colecistectomia per via laparoscopica
-1737	Colecistectomia per via laparotomica
-1738	Colecistogastrostomia o colecistoenterostomia
-615	Colecistografia
-1739	Colecistostomia per neoplasie non resecabili
-1584	Colectomia segmentaria
-1583	Colectomia segmentaria con linfoadenectomia ed eventuale colostomia
-1586	Colectomia totale
-1585	Colectomia totale con linfoadenectomia
-1740	Coledoco-epatico digiunostomia con o senza colecistectomia
-1741	Coledoco-epatico duodenostomia con o senza colecistectomia
-1742	Coledoco-epatico-digiunoduodenostomia con o senza colecistectomia
-1743	Coledoctomia e coledocolicotomia (come unico intervento)
-223	Colesterolo hdl
-224	Colesterolo ldl
-225	Colesterolo totale
-226	Colinesterasi (pseudo che)
-2749	Collare cervicale
-2598	Collo vescicale e prostata, resezione endoscopica del
-2672	Collo vescicale, plastica y/v (come unico intervento)
-2599	Collo vescicale, resezione per sclerosi recidiva
-1555	Collocazione di protesi endo-esofagee
-950	Colonscopia diagnostica
-1938	Colonscopia totale operativa
-1939	Colonscopia totale operativa con posizionamento endo-loop
-1587	Colotomia con colorrafia (come unico intervento)
-1976	Colpoperineorrafia per lacerazioni perineali
-1975	Colpoperineorrafia per lacerazioni perineali interessanti il retto
-962	Colposcopia più biopsia
-963	Colposcopia più pap-test
-1977	Colpotomia e svuotamento di raccolte ematiche e purolente
-227	Coltura linfocitaria
-1412	Commissurotomia per stenosi mitralica
-228	Complemento c3 proattivatore
-229	Complemento frazione c 1 inibitore
-230	Complemento frazione c1 q
-231	Complemento frazione c3
-232	Complemento frazione c4
-2052	Compressione del g. Di gasser con palloncino fogarky
-1671	Condilectomia (come unico intervento)
-1673	Condilectomia con condiloplastica per anchilosi dell'articolazione temporo mandibolare bilaterale
-1672	Condilectomia con condiloplastica per anchilosi dell'articolazione temporo-mandibolare monolaterale
-2359	Condrectomia
-1588	Confezionamento di ano artificiale (come unico intervento)
-1589	Confezionamento di ilestomia continente (come unico intervento)
-1978	Conizzazione e tracheloplastica
-233	Conta batterica in materiali biologici (conta colonie)
-234	Conta di addis
-235	Conteggio dei reticolociti
-236	Conteggio delle piastrine
-1287	Contornazione del target e degli organi critici per piani 3d, valutazione radioterapica dei piani 3d
-1288	Contornazione del target e degli organi critici per piani imrt, valutazione radioterapica dei piani imrt e validazione
-812	Contrasto paramagnetico
-782	Contrasto per tomografia assiale
-1437	Controllo elettronico del pace maker impiantato (compresa consulenza ingegnere)
-1413	Contropulsazione aortica mediante incannulamento arterioso
-2561	Corde vocali, decorticazione in microlaringoscopia
-2562	Cordectomia
-2563	Cordectomia con il laser
-2451	Cordocentesi
-749	Core biopsy (compresa ecografia)
-783	Coronaro tc
-1438	Coronarografia + ventricolografia sinistra + cateterismo sinistro
-1439	Coronarografia circolo nativo + studio selettivo di by-pass venosi ed arteriosi + ventricolografia sinistra + cateterismo sinistro
-2476	Corpi estranei dal condotto, asportazione per via naturale con lavaggio
-2477	Corpi estranei dal condotto, asportazione strumentale
-2177	Corpi estranei dalla cornea, estrazione di
-2546	Corpi estranei endofaringei, asportazione di
-2564	Corpi estranei, asportazione in laringoscopia
-2475	Corpi estranei, asportazione per via chirurgica retroauricolare
-1499	Corpo estraneo profondo extracavitario, estrazione di
-1500	Corpo estraneo superficiale, estrazione di
-1676	Correzione di esiti di labioschisi
-1677	Correzione di naso da labioschisi
-1267	Correzione incruenta del disallineamento vertebrale (per seduta)
-1790	Correzioni di cicatrici del tronco o degli arti di grandi dimensioni (escluso espansore)
-1791	Correzioni di cicatrici del viso di grandi dimensioni
-2278	Corsetto con spalle
-2750	Corsetto ortopedico
-2751	Corsetto ortopedico per scoliosi
-2279	Corsetto senza spalle
-2280	Corsetto speciale per scoliosi e/o cifosi
-2281	Corsetto tipo minerva
-237	Cortisolo plasmatico
-238	Cortisolo urinario
-2362	Costruzione di monconi cinematici
-1940	Cpre operativa
-2055	Cranioplastica
-2056	Craniotomia a scopo decompresssivo/esplorativo
-2057	Craniotomia per ematoma extradurale
-2058	Craniotomia per lesioni traumatiche intracerebrali
-2059	Craniotomia per tumori cerebellari, anche basali
-240	Creatinfosfochinasi (cpk)
-239	Creatinfosfochinasi isoenzimi
-241	Creatinfosfochinasi-mb (cpk-mb)
-242	Creatinfosfochinasi-mb massa
-243	Creatinina clearance
-244	Creatinina nel liquido amniotico
-245	Creatinina nelle urine delle 24 ore
-246	Creatininemia
-1213	Crenoterapia (per seduta)
-248	Crioagglutinine (dosaggio)
-2207	Crioapplicazione antiglaucomatosa
-2179	Crioapplicazioni corneali
-249	Crioglobuline (ricerca)
-1259	Crioterapia (per seduta)
-2228	Criotrattamento (come unico intervento)
-2193	Cristallino artificiale, impianto secondario in camera anteriore
-2194	Cristallino artificiale, impianto secondario in camera posteriore
-2195	Cristallino artificiale, rimozione dalla camera anteriore (come unico intervento)
-2196	Cristallino artificiale, rimozione dalla camera posteriore (come unico intervento)
-569	Cromatina sessuale
-250	Cromo sierico
-1118	Cromocistoscopia e cateterismo ureterale bilaterale
-2591	Cromocistoscopia e cateterismo ureterale bilaterale
-1119	Cromocistoscopia e cateterismo ureterale monolaterale
-2592	Cromocistoscopia e cateterismo ureterale monolaterale
-2593	Cromocistoscopia per valutazione funzionale
-251	Cromogranina a
-1011	Cronassia
-254	Cross links urinari
-252	Cross-links del piridinio
-253	Cross-links del piridinolinio
-1501	Cuoio capelluto, vasta ferita e scollamento del
-2515	Cura chirurgica dell'ozena
-2684	Cura per affezione della prostata con prostathermer (per ciclo di cura annuale)
-1519	Cura radicale di unghia incarnita
-255	Curva delle gonadotropine (fsh+lh) dopo somministrazione di gnrh
-256	Curva delle gonadotropine (fsh+lh) senza somministrazione di farmaco di stimolo (3 dosaggi)
-257	Curva glicemica da carico (5 dosaggi / sostanza compresa)
-258	Curva insulinemica da carico (5 dosaggi / sostanza compresa)
-259	Curva prolattina dopo somministrazione di trh (minimo 5 dosaggi) (escluso farmaco)
-1039	Curva tonometrica
-260	Curva tsh dopo somministrazione di trh (minimo 5 dosaggi) (escluso farmaco)
-1133	Cvc per dialisi
-261	Cyfra 21/1
-2156	Dacriocistorinostomia o intubazione
-262	D-dimero
-1744	Dearterializzazione epatica, con o senza chemioterapia
-1745	Deconnessione azygos-portale per via addominale
-616	Defecografia
-2753	Defibrillatore cardiaco impiantabile
-922	Defibrillazione o cardioversione elettrica (escluso anestesista)
-2432	Deformità ad asola
-263	Deidroepiandrosterone (dea)
-264	Deidroepiandrosterone solfato (deas)
-2282	Delbet
-265	Delta 4 androstenedione sierico (d4)
-1979	Denervazione vulvare
-1655	Denervazioni pancretiche, (come unico intervento)
-773	Densitometria mineralometria ossea (moc)
-774	Densitometria ortopedica periprotesica
-775	Densitometria ossea (moc) total body
-776	Densitometria ossea (moc) vertebrale e/o femorale
-784	Dentalscan 1 arcata
-785	Dentalscan 2 arcata
-1656	Derivazione pancreatico-wirsung digestive
-266	Desossipiridonilinio urinario
-871	Determinazione del flusso regionale quantitativo
-849	Determinazione del volume eritrocitario
-850	Determinazione del volume plasmatico
-913	Determinazione transcutanea pressione parziale o2 (tcpo2) arti inferiori
-914	Determinazione transcutanea pressione parziale o2 (tcpo2) arti inferiori e superiori
-915	Determinazione transcutanea pressione parziale o2 (tcpo2) arti superiori
-2719	Detorsione del funicolo
-1199	Diadinamica (per seduta)
-2508	Diaframma coanale osseo, asportazione per via transpalatina
-2565	Diaframma laringeo, escissione con ricostruzione plastica
-900	Diagnostica strumentale allergologia - test in vivo
-910	Diagnostica strumentale angiologia
-920	Diagnostica strumentale cardiologia
-937	Diagnostica strumentale dermatologia
-941	Diagnostica strumentale endocrinologia
-943	Diagnostica strumentale gastroenterologia
-1009	Diagnostica strumentale neurologia
-1034	Diagnostica strumentale oculistica (effettuata da medico specialista oculista)
-1069	Diagnostica strumentale ortopedia
-1072	Diagnostica strumentale otorinolaringoiatria
-1088	Diagnostica strumentale pneumologia
-1110	Diagnostica strumentale urologia
-899	Diagnostiche specialistiche
-1134	Dialisi domiciliare (per seduta)
-1625	Diastasi dei retti, intervento per (come unico intervento)
-1200	Diatermia (per seduta)
-1980	Diatermocoagulazione della portio uterina o vulva
-2691	Diatermocoagulazione di condilomi uretrali con messa a piatto dell'uretra
-1928	Diatermocoagulazione o crioterapia per una o più lesioni, alterazioni, neoformazioni, cheratosi seborroiche (per seduta, qualunque numero)
-2229	Diatermocoagulazione retinica per distacco
-1201	Diatermoterapia (per seduta)
-267	Diidrotestosterone (dht)
-1981	Dilatazione del collo e applicazione di tubetto di petit- leufour endouterino
-1941	Dilatazione graduale del retto (per seduta)
-2566	Dilatazione laringea (per seduta)
-2364	Disarticolazione interscapolo toracica
-2365	Disarticolazioni, grandi articolazioni
-2366	Disarticolazioni, medie articolazioni
-2367	Disarticolazioni, piccole articolazioni
-2192	Discissione di cataratta secondaria
-2805	Disinclusione denti ritenuti (per ciascun elemento)
-2433	Dito a martello
-1721	Diversione bilio pancreatica con duodenal switch (dopo slevee gastrectomy)
-1720	Diversione bilio pancreatica laparoscopica (standard sec scopinaro o con duodenal switch)
-2673	Diverticulectomia
-268	Dopamina plasmatica
-269	Dopamina urinaria
-270	Dosaggio di farmaci nel sangue per monitoraggio (per ogni determinazione)
-1834	Drenaggi di mediastiniti acute o croniche o di ascessi
-1746	Drenaggio bilio digestivo intraepatico
-1835	Drenaggio cavità empiematica
-1653	Drenaggio di ascessi pancreatici
-2363	Drenaggio ematoma profondo organizzato sottofasciale
-1219	Drenaggio linfatico manuale (per seduta)
-1414	Drenaggio pericardico o riapertura per sanguinamento
-1836	Drenaggio pleurico per emo e/o pneumotorace traumatico
-1837	Drenaggio pleurico per pneumotorace spontaneo
-965	Duo test
-1657	Duodeno cefalo pancreatectomia compresa eventuale linfoadenectomia
-1593	Duodeno digiunostomia (come unico intervento)
-542	Ebv (epstein barr virus)
-983	Ecocardiografia fetale (non ripetibile nel corso della gravidanza)
-750	Ecocardiogramma
-923	Ecocardiogramma transesofageo colordoppler
-924	Ecocardiogramma transtoracico m-b e colordoppler
-984	Ecocolordoppler fetale
-751	Ecocolordoppler per ogni organo o apparato
-752	Ecocolordoppler per ogni organo o apparato succesivo nella stessa seduta
-753	Ecocolordoppler tronchi sovraortici
-754	Ecoendoscopia operativa
-746	Ecografia / doppler / ecodoppler / colordoppler
-755	Ecografia addome completo
-756	Ecografia addome inferiore
-757	Ecografia addome superiore
-758	Ecografia di organo o apparato successivo nella stessa seduta
-759	Ecografia di organo o apparatoecografia endovasale
-985	Ecografia fetale (massimo 4 per l'intero ciclo di gravidanza) #
-760	Ecografia mammaria bilaterale
-986	Ecografia morfologica (non ripetibile nel corso della gravidanza)
-762	Ecografia peniena
-761	Ecografia peniena dinamica (farmacologica)
-763	Ecografia prostatica sovrapubica
-765	Ecografia transesofagea
-764	Ecografia transrettale
-766	Ecografia transvaginale
-925	Eco-stress
-1898	Elefantiasi degli arti
-926	Elettrocardiogramma basale
-927	Elettrocardiogramma dinamico secondo holter 24 ore
-928	Elettrocardiogramma dinamico secondo holter 48 ore
-2601	Elettrocoagulazione di piccoli tumori vescicali (per seduta)
-1012	Elettroencefalogramma con analisi spettrale
-1013	Elettroencefalogramma con sonno farmacologico
-1014	Elettroencefalogramma dinamico 24 ore
-1015	Elettroencefalogramma standard o con sensibilizzazione
-271	Elettroforesi della emoglobinaelettroforesi delle lipoproteine (lipidogramma)
-272	Elettroforesi delle proteine urinarie (compreso dosaggio proteine tot.)
-273	Elettroforesi delle sieroproteine (protidogramma)
-2138	Elettrolisi delle ciglia (massimo due sedute)
-1040	Elettromiografia
-1016	Elettromiografia (2 segmenti)
-1017	Elettromiografia (per segmento)
-1018	Elettromiografia completa senza distinzione di segmento
-1019	Elettromiografia ed elettroneurografia degli arti superiori e/o inferiori
-1120	Elettromiografia sfinterica
-1020	Elettroneurografia con velocità conduzione motoria e sensitiva (ad arto)
-1041	Elettronistagmografia
-1042	Elettrooculogramma (eog)
-1043	Elettrooculomotilogramma (eomg)
-1044	Elettroretinogramma dinamico (erg dinamico)
-1045	Elettroretinogramma standard (erg standard)
-1202	Elettrosonoterapia (per seduta)
-1203	Elettrostimolazioni esponenziali (per seduta)
-1198	Elettroterapia
-1204	Elettroterapia (per seduta)
-2713	Emasculatio totale ed eventuale linfoadenectomia
-1502	Ematoma superficiale, svuotamento di
-1503	Ematomi profondi extracavitari, svuotamento di
-1415	Embolectomia con fogarty
-1899	Embolectomia e/o trombectomia arteriosa o vene profonde o cava
-2452	Embryo-transfer prestazione riconosciuta solo per l'atto operativo, non per le
-1594	Emicolectomia destra con linfoadenectomia
-1595	Emicolectomia sinistra con linfoadenectomia ed eventuale colostomia
-2626	Eminefrectomia
-2369	Emipelvectomia
-2370	Emipelvectomie â€œinterneâ€ con salvataggio dell'arto
-274	Emoagglutinazione treponema pallidum (tpha)
-275	Emocoltura
-1135	Emodialisi (per seduta)
-1377	Emofiltrazioni depurative
-1089	Emogasanalisi arteriosa basale (ph, po2, pco2 bicarbonati, compreso prelievo)
-1090	Emogasanalisi arteriosa sotto sforzo (compreso prelievo)
-1091	Emogasanalisi durante respirazione di o2 (compreso prelievo)
-1092	Emogasanalisi prima e dopo iperventilazione (compreso prelievo)
-276	Emoglobina (hb)
-277	Emoglobina a2 (emoglobina patologica)
-278	Emoglobina glicosilata hba 1c
-279	Emoglobina nel liquido amniotico
-280	Emoglobine alcali resistente
-281	Emoglobine fetali (dosaggio)
-1596	Emorroidi (trattamento con legatura elastica)
-1597	Emorroidi e/o ragadi intervento radicale (qualsiasi tecnica)
-1598	Emorroidi interne, iniezione sclerosanti delle (a seduta)
-2790	Endodonzia (prestazione a due canali) (comprese rx)
-2792	Endodonzia (prestazione a quattro canali) (comprese rx)
-2791	Endodonzia (prestazione a tre canali) (comprese rx)
-2789	Endodonzia (prestazione ad un canale) (comprese rx)
-1838	Enfisema bolloso, trattamento chirurgico
-282	Enolasi neurone specifica (nse)
-951	Enteroscopia con videocapsula
-1599	Enterostomia (come unico intervento)
-2139	Entropion-ectropion
-2244	Enucleazione con innesto protesi mobile
-2245	Enucleazione o exenteratio
-1681	Enucleoresezione di formazioni cistiche endoparotidee
-283	Eparina
-2140	Epicanto-coloboma
-2180	Epicheratoplastica
-2714	Epididimectomia
-2371	Epifisiodesiernia del disco dorsale e/o lombare
-1245	Ergoterapia (per seduta)
-1378	Eritro aferesi terapeutica
-284	Eritropoietina
-1626	Ernia crurale recidiva (comprensiva di ernioplastica protesica)
-1627	Ernia crurale semplice (comprensiva di ernioplastica protesica)
-1628	Ernia crurale strozzata (comprensiva di ernioplastica protesica)
-2063	Ernia del disco dorsale per via laterale
-2372	Ernia del disco dorsale per via transtoracica
-2064	Ernia del disco dorsale per via trans-toracica
-2065	Ernia del disco intervertebrale cervicale, mielopatie, radiculopatie
-2066	Ernia del disco per via anteriore con artrodesi intersomatica
-1629	Ernia diaframmatica
-1630	Ernia epigastrica (comprensiva di ernioplastica protesica)
-1631	Ernia epigastrica strozzata o recidiva (comprensiva di ernioplastica protesica)
-1564	Ernia iatale, interventi per (compresa plastica antireflusso)
-1632	Ernia inguinale bilaterale (comprensiva di ernioplastica protesica)
-1633	Ernia inguinale con ectopia testicolare (comprensiva di ernioplastica protesica)
-1634	Ernia inguinale recidiva (comprensiva di ernioplastica protesica)
-1635	Ernia inguinale semplice (comprensiva di ernioplastica protesica)
-1636	Ernia inguinale strozzata (comprensiva di ernioplastica protesica)
-1637	Ernia ombelicale
-1638	Ernia ombelicale recidiva
-2141	Ernia palpebrale, correzione con riduzione di sovrabbondanza cutanea: 1 palpebra (escluse finalità estetiche)
-2142	Ernia palpebrale, correzione con riduzione di sovrabbondanza cutanea: ogni altra palpebra (escluse finalità estetiche)
-1839	Ernie diaframmatiche traumatiche
-2143	Ernie palpebrali, correzione di (escluse finalità estetiche)
-1639	Ernie rare (ischiatica, otturatoria, lombare, perineale)
-1073	Esame audiometrico
-1070	Esame baropodometrico dinamico
-1071	Esame baropodometrico statico
-285	Esame batteriologico liquido prostatico (ricerca su vetrino)
-286	Esame batterioscopico (ricerca su vetrino)
-287	Esame batterioscopico tampone (ricerca su vetrino)
-594	Esame citologico per diagnostica ormonale
-595	Esame citologico per diagnostica tumorale
-1074	Esame cocleo vestibolare semplice
-288	Esame colturale materiale biologico
-289	Esame colturale materiale biologico + antibiogramma
-290	Esame colturale micoplasmi
-297	Esame completo del liquido seminale con indice di capacitazione
-1046	Esame del senso cromatico (come unico atto medico)
-1047	Esame del senso luminoso (come unico atto medico)
-2852	Esame diretto ghiandole salivari
-2853	Esame elettromiografico
-291	Esame emocromocitometrico completo con formula
-292	Esame feci: chimico, fisico e parassitologico
-293	Esame he4 (uman epididymis protein 4)
-295	Esame immunoistochimico su preparato biologico
-596	Esame istologico con inclusione
-597	Esame istologico con inclusione: ogni inclusione in più
-598	Esame istologico estemporaneo max 3 inclusioni
-599	Esame istologico estemporaneo ogni inclusione successiva (oltre il terzo)
-294	Esame jak2
-2854	Esame kinesiografico
-296	Esame liquido cefalorachidiano
-298	Esame liquido seminale completo per studio fertilità
-299	Esame liquido seminale con indice di fertilità (spermiogramma)
-300	Esame liquido sinoviale
-301	Esame microscopico dei peli e squame cutanee per micosi
-302	Esame microscopico diretto su cellofan adesivo per ossiuri
-303	Esame microscopico flora microbica (eventuale arricchimento)
-1048	Esame ortottico completoesercizi ortottici (per seduta)
-1075	Esame per adattamento protesico
-304	Esame phi (indice di salute prostatica)
-1076	Esame spettrografico della voce
-305	Esame urine chimico, fisico e microscopico completo
-1121	Esame urodinamico completo (compresi eventuali test farmacologici)
-2584	Esame urodinamico completo (compresi eventuali test farmacologici)
-1077	Esame vestibolare con eng (qualunque tecnica)
-1545	Esofagectomia totale con esofagoplastica, in un tempo, compresa linfoadenectomia
-1549	Esofago-gastrectomia totale, per via toraco-laparotomica ed eventuale linfoadenectomia
-952	Esofagogastroduodenoscopia e test rapido per h. Pylori
-1942	Esofagogastroduodenoscopia operativa
-1550	Esofagogastroplastica-esofagodigiunoplastica- esofagocoloplastica (sostitutiva o palliativa)
-1551	Esofagostomia
-1049	Esolftalmometria
-1504	Espianto di catetere peritoneale
-1143	Espianto di cvc
-2389	Espianto di midollo osseo
-1144	Espianto di sistemi venosi impiantabili tipo port - a - cath, groshong ed altri (come unico intervento)
-2726	Esplorazione scrotale noduli testicolari
-306	Estradiolo (e2 o 17 beta)
-2715	Estrazione chirurgica di spermatozoi testicolari
-2600	Estrazione cistoscopica di corpi estranei vescicali
-1591	Estrazione con sfinterotomia di corpi estranei
-2242	Estrazione di corpo estraneo endobulbare calamitabile
-2243	Estrazione di corpo estraneo endobulbare non calamitabile
-2197	Estrazione di cristallino lussato-cataratta complicata
-2806	Estrazione di dente in soggetto sottoposto a narcosi in circuito
-2808	Estrazione di dente o radice in inclusione ossea totale
-2178	Estrazione in camera anteriore di corpi estranei
-1590	Estrazione per via addominale di corpi estranei del retto
-988	Estriolo plasmatico
-989	Estriolo urinario
-2674	Estrofia vescicale (trattamento completo)
-309	Estrone
-2509	Etmoide, svuotamento radicale bilaterale
-2510	Etmoide, svuotamento radicale monolaterale
-2246	Eviscerazione con impianto intraoculare
-1982	Eviscerazione pelvica
-1078	Evoked response audiometry (e.r.a.)
-2123	Exenteratio orbitae
-1983	Exeresi di cisti ovarica per via laparoscopica
-1756	Exeresi di neoformazioni endossee di grandi dimensioni
-2484	Exeresi di neoplasia del padiglione
-1749	Exeresi di papilla di vater
-1715	Exeresi di tumore retroperitoneale
-2710	Exeresi per cisti del funicolo, didimo ed epididimo
-310	Faber test (ricerca ige specifiche) qualunque numero
-1260	Fangoterapia (per seduta)
-2230	Farmaco per iniezione intravitreale (rimborso pari all' 80% della spesa sostenuta)
-1900	Fasciotomia decompressiva
-311	Fattore reumatoide (reuma test)
-312	Fattori della coagulazione (f, ii, vii, viii, ix, x, xi, xii, xiii)
-313	Fenomeno l.e.
-314	Fenotipo rh (compreso du)
-1506	Ferita profonda, sutura di
-1507	Ferita superficiale della faccia, sutura di
-1508	Ferita superficiale, sutura di
-1840	Ferita toraco-addominale con lesioni viscerali
-1841	Ferita toraco-addominale senza lesioni viscerali
-1842	Ferite con lesioni viscerali del torace
-315	Ferritina
-316	Ferro urinario
-2511	Fess per trattamento di sinusopatie croniche e/o poliposi
-2454	Fetoscopia
-317	Fibrinogeno
-318	Fibrinopeptide a
-1079	Fibrolaringoscopia
-2547	Fibroma rinofaringeo
-767	Fibroscan
-1290	Film di verifica in corso di trattamento (massimo uno a settimana)
-319	Filtrato glomerulare
-991	Fish amniociti in interfase 2 sonde
-992	Fish amniociti in interfase 4 sonde
-993	Fish con altre sonde
-570	Fish con altre sonde*
-571	Fish su liquido seminale*
-559	Fish: (fluorescent in situ hybridization) - solo su prescrizione di specialista oncologo o chirurgo operante
-1274	Fisioterapia secondo souchard (per seduta)
-1678	Fissazione con ferule di elementi dentali lussati (per arcata)
-1600	Fistola anale extrasfinterica
-1601	Fistola anale intrasfinterica
-2067	Fistola liquorale
-2676	Fistola sovrapubica, intervento per (come unico intervento)
-1602	Fistole anali, laserchirurgia per trattamento (completo)
-2068	Fistole artero venose, terapia chirurgica con legatura vaso afferente extra cranico
-2069	Fistole artero venose, terapia chirurgica con legatura vaso afferente intra cranico
-2070	Fistole artero venose, terapia chirurgica per aggressione diretta
-2512	Fistole oro antrali
-2717	Fistole scrotali o inguinali
-1680	Fistole trans-alveolari, plastiche cutanee delle
-2694	Fistole uretrali
-1261	Fitoterapia (per seduta)
-2158	Flemmone, incisione di (come unico intervento)
-1050	Fluorangiografia del segmento anteriore (compreso anestetista)
-1051	Fluorangiografia della retina (compreso anestetista)
-320	Fluoro
-768	Flussimetria + ecografia
-1682	Fornice gengivale superiore o inferiore, plastica del
-324	Fosfatasi acida
-323	Fosfatasi acida prostatica
-321	Fosfatasi acida prostatica compresa la totale
-322	Fosfatasi acida prostatica ria (pap)
-326	Fosfatasi alcalina
-325	Fosfatasi alcalina isoenzimi
-327	Fosfati clearance
-328	Fosfaturia
-329	Fosfoesoso isomerasi (phi)fosfolipasi a
-330	Fosfolipidemia
-331	Fosfolipidi nel liquido amniotico (fosfoatidilglicerolo)
-332	Fosforemia
-1683	Fossa pterigo-mascellare, chirurgia della
-2210	Fotosclerectomia con laser ad eccimeri (per 2 occhi)
-2209	Fotosclerectomia con laser ad eccimeri (per occhio)
-1207	Fototerapia
-1845	Fratture costali o sternali, trattamento chirurgico
-1846	Fratture costali o sternali, trattamento conservativo
-1685	Fratture della mandibola e del condilo, terapia chirurgica delle
-1471	Fratture e lussazioni dei metacarpi e falangi, trattamento cruento
-1472	Fratture e lussazioni dei metacarpi e falangi, trattamento incruento
-1473	Fratture e lussazioni del polso, trattamento cruento
-1474	Fratture e lussazioni del polso, trattamento incruento
-1686	Fratture mandibolari, riduzione con ferule
-1687	Frenulotomia con frenuloplastica superiore ed inferiore
-2718	Frenulotomia e frenuloplastica
-2809	Frenulotomia o frenulectomia
-333	Fruttosamina (proteine glicate)
-334	Fruttosio su liquido spermatico
-335	Gamma glutamil transpeptidasi (gamma gt)
-336	Gamma glutamil transpeptidasi isoenzimi
-337	Gamma glutamil transpeptidasi urinaria
-2071	Gangliectomia lombare e splancnicectomia
-1566	Gastrectomia totale con linfoadenectomia
-1722	Gastrectomia verticale laparoscopica (slevee gastrectomy)
-1723	Gastric by-pass per via laparoscopica
-338	Gastrina
-1567	Gastro-enterostomia per neoplasie non resecabili
-1568	Gastrostomia
-563	Genetica e genetica molecolare
-2838	Gengivectomia (per quadrante come unica prestazione)
-572	Genotipizzazione del locus apoe dell'alzheimer
-1525	Ghiandola sottomascellare, asportazione per infiammazioni croniche o neoplasie benigne
-339	Giardia lamblia ricerca nelle feci
-1792	Ginecomastia bilaterale
-1793	Ginecomastia monolaterale
-1231	Ginnastica correttiva (per seduta)
-1232	Ginnastica medica (non a scopo estetico) (per seduta)
-1275	Ginnastica posturale (per seduta)
-1233	Ginnastica propriocettiva (per seduta)
-1234	Ginnastica respiratoria (per seduta)
-1235	Ginnastica segmentaria (per seduta)
-1214	Ginnastica vascolare idrica (per seduta)
-2754	Ginocchiera articolata post intervento chirurgico al ginocchio
-341	Glicemia
-340	Glicemia o glicosuria frazionata nelle 24 ore a campione
-342	Glicerofosforilcolina
-343	Globulina legante gli ormoni sessuali (sex hormon binding globulin - shbg)
-344	Globulina legante la tiroxina (tbg)
-345	Glucagone
-346	Glucosio 6 fosfato deidrogenasi (g6pdh)
-347	Glucosio nel liquido amniotico
-348	Glutatione reduttasi
-350	Gonadotropina corionica (hcg)
-1052	Gonioscopia
-2208	Goniotomia
-353	Gruppo sanguigno ab0 e fattore rh (con 2 anticorpi)
-2283	Gypsotomia
-1603	Hartmann, intervento
-545	Hbv dna polimerasi
-543	Hbv dna qualitativo
-544	Hbv dna quantitativo
-548	Hcv (epatite c) genotipo
-546	Hcv (epatite c) qualitativo
-547	Hcv (epatite c) quantitativo
-354	Helicobacter pylori (ricerca diretta su materiale bioptico)
-549	Helicobacter pylori amplificazione genica
-355	Helicobacter pylori ricerca nelle feci
-967	Herpes su striscio vaginale: prelievo per ricerca
-550	Hiv rna qualitativo
-551	Hiv rna quantitativo
-553	Hpv - b19 (parvo virus)
-552	Hpv - b19 genotipo
-968	Hpv (materiale biologico) dna test compreso prelievo
-573	Hpv (materiale biologico) mrna (tipi 16 - 18 - 31 - 35 - 51) compreso prelievo
-969	Hpv (materiale biologico) mrna (tipi 16-18-31-35-51) compreso prelievo
-1215	Idrochinesiterapia (per seduta)
-1276	Idrocolonterapia (per seduta)
-1216	Idrogalvanoterapia (per seduta)
-1217	Idromassoterapia (per seduta)
-357	Idrossiprolinuria
-356	Idrossiprolinuria ii minzione
-1211	Idroterapia
-1985	Idrotubazione medicata (per seduta)
-1604	Ileostomia (come unico intervento)
-1986	Imenotomia-imenectomia (come unico intervento)
-1291	Immobilizzazione con casco stereotassico (compreso anestesista)
-600	Immuno fenotipo di popolazioni cellulari neoplastiche (per ogni anticorpo)
-601	Immuno fenotipo di popolazioni linfocitarie (linfoma)
-358	Immunoanticorpi anti eritrocitari (identificazione)
-359	Immunocomplessi circolanti
-360	Immunocomplessi hbsag/hbsab / igm
-362	Immunoelettroforesi delle urine
-361	Immunofissazione sierica
-365	Immunoglobuline a
-363	Immunoglobuline a secretorie in altri liquidi biologici
-364	Immunoglobuline a secretorie nella saliva
-366	Immunoglobuline d
-368	Immunoglobuline e screening max 7 allergeni
-370	Immunoglobuline e specifiche.
-367	Immunoglobuline e totali
-373	Immunoglobuline g
-371	Immunoglobuline g sottoclasse 2 e 3 ciascuna
-372	Immunoglobuline g specifiche allergologiche
-374	Immunoglobuline liquor (igg/igm/iga) - ciascuna
-375	Immunoglobuline m
-376	Immunoglobuline superficie linfocitarie
-953	Impedenzometria
-1080	Impedenzometria timpanica
-1510	Impianto chirurgico di catetere peritoneale
-1145	Impianto di cvc (come unica prestazione)
-929	Impianto di loop recorder sottocutaneo (omnicomprensivo)
-1450	Impianto di protesi mammaria in seguito a mastectomia per neoplasia maligna
-1146	Impianto di sistemi venosi impiantabili tipo port - a - cath, ed altri simili (come unica prestazione) con eventuale guida ecografica
-2816	Impianto osteointegrato ricoperti in ceramica, carbon-vitreous, idrossiapatite, titanio puro) per elemento
-2159	Impianto tubi di silicone nella stenosi delle vie lacrimali
-1185	Inalazioni (per seduta)
-1747	Incannulazione dell'arteria epatica per perfusione antiblastica
-2793	Incappucciamento della polpa
-2161	Incisione del sacco lacrimale (come unico intervento)
-1449	Incisione di ascesso mammario
-1493	Incisione di ascesso o flemmone sottoaponeurotico
-1966	Incisione e drenaggio di ascessi delle ghiandole vulvari o cisti ghiandola
-1521	Incisione e drenaggio di ascessi, favi, flemmoni (trattamento completo)
-2603	Incontinenza urinaria, intervento (teflon)
-1987	Incontinenza urinaria, intervento per via vaginale o addominale
-2377	Infiltrazione anca
-2378	Infiltrazione articolare
-2379	Infiltrazione tc guidata
-1208	Infrarossi (per seduta)
-1156	Infusione di farmaci in cavità naturali con o senza evacuazione di liquidi biologici/patologici o terapia endovescicale con cateterismo,  unica seduta
-2755	Infusore continuo di farmaci antiblastici
-377	Inibina b
-1794	Iniezione compositi
-2072	Iniezione di botulino per patologia neurologica (non per fini estetici) per seduta
-1901	Iniezione endoarteriosa
-2722	Iniezione endocavernosa
-2124	Iniezione endorbitale
-1795	Iniezione intracheloidea
-2231	Iniezione intravitreale (il costo del farmaco viene rimborsato a parte previa presentazione di documento di spesa idoneo e dettagliato)
-1902	Iniezione sclerosante
-2167	Iniezione sottocongiuntivale
-2839	Innesto autogeno (sito multiplo incluso lembo di accesso)
-1796	Innesto dermo epidermico adiposo o cutaneo libero o di mucosa
-1797	Innesto di fascia lata
-2840	Innesto di materiale biocompatibile (qualunque numero o sede degli impianti)
-1798	Innesto di nervo o di tendine
-2181	Innesto membrana amniotica
+247	Creatinuria
 1799	Innesto osseo o cartilagineo
-2455	Inseminazione artificiale intrauterina (solo per le iscritte alla cassa)
+2455	Inseminazione artificiale intrauterina
 1847	Instillazione medicamentosa endopleurica isolata
-2514	Instillazione sinusale (per ciclo di terapia)
 1988	Insufflazione tubarica
-1186	Insufflazioni endotimpaniche (per seduta)
-378	Insulina (dosaggio)
+1186	Insufflazioni endotimpaniche
+378	Insulina
 2794	Intarsi l.p. / inlay od onlay
 379	Interferone
 380	Interleuchina 2
 1963	Interventi conservativi di annessiectomia bilaterale
-1964	Interventi conservativi di annessiectomia bilaterale, interventi demolitivi diannessiectomia monolaterale
+1964	Interventi conservativi di annessiectomia bilaterale
 1965	Interventi demolitivi di annessiectomia monolaterale
 2053	Interventi di cordotomia, rizotomia e affezioni mieloradicolari varie
 1844	Interventi di fistole esofago-bronchiali
@@ -19299,41 +18059,35 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2368	Intervento di elsmie-trillat
 2198	Intervento di fukala e impianto di cristallino artificiale in camera anteriore o posteriore
 1173	Intervento di impianto di elettrostimolazione midollare
-1991	Intervento di isterectomia totale semplice con annessictomia mono/bilaterale per via laparotomica o per via vaginale
+1991	Intervento di isterectomia totale semplice con annessictomia mono/bilaterale
 2635	Intervento di nefroureterectomia radicale con linfoadenectomia più eventuale surrenectomia
 2009	Intervento di plastica vaginale anteriore
 2008	Intervento di plastica vaginale anteriore e posteriore
 2010	Intervento di plastica vaginale posteriore
-1865	Intervento di pleurotomia e drenaggio (con resezione di una o più coste)
+1865	Intervento di pleurotomia e drenaggio
 1866	Intervento di pneumectomia
 1800	Intervento di push-back e faringoplastica
 2492	Intervento di revisione di mastoidectomia radicale
-2818	Intervento di rialzo del seno mascellare (per emiarcata - tratt. Completo e non ripetibile)
+2818	Intervento di rialzo del seno mascellare
 2465	Intervento di riduzione manuale per inversione di utero per via laparatomica
 2466	Intervento di riduzione manuale per inversione di utero per via vaginale
 2742	Intervento di riparazione per traumi del testicolo
-2652	Intervento di ureteroenteroplastiche con tasche continenti (bilaterale)
-2651	Intervento di ureteroenteroplastiche con tasche continenti (monolaterale)
-2705	Intervento di uretroplastiche (in un tempo)
-2041	Intervento di vulvectomia parziale con linfoadenectomia bilaterale diagnostica dei linfonodi inguinali superficiali
+2651	Intervento di ureteroenteroplastiche con tasche continenti
+2652	Intervento di ureteroenteroplastiche con tasche continenti
+2705	Intervento di uretroplastiche
+2041	Intervento di vulvectomia parziale
 2042	Intervento di vulvectomia radicale allargata con linfoadenectomia inguinale e pelvica
-2043	Intervento di vulvectomia semplice (locale o cutanea)
-2309	Mobilizzazione incruenta di rigidità: grandi articolazioni
-2080	Intervento endorachideo per neoplasie, cordotomie, radicotomie ed affezioni meningomidollari
-2616	Intervento endoscopico per ureterocele
-2696	Intervento per (trattamento completo-plastica) ipospadia scrotale o perineale
-2739	Intervento per 66priapismo (percutaneo)
+2043	Intervento di vulvectomia semplice
 2204	Intervento per alcoolizzazione nervo cigliare
 2048	Intervento per ascesso o ematoma intracranico
 1578	Intervento per ascesso o fistola del cavo ischio-rettale
-1579	Intervento per ascesso perianale
 2505	Intervento per atresia coanale
 1733	Intervento per calcolosi intraepatica
-1582	Intervento per cisti dermoide, fistola sacro coccigea (anche recidive)
+1582	Intervento per cisti dermoide, fistola sacro coccigea
 2690	Intervento per cisti o diverticoli o ascessi parauretrali
 2361	Intervento per costola cervicale e outlet syndrome
 2060	Intervento per derivazione liquorale diretta e indiretta
-1543	Intervento per diverticoli dell'esofago cervicale (compresa miotomia)
+1543	Intervento per diverticoli dell'esofago cervicale
 1544	Intervento per diverticoli dell'esofago toracico
 2128	Intervento per elevazione del sopracciglio
 2061	Intervento per encefalomeningocele
@@ -19342,9 +18096,1230 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2693	Intervento per epispadia e ipospadia peniena e uretroplastica
 1546	Intervento per esofagite, ulcera esofagea
 1540	Intervento per ferite del tubo laringo-tracheale e faringo-esofageo
+626	Rx tenue a doppio contrasto con studio selettivo
+724	Stratigrafia scheletro toracico
+691	Cistografia
+964	Colposcopia
+1068	Vcp
+1281	Adroterapia
+1961	Adesiolisi
+2157	Asportazione della fistola
+1490	Accesso periferico per posizionamento di catetere venoso
+5	Acido delta ammino levulinico
+6	Acido folico
+7	Acido lattico
+8	Acido ossalico
+9	Acido vanilmandelico
+2316	Acromioplastica anteriore
+2556	Adduttori, intervento per paralisi degli
+1	Anticorpi anti bordetella pertussis ig totali
+2831	Ablazione tartaro
+1428	Ablazione transcatetere
+2445	Aborto terapeutico
+1429	Angioplastica coronarica multipla
+564	Analisi del gene del fattore viii per l'emofilia a
+869	Angioscintigrafia cerebrale con calcolo di indici emodinamici
+38	Anticorpi anti adenovirus
+2735	Amputazione totale con linfoadenectomia pene
+2321	Amputazione medi segmenti
+30	Amilasi sierica
+960	Agoaspirati o biopsie di lesioni superficiali escluso esame citoistologico
+2734	Amputazione parziale del pene
+35	Antibiogramma per micobatteri
+14	Agglutinazione per tifo e paratifo più melitense
+36	Antibiogramma
+1782	Angiomi del viso grandi dimensioni
+1785	Angiomi del viso piccole dimensioni . Con tecnica tradizionale
+1575	Ano preternaturale, chiusura, ricostruzione continuità 
+870	Angioscintigrafia più scintigrafia cerebrale
+27	Alfa lattoalbumina
+2503	Adenoidectomia
+2504	Adenotonsillectomia
+2446	Amnioscopia
+12	Agglutinazione per brucella abortus
+1112	Agobiopsia renale percutanea
+17	Aldolasi sierica
+1784	Angiomi del viso piccole dimensioni
+539	Altri batteri eseguibili con metodica pcr
+29	Amilasi isoenzimi urinaria
+1888	Aneurismi aorta addominale + dissecazione: resezione e trapianto
+10	Adrenalina plasmatica
+11	Adrenalina urinaria
+1376	Aferesi terapeutica, eritro aferesi con sacche multiple
+13	Agglutinazione per brucella
+15	Agglutinazione per tifo e paratifo
+16	Agglutinazione per tifo petecchiale
+1491	Agoaspirati/agobiopsie, di qualsiasi parte anatomica, salvo i casi descritti
+2683	Agoaspirato/agobiopsia prostata
+942	Agoaspirato ecoguidato tiroide
+747	Agoaspirato mammario ecoguidato
+2317	Agoaspirato osseo
+1729	Agobiopsia/agoaspirato
+1652	Agobiopsia/agoaspirato pancreas
+944	Agobiopsia epatica percutanea
+1825	Agobiopsia pleurica/puntura esplorativa
+1111	Agobiopsia prostatica
+2622	Agobiopsia renale percutanea
+1826	Agobiopsia tc guidata
+1962	Agobiopsie/agoaspirati parti anatomiche profonde
+1226	Agopuntura
+18	Aldosterone
+19	Aldosterone urinario
+20	Alfa 1 antitripsina
+21	Alfa 1 fetoproteina
+22	Alfa 1 fetoproteina nel liquido amniotico
+23	Alfa 1 glicoproteina acida
+24	Alfa 1 microglobulina
+25	Alfa 2 macroglobulina
+26	Alfa 3 androstanediolo
+2	Alfa idrossi progesterone
+1777	Allestimento lembo peduncolato
+2318	Alluce valgo
+2319	Allungamento arti superiori e/o inferiori
+540	Altri virus eseguibili con metodica pcr
+28	Amilasi isoenzimi ematica
+31	Amilasi urinaria
+32	Ammonio plasmatici
+977	Amniocentesi
+2320	Amputazione grandi segmenti
+2322	Amputazione piccoli segmenti
+2736	Amputazione totale del pene
+2832	Amputazioni radicolari
+566	Analisi di mutazione del collagene di tipo 11
+565	Analisi di mutazione del gene vdr della vitamina d
+1035	Analisi fibre nervo ottico - ciascuno
+567	Analisi genetica per fibrosi cistica
+1730	Anastomosi porto-cava o spleno-renale o mesenterica-cava
+2046	Anastomosi spino-facciale e simili
+2047	Anastomosi vasi intra-extra cranici
+593	Anatomia ed istologia patologica
+945	Anestesia/ sedazione per endoscopia
+1887	Aneurisma aorta addominale
+1889	Aneurismi arterie distali degli arti
+1890	Aneurismi, resezione e trapianto: arterie glutee, arterie viscerali e tronchi sovraortici
+827	Angiocardioscintigrafia all'equilibrio con calcolo parametri funzionali
+828	Angiocardioscintigrafia all'equilibrio con test
+829	Angiocardioscintigrafia primo transito con calcolo parametri funzionali
+830	Angiocardioscintigrafia primo transito con test
+1779	Angiomi del tronco e arti grandi dimensioni
+1780	Angiomi del tronco e arti piccole/medie dimensioni . Con tecnica tradizionale
+1892	Angioplastica arteriosa
+1430	Angioplastica coronarica singola
+1891	Angioplastica di arterie viscerali
+808	Angio rm
+778	Angio tc distretti esocranici
+779	Angio tc distretti intracranici
+34	Angiotensina 1
+33	Angiotensin converting enzyme
+37	Antibiogramma
+39	Anticorpi anti asca iga
+40	Anticorpi anti asca igg
+41	Anticorpi anti asca igm
+42	Anticorpi anti bordetella pertussis iga
+1781	Trattamento totale per angiomi del tronco e arti piccole/medie dimensioni
+77	Anticorpi anti epstein barr virus antigene nucleare
+53	Anticorpi anti centromero
+113	Anticorpi anti leishmaniosi
+69	Anticorpi anti endotelio
+122	Anticorpi anti microsomiali
+81	Anticorpi anti fosfolipidi - ciascuno
+88	Anticorpi anti hav igg
+145	Anticorpi anti recettore per acetilcolina
+71	Anticorpi anti epstein barr virus iga
+66	Anticorpi anti echo virus
+129	Anticorpi anti ndna
+142	Anticorpi anti pneumococco
+117	Anticorpi anti listeria / ciascuno
+157	Anticorpi anti toxoplasma iga
+123	Anticorpi anti mitocondri
+55	Anticorpi anti citomegalovirus igg
+111	Anticorpi anti istoni
+141	Anticorpi anti plasmodi
+43	Anticorpi anti bordetella pertussis igg
+140	Anticorpi anti piastrine
+133	Anticorpi anti ovaio
+116	Anticorpi anti listeria
+44	Anticorpi anti bordetella pertussis igm
+45	Anticorpi anti borrelia burgdoferi
+46	Anticorpi anti candida iga
+47	Anticorpi anti candida igg
+48	Anticorpi anti candida igm
+49	Anticorpi anti cardiolipina iga
+50	Anticorpi anti cardiolipina igg
+51	Anticorpi anti cardiolipina igm
+52	Anticorpi anti cellule apicali dello stomaco
+56	Anticorpi anti citomegalovirus igm
+54	Anticorpi anti citomegalovirus ig totali
+58	Anticorpi anti clamydia iga
+59	Anticorpi anti clamydia igg
+60	Anticorpi anti clamydia igm
+61	Anticorpi anti colon
+63	Anticorpi anti coxackie - ciascuno
+62	Anticorpi anti coxackie - tutti
+64	Anticorpi anti dotti salivari
+65	Anticorpi anti echinococco
+67	Anticorpi anti echo virus neurotropi ig totali
+68	Anticorpi anti endomisio
+70	Anticorpi anti entamoeba
+74	Anticorpi anti epstein barr virus antigene capsidico igg
+75	Anticorpi anti epstein barr virus antigene capsidico igm
+76	Anticorpi anti epstein barr virus antigene early
+72	Anticorpi anti epstein barr virus igg
+73	Anticorpi anti epstein barr virus igm
+79	Anticorpi anti fattore intrinseco
+80	Anticorpi anti febbre q
+83	Anticorpi anti gad
+84	Anticorpi anti giardia lamblia
+85	Anticorpi anti gliadina iga
+86	Anticorpi anti gliadina igg
+87	Anticorpi anti gor
+89	Anticorpi anti hav igm
+90	Anticorpi anti hav totali
+91	Anticorpi anti hbcag
+92	Anticorpi anti hbcag igm
+93	Anticorpi anti hbeag
+95	Anticorpi anti hbsag
+94	Anticorpi anti hbs con titolazione
+96	Anticorpi anti hcv
+97	Anticorpi anti hcv igm
+98	Anticorpi anti helicobacter pylori igaanticorpi anti helicobacter pylori igg
+99	Anticorpi anti helicobacter pylori igm
+102	Anticorpi anti herpes simplex virus 1 e 2
+100	Anticorpi anti herpes simplex virus 1 igg
+101	Anticorpi anti herpes simplex virus 1 igm
+103	Anticorpi anti herpes simplex virus 2 igg
+104	Anticorpi anti herpes simplex virus 2 igm
+105	Anticorpi anti hiv i e ii
+106	Anticorpi anti htlv i e ii
+107	Anticorpi anti ia2
+108	Anticorpi anti influenza
+109	Anticorpi anti insula pancreatica
+110	Anticorpi anti insulina
+112	Anticorpi anti legionelle
+114	Anticorpi anti leptospira
+115	Anticorpi anti leucocitari
+118	Anticorpi anti membrana
+119	Anticorpi anti micoplasma igg
+120	Anticorpi anti micoplasma igm
+121	Anticorpi anti microsoma epatico renale
+125	Anticorpi anti morbillo igg
+126	Anticorpi anti morbillo igm
+124	Anticorpi anti morbillo ig totali
+127	Anticorpi anti muscolo liscio
+128	Anticorpi anti muscolo striato
+131	Anticorpi anti nucleo
+132	Anticorpi anti nucleo estraibili
+134	Anticorpi anti pancreas
+135	Anticorpi anti parotite igg
+136	Anticorpi anti parotite igm
+137	Anticorpi anti parotite ig totali
+139	Anticorpi anti parvovirus
+138	Anticorpi anti perossidasi
+143	Anticorpi anti polisaccaride c streptococco b emol. Gr a
+144	Anticorpi anti recettore del tsh
+146	Anticorpi anti rickettsie
+147	Anticorpi anti rna
+148	Anticorpi anti rosolia igg
+149	Anticorpi anti rosolia igm
+150	Anticorpi anti schistosoma
+151	Anticorpi anti spermatozoi: plasma seminale
+152	Anticorpi anti spermatozoi: sangue periferico
+153	Anticorpi anti streptokinasi
+154	Anticorpi anti surrene
+156	Anticorpi anti tireoglobulina
+158	Anticorpi anti toxoplasma igg
+159	Anticorpi anti toxoplasma igm
+160	Anticorpi anti transglutaminasi
+161	Anticorpi anti treponema pallido igg
+172	Antigene carboidratico 19-9
+2294	Applicazione di skin traction
+2323	Artrocentesi
+184	Antigene ta 4
+1669	Artroscopia, artocentesi temporo-mandibolare
+2341	Artroprotesi: anca totale
+1469	Artroprotesi carpale
+2346	Artroscopia operativa
+163	Anticorpi anti tripanosoma cruzi
+169	Antigene carboidratico 125
+185	Antigene tumorale vescicale
+1925	Asportazione con laser di tumori benigni del viso
+162	Anticorpi anti treponema pallido igm
+189	Apolipoproteina a
+1576	Appendicectomia con peritonite diffusa
+173	Antigene carboidratico 50
+182	Antigene prostatico specifico free
+178	Antigene hla b27
+177	Antigene e virus epatite b
+2470	Ascesso cerebrale, apertura per via transmastoidea
+1184	Areosolterapia
+176	Antigene carcinoembrionario
+181	Antigene prostatico specifico
+2273	Arto inferiore: ginocchiera
+186	Antigene von willebrand
+57	Anticorpi anticitrullina
+82	Anticorpi antifosfolipidici
+188	Antitrombina iii
+174	Antigene carboidratico 549
+2149	Asportazione con plastica di tumori per innesto
+171	Antigene carboidratico 195
+170	Antigene carboidratico 15-3
+2150	Asportazione con plastica di tumori per scorrimento
+130	Anticorpi anti-neutrofili citoplasmatici
+165	Anticorpi anti varicella zoster virus igg
+166	Anticorpi anti varicella zoster virus igm
+164	Anticorpi anti varicella zoster virus ig totali
+167	Anticorpi anti virus respiratorio sinciziale
+168	Anticorpi igg/igm specifici
+175	Antigene carboidratico tag 72-4
+179	Antigene p24 dell'hiv
+180	Antigene polipeptidico tissutale
+183	Antigene s virus epatite b
+187	Antitrombina iii qualitativa
+2469	Antroatticotomia con labirintectomia
+2801	Apicectomia
+190	Apolipoproteina b
+1465	Aponeurectomia, morbo di dupuytren
+2548	Aportazione di leucoplachia
+2748	Apparecchio laringofono
+2821	Apparecchio scheletrato
+1577	Appendicectomia semplice a freddo
+2695	Applcazione di sfinteri artificiali incontinenza urinaria
+2293	Applicazione di filo o chiodo transcheletrico
+2709	Applicazione di protesi testicolare
+1431	Applicazione di stent intracoronarico a completamento di angioplastica
+191	Aptoglobina
+1183	Areoionoterapia
+2274	Arto superiore: avambraccio e mano
+2275	Arto superiore: braccio, avambraccio e mano
+2276	Arto superiore: torace ed arto superiore
+2324	Artrocentesi con introduzione di medicamento
+1466	Artrodesi carpale
+2328	Artrodesi: grandi articolazioni
+2329	Artrodesi: medie articolazioni
+1467	Artrodesi metacarpo-falangea e/o interfalangea
+2330	Artrodesi: piccole articolazioni
+2325	Artrodesi vertebrale per via anteriore o spondilolistesi
+2326	Artrodesi vertebrale per via posteriore
+2327	Artrodesi vertebrale per via posteriore e anteriore
+2331	Artrolisi: grandi articolazioni
+2332	Artrolisi: medie articolazioni
+2333	Artrolisi: piccole articolazioni
+1468	Artroplastica
+2334	Artroplastiche con materiali biologici: grandi articolazioni
+2335	Artroplastiche con materiali biologici: medie articolazioni
+2336	Artroplastiche con materiali biologici: piccole articolazioni
+2340	Artroprotesi: anca parziale
+2344	Artroprotesi: ginocchio
+2345	Artroprotesi: gomito, tibiotarsica
+1470	Artroprotesi metacarpo-falangea e/o interfalangea
+2337	Artroprotesi: polso
+2338	Artroprotesi: spalla, parziale
+2339	Artroprotesi: spalla, totale
+809	Artro-rm
+2348	Artroscopia diagnostica
+2347	Artroscopia operativa anca
+780	Artro-tc
+2471	Ascesso del condotto, incisione di
+1698	Ascesso del douglas, drenaggio
+2557	Ascesso dell'epiglottide, incisione
+2660	Ascesso dello spazio prevescicale del retzius
+2472	Ascesso extradurale, apertura per via transmastoidea
+2349	Ascesso freddo, drenaggio di
+1492	Ascesso o flemmone diffuso, incisione di
+1494	Ascesso o flemmone superficiale, incisione di
+2133	Ascesso palpebre, incisione di
+1968	Ascesso pelvico, trattamento chirurgico
+2544	Ascesso peritonsillare, incisione
+2545	Ascesso retro-faringeo o latero-faringeo
+1699	Ascesso sub-frenico, drenaggio
+1969	Aspirazione ecoguidata di cisti ovarica
+2802	Asportazione cisti mascellari
+1923	Asportazione con laser di cheratosi seborroiche
+2144	Asportazione di piccoli tumori o cisti
+893	Biopsia del linfonodo sentinella
+2358	Asportazione di cisti del becker
+2375	Asportazione di esostosi semplice
+2122	Asportazione di corpi estranei endoorbitali
+192	Attività reninica attiva
+538	Biologia molecolare
+2227	Asportazione, cerchiaggio, rimozione materiali usati durante l'intervento di distacco
+2535	Asportazione di tumori benigni dei seni paranasali
+198	Bicarbonati
+2258	Bendaggio alla colla di zinco: coscia, gamba e piede
+201	Bilirubinemia totale
+2152	Asportazione con plastica per scorrimento dello xantelasma
+2160	Asportazione del sacco lacrimale o della ghiandola lacrimale
+1670	Asportazione di calcolo salivare
+1832	Asportazione di cisti
+1972	Asportazione di cisti della ghiandola del bartolini
+2506	Asportazione di cisti e piccoli tumori benigni delle fosse nasali
+2357	Asportazione di cisti meniscale o parameniscale
+2127	Asportazione di cisti o corpi estranei
+1523	Asportazione di cisti o fistola congenita
+1973	Asportazione di cisti ovarica intralegamentosa
+1497	Asportazione di cisti pilonidale
+2121	Asportazione di cisti profonde o neoplasie contorno orbita
+1974	Asportazione di cisti vaginale
+2507	Asportazione di corpi estranei
+2360	Asportazione di corpi estranei e mobili endoarticolari
+1674	Asportazione di corpi estranei profondi di tessuti molli, cavità orale e/o faccia
+1675	Asportazione di corpi estranei superficiali dei tessuti molli, cavità orale e/o faccia
+2054	Asportazione di corpo estraneo intracranico
+2803	Asportazione di epulide
+2478	Asportazione di fistole congenite
+2434	Asportazione di gangli tendinei e/o artrogeni
+2078	Asportazione di neoplasie endocraniche
+2079	Asportazione di neoplasie endorachidee extradurali
+1459	Asportazione di neoplasie e/o cisti benigne
+1760	Asportazione di neoplasie maligne del labbro/guancia senza svuotamento
+2488	Asportazione di osteomi del condotto
+2011	Asportazione di polipi cervicali
+2491	Asportazione di polipi o cisti del padiglione o retroauricolari
+1612	Asportazione di polipo rettale
+1770	Asportazione di ranula
+2551	Asportazione di tumore benigno faringotonsillare
+1541	Asportazione di tumore maligno del collo
+2552	Asportazione di tumore maligno faringotonsillare
+1516	Asportazione di tumore profondo extracavitario
+1926	Asportazione di tumore superficiale maligno
+2115	Asportazione di tumori dei nervi periferici
+2501	Asportazione di tumori dell'orecchio medio
+2536	Asportazione di tumori maligni del naso o dei seni
+2425	Asportazione di tumori ossei e forme pseudo tumorali, grandi segmenti o articolazioni
+2426	Asportazione di tumori ossei e forme pseudo tumorali, medi segmenti o articolazioni
+2427	Asportazione di tumori ossei e forme pseudo tumorali, piccoli segmenti o articolazioni
+2428	Asportazione di tumori ossei e forme pseudo tumorali, vertebrali
+1518	Asportazione di unghia incarnita,
+2151	Asportazione di xantelasma semplice
+1731	Asportazione endoscopica litiasi biliare
+2219	Asportazione e plastica di cisti iridee
+1526	Asportazione per tumori maligni di ghiandola sottomascellare
+1621	Asportazione per via sacrale di tumore del retto
+1498	Asportazione radicale di cisti sinoviale
+2516	Asportazione semplice di polipi nasali o coanali
+2447	Assistenza al parto a domicilio da parte di ostetrica professionista
+2448	Assistenza al parto a domicilio da parte di specialista ostetrico ginecologo
+897	Assistenza anestesiologica agli esami radiologici
+898	Assistenza anestesiologica agli esami radiologici compresa eventuale sedazione
+831	Assistenza cardiologica a parte
+921	Assistenza cardiologica intra-operatoria
+2473	Atresia auris congenita completa
+2474	Atresia auris congenita incompletacateterismo tubarico
+193	Attività reninica plasmatici
+194	Azotemia
+195	Bacillo di koch: ricerca microscopica ed esame colturale
+1212	Bagnoterapia
+2259	Bendaggio alla colla di zinco: gamba e piede
+2260	Bendaggio collare di schanz
+2261	Bendaggio con doccia di immobilizzazione: gomito e polso
+2262	Bendaggio con doccia di immobilizzazione: in abduzione per arto superiore
+2263	Bendaggio con doccia di immobilizzazione: per arto inferiore
+2264	Bendaggio con medicazione
+1893	Bendaggio elasto-compressivo arti inferiori
+1718	Bendaggio gastrico regolabile per via laparoscopica
+2265	Bendaggio secondo desault: amidato o gessato
+2266	Bendaggio secondo desault: semplice
+2267	Bendaggio semplice con ovatta e garza
+2268	Bendaggio torace senza arto superiore
+196	Beta 2 microglobulina nelle urine delle 24 ore
+197	Beta 2 microglobulina plasmatici
+1282	Betaterapia superficiale con radioisotopi artificiali
+199	Bilirubina nel liquido amniotico
+200	Bilirubinemia totale e frazionata
+1244	Biofeedback
+1036	Biometria
+2350	Biopsia articolare
+1654	Biopsia con laparotomia
+2836	Chirurgia ossea
+2559	Biopsia in microlaringoscopia
+2248	Chirurgia refrattiva per 1 occhio
+1719	By-pass intestinali per il trattamento obesità patologica
+1410	Cardiochirurgia a cuore chiuso - interventi di, salvo gli interventi descritti
+1285	Brachiterapia
+946	Biopsia in corso di endoscopia escluso esame citoistologico
+980	Cariotipo su aborto
+2581	Cambio tubo cistostomico cambio tubo pielostomico
+1789	Cheloidi piccole dimensioni asportazione di: con tecnica tradizionale
+1971	Biopsia della portio, vulva, vagina, endometrio
+1433	Biopsia endomiocardica sinistra
+211	Cam 26
+203	Breath test
+748	Biopsia ecoguidata
+2560	Cauterizzazione endolaringea
+1434	Cateterismo destro e sinistro, e calcolo portate e gradienti con coronarografia
+1831	Broncoinstillazione endoscopica
+2582	Cateterismo vescicale nell'uomo con patologia stenotica
+1406	Bypass aorto coronarici multipli
+2049	Carotide endocranica, legatura della
+1432	Biopsia endomiocardica destra
+1116	Brushing citologico compresa citoscopia
+2834	Chirurgia muco gengivale
+1786	Cheloidi di grandi dimensioni, asportazione di: con tecnica tradizionale
+2833	Chirurgia gengivale, per arcata
+2356	Chemonucleolisi per ernia discale
+1732	Biopsia epatica con laparotomia
+2134	Blefarocalasi o traumi o ferite, intervento di blefaroplastica: 1 palpebra
+1495	Biopsia escissionale
+2175	Cheratoplastica a tutto spessore
+1037	Campimetria
+2804	Biopsia generica
+2558	Biopsia in laringoscopia
+1829	Biopsia laterocervicale
+1010	Biopsia muscolare
+2119	Biopsia orbitaria
+2351	Biopsia ossea
+1522	Biopsia prescalenica
+1113	Biopsia prostatica
+1830	Biopsia sopraclaveare
+781	Biopsia tac guidata escluso esame citoistologico
+1114	Biopsia testicolare bilaterale
+1115	Biopsia testicolare monolaterale
+2352	Biopsia trans-peduncolare somi vertebrale
+2353	Biopsia vertebrale a cielo aperto
+1496	Biopsie successive alla prima
+2849	Bite wing
+2135	Blefarocalasi o traumi o ferite, intervento di blefaroplastica: ogni altra palpebra
+1168	Blocchi antalgici dei nervi periferici
+1169	Blocchi antalgici del ganglio
+1170	Blocchi antalgici del plesso
+1167	Blocchi antalgici nervi cranici e loro rami
+1166	Blocchi antalgici periarticolari e/o intrarticolari
+1171	Blocchi antalgici tronculari del nervo
+2354	Borsectomia
+1284	Brachiterapia
+1283	Brachiterapia
+202	Brain natriuretic peptide
+2589	Brushing citologico in cistoscopia
+1895	By-pass aorto-anonima, aorto-carotideo, carotido-succlavio
+1407	Bypass aorto coronarico singolo
+1894	By-pass aorto-iliaco o aorto-femorale
+1896	By-pass aorto-renale, aorto-mesenterico o celiaco ed eventuale tea e plastica vasale
+1897	By-pass arterie periferiche
+1580	By-pass gastro intestinali o intestinali per patologie maligne
+2136	Calazio
+2355	Calcaneo stop
+204	Calcemia
+205	Calcio intraeritrocitario
+206	Calcio ionizzato
+207	Calcio nelle urine delle 24 ore
+208	Calcitonina
+2277	Calco di gesso per protesi arti
+2597	Calcoli ureterali, estrazione con sonde apposite
+209	Calcolo renale
+210	Calprotectina fecale
+212	Cam 29
+2137	Cantoplastica
+911	Capillaroscopia
+912	Capillaroscopia con videoregistrazione
+1273	Carbossiterapia
+1408	Cardiochirurgia a cuore aperto
+979	Cardiotocografia
+568	Cariotipo su sangue periferico
+2689	Caruncola uretrale
+213	Catecolamine totali urinariecellule l.e.
+1172	Cateterismo plessico per blocco continuo
+2583	Cateterismo vescicale nella donna
+2449	Cerchiaggio cervicale
+214	Ch50
+1787	Cheloidi di grandi dimensioni, asportazione di: con laser
+1788	Cheloidi piccole dimensioni asportazione di: con laser
+1142	Chemioterapia ambulatoriale antineoplastica
+1038	Cheratometria
+2176	Cheratoplastica lamellare
+1230	Chinesiterapia
+2249	Chirurgia refrattiva per 2 occhi
+1436	Chiusura del forame ovale
+2154	Chiusura del puntino lacrimale
+2155	Chiusura del puntino lacrimale con protesi
+948	C.p.r.e. Diagnostica
+1734	Cisti da echinococco multiple, pericistectomia
+1287	Contornazione del target e degli organi critici per piani 3d
+1411	Cisti del cuore o del pericardio
+812	Contrasto paramagnetico
+1589	Confezionamento di ilestomia continente
+2359	Condrectomia
+2662	Cistectomia parziale semplice
+219	Clamydia
+949	Colangiografia retrograda endoscopica
+2205	Ciclodialisi
+2206	Ciclodiatermia perforante
+810	Cine rm cuore
+224	Colesterolo ldl
+847	Cinetica leucocitaria con misure sulle sedi di cateresi
+1976	Colpoperineorrafia per lacerazioni perineali
+2669	Cistopessi
+848	Cinetica piastrinica con misure sulle sedi di cateresi
+1413	Contropulsazione aortica mediante incannulamento arterioso
+1978	Conizzazione e tracheloplastica
+2716	Circoncisione per fimosi con frenulo plastica
+234	Conta di addis
+2599	Collo vescicale, resezione per sclerosi recidiva
+783	Coronaro tc
+1673	Condilectomia con condiloplastica
+2670	Cistorrafia per rottura traumatica
+614	Clisma opaco a doppio contrasto
+1555	Collocazione di protesi endo-esofagee
+557	Cish
+2661	Cistectomia parziale con ureterocistoneostomia
+2666	Cistectomia totale
+2665	Cistectomia totale
+1735	Cisti da echinococco, ascessi epatici
+1624	Cisti, ematomi, ascessi, neoplasia benigna, flemmoni parete addominale
+2623	Cisti renale per via percutanea, puntura di
+2624	Cisti renale, puntura evacuativa percutanea con iniezione di sostanze sclerosanti
+2625	Cisti renale, resezione
+2431	Cisti tendinea
+692	Cistografia doppio contrasto
+2668	Cistolitotomia
+1117	Cistoscopia compresa eventuale biopsia
+2590	Cistoscopia ed eventuale biopsia
+2671	Cistostomia sovrapubica
+693	Cistoureterografia minzionale
+215	Citologia urinaria
+216	Citotossicità spontanea t e k / ciascuno
+217	Citrato urinario nelle 24 ore
+218	Clamydia
+961	Clamydia su striscio vaginale: prelievo per ricerca
+613	Clisma opaco
+220	Cloremia
+221	Cloro nelle urine
+541	Cmv
+2698	Coagulazione di polipi del meato
+222	Cobalto
+811	Colangio-rm
+1736	Colecistectomia per via laparoscopica
+1737	Colecistectomia per via laparotomica
+1738	Colecistogastrostomia o colecistoenterostomia
+615	Colecistografia
+1739	Colecistostomia per neoplasie non resecabili
+1584	Colectomia segmentaria
+1583	Colectomia segmentaria con linfoadenectomia ed eventuale colostomia
+1586	Colectomia totale
+1585	Colectomia totale con linfoadenectomia
+1742	Coledoco-epatico-digiunoduodenostomia con o senza colecistectomia
+1740	Coledoco-epatico digiunostomia con o senza colecistectomia
+1741	Coledoco-epatico duodenostomia con o senza colecistectomia
+1743	Coledoctomia e coledocolicotomia
+223	Colesterolo hdl
+225	Colesterolo totale
+226	Colinesterasi
+2749	Collare cervicale
+2598	Collo vescicale e prostata, resezione endoscopica
+2672	Collo vescicale, plastica y/v
+950	Colonscopia diagnostica
+1938	Colonscopia totale operativa
+1939	Colonscopia totale operativa con posizionamento endo-loop
+1587	Colotomia con colorrafia
+1975	Colpoperineorrafia per lacerazioni perineali interessanti il retto
+962	Colposcopia più biopsia
+963	Colposcopia più pap-test
+1977	Colpotomia e svuotamento di raccolte ematiche e purolente
+227	Coltura linfocitaria
+1412	Commissurotomia per stenosi mitralica
+228	Complemento c3 proattivatore
+229	Complemento frazione c 1 inibitore
+230	Complemento frazione c1 q
+231	Complemento frazione c3
+232	Complemento frazione c4
+2052	Compressione del g. Di gasser con palloncino fogarky
+1671	Condilectomia
+1588	Confezionamento di ano artificiale
+233	Conta batterica in materiali biologici
+235	Conteggio dei reticolociti
+236	Conteggio delle piastrine
+1288	Contornazione del target e degli organi critici per piani
+782	Contrasto per tomografia assiale
+1437	Controllo elettronico del pace maker impiantato
+2562	Cordectomia
+2563	Cordectomia con il laser
+2561	Corde vocali, decorticazione in microlaringoscopia
+2451	Cordocentesi
+749	Core biopsy
+2196	Cristallino artificiale, rimozione dalla camera posteriore
+1519	Cura radicale di unghia incarnita
+1133	Cvc per dialisi
+2432	Deformità ad asola
+1790	Correzioni di cicatrici del tronco o degli arti di grandi dimensioni
+259	Curva prolattina dopo somministrazione di trh
+258	Curva insulinemica da carico
+773	Densitometria mineralometria ossea
+774	Densitometria ortopedica periprotesica
+255	Curva delle gonadotropine dopo somministrazione di gnrh
+2193	Cristallino artificiale, impianto secondario in camera anteriore
+2282	Delbet
+1979	Denervazione vulvare
+264	Deidroepiandrosterone solfato
+2207	Crioapplicazione antiglaucomatosa
+248	Crioagglutinine
+1039	Curva tonometrica
+239	Creatinfosfochinasi isoenzimi
+569	Cromatina sessuale
+2508	Diaframma coanale osseo, asportazione per via transpalatina
+2228	Criotrattamento
+1259	Crioterapia
+1438	Coronarografia + ventricolografia sinistra + cateterismo sinistro
+242	Creatinfosfochinasi-mb massa
+1791	Correzioni di cicatrici del viso di grandi dimensioni
+2564	Corpi estranei, asportazione in laringoscopia
+2475	Corpi estranei, asportazione per via chirurgica retroauricolare
+2476	Corpi estranei dal condotto, asportazione per via naturale con lavaggio
+2477	Corpi estranei dal condotto, asportazione strumentale
+2177	Corpi estranei dalla cornea, estrazione di
+2546	Corpi estranei endofaringei, asportazione di
+1499	Corpo estraneo profondo extracavitario, estrazione di
+1500	Corpo estraneo superficiale, estrazione di
+1676	Correzione di esiti di labioschisi
+1677	Correzione di naso da labioschisi
+1267	Correzione incruenta del disallineamento vertebrale
+2278	Corsetto con spalle
+2750	Corsetto ortopedico
+2751	Corsetto ortopedico per scoliosi
+2279	Corsetto senza spalle
+2280	Corsetto speciale per scoliosi e/o cifosi
+2281	Corsetto tipo minerva
+237	Cortisolo plasmatico
+238	Cortisolo urinario
+2362	Costruzione di monconi cinematici
+1940	Cpre operativa
+2055	Cranioplastica
+2056	Craniotomia a scopo decompresssivo/esplorativo
+2057	Craniotomia per ematoma extradurale
+2058	Craniotomia per lesioni traumatiche intracerebrali
+2059	Craniotomia per tumori cerebellari, anche basali
+240	Creatinfosfochinasi
+241	Creatinfosfochinasi-mb
+243	Creatinina clearance
+245	Creatinina nelle urine delle 24 ore
+244	Creatinina nel liquido amniotico
+246	Creatininemia
+1213	Crenoterapia
+2179	Crioapplicazioni corneali
+249	Crioglobuline
+2194	Cristallino artificiale, impianto secondario in camera posteriore
+2195	Cristallino artificiale, rimozione dalla camera anteriore
+1118	Cromocistoscopia e cateterismo ureterale bilaterale
+2591	Cromocistoscopia e cateterismo ureterale bilaterale
+2592	Cromocistoscopia e cateterismo ureterale monolaterale
+1119	Cromocistoscopia e cateterismo ureterale monolaterale
+2593	Cromocistoscopia per valutazione funzionale
+251	Cromogranina a
+250	Cromo sierico
+1011	Cronassia
+252	Cross-links del piridinio
+253	Cross-links del piridinolinio
+254	Cross links urinari
+1501	Cuoio capelluto, vasta ferita e scollamento
+2515	Cura chirurgica dell'ozena
+2684	Cura per affezione della prostata con prostathermer
+256	Curva delle gonadotropine
+257	Curva glicemica da carico
+260	Curva tsh dopo somministrazione di trh
+261	Cyfra 21/1
+2156	Dacriocistorinostomia o intubazione
+262	D-dimero
+1744	Dearterializzazione epatica, con o senza chemioterapia
+1745	Deconnessione azygos-portale per via addominale
+616	Defecografia
+2753	Defibrillatore cardiaco impiantabile
+922	Defibrillazione o cardioversione elettrica
+263	Deidroepiandrosterone
+265	Delta 4 androstenedione sierico
+1655	Denervazioni pancretiche
+775	Densitometria ossea total body
+776	Densitometria ossea vertebrale e/o femorale
+784	Dentalscan 1 arcata
+785	Dentalscan 2 arcata
+1656	Derivazione pancreatico-wirsung digestive
+266	Desossipiridonilinio urinario
+871	Determinazione del flusso regionale quantitativo
+849	Determinazione del volume eritrocitario
+850	Determinazione del volume plasmatico
+913	Determinazione transcutanea pressione parziale o2 arti inferiori
+914	Determinazione transcutanea pressione parziale o2 arti inferiori e superiori
+915	Determinazione transcutanea pressione parziale o2 arti superiori
+2719	Detorsione del funicolo
+1199	Diadinamica
+2565	Diaframma laringeo, escissione con ricostruzione plastica
+1834	Drenaggi di mediastiniti acute o croniche o di ascessi
+1041	Elettronistagmografia
+273	Elettroforesi delle sieroproteine
+2138	Elettrolisi delle ciglia
+965	Duo test
+1016	Elettromiografia
+1204	Elettroterapia
+2566	Dilatazione laringea
+1045	Elettroretinogramma standard
+1202	Elettrosonoterapia
+763	Ecografia prostatica sovrapubica
+268	Dopamina plasmatica
+1625	Intervento per diastasi dei retti
+1414	Drenaggio pericardico o riapertura per sanguinamento
+1018	Elettromiografia completa senza distinzione di segmento
+1044	Elettroretinogramma dinamico
+1720	Diversione bilio pancreatica laparoscopica
+750	Ecocardiogramma
+762	Ecografia peniena
+1012	Elettroencefalogramma con analisi spettrale
+1200	Diatermia
+2433	Dito a martello
+1017	Elettromiografia
+267	Diidrotestosterone
+1198	Elettroterapia
+923	Ecocardiogramma transesofageo colordoppler
+1203	Elettrostimolazioni esponenziali
+1981	Dilatazione del collo e applicazione di tubetto di petit- leufour endouterino
+1980	Diatermocoagulazione della portio uterina o vulva
+272	Elettroforesi delle proteine urinarie
+900	Diagnostica strumentale allergologia - test in vivo
+2364	Disarticolazione interscapolo toracica
+1069	Diagnostica strumentale ortopedia
+910	Diagnostica strumentale angiologia
+920	Diagnostica strumentale cardiologia
+937	Diagnostica strumentale dermatologia
+941	Diagnostica strumentale endocrinologia
+943	Diagnostica strumentale gastroenterologia
+1009	Diagnostica strumentale neurologia
+1034	Diagnostica strumentale oculistica
+1072	Diagnostica strumentale otorinolaringoiatria
+1088	Diagnostica strumentale pneumologia
+1110	Diagnostica strumentale urologia
+899	Diagnostiche specialistiche
+1134	Dialisi domiciliare
+2691	Diatermocoagulazione di condilomi uretrali con messa a piatto dell'uretra
+2229	Diatermocoagulazione retinica per distacco
+1201	Diatermoterapia
+1941	Dilatazione graduale del retto
+2365	Disarticolazioni, grandi articolazioni
+2366	Disarticolazioni, medie articolazioni
+2367	Disarticolazioni, piccole articolazioni
+2192	Discissione di cataratta secondaria
+2805	Disinclusione denti ritenuti
+1721	Diversione bilio pancreatica con duodenal switch
+2673	Diverticulectomia
+269	Dopamina urinaria
+270	Dosaggio di farmaci nel sangue per monitoraggio
+1746	Drenaggio bilio digestivo intraepatico
+1835	Drenaggio cavità empiematica
+1653	Drenaggio di ascessi pancreatici
+2363	Drenaggio ematoma profondo organizzato sottofasciale
+1219	Drenaggio linfatico manuale
+1836	Drenaggio pleurico per emo e/o pneumotorace traumatico
+1837	Drenaggio pleurico per pneumotorace spontaneo
+1657	Duodeno cefalo pancreatectomia compresa eventuale linfoadenectomia
+1593	Duodeno digiunostomia
+542	Ebv
+983	Ecocardiografia fetale
+924	Ecocardiogramma transtoracico m-b e colordoppler
+984	Ecocolordoppler fetale
+751	Ecocolordoppler per ogni organo o apparato
+752	Ecocolordoppler per ogni organo o apparato succesivo nella stessa seduta
+753	Ecocolordoppler tronchi sovraortici
+754	Ecoendoscopia operativa
+755	Ecografia addome completo
+756	Ecografia addome inferiore
+757	Ecografia addome superiore
+759	Ecografia di organo o apparatoecografia endovasale
+758	Ecografia di organo o apparato successivo nella stessa seduta
+746	Ecografia / doppler / ecodoppler / colordoppler
+985	Ecografia fetale #
+760	Ecografia mammaria bilaterale
+986	Ecografia morfologica
+761	Ecografia peniena dinamica
+765	Ecografia transesofagea
+764	Ecografia transrettale
+766	Ecografia transvaginale
+925	Eco-stress
+1898	Elefantiasi degli arti
+926	Elettrocardiogramma basale
+927	Elettrocardiogramma dinamico secondo holter 24 ore
+928	Elettrocardiogramma dinamico secondo holter 48 ore
+2601	Elettrocoagulazione di piccoli tumori vescicali
+1013	Elettroencefalogramma con sonno farmacologico
+1014	Elettroencefalogramma dinamico 24 ore
+1015	Elettroencefalogramma standard o con sensibilizzazione
+271	Elettroforesi della emoglobinaelettroforesi delle lipoproteine
+1040	Elettromiografia
+1019	Elettromiografia ed elettroneurografia degli arti superiori e/o inferiori
+1120	Elettromiografia sfinterica
+1020	Elettroneurografia con velocità conduzione motoria e sensitiva
+1042	Elettrooculogramma
+1043	Elettrooculomotilogramma
+276	Emoglobina
+2791	Endodonzia
+594	Esame citologico per diagnostica ormonale
+292	Esame feci: chimico, fisico e parassitologico
+2792	Endodonzia
+1415	Embolectomia con fogarty
+2245	Enucleazione o exenteratio
+2789	Endodonzia
+284	Eritropoietina
+1639	Ernie rare
+1633	Ernia inguinale con ectopia testicolare
+1634	Ernia inguinale recidiva
+1073	Esame audiometrico
+1070	Esame baropodometrico dinamico
+1071	Esame baropodometrico statico
+277	Emoglobina a2
+2790	Endodonzia
+2713	Emasculatio totale ed eventuale linfoadenectomia
+1899	Embolectomia e/o trombectomia arteriosa o vene profonde o cava
+1502	Ematoma superficiale, svuotamento di
+1503	Ematomi profondi extracavitari, svuotamento di
+2065	Ernia del disco intervertebrale cervicale, mielopatie, radiculopatie
+1635	Ernia inguinale semplice
+1838	Enfisema bolloso, trattamento chirurgico
+595	Esame citologico per diagnostica tumorale
+278	Emoglobina glicosilata hba 1c
+2452	Embryo-transfer
+1681	Enucleoresezione di formazioni cistiche endoparotidee
+283	Eparina
+2140	Epicanto-coloboma
+2180	Epicheratoplastica
+279	Emoglobina nel liquido amniotico
+1074	Esame cocleo vestibolare semplice
+282	Enolasi neurone specifica
+599	Esame istologico estemporaneo ogni inclusione successiva
+2714	Epididimectomia
+280	Emoglobine alcali resistente
+2066	Ernia del disco per via anteriore con artrodesi intersomatica
+1629	Ernia diaframmatica
+285	Esame batteriologico liquido prostatico
+281	Emoglobine fetali
+1594	Emicolectomia destra con linfoadenectomia
+1636	Ernia inguinale strozzata
+1595	Emicolectomia sinistra con linfoadenectomia ed eventuale colostomia
+288	Esame colturale materiale biologico
+293	Esame he4
+2626	Eminefrectomia
+2369	Emipelvectomia
+2370	Emipelvectomie con salvataggio dell'arto
+274	Emoagglutinazione treponema pallidum
+275	Emocoltura
+1135	Emodialisi
+1377	Emofiltrazioni depurative
+1089	Emogasanalisi arteriosa basale
+1090	Emogasanalisi arteriosa sotto sforzo
+1091	Emogasanalisi durante respirazione di o2
+1092	Emogasanalisi prima e dopo iperventilazione
+1596	Emorroidi
+1597	Emorroidi e/o ragadi intervento radicale
+1598	Emorroidi interne, iniezione sclerosanti delle
+951	Enteroscopia con videocapsula
+1599	Enterostomia
+2139	Entropion-ectropion
+2244	Enucleazione con innesto protesi mobile
+2371	Epifisiodesiernia del disco dorsale e/o lombare
+1245	Ergoterapia
+1378	Eritro aferesi terapeutica
+1626	Ernia crurale recidiva
+1627	Ernia crurale semplice
+1628	Ernia crurale strozzata
+2063	Ernia del disco dorsale per via laterale
+2372	Ernia del disco dorsale per via transtoracica
+2064	Ernia del disco dorsale per via trans-toracica
+1630	Ernia epigastrica
+1631	Ernia epigastrica strozzata o recidiva
+1564	Ernia iatale, interventi per
+1632	Ernia inguinale bilaterale
+1637	Ernia ombelicale
+1638	Ernia ombelicale recidiva
+1839	Ernie diaframmatiche traumatiche
+2143	Ernie palpebrali, correzione di
+286	Esame batterioscopico
+287	Esame batterioscopico tampone
+289	Esame colturale materiale biologico + antibiogramma
+290	Esame colturale micoplasmi
+297	Esame completo del liquido seminale con indice di capacitazione
+1046	Esame del senso cromatico
+1047	Esame del senso luminoso
+2852	Esame diretto ghiandole salivari
+2853	Esame elettromiografico
+291	Esame emocromocitometrico completo con formula
+295	Esame immunoistochimico su preparato biologico
+596	Esame istologico con inclusione
+597	Esame istologico con inclusione: ogni inclusione in più
+598	Esame istologico estemporaneo max 3 inclusioni
+294	Esame jak2
+2854	Esame kinesiografico
+296	Esame liquido cefalorachidiano
+298	Esame liquido seminale completo per studio fertilità 
+2726	Esplorazione scrotale noduli testicolari
+1121	Esame urodinamico completo
+1077	Esame vestibolare con eng
+320	Fluoro
+1600	Fistola anale extrasfinterica
+300	Esame liquido sinoviale
+1048	Esame ortottico completoesercizi ortottici
+1602	Fistole anali, laserchirurgia per trattamento
+1075	Esame per adattamento protesico
+1050	Fluorangiografia del segmento anteriore
+1051	Fluorangiografia della retina
+1545	Esofagectomia totale con esofagoplastica, in un tempo, compresa linfoadenectomia
+1678	Fissazione con ferule di elementi dentali lussati
+309	Estrone
+1551	Esofagostomia
+1076	Esame spettrografico della voce
+2230	Farmaco per iniezione intravitreale
+1983	Exeresi di cisti ovarica per via laparoscopica
+2715	Estrazione chirurgica di spermatozoi testicolari
+1507	Ferita superficiale della faccia, sutura di
+319	Filtrato glomerulare
+2068	Fistole artero venose, terapia chirurgica con legatura vaso afferente extra cranico
+313	Fenomeno l.e.
+2158	Flemmone, incisione di
+299	Esame liquido seminale con indice di fertilità 
+314	Fenotipo rh
+1900	Fasciotomia decompressiva
+301	Esame microscopico dei peli e squame cutanee per micosi
+302	Esame microscopico diretto su cellofan adesivo per ossiuri
+303	Esame microscopico flora microbica
+304	Esame phi
+305	Esame urine chimico, fisico e microscopico completo
+2584	Esame urodinamico completo
+1549	Esofago-gastrectomia totale, per via toraco-laparotomica ed eventuale linfoadenectomia
+952	Esofagogastroduodenoscopia e test rapido per h. Pylori
+1942	Esofagogastroduodenoscopia operativa
+1550	Esofagogastroplastica-esofagodigiunoplastica- esofagocoloplastica
+1049	Esolftalmometria
+1504	Espianto di catetere peritoneale
+1143	Espianto di cvc
+2389	Espianto di midollo osseo
+1144	Espianto di sistemi venosi impiantabili
+306	Estradiolo
+2600	Estrazione cistoscopica di corpi estranei vescicali
+1591	Estrazione con sfinterotomia di corpi estranei
+2242	Estrazione di corpo estraneo endobulbare calamitabile
+2243	Estrazione di corpo estraneo endobulbare non calamitabile
+2197	Estrazione di cristallino lussato-cataratta complicata
+2806	Estrazione di dente in soggetto sottoposto a narcosi in circuito
+2808	Estrazione di dente o radice in inclusione ossea totale
+2178	Estrazione in camera anteriore di corpi estranei
+1590	Estrazione per via addominale di corpi estranei del retto
+988	Estriolo plasmatico
+989	Estriolo urinario
+2674	Estrofia vescicale
+2509	Etmoide, svuotamento radicale bilaterale
+2510	Etmoide, svuotamento radicale monolaterale
+2246	Eviscerazione con impianto intraoculare
+1982	Eviscerazione pelvica
+1078	Evoked response audiometry
+2123	Exenteratio orbitae
+1756	Exeresi di neoformazioni endossee di grandi dimensioni
+2484	Exeresi di neoplasia del padiglione
+1749	Exeresi di papilla di vater
+1715	Exeresi di tumore retroperitoneale
+2710	Exeresi per cisti del funicolo, didimo ed epididimo
+310	Faber test qualunque numero
+1260	Fangoterapia
+311	Fattore reumatoide
+312	Fattori della coagulazione
+1506	Ferita profonda, sutura di
+1508	Ferita superficiale, sutura di
+1840	Ferita toraco-addominale con lesioni viscerali
+1841	Ferita toraco-addominale senza lesioni viscerali
+1842	Ferite con lesioni viscerali del torace
+315	Ferritina
+316	Ferro urinario
+2511	Fess per trattamento di sinusopatie croniche e/o poliposi
+2454	Fetoscopia
+317	Fibrinogeno
+318	Fibrinopeptide a
+1079	Fibrolaringoscopia
+2547	Fibroma rinofaringeo
+767	Fibroscan
+1290	Film di verifica in corso di trattamento
+991	Fish amniociti in interfase 2 sonde
+992	Fish amniociti in interfase 4 sonde
+993	Fish con altre sonde
+570	Fish con altre sonde*
+571	Fish su liquido seminale*
+1274	Fisioterapia secondo souchard
+1601	Fistola anale intrasfinterica
+2067	Fistola liquorale
+2676	Intervento per fistola sovrapubica
+2069	Fistole artero venose, terapia chirurgica senza legatura vaso afferente
+2070	Fistole artero venose, terapia chirurgica per aggressione diretta
+2512	Fistole oro antrali
+2717	Fistole scrotali o inguinali
+1680	Fistole trans-alveolari, plastiche cutanee delle
+2694	Fistole uretrali
+1261	Fitoterapia
+768	Flussimetria + ecografia
+1682	Plastica del fornice gengivale superiore o inferiore
+324	Fosfatasi acida
+323	Fosfatasi acida prostatica
+1233	Ginnastica propriocettiva
+572	Genotipizzazione del locus apoe dell'alzheimer
+1207	Fototerapia
+2210	Fotosclerectomia con laser ad eccimeri
+2283	Gypsotomia
+359	Immunocomplessi circolanti
+358	Immunoanticorpi anti eritrocitari
+336	Gamma glutamil transpeptidasi isoenzimi
+344	Globulina legante la tiroxina
+2754	Ginocchiera articolata post intervento chirurgico al ginocchio
+347	Glucosio nel liquido amniotico
+1234	Ginnastica respiratoria
+326	Fosfatasi alcalina
+1235	Ginnastica segmentaria
+1604	Ileostomia
+345	Glucagone
+1214	Ginnastica vascolare idrica
+1723	Gastric by-pass per via laparoscopica
+332	Fosforemia
+361	Immunofissazione sierica
+1986	Imenotomia-imenectomia
+341	Glicemia
+1217	Idromassoterapia
+1276	Idrocolonterapia
+334	Fruttosio su liquido spermatico
+1052	Gonioscopia
+1216	Idrogalvanoterapia
+357	Idrossiprolinuria
+321	Fosfatasi acida prostatica compresa la totale
+1232	Ginnastica medica
+552	Hpv - b19 genotipo
+549	Helicobacter pylori amplificazione genica
+365	Immunoglobuline a
+322	Fosfatasi acida prostatica ria
+325	Fosfatasi alcalina isoenzimi
+327	Fosfati clearance
+328	Fosfaturia
+329	Fosfoesoso isomerasi fosfolipasi a
+330	Fosfolipidemia
+331	Fosfolipidi nel liquido amniotico
+1683	Fossa pterigo-mascellare, chirurgia della
+2209	Fotosclerectomia con laser ad eccimeri
+1845	Fratture costali o sternali, trattamento chirurgico
+1846	Fratture costali o sternali, trattamento conservativo
+1685	Fratture della mandibola e del condilo, terapia chirurgica delle
+1471	Fratture e lussazioni dei metacarpi e falangi, trattamento cruento
+1472	Fratture e lussazioni dei metacarpi e falangi, trattamento incruento
+1473	Fratture e lussazioni del polso, trattamento cruento
+1474	Fratture e lussazioni del polso, trattamento incruento
+1686	Fratture mandibolari, riduzione con ferule
+1687	Frenulotomia con frenuloplastica superiore ed inferiore
+2718	Frenulotomia e frenuloplastica
+2809	Frenulotomia o frenulectomia
+333	Fruttosamina
+335	Gamma glutamil transpeptidasi
+337	Gamma glutamil transpeptidasi urinaria
+2071	Gangliectomia lombare e splancnicectomia
+1566	Gastrectomia totale con linfoadenectomia
+1722	Gastrectomia verticale laparoscopica
+338	Gastrina
+1567	Gastro-enterostomia per neoplasie non resecabili
+1568	Gastrostomia
+563	Genetica e genetica molecolare
+2838	Gengivectomia
+1525	Ghiandola sottomascellare, asportazione per infiammazioni croniche o neoplasie benigne
+339	Giardia lamblia ricerca nelle feci
+1792	Ginecomastia bilaterale
+1793	Ginecomastia monolaterale
+1231	Ginnastica correttiva
+1275	Ginnastica posturale
+340	Glicemia o glicosuria frazionata nelle 24 ore a campione
+342	Glicerofosforilcolina
+343	Globulina legante gli ormoni sessuali
+346	Glucosio 6 fosfato deidrogenasi
+348	Glutatione reduttasi
+350	Gonadotropina corionica
+2208	Goniotomia
+353	Gruppo sanguigno ab0 e fattore rh
+1603	Hartmann, intervento
+545	Hbv dna polimerasi
+543	Hbv dna qualitativo
+544	Hbv dna quantitativo
+548	Hcv genotipo
+546	Hcv qualitativo
+547	Hcv quantitativo
+354	Helicobacter pylori
+355	Helicobacter pylori ricerca nelle feci
+967	Herpes su striscio vaginale: prelievo per ricerca
+550	Hiv rna qualitativo
+551	Hiv rna quantitativo
+553	Hpv - b19
+968	Hpv dna test compreso prelievo
+573	Hpv mrna compreso prelievo
+969	Hpv mrna compreso prelievo
+1215	Idrochinesiterapia
+356	Idrossiprolinuria ii minzione
+1211	Idroterapia
+1985	Idrotubazione medicata
+360	Immunocomplessi hbsag/hbsab / igm
+362	Immunoelettroforesi delle urine
+600	Immuno fenotipo di popolazioni cellulari neoplastiche
+601	Immuno fenotipo di popolazioni linfocitarie
+363	Immunoglobuline a secretorie in altri liquidi biologici
+364	Immunoglobuline a secretorie nella saliva
+366	Immunoglobuline d
+368	Immunoglobuline e screening max 7 allergeni
+370	Immunoglobuline e specifiche.
+367	Immunoglobuline e totali
+373	Immunoglobuline g
+371	Immunoglobuline g sottoclasse 2 e 3 ciascuna
+372	Immunoglobuline g specifiche allergologiche
+2309	Mobilizzazione incruenta di rigidità : grandi articolazioni
+2159	Impianto tubi di silicone nella stenosi delle vie lacrimali
+1185	Inalazioni
+2377	Infiltrazione anca
+1450	Impianto di protesi mammaria in seguito a mastectomia per neoplasia maligna
+376	Immunoglobuline superficie linfocitarie
+1747	Incannulazione dell'arteria epatica per perfusione antiblastica
+2755	Infusore continuo di farmaci antiblastici
+2603	Incontinenza urinaria, intervento
+1146	Impianto di sistemi venosi impiantabili tipo port-a-cath
+1493	Incisione di ascesso o flemmone sottoaponeurotico
+374	Immunoglobuline liquor - ciascuna
+375	Immunoglobuline m
+953	Impedenzometria
+1080	Impedenzometria timpanica
+1510	Impianto chirurgico di catetere peritoneale
+1145	Impianto di cvc
+929	Impianto di loop recorder sottocutaneo
+2816	Impianto osteointegrato ricoperti in ceramica
+2793	Incappucciamento della polpa
+2161	Incisione del sacco lacrimale
+1449	Incisione di ascesso mammario
+1966	Incisione e drenaggio di ascessi delle ghiandole vulvari o cisti ghiandola
+1521	Incisione e drenaggio di ascessi, favi, flemmoni
+1987	Incontinenza urinaria, intervento per via vaginale o addominale
+2378	Infiltrazione articolare
+2379	Infiltrazione tc guidata
+1208	Infrarossi
+377	Inibina b
+1794	Iniezione compositi
+2072	Iniezione di botulino per patologia neurologica per seduta
+1901	Iniezione endoarteriosa
+2722	Iniezione endocavernosa
+2124	Iniezione endorbitale
+1795	Iniezione intracheloidea
+2231	Iniezione intravitreale
+1902	Iniezione sclerosante
+2167	Iniezione sottocongiuntivale
+2839	Innesto autogeno
+1796	Innesto dermo epidermico adiposo o cutaneo libero o di mucosa
+1797	Innesto di fascia lata
+2840	Innesto di materiale biocompatibile
+1798	Innesto di nervo o di tendine
+2181	Innesto membrana amniotica
+2514	Instillazione sinusale
 1679	Intervento per fistola del dotto di stenone
 2675	Intervento per fistola e/o cisti dell'uraco
+2223	Iridotomia
+1320	Irradiazione intraoperatoria
+2696	Intervento per ipospadia scrotale o perineale
+1187	Irrigazioni nasali e/o vaginali
+2086	Intervento sul plesso brachiale
+1246	Isocineticaterapia
+1989	Isterectomia radicale per via laparotomica o vaginale con linfoadenectomia
+2080	Intervento endorachideo per neoplasie, cordotomie, radicotomie ed affezioni meningomidollari
+2310	Mobilizzazione incruenta di rigidità : medie articolazioni
+2112	Intervento per traumi vertebro-midollari via anteriore
 1524	Intervento per fistola esofago-tracheale
+2616	Intervento endoscopico per ureterocele
+2739	Intervento per 66priapismo
+1579	Intervento per ascesso perianale
 1565	Intervento per fistola gastro-digiuno-colica
 1658	Intervento per fistola pancreatica
 2677	Intervento per fistola vescico-intestinale con resezione intestinale e/o cistoplastica
@@ -19360,16 +19335,15 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1640	Intervento per laparocele
 1475	Intervento per lesioni tendinee
 1692	Intervento per linfoangioma cistico del collo
-2077	Intervento per malformazione aneurismatica (aneurismi sacculari, aneurismi arterovenosi)mielomeningocele
 1802	Intervento per malformazione dell'areola e del capezzolo
 2050	Intervento per malformazioni via posteriore per cerniera atlanto-occipitale
 2051	Intervento per malformazioni via transorale per cerniera atlanto-occipitale
 1608	Intervento per megacolon
 1553	Intervento per megaesofago
 2436	Intervento per neurinoma di morton
-2391	Intervento per osteiti e osteomieliti (trattamento completo)
+2391	Intervento per osteiti e osteomieliti
 2733	Intervento per parafimosi
-2740	Intervento per priapismo (shunt)
+2740	Intervento per priapismo
 1615	Intervento per prolasso rettale, per via addominale
 1665	Intervento per pseudocisti con digiunostomia o altra derivazione
 2463	Intervento per revisione delle vie del parto
@@ -19377,15 +19351,14 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2416	Intervento per scoliosi
 2240	Intervento per strabismo paralitico
 2442	Intervento per torcicollo miogeno congenito
-2112	Intervento per traumi vertebro-midollari via anteriore
 2113	Intervento per traumi vertebro-midollari via posteriore
 1822	Intervento per tumori maligni profondi del viso
 2745	Intervento per varicocele
 2073	Intervento per via transfenoidale per ipofisi
-1622	Intervento per viscerolisi estesa (enteroplicatio)
+1622	Intervento per viscerolisi estesa
 2037	Intervento radicale per tumori maligni vaginali con linfoadenectomia
 2038	Intervento radicale per tumori maligni vaginali senza linfoadenectomia
-2086	Intervento sul plesso brachiale
+1532	Intervento sulle paratiroidi-trattamento completo
 2094	Intervento sul simpatico cervicale: enervazione del seno carotideo
 2095	Intervento sul simpatico cervicale: gangliectomia
 2096	Intervento sul simpatico cervicale: stellectomia
@@ -19396,35 +19369,62 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2102	Intervento sul simpatico lombare: simpaticectomia post gangliare
 2103	Intervento sul simpatico lombare: simpatico pelvico
 2104	Intervento sul simpatico lombare: splacnicectomia
-1532	Intervento sulle paratiroidi-trattamento completo
 1614	Intervento transanale per prolasso rettale
-1606	Intestino, resezione dell'
+1606	Resezione dell'intestino
 1750	Inteventi per malformazioni dento-maxillo-facciali della mandibola e della mascella
-2639	Intevento di ielonefrolitotomia complessa (nefrotomia e/o bivalve)
-902	Intradermoreazioni (qualsiasi numero)
-1205	Ionoforesi (per seduta)
-1262	Ipertermia (per seduta)
-1292	Ipertermia associata alla radioterapia (per seduta)
-1371	Ipotermia (come unica prestazione)
+2639	Intevento di ielonefrolitotomia complessa
+902	Intradermoreazioni
+1205	Ionoforesi
+1262	Ipertermia
+1292	Ipertermia associata alla radioterapia
+1371	Ipotermia
 2220	Iridectomia
 2211	Iridocicloretrazione
 2222	Iridoplastica
-2223	Iridotomia
-1320	Irradiazione intraoperatoria (iort)
-1187	Irrigazioni nasali e/o vaginali (per seduta)
-1246	Isocineticaterapia (per seduta)
-1989	Isterectomia radicale per via laparotomica o vaginale con linfoadenectomia
-2310	Mobilizzazione incruenta di rigidità: medie articolazioni
+2841	Legature dentali extracoronali
+1903	Legatura di vene comunicanti
+1904	Legatura e/o sutura di grossi vasi: aorta-cava-iliaca
+2457	Laparotomia esplorativa
+2842	Legature dentali intracoronali
+1689	Labioalveoloschisi bilaterale
+2255	Laserterapia nella retinopatia diabetica
+1451	Linfoadenectomia isolata in tempi successivi ad interventi sulla mammella
+1641	Linfoadenectomia inguinale o crurale monolaterale
+2252	Laserterapia delle vasculopatie e/o malformazioni
+1530	Linfonodi, asportazione chirurgica a scopo diagnostico
+392	Linfociti t rosettanti
+2845	Levigatura delle radici e/o courettage gengivale
+390	Linfociti t helper
+393	Linfociti t suppressor
+2250	Laserterapia degli annessi, della congiuntiva, neovasicorneali
 1990	Isterectomia radicale per via laparotomica o vaginale senza linfoadenectomia
 769	Isteroecosalpingografia
 1992	Isteropessi
 632	Isterosalpingografia
+2251	Laserterapia del glaucoma e delle sue complicanze
+2253	Laserterapia iridea
+2000	Laserterapia vaginale o vulvare o della portio
+1529	Linfoadenectomia sopraclaveare
+2568	Laringectomia parziale con svuotamento laterocervicale monolaterale
+2380	Laterale release
+1911	Legatura delle vene comunicanti
+2843	Lembi per la correzione di difetti muco gengivali
+851	Linfoscintigrafia
+389	Linfociti t attivati
+1527	Linfoadenectomia latero cervicale monolaterale
+382	Lattico deidrogenasi
+1528	Linfoadenectomia latero cervicale bilaterale
+1853	Linfoadenectomia mediastinica
+383	Lattico deidrogenasi isoenzimi
+1852	Trattamento conservativo del lembo mobile toracico
+1642	Linfoadenectomia inguinale o crurale bilaterale
+2585	Parafimosi, riduzione incruenta di
+388	Linfociti natural killer
 970	Isteroscopia diagnostica con biopsia
-1277	Istruzione alla deambulazione (per seduta)
-1689	Labioalveoloschisi bilaterale
+1277	Istruzione alla deambulazione
 1688	Labioalveoloschisi monolaterale
-1690	Labioschisi (semplice) monolaterale
 1691	Labioschisi bilaterale
+1690	Labioschisi monolaterale
 2074	Laminectomia ed esplorazione di tumori intra-durali extra midollari
 2075	Laminectomia ed esplorazione di tumori intramidollari
 2076	Laminectomia esplorativa, decompressiva e per interventi extradurali
@@ -19436,142 +19436,115 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1701	Laparoscopia operativa
 1702	Laparotomia con lesione di organi interni perenchimali che richiedono emostasi
 1703	Laparotomia con resezione intestinale
-2457	Laparotomia esplorativa
-1997	Laparotomia esplorativa (come unico intervento)
+1997	Laparotomia esplorativa
+2458	Laparotomia esplorativa, con intervento demolitore
 1998	Laparotomia esplorativa con linfoadenectomia lombo pelvica selettiva e bioptica
 1704	Laparotomia esplorativa quale intervento principale per neoplasie non resecabili
-2458	Laparotomia esplorativa, con intervento demolitore
 1705	Laparotomia per contusioni e ferite dell'addome senza lesioni di organi interni
 1999	Laparotomia per ferite e rotture dell'utero
 1706	Laparotomia per lesioni di organi interni parenchimali che richiedono exeresi
 1707	Laparotomia per lesioni gastro-intestinali che richiedono sutura
 1708	Laparotomia per peritonite diffusa
 1709	Laparotomia per peritonite saccata
-1710	Laparotomia semplice (esplorativa e/o lisi aderenze)
+1710	Laparotomia semplice
 2567	Laringectomia parziale
-2568	Laringectomia parziale con svuotamento laterocervicale monolaterale
 2570	Laringectomia totale con svuotamento laterocervicale bilaterale
 2569	Laringectomia totale con svuotamento laterocervicale monolaterale
 2571	Laringectomia totale senza svuotamento laterocervicale
 2572	Laringocele
 2573	Laringofaringectomia totale
-1247	Laserstimolazione (per seduta)
-1248	Laserterapia (per seduta)
-2250	Laserterapia degli annessi, della congiuntiva, neovasicorneali
-2251	Laserterapia del glaucoma e delle sue complicanze(trattamento completo)
-2252	Laserterapia delle vasculopatie e/o malformazioni (a seduta)
-2253	Laserterapia iridea (per intero ciclo)
-2254	Laserterapia lesioni retiniche(per intero ciclo)
-2255	Laserterapia nella retinopatia diabetica (per seduta)
-2000	Laserterapia vaginale o vulvare o della portio (per seduta)
-2380	Laterale release
-382	Lattico deidrogenasi (ldh)
-383	Lattico deidrogenasi isoenzimi
+1247	Laserstimolazione
+1248	Laserterapia
+2254	Laserterapia lesioni retiniche
 384	Lattico deidrogenasi nel liquido cefalorachidianolattosio
 1093	Lavaggio bronco alveolare endoscopico
 1711	Lavaggio peritoneale diagnostico
 1850	Lavaggio pleurico
 1081	Lavaggio tappo cerume
 385	Lecitina e sfingomielina nel liquido amniotico
-2383	Legamenti articolari del ginocchio con meniscectomia (anche in artroscopia) ricostruzione di
-2711	Legatura dei deferenti (per patologie croniche)
-1911	Legatura delle vene comunicanti o correzioni emodinamiche chivasindromi neurovascolari degli arti inferiori
-1903	Legatura di vene comunicanti (come unico intervento)
-1904	Legatura e/o sutura di grossi vasi: aorta-cava-iliaca
-1905	Legatura e/o sutura di medi vasi: femorale-poplitea-omerale-mammaria interna-brachiale-ascellareglutea-carotide-vertebrale-succlavia-anonima
-1907	Legatura e/o sutura di piccoli vasi: tibiali-linguale- tiroidea-mascellare-temporale-facciale-radicalecubitali-arcate palmari/pedide
-2841	Legature dentali extracoronali (per 4 denti)
-2842	Legature dentali intracoronali (per 4 denti)
-2843	Lembi (liberi o peduncolati) per la correzione di difetti muco gengivali
-1851	Lembo mobile del torace, trattamento chirurgico del (flail chest)
-1852	Lembo mobile toracico (flail chest), trattamento conservativo del
+2383	Legamenti articolari del ginocchio con meniscectomia ricostruzione di
+2711	Legatura dei deferenti
+1907	Legatura e/o sutura di piccoli vasi
+1851	Trattamento chirurgico del lembo mobile del torace
 2182	Lenticolo biologico, apposizione a scopo terapeutico
-1552	Lesioni traumatiche o spontanee, corpi estranei, tumori benigni, biopsia e cauterizzazione non endoscopica
-386	Leucinaminopeptidasi (lap)
+386	Leucinaminopeptidasi
 1379	Leuco aferesi terapeutica
-2845	Levigatura delle radici e/o courettage gengivale (per 4 denti)
-1642	Linfoadenectomia inguinale o crurale bilaterale (come unico intervento)
-1641	Linfoadenectomia inguinale o crurale monolaterale (come unico intervento)
-1451	Linfoadenectomia isolata in tempi successivi ad interventi sulla mammella
-2001	Linfoadenectomia laparotomica (come unico intervento)
-1528	Linfoadenectomia latero cervicale bilaterale (come unico intervento)
-1527	Linfoadenectomia latero cervicale monolaterale (come unico intervento)
-1853	Linfoadenectomia mediastinica (come unico intervento)
-1529	Linfoadenectomia sopraclaveare
-387	Linfociti b con ig di membrana (okb7)
-388	Linfociti natural killer (nk)
-389	Linfociti t attivati (lta)
-390	Linfociti t helper (okt4)
-391	Linfociti t periferici (okt3)
-392	Linfociti t rosettanti (okt11)
-393	Linfociti t suppressor (okt8)
-1530	Linfonodi, asportazione chirurgica a scopo diagnostico
-851	Linfoscintigrafia (qualsiasi segmento)
-1693	Lingua e pavimento orale, intervento per tumori maligni con svuotamento della loggia sottomascellare
-2585	Parafimosi, riduzione incruenta di
-1695	Lingua e pavimento orale, intervento per tumori maligni con svuotamento laterocervicale funzionale o radicale
-1694	Lingua e pavimento orale, intervento per tumori maligni senza svuotamento della loggia sottomascellare
+2001	Linfoadenectomia laparotomica
+387	Linfociti b con ig di membrana
+391	Linfociti t periferici
 1696	Lingua, amputazione parziale per tumori benigni, angiomi, macroglossia
+2604	Litotripsia ureterale con ultrasuoni, laser.
+1455	Mastectomia per ginecomastia maschile mammelle bilaterali
+1227	Mesoterapia a fini antalgici
+402	Metaemoglobina
+2388	Meniscectomia
+1855	Mediastinoscopia operativa
+954	Manometria esofagea
+1055	Microscopia corneale , conta endoteliale
+399	Magnesemia
+1753	Resezione dell'ascellare superiore per neoplasie
+1218	Massoterapia
+1222	Massoterapia segmentaria per qualunque segmento
+1856	Mediastinotomia soprasternale per enfisema mediastinico
+1417	Massaggio cardiaco interno
+400	Magnesio ionizzato plasmatico
+2003	Miomectomie per via laparotomica e ricostruzione plastica dell'utero
+1695	intervento per tumori maligni per lingua e pavimento orale
+2385	Meniscectomia
+702	Mammografia bilaterale
+703	Mammotome
+2002	Metroplastica
+1456	Mastectomia radicale, qualsiasi tecnica, con linfoadenectomie associate
+1755	Meniscectomia dell'articolazione temporo-mandibolare
+2630	Lobotomia per ascessi pararenalinefrectomia allargata per tumore
+401	Magnesuria
+940	Microscopia di superficie in epiluminescenza digitale
+1053	Mappa strumentale della cornea: tomografia
 394	Lipasi
 1452	Lipofilling in caso di exeresi per neoplasia maligna
+1249	Logoterapia
+2819	Mini implant compresi attacchi di precisione per elemento - come unica prestazione
 395	Lipoproteina a
 396	Lipoproteina x
-1174	Lisi peridurale (peridurolisi con catetere di racz )
-1748	Litotripsia per calcoli delle vie biliari principale ed accessoria (trattamento completo)
-2629	Litotripsia per calcolosi renale e/o ureterale bilaterale (tratt. Completo)
-2628	Litotripsia per calcolosi renale e/o ureterale monolaterale (tratt. Completo)
-2604	Litotripsia ureterale con ultrasuoni, laser, ecc...
+1174	Lisi peridurale
 2605	Litotripsia, litolapassi vescicale endoscopica
-2630	Lobotomia per ascessi pararenalinefrectomia allargata per tumore (compresa surrenectomia)
-1249	Logoterapia (per seduta)magnetoterapia (per seduta)
-397	Lupus anti coagulant (lac)
-1697	Lussazione mandibolare, lussazione menisco monolaterale terapiachirurgicainterventi chirurgici chirurgia generale - peritoneo
+574	Microdelezioni del cromosoma y
+397	Lupus anti coagulant
+403	Metanefrine
+855	Medicina nucleare apparato osteoarticolare e tessuti molli
+1511	Medicazione ambulatoriale di ferita chirurgica
+1748	Litotripsia per calcoli delle vie biliari principale ed accessoria
+2629	Litotripsia per calcolosi renale e/o ureterale bilaterale
+2628	Litotripsia per calcolosi renale e/o ureterale monolaterale
 398	Macroglobulina di waldestrom
-399	Magnesemia
-400	Magnesio ionizzato plasmatico
-401	Magnesuria
-1803	Malformazione semplice delle mani e dei piedi (sindattilia, polidattilia)
-1804	Malformazioni complesse delle mani e dei piedi (trattamento completo)
-702	Mammografia bilaterale
-703	Mammotome (comprensivo di esame istologico)
+1803	Malformazione semplice delle mani e dei piedi
+1804	Malformazioni complesse delle mani e dei piedi
 1752	Mandibola, resezione parziale per neoplasia della
-1268	Manipolazioni vertebrali (per seduta)
+1268	Manipolazioni vertebrali
 1943	Manometria ano rettale
 1944	Manometria colon
-954	Manometria esofagea
-1053	Mappa strumentale della cornea: tomografia
 1054	Mappa strumentale della cornea: topografia
-1122	Mapping vescicale (omnicomprensivo)
-1263	Marconiterapia (per seduta)
-1753	Mascellare superiore per neoplasie, resezione del
-1417	Massaggio cardiaco interno
-1220	Massaggio riflessogeno (per seduta)
-1221	Massaggio strumentale (per seduta)
+1122	Mapping vescicale
+1263	Marconiterapia
+1220	Massaggio riflessogeno
+1221	Massaggio strumentale
 1754	Massiccio facciale, operazione demolitrice per tumori con svuotamento orbitario
-1218	Massoterapia
-1222	Massoterapia segmentaria per qualunque segmento (per seduta)
-1453	Mastectomia (qualsiasi tecnica con resezione del linfonodo sentinella e/o linfoadenectomie associate)
+1453	Mastectomia
 1454	Mastectomia con eventuale impianto di protesi o estensore
-1455	Mastectomia per ginecomastia maschile mammelle bilaterali
-1456	Mastectomia radicale, qualsiasi tecnica, con linfoadenectomie associate
 1457	Mastectomia semplice
 1458	Mastectomia sottocutanea
 2459	Mastite puerperale, trattamento chirurgico
 2479	Mastoidectomia
 2480	Mastoidectomia radicale
 2697	Meatotomia e meatoplastica
-2606	Meatotomia ureterale (come unico intervento)
-2607	Meatotomia uretrale (come unico intervento)
-1250	Meccanoterapia (per seduta)
+2606	Meatotomia ureterale
+2607	Meatotomia uretrale
+1250	Meccanoterapia
 1854	Mediastinoscopia diagnostica
-1855	Mediastinoscopia operativa
-1856	Mediastinotomia soprasternale per enfisema mediastinico
-1511	Medicazione ambulatoriale di ferita chirurgica
-2813	Medicazione chirurgica (per seduta - max 3 sedute)
+2813	Medicazione chirurgica
 826	Medicina nucleare apparato cardiocircolatorio
 839	Medicina nucleare apparato digerente
 846	Medicina nucleare apparato ematopoietico
-855	Medicina nucleare apparato osteoarticolare e tessuti molli
 862	Medicina nucleare apparato respiratorio
 865	Medicina nucleare apparato urinario
 884	Medicina nucleare cellule autologhe marcate
@@ -19582,41 +19555,53 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 892	Medicina nucleare traccianti immunologici
 1609	Megacolon: colostomia
 1805	Melanoma del capomodellamento di lembo in situ
-1512	Melanoma tronco/arti asportazione di (qualunque numero)
-2386	Meniscectomia (in artroscopia) (trattamento completo)
-2387	Meniscectomia (in artroscopia) + rimozione di corpi mobili (trattamento completo)
-2388	Meniscectomia (in artroscopia) + rimozione di corpi mobili + condroabrasione (trattamento completo)
-2385	Meniscectomia (tecnica tradizionale) (trattamento completo)
-1755	Meniscectomia dell'articolazione temporo-mandibolare (come unico intervento)
-1227	Mesoterapia a fini antalgici (senza medicinali) (per seduta)
-402	Metaemoglobina
-403	Metanefrine
-2002	Metroplastica (come unico intervento)
+1512	Melanoma tronco/arti asportazione di
+2387	Meniscectomia
+2386	Meniscectomia
 404	Microalbuminuria
 2212	Microchirurgia dell'angolo camerulare
-574	Microdelezioni del cromosoma y(azf)* (@)
-1209	Microfototerapia per seduta (per seduta)
+1209	Microfototerapia per seduta
 405	Microglobulina beta 2
-1055	Microscopia corneale (conconale), conta endoteliale
-940	Microscopia di superficie in epiluminescenza digitale
 1610	Mikulicz, estrinsecazione secondo
-1659	Milza, interventi chirurgici conservativi (splenorrafie, resezioni spleniche)
-2819	Mini implant compresi attacchi di precisione per elemento - come unica prestazione
-406	Mioglobina (dosaggio)
-2003	Miomectomie per via laparotomica e ricostruzione plastica dell'utero
+1659	Milza, interventi chirurgici conservativi
+406	Mioglobina
 2004	Miomectomie per via vaginale
 1620	Miotomia del sigma
 2481	Miringoplastica per via endoaurale
 2482	Miringoplastica per via retroauricolare
-2483	Miringotomia (come unico intervento)
+2483	Miringotomia
 2756	Mitral clip
-2311	Mobilizzazione incruenta di rigidità: piccole articolazioni
-2846	Molaggio selettivo parziale (per seduta - max 3)
+2727	Orchidopessi bilaterale
+1663	Pancreatite acuta, interventi conservativi
+417	Ormone luteinizzante biologico
+1082	Olfattometria
+2608	Nefrostomia percutanea bilaterale
+2397	Osteotomia semplice
+420	Ormone tireotropo
+418	Ormone luteinizzante plasmatico
+2083	Neurotomia retrogasseriana, sezione intracranica di altri nervi
+1531	Nodulectomia/emitiroidectomia
+1094	Ossimetria arteriosa
+2084	Neurotomia semplice
+419	Ormone somatotropo plasmatico o urinario
+2855	Ortopantomografia od ortopanoramica
+1761	Osteiti circoscritte dei mascellari, trattamento di
+409	Noradrenalina plasmatica
+407	Mononucleosi
+416	Ormone lattogeno placentare o somatomammotropina
+931	Pace-maker mono o bicamerale: impianto definitivo
 930	Monitoraggio dinamico pressorio delle 24 ore
-770	Monitoraggio ovulazione (1 ciclo)
-407	Mononucleosi (mono test)
-1278	Moorterapia (per seduta)
-1477	Morbo di notta (dito a scatto), morbo di de quervain, tenosinoviti
+414	Ormone antimulleriano
+412	Omocisteina
+1477	Morbo di notta , morbo di de quervain, tenosinoviti
+1278	Moorterapia
+932	Pace-maker: controllo elettronico
+421	Ormoni
+2311	Mobilizzazione incruenta di rigidità : piccole articolazioni
+2784	Otturazione
+2575	Neoformazioni benigne, asportazione in microlaringoscopia
+2846	Molaggio selettivo parziale
+770	Monitoraggio ovulazione
 813	Mri fetale
 408	Mucoprotidemia
 2236	Muscoli retti esterni o retti interni, avanzamento
@@ -19625,34 +19610,26 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2631	Nefrectomia polare
 2632	Nefrectomia semplice
 2633	Nefropessi
-2634	Nefrostomia o pielostomia (come unico intervento)
-2608	Nefrostomia percutanea bilaterale
+2634	Nefrostomia o pielostomia
 2609	Nefrostomia percutanea monolaterale
-2636	Nefroureterectomia radicale più trattamento trombocavale (compresa surrenectomia)
+2636	Nefroureterectomia radicale piàƒÂ¹ trattamento trombocavale
 2574	Neoformazioni benigne, asportazione in laringoscopia
-2575	Neoformazioni benigne, asportazione in microlaringoscopia
-2576	Neoformazioni benigne, stenosi organiche e funzionali in microchirurgia laringea con laser co2
 1857	Neoformazioni costali localizzate
 1858	Neoformazioni del diaframma
 1859	Neoformazioni della trachea
 2005	Neoformazioni della vulva, asportazione
-1757	Neoformazioni endossee di piccole dimensioni (osteomi, cementomi, odontomi, tours palatino e mandibolare),
 2168	Neoplasie congiuntivali, asportazione con innesto
 2169	Neoplasie congiuntivali, asportazione con plastica per scorrimento
 2485	Neoplasie del condotto, exeresi
 1860	Neoplasie e/o cisti del mediastinoneoplasie maligne coste e/o sterno
 1861	Neoplasie maligne della trachea
 2549	Neoplasie parafaringee
-2577	Nervo laringeo superiore, alcoolizzazione del
-2486	Nervo vestibolare, sezione del
+2577	Alcoolizzazione del nervo laringeo superiore
+2486	Sezione del nervo vestibolare
 2006	Neurectomia semplice
 2487	Neurinoma dell'ottavo paio
-2081	Neurolisi (come unico intervento)
-2082	Neurorrafia primaria (come unico intervento)
-2083	Neurotomia retrogasseriana, sezione intracranica di altri nervi (come unico intervento)
-2084	Neurotomia semplice (come unico intervento)
-1531	Nodulectomia/emitiroidectomia
-409	Noradrenalina plasmatica
+2081	Neurolisi
+2082	Neurorrafia primaria
 410	Noradrenalina urinaria
 2390	Nucleoaspirazione e/o nucleolisi lombare
 411	Numero di dibucaina
@@ -19661,157 +19638,138 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1056	Oct - tomografia a coerenza ottica
 2183	Odontocheratoprotesi
 1057	Oftalmodinamometria
-1058	Oftalmoscopia diretta o indiretta (come unico atto)
-1082	Olfattometria
-2799	Oligoelementi (per arcata)
-412	Omocisteina
+1058	Oftalmoscopia diretta o indiretta
+2799	Oligoelementi
 2271	Onorari per l'effettuazione di apparecchi gessati da parte di specialisti ortopedici
 2125	Operazione di kronlein od orbitotomia
 2213	Operazione fistolizzante
 2203	Operazione per glaucoma
 2126	Orbita, intervento di decompressione per via inferioreinterventi chirurgici oculistica - sopracciglio
-2727	Orchidopessi bilaterale
 2728	Orchidopessi monolaterale
 2729	Orchiectomia allargata con linfoadenectomia addominale
 2730	Orchiectomia sottocapsulare bilaterale
 2731	Orchiepididimectomia bilaterale con eventuale protesi
 2732	Orchiepididimectomia monolaterale con eventuale protesi
-413	Ormone adrenocorticotropo (acth)
-414	Ormone antimulleriano
-415	Ormone follicolo stimolante (fsh)
-416	Ormone lattogeno placentare o somatomammotropina (hpl)
-417	Ormone luteinizzante biologico (lh biologico)
-418	Ormone luteinizzante plasmatico (lh)
-419	Ormone somatotropo plasmatico o urinario (sth)
-420	Ormone tireotropo (tsh)
-421	Ormoni (dosaggio per singolo ormone)
-2855	Ortopantomografia od ortopanoramica
-422	Osmolalità/osmolarità plasmatica
-423	Osmolalità/osmolarità urinaria
-1188	Ossigenoterapia iperbarica (per seduta)
-1094	Ossimetria arteriosa (pa o2 o sa o2)
-1761	Osteiti circoscritte dei mascellari, trattamento di
+413	Ormone adrenocorticotropo
+415	Ormone follicolo stimolante
+422	Osmolalità /osmolarità plasmatica
+423	Osmolalità /osmolarità urinaria
+1188	Ossigenoterapia iperbarica
 424	Osteocalcina
 2312	Osteoclasia
-2392	Osteosintesi vertebrale
 2393	Osteosintesi: grandi segmenti
 2394	Osteosintesi: medi segmenti
 2395	Osteosintesi: piccoli segmenti
-2396	Osteotomia complessa (bacino, vertebrale, ecc...)
-2397	Osteotomia semplice
-1478	Osteotomie (come unico intervento)
-2784	Otturazione
+2392	Osteosintesi vertebrale
+2396	Osteotomia complessa
+1478	Osteotomie
 425	Oxcarbazepina
-1251	Ozonoterapia per infiltrazioni (solo per terapia di ernia discale) (per seduta)
-931	Pace-maker mono o bicamerale: impianto definitivo
-1442	Pace-maker, impianto temporaneo e relativo espianto (come unico intervento)
-932	Pace-maker: controllo elettronico
+1251	Ozonoterapia per infiltrazioni
 933	Pace-maker: impianto temporaneo
+1442	Pace-maker, impianto temporaneo e relativo espianto
 1059	Pachimetria corneale
 1762	Palatoschisi parziale
 1763	Palatoschisi totale
 1661	Pancreatectomia sinistra compresa splenectomia ed eventuale linfoadenectomia
-1662	Pancreatectomia totale (compresa eventuale linfoadenectomia)
-1663	Pancreatite acuta, interventi conservativi
+1662	Pancreatectomia totale
 1664	Pancreatite acuta, interventi demolitivi
 2578	Papilloma laringeo
 1645	Papillotomia, per via endoscopica
 973	Paptest
 1714	Paracentesi
 2184	Paracentesi della camera anteriore
-1264	Paraffinoterapia (per seduta)
+1264	Paraffinoterapia
+1764	Plastica per paralisi dinamica del nervo facciale
+575	Polimorfismo 5t introne 8 gene cftr*
+903	Patch test
+2738	Posizionamento di protesi peniena
+2171	Plastica congiuntivale per innesto
+1148	Posizionamento di cateteri intraddominali in infusione chemioterapica
+1862	Pleurectomia
+1380	Piastrino aferesi terapeutica
+2286	Pelvimalleolare
 427	Parassita malarico o altri parassiti nel sangue
 1533	Paratiroidi, reinterventi
-428	Paratormone c terminale (pth)
+428	Paratormone c terminale
 429	Paratormone intatto
+1024	Potenziali evocati baers
+1382	Plasmaferesi terapeutica
+436	Piruvatokinasi eritrocitaria
+2170	Piccole cisti, sutura con innesto placentare
+1863	Pleurodesi in videotoracoscopia
 1766	Parotidectomia superficiale
+1224	Pompage
+1137	Posizionamento clip amagnetica
+1864	Pleuropneumectomia
+1514	Posizionamento percutaneo di catetere venoso centrale
+2847	Placca di svincolo
+1611	Polipectomia per via laparotomica
+2172	Plastica congiuntivale per scorrimento
 1767	Parotidectomia totale
-2462	Parto cesareo: conservativo o demolitivo, comprensivo della normale assistenza alla puerpera durante il ricovero
+2287	Pelvimalleolare bilaterale
+1418	Pericardiectomia parziale
+2638	Pielocentesi
+1460	Posizionamento punto di repere per noduli non palpabili
+2462	Parto cesareo
 2460	Parto naturale: eutocico, distocico, plurimo, podalico, prematuro, pilotato
-903	Patch test (allergeni da contatto serie completa)
-1513	Patereccio superficiale, intervento per
-430	Pca3 (prostate cancer gene)
+1513	Interventop per patereccio superficiale
+430	Pca3
 2284	Pelvicondiloideo
 2285	Pelvicondiloideo bilaterale
-2286	Pelvimalleolare
-2287	Pelvimalleolare bilaterale
 2288	Pelvipedidio
 2289	Pelvipedidio bilaterale
+432	Peptide c
 433	Peptide c
-432	Peptide c (dopo carico di glucosio - 4 dosaggi)
 2398	Perforazione alla boeck
-1418	Pericardiectomia parziale
 1419	Pericardiectomia totale
 1420	Pericardiocentesi
 2579	Pericondrite ed ascesso perilaringeo
 1060	Perimetria
-894	Pet (positron emission tomography) per organo, distretto o apparato
+894	Pet per organo, distretto o apparato
 2489	Petrosectomia
 2490	Petrositi suppurate, trattamento delle
-434	Ph ematico
-955	Ph impedenzometria esofagea (24 ore)
-956	Ph metria esofagea (24 ore)
 435	Phadiatop
-1380	Piastrino aferesi terapeutica
-2170	Piccole cisti, sutura con innesto placentare
-2637	Pielocalicolitotomia (come unico intervento)
-2638	Pielocentesi (come unico intervento)
+434	Ph ematico
+955	Ph impedenzometria esofagea
+956	Ph metria esofagea
+2637	Pielocalicolitotomia
 2640	Pielouretero plastica per stenosi del giunto
-1569	Piloroplastica (come unico intervento)
-436	Piruvatokinasi eritrocitaria
-2847	Placca di svincolo
-1381	Plasma exchange (pex)
-1382	Plasmaferesi terapeutica
-1136	Plasmaferesi terapeutica (compreso filtro, linee, sacche escluso plasma e/o albumina)
-2007	Plastica con allargamento dell'introito (compreso intervento per vaginismo)
-2171	Plastica congiuntivale per innesto
-2172	Plastica congiuntivale per scorrimento
+1569	Piloroplastica
+1381	Plasma exchange
+1136	Plasmaferesi terapeutica
+2007	Plastica con allargamento dell'introito
 1768	Plastica di fistola palatina
 2120	Plastica per cavità orbitaria
 2129	Plastica per innesto
-2384	Plastica per lussazioni recidivanti (spalla, ginocchio)
-1764	Plastica per paralisi dinamica del nervo facciale
+2384	Plastica per lussazioni recidivanti
 1765	Plastica per paralisi statica del nervo facciale
 2130	Plastica per scorrimento
+1801	Plastica ricostruttiva delle labbra
 1806	Plastica ricostruttiva del padiglione auricolare
-1801	Plastica ricostruttiva delle labbra (trattamento completo)
 2085	Plastica volta cranica
 1769	Plastiche mucose per comunicazioni oro-antrali
-1293	Plesioroentgenterapia (per seduta)
-1095	Pletismografia corporea (misura vgt, resistenze, volumetria)
+1293	Plesioroentgenterapia
+1095	Pletismografia corporea
 1096	Pletismografia induttiva toracica
-1862	Pleurectomia
-1863	Pleurodesi in videotoracoscopia
-1864	Pleuropneumectomia
 437	Ploidia del dna
 555	Pneumocistis carinioncologia molecolare
 1867	Pneumotorace terapeutico
-1021	Polifisiografia del sonno (1 ciclo)
-1022	Polifisiografia del sonno (intera notte)
-575	Polimorfismo 5t introne 8 gene cftr*
-1611	Polipectomia per via laparotomica
+1021	Polifisiografia del sonno
+1022	Polifisiografia del sonno
 2012	Polipi orifizio uretrale esterno
-1189	Politzer (per seduta)
-1224	Pompage (per seduta)
+1189	Politzer
 786	Porto tc
-1137	Posizionamento clip amagnetica
-1372	Posizionamento di catetere in succlavia (come unica prestazione)
-1148	Posizionamento di cateteri intraddominali in infusione chemioterapica
-1175	Posizionamento di dispositivo totalmente impiantabile per la somministrazione di farmaci intratecale/subaracnoidea
+1372	Posizionamento di catetere in succlavia
 1724	Posizionamento di palloncino intragastrico per via endoscopica in day surgery
 1725	Posizionamento di palloncino intragastrico per via endoscopica in ricovero
-1294	Posizionamento di placche per la radioterapia del melanoma coroidale compresa prestazione del medico oculista
-2738	Posizionamento di protesi peniena
+1294	Posizionamento di placche per la radioterapia del melanoma coroidale
 1138	Posizionamento di repere metallico ecoguidato
 1139	Posizionamento di repere metallico in stereotassi
-1945	Posizionamento endoprotesi esofagee (esclusa protesi)
-1514	Posizionamento percutaneo di catetere venoso centrale (come unica prestazione)
-1460	Posizionamento punto di repere per noduli non palpabili
+1945	Posizionamento endoprotesi esofagee
 438	Potassiemia
 439	Potassio eritrocitario
 440	Potassiuria
-1023	Potenziali evocati (a potenziale)
-1024	Potenziali evocati baers
+1023	Potenziali evocati
 1025	Potenziali evocati multimodiali
 1026	Potenziali evocati pes
 1027	Potenziali evocati pev
@@ -19825,120 +19783,130 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 999	Preparazione psicofisica al parto - ciclo completo
 576	Preparazione sperma per frammentazione dna e frammentazione dna spermatozoi*
 560	Presso struttura pubblica
-1252	Pressoterapia (per seduta)
-1160	Prestazioni equipe medica oncologica durante un ricovero senza chemioterapia con degenza notturna: dalla seconda alla decima giornata
-1162	Prestazioni equipe medica oncologica durante un ricovero senza chemioterapia con degenza notturna: oltre la decima giornata
-1159	Prestazioni equipe medica oncologica durante un ricovero senza chemioterapia con degenza notturna: prima giornata
-1154	Prestazioni equipe medica oncologica in regime di ricovero con degenza notturna per mono-polichemioterapia antiblastica, con terapia perfusionale: dalla seconda giornata in poi
-1152	Prestazioni equipe medica oncologica in regime di ricovero con degenza notturna per mono-polichemioterapia antiblastica, con terapia perfusionale: prima giornata
-976	Prestazioni in gravidanza
-1225	Prestazioni manu medica
-1613	Procto-colectomia totale con pouch ileale
-441	Prodotti degradazione fibrinogeno: plasma/urine (fdp plasmatici urinari)
-442	Progesteroneprolattina (prl)
+1252	Pressoterapia
+441	Prodotti degradazione fibrinogeno: plasma/urine
+453	Rame
+2824	Protesi parziale definitiva rimovibile
+1479	Pseudoartrosi delle ossa lunghe
+442	Progesteroneprolattina
+1296	Radioterapia con tecniche speciali
+2016	Raschiamento endouterino diagnostico o terapeutico
+2758	Realizzazione di plantari ortopedici
+2089	Rachicentesi per qualsiasi indicazione
 2013	Prolasso cupola vaginale o colpopessia, interventi per via addominale o vaginale
+456	Reazione di wasserman più due reazioni di flocculazione
+2795	Pulpotomia ed otturazione della camera pulpare
+1295	Radioterapia con tecniche speciali
+2769	Protesi testicolare
+454	Reazione di paul bunnel
 2224	Prolasso irideo, riduzione
-2699	Prolasso mucoso uretrale
-1124	Prostata, massaggio unicamente a scopo terapeutico
-2611	Prostata, resezione endoscopica della + vaporizzazione (turp, tuvp)
-2612	Prostata, vaporizzazione con utilizzo di laser al tullio (turp)
-2685	Prostatectomia radicale per carcinoma con linfoadenectomia (qualsiasi accesso e tecnica)
+1868	Puntato sternale o midollare
+2685	Prostatectomia radicale per carcinoma con linfoadenectomia
+1298	Radioterapia con tecniche speciali
+458	Reazione immunologica di gravidanza
+976	Prestazioni in gravidanza
+455	Reazione di waaler rose
+457	Reazione di wasserman
+2762	Protesi acustica bilaterale
 2686	Prostatectomia sottocapsulare per adenoma
 443	Proteina bence jones
 444	Proteina c coagulativa
+1869	Puntura esplorativa del polmone
+2699	Prolasso mucoso uretrale
+1124	Prostata, massaggio unicamente a scopo terapeutico
+2403	Puntato tibiale o iliaco
+2721	Puntura di idrocele
+2405	Reimpianti di arto o suo segmento
+1480	Pseudoartrosi dello scafoide carpale
+2400	Pseudoartrosi grandi segmenti o congenita di tibia
+1225	Prestazioni manu medica
+1421	Reintervento con ripristino di c.e.c.
+2826	Protesi totale mobile provvisoria
+2611	Prostata, resezione endoscopica della + vaporizzazione
+1300	Radioterapia imrt
+2612	Prostata, vaporizzazione con utilizzo di laser al tullio
 446	Proteina c reattiva
+1613	Procto-colectomia totale con pouch ileale
 445	Proteina c reattiva resistenza
 447	Proteina s
+450	Proteinemia totale
 448	Proteine totali nel liquido amniotico
 449	Proteine urinarie
-450	Proteinemia totale
-2762	Protesi acustica bilaterale
 2761	Protesi acustica monolaterale
 2763	Protesi articolare
 2764	Protesi arto inferiore
 2765	Protesi arto superiore
 2766	Protesi endoesofagea
-2767	Protesi mammaria impiantabile (ciascuna)
-2822	Protesi mobile totale per arcata con denti in resina o ceramica comprensiva di protesi parziale rimovibile provvisoria
-2768	Protesi oculare (occhio finto)
-2824	Protesi parziale definitiva rimovibile (comprensiva di ganci ed elementi e di protesi parziale rimovibile provvisoria)
-2769	Protesi testicolare
-2826	Protesi totale mobile provvisoria (per arcata)
+2767	Protesi mammaria impiantabile
+2822	Protesi mobile totale per arcata con denti in resina o ceramica
+2768	Protesi oculare
 2770	Protesi vascolare
 451	Prova crociata di compatibilità trasfusionale
 1097	Prova da sforzo scalare: parametri ventilatori con emogasanalisi
-452	Prove emogeniche (coagulazione ed emorragia)
+452	Prove emogeniche
 1909	Pseudoaneurismi post-traumatici o iatrogeni
-1479	Pseudoartrosi delle ossa lunghe
-1480	Pseudoartrosi dello scafoide carpale
-2400	Pseudoartrosi grandi segmenti o congenita di tibia (trattamento completo)
-2401	Pseudoartrosi medi segmenti (trattamento completo)
-2402	Pseudoartrosi piccoli segmenti (trattamento completo)
+2401	Pseudoartrosi medi segmenti
+2402	Pseudoartrosi piccoli segmenti
 2173	Pterigio o pinguecola
-2238	Ptosi palpebrale, intervento per (escluse finalità estetiche)
+2238	Intervento per ptosi palpebrale
 2376	Pulizia chirurgica di frattura esposta
-2795	Pulpotomia ed otturazione della camera pulpare  (comprese rx)
-1868	Puntato sternale o midollare
-2403	Puntato tibiale o iliaco
-2721	Puntura di idrocele
 2087	Puntura epidurale
 1000	Puntura epidurale nel parto
 1643	Puntura esplorativa addominale
 2015	Puntura esplorativa del cavo di douglas
-1869	Puntura esplorativa del polmone
-2088	Puntura sottoccipitale per prelievo liquorale o per introduzione di farmaci o mezzo di contrasto
+2088	Puntura sottoccipitale per prelievo liquorale
 1062	Pupillografia
 1461	Quadrantectomia con eventuale impianto di protesi o estensore
 1462	Quadrantectomia con linfoadenectomie associate
 1463	Quadrantectomia senza linfoadenectomie associate
-2089	Rachicentesi per qualsiasi indicazione
-1265	Radarterapia (per seduta)
-2856	Radiografia endorale (ogni due denti) massimo 3 per ogni piano di cura
-2857	Radiografia endorale (per arcata)
+1265	Radarterapia
+2857	Radiografia endorale
+2856	Radiografia endorale massimo 3 per ogni piano di cura
 1280	Radioterapia
-1295	Radioterapia con tecniche speciali (trattamento globale): irradiazione cutanea totale con elettroni
-1296	Radioterapia con tecniche speciali (trattamento globale): irradiazione emicorporea (hbi)
-1297	Radioterapia con tecniche speciali (trattamento globale): panirradiazione (tbi) frazionata, ogni seduta
-1298	Radioterapia con tecniche speciali (trattamento globale): panirradiazione (tbi) prima o unica seduta
-1299	Radioterapia conformazionale dinamica con collimatore micro-multi-leaf ( per seduta)
-1300	Radioterapia imrt (per seduta)
-1301	Radioterapia selettiva interna intraepatica (sirt)
-1302	Radioterapia stereotassica (trattamento globale, anche cyber knife)radioterapia stereotassica plurifrazionata: frazioni successive (anche cyber knife)
-1303	Radioterapia stereotassica plurifrazionata: prima frazione (anche cyber knife)
-453	Rame (cupremia)
-2016	Raschiamento endouterino diagnostico o terapeutico
-2758	Realizzazione di plantari ortopedici
-454	Reazione di paul bunnel
-455	Reazione di waaler rose
-457	Reazione di wasserman
-456	Reazione di wasserman più due reazioni di flocculazione
-458	Reazione immunologica di gravidanza
+1299	Radioterapia conformazionale dinamica con collimatore micro-multi-leaf
+1297	Radioterapia con tecniche speciali
+1301	Radioterapia selettiva interna intraepatica
+1302	Radioterapia stereotassica
+1303	Radioterapia stereotassica plurifrazionata: prima frazione
 577	Recettore androgenico ar*
-603	Recettori ormonali (per singola determinazione)
+603	Recettori ormonali
 1383	Recupero di sangue intraoperatorio
-2613	Reflusso vescico ureterale, intervento endoscopico (teflon)
+2613	Reflusso vescico ureterale, intervento endoscopico
 2090	Registrazione continua della pressione intracranica
-2405	Reimpianti di arto o suo segmento
-1421	Reintervento con ripristino di c.e.c.
 1534	Reintervento per la tiroide
 1870	Relaxatio diaframmatica
 916	Reografia arti inferiori
 917	Reografia arti superiori
 918	Reografia arti superiori e inferiori
-1240	Rieducazione neuromotoria (per seduta)
+1240	Rieducazione neuromotoria
+562	Ricerca di una specifica mutazione
+895	Ricerca del linfonodo sentinella e punto di repere
+585	Ricerca delle principali mutazioni geniche nelle endocrinopatie congenite
+580	Ricerca delle mutazioni del gene per distrofia muscolare
+587	Ricerca di mutazioni di geni per malattie cardiovascolari
+579	Ricerca delle mutazioni del gene per atassia di friedreich
+582	Ricerca delle mutazioni del gene per alzheimer familiare
+2409	Riallineamento metatarsale
+934	Rianimazione cardiocircolatoria: massaggio cardiaco esterno
+2145	Riapertura di anchiloblefaron
+2421	Ricostruzione di tetto cotiloideo
 1616	Resezione anteriore retto-colica compresa linfoadenectomia ed eventuale colostomia
+1482	Ricostruzione secondaria del pollice o delle altre dita in microchirurgia
+588	Ricerca del pannello di mutazioni per trombofilia/ipertensione*
+2602	Resezione endoscopica di formazioni ureterali
+2827	Ribasamento di protesi rimovibile
+2306	Riduzione incruenta di lussazione traumatica: medie articolazioni
 2406	Resezione articolare
 1871	Resezione bronchiale con reimpianto
 2404	Resezione con trapianto articolare perone e pro-radio radiodistale
-2407	Resezione del sacro
 1547	Resezione dell'esofago cervicale
 2741	Resezione dello scroto
+2407	Resezione del sacro
 1872	Resezione di costa soprannumeraria
-1592	Resezione di digiunostomia (come unico intervento)
-2602	Resezione endoscopica di formazioni ureterali
+1592	Resezione di digiunostomia
 2610	Resezione endoscopica di neoplasia vescicale
-1570	Resezione gastro duodenale
 1571	Resezione gastro-digiunale per ulcera peptica anastomotica
+1570	Resezione gastro duodenale
 2408	Resezione ossea
 2017	Resezione ovarica bilaterale per patologia disfunzionale
 2018	Resezione ovarica monolaterale per patologia disfunzionale
@@ -19957,35 +19925,22 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1811	Retrazione cicatriziale delle dita senza innesto
 1481	Retrazioni ischemiche
 1617	Retto, amputazione del, per neoplasia dell'ano, con linfoadenectomia inguinale bilaterale
-1618	Retto, amputazione per via addomino-perineale, con eventuale linfoadenectomia, del
+1618	Retto, amputazione per via addomino-perineale, con eventuale linfoadenectomia
 957	Rettoscopia diagnostica
 958	Rettosigmoidoscopia diagnostica
 1946	Rettosigmoidoscopia operativa
 2342	Revisione di protesi d'anca per complicanza settica
 2519	Revisione di rinosettoplastica
 1515	Revisione e/o ampliamento di pregressa exeresi per neoplasie maligne
-1236	Riabilitazione del pavimento pelvico (per seduta)
-1237	Riabilitazione motoria (per seduta)
-1238	Riabilitazione post-operatoria (per seduta)
-1239	Riabilitazione post-traumatica (per seduta)
-2409	Riallineamento metatarsale
-934	Rianimazione cardiocircolatoria: massaggio cardiaco esterno
-2145	Riapertura di anchiloblefaron
-2827	Ribasamento di protesi rimovibile (qualunque sistema)
+1236	Riabilitazione del pavimento pelvico
+1237	Riabilitazione motoria
+1238	Riabilitazione post-operatoria
+1239	Riabilitazione post-traumatica
 2712	Ricanalizzazione dei deferenti
-895	Ricerca del linfonodo sentinella e punto di repere
-588	Ricerca del pannello di mutazioni per trombofilia/ipertensione*
-578	Ricerca delle mutazioni del gene per: acondroplasia, anemia falciforme, aneuploidie molecolari, spinocerebellari
+578	Ricerca delle mutazioni del gene per acondroplasia
 581	Ricerca delle mutazioni del gene per: alfa1antitripsina, atrofia spinale muscolare tipo 1
-582	Ricerca delle mutazioni del gene per: alzheimer familiare, epidermolisi bullosa, fenilchetonuria, retinite pigmentosa*
-579	Ricerca delle mutazioni del gene per: atassia di friedreich, atassia telangectasia, distonia primaria, distrofia miotonica
-580	Ricerca delle mutazioni del gene per: distrofia muscolare, emocromatosi, huntington, mcda deficit, sordità congenita, sbma, x fragile
-584	Ricerca delle principali mutazioni geniche nelle endocrinopatie congenite: 21idrossilasi, 5alfareduttasi, aromatasi p450, ipoplasia surrenale congenita
-585	Ricerca delle principali mutazioni geniche nelle endocrinopatie congenite:recettore androgenico,recettore estrogenico, thyroid hormone receptor
-586	Ricerca di mutazioni di geni per malattie cardiovascolari: ace, agt, fattore v di leiden, jka2, mthfr-c677t, mthfr1298a/c
-587	Ricerca di mutazioni di geni per malattie cardiovascolari: fattore ii protrombina, ipercolesterolemia familiare, iperlipoproteinemia familiare tipo iii
+586	Ricerca di mutazioni di geni per malattie cardiovascolari
 589	Ricerca di mutazioni di geni per trombofilia*
-562	Ricerca di una specifica mutazione
 1001	Ricerca dna fetale nel sangue materno
 591	Ricerca genetica per anomalie cromosomiche
 460	Ricerca miceti su vetrino
@@ -19993,10 +19948,8 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1771	Ricostruzione con innesti ossei dei mascellari
 1772	Ricostruzione con materiali alloplastici o con protesi dei mascellari
 2164	Ricostruzione delle vie lacrimali
-2381	Ricostruzione di legamenti articolari collo-piede (qualsiasi tecnica)
-2382	Ricostruzione di legamenti articolari del ginocchio (anche in artroscopia)
-2421	Ricostruzione di tetto cotiloideo
-1482	Ricostruzione secondaria del pollice o delle altre dita in microchirurgia
+2381	Ricostruzione di legamenti articolari collo-piede
+2382	Ricostruzione di legamenti articolari del ginocchio
 2410	Riduzione cruenta e contenzione di lussazione traumatica di colonna vertebrale
 2411	Riduzione cruenta e contenzione di lussazione traumatica di grandi articolazioni
 2412	Riduzione cruenta e contenzione di lussazione traumatica di medie o piccole articolazioni
@@ -20004,19 +19957,32 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2296	Riduzione incruenta di fratture: applicazione di skin traction
 2297	Riduzione incruenta di fratture: colonna vertebrale
 2298	Riduzione incruenta di fratture: grandi segmenti
-2302	Riduzione incruenta di fratture: medi segmenti (anche clavicola)
-2303	Riduzione incruenta di fratture: piccoli segmenti
 2299	Riduzione incruenta di fratture-lussazioni: colonna vertebrale
 2300	Riduzione incruenta di fratture-lussazioni: grandi articolazioni
 2301	Riduzione incruenta di fratture-lussazioni: piccole articolazioni
+2302	Riduzione incruenta di fratture: medi segmenti
+2303	Riduzione incruenta di fratture: piccoli segmenti
 2304	Riduzione incruenta di lussazione traumatica: colonna vertebrale
 2305	Riduzione incruenta di lussazione traumatica: grandi articolazioni
-2306	Riduzione incruenta di lussazione traumatica: medie articolazioni
 2307	Riduzione incruenta di lussazione traumatica: piccole articolazioni
 2513	Riduzioni di fratture delle ossa nasali
 1229	Rieducazione funzionale e chinesiterapia
-2586	Rigidometria peniena notturna (3 notti - rigiscan)
+629	Rx tubo digerente: prime vie
+636	Rx arti inferiori sotto carico con bacino
+630	Rx tubo digerente: seconde vie
+649	Rx colonna vertebrale lombo-sacrale
+642	Rx colonna vertebrale cervicale
+1812	Riparazione di p.s.c. Con lembo cutaneo di rotazione o di scorrimento di grandi dimensioni
 2782	Rilievo impronte e preparazione modelli di studio
+2493	Chirurgia del sacco endolinfatico
+2828	Riparazione di protesi rimovibile
+2586	Rigidometria peniena notturna
+665	Rx mano
+1304	Roentgenterapia superficiale non oncologica
+687	Rx laringe
+461	Rotavirus nelle feci
+2414	Rottura cuffia rotatoria della spalla, riparazione
+2737	Rivascolarizzazione per impotenza vasculogenita in microchirurgia pene
 1726	Rimozione bendaggio gastrico regolabile per via laparoscopica
 2688	Rimozione di calcoli o corpi estranei
 1994	Rimozione di isteroscopia operativa: corpi estranei
@@ -20027,54 +19993,44 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2517	Rinofima, intervento
 1084	Rinomanometria
 2518	Rinosettoplastica con innesti di osso
-1812	Riparazione di p.s.c. Con lembo cutaneo di rotazione o di scorrimento di grandi dimensioni
+2829	Riparazione di protesi rimovibile
 1813	Riparazione di p.s.c. Con lembo cutaneo di rotazione o di scorrimento di piccole dimensioni
 1814	Riparazione di p.s.c. Con lembo fasciocutaneo
 1815	Riparazione di p.s.c. Con lembo miofasciocutaneo
 1816	Riparazione di p.s.c. O esiti ciatriziali mediante espansore tissutale per tempo chirurgico,
-2828	Riparazione di protesi rimovibile (qualsiasi tipo)
-2829	Riparazione di protesi rimovibile (qualsiasi tipo) con aggiunta di elemento (per elemento)
-1443	Riprogrammazione elettronica del pace-maker con misurazione soglia cardiaca con metodo non invasivo
 807	Risonanza magnetica
-1484	Rivascolarizzazione di arto o di suo segmento (come unico intervento)
-2737	Rivascolarizzazione per impotenza vasculogenita in microchirurgia pene
-2814	Rizectomia e rizotomia (compreso lembo d'accesso) come unico intervento
+1484	Rivascolarizzazione di arto o di suo segmento
+2814	Rizectomia e rizotomia come unico intervento
 1485	Rizoartrosi
 1177	Rizotomia trans nasale a fini analgesici
 2091	Rizotomie e microdecompressioni radici endocraniche
-814	Rm a.t.m.rm arti o articolazioni
 815	Rm arto o articolazione aggiuntiva stessa seduta
+814	Rm a.t.m.rm arti o articolazioni
 816	Rm cuore
 817	Rm distretto vascolare
 818	Rm multiparametrica della prostata
 819	Rm per ogni organo, apparato o distretto
 820	Rm per ogni organo, apparato o distretto in più stessa seduta
 821	Rm rachide per ogni segmento aggiuntivo stessa seduta
-822	Rm rachide per segmento (cervicale, dorsale, lombare, sacro coccigeo)
-1304	Roentgenterapia superficiale non oncologica (per seduta)
-461	Rotavirus nelle feci (ricerca diretta)
-2414	Rottura cuffia rotatoria della spalla, riparazione
+822	Rm rachide per segmento
 2702	Rottura traumatica dell'uretra
-634	Rx a.t.m.
 617	Rx addome: esame diretto
 635	Rx anca
 694	Rx apparato urinario: esame diretto
-636	Rx arti inferiori sotto carico con bacino
-637	Rx arti inferiori sotto carico con bacino (2 proiezioni)
-638	Rx assiali rotule 30°/60°/90°
+637	Rx arti inferiori sotto carico con bacino
+638	Rx assiali rotule 30Â°/60Â°/90Â°
+634	Rx a.t.m.
 639	Rx avambraccio
 640	Rx avampiede
 641	Rx bacino
 686	Rx cavità nasali
-642	Rx colonna vertebrale cervicale
-643	Rx colonna vertebrale cervicale (proiezioni oblique)
+643	Rx colonna vertebrale cervicale
 644	Rx colonna vertebrale cervicale transorale
 645	Rx colonna vertebrale completa
 646	Rx colonna vertebrale completa più bacino sotto carico
 647	Rx colonna vertebrale dorsale
 648	Rx colonna vertebrale esame morfodinamico per tratto
-649	Rx colonna vertebrale lombo-sacrale
-650	Rx colonna vertebrale lombo-sacrale (proiezioni oblique)
+650	Rx colonna vertebrale lombo-sacrale
 651	Rx colonna vertebrale sacro-coccigea
 652	Rx coscia
 653	Rx cranio
@@ -20093,10 +20049,8 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 661	Rx ginocchio
 662	Rx ginocchio appoggio monopodalico
 663	Rx gomito
-664	Rx grandi articolazioni (spalla - anca / gomito / ginocchio)
-687	Rx laringe
-688	Rx laringe (con contrasto)
-665	Rx mano
+664	Rx grandi articolazioni
+688	Rx laringe
 666	Rx mastoide
 710	Rx ogni radiogramma in più
 667	Rx omero
@@ -20121,18 +20075,30 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 680	Rx sterno
 681	Rx sterno coste clavicola
 625	Rx stomaco doppio contrasto
-626	Rx tenue a doppio contrasto con studio selettivo
 627	Rx tenue seriato
 682	Rx tessuti molli
-683	Rx torace e arto superiore (toracobrachiale) monolaterale
+683	Rx torace e arto superiore monolaterale
 709	Rx toraceesami radiologici varie
 689	Rx trachea
-628	Rx tubo digerente: completo compreso esofago (con contrasto)
-629	Rx tubo digerente: prime vie (esofago, stomaco, duodeno)
-630	Rx tubo digerente: seconde vie (tenue, colon)
-2493	Sacco endolinfatico, chirurgia del
-1910	Safenectomia della grande e/o della piccola safena, totale o parziale e varicectomia e trombectomia ed eventuale
+628	Rx tubo digerente: completo compreso esofago
+880	Scintigrafia delle paratiroidi con metodica di sottrazione
+858	Scintigrafia scheletrica per segmento
+2530	Setto-etmoidosfenotomia decompressiva neurovascolareà¬
+1488	Sinovialectomia
+879	Scintigrafia con captazione tiroidea dello i 131
+2022	Setto vaginale, asportazione chirurgicatracheloplastica
 2019	Salpingectomia bilaterale
+1312	Sistema immobilizzazione per radioterapia 3d e dinamica
+2418	Sinoviectomia piccole articolazioni
+2858	Scialografia con mezzo di contrasto
+464	Sideremia
+771	Screening per displasia delle anche
+2098	Intervento sul simpatico dorsale
+466	Sodiemia
+904	Skin prick test
+890	Scintigrafia con indicatori positivi altri organi
+1422	Sezione o legatura del dotto arterioso di botallo
+1947	Sondaggio duodenale
 2020	Salpingectomia monolaterale
 2021	Salpingoplastica
 462	Sangue occulto nelle feci
@@ -20141,20 +20107,16 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2290	Scarpetta gessata
 2092	Scheggectomia e craniectomia per frattura volta cranica
 2093	Scheggectomia e craniectomia per frattura volta cranica con plastica
-1305	Schermatura, modificatori del fascio, sistemi di immobilizzazione personalizzati (unica prestazione)
+1305	Schermatura, modificatori del fascio, sistemi di immobilizzazione personalizzati
 787	Scialo tc
-2858	Scialografia con mezzo di contrasto
 852	Scintigarfia splenica con emazie autologhe
 856	Scintigrafia articolare segmentaria per ogni segmento
 857	Scintigrafia articolare totale corporea
 872	Scintigrafia cerebrale
-873	Scintigrafia cerebrale con tracciante recettoriale (datscan)
-879	Scintigrafia con captazione tiroidea dello i 131
-889	Scintigrafia con indicatori positivi (tiroide, polmone)
-890	Scintigrafia con indicatori positivi altri organi
+873	Scintigrafia cerebrale con tracciante recettoriale
+889	Scintigrafia con indicatori positivi
 885	Scintigrafia con uso leucociti marcati
-877	Scintigrafia delle ghiandole surrenali (corticale o midollare)
-880	Scintigrafia delle paratiroidi con metodica di sottrazione
+877	Scintigrafia delle ghiandole surrenali
 840	Scintigrafia epatica
 841	Scintigrafia epatica o epatobiliare con calcolo indici funzionali
 842	Scintigrafia ghiandole salivari
@@ -20162,9 +20124,8 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 834	Scintigrafia miocardica di perfusione a riposo
 833	Scintigrafia miocardica di perfusione a riposo e dopo test
 863	Scintigrafia polmonare di perfusione
-864	Scintigrafia polmonare di perfusione o ventilazione con indici funzionaliscintigrafia polmonare di ventilazione
+864	Scintigrafia polmonare di perfusione o ventilazione
 866	Scintigrafia renale
-858	Scintigrafia scheletrica per segmento
 859	Scintigrafia scheletrica segmentaria aggiuntiva alla scheletrica totale corporea
 860	Scintigrafia scheletrica segmentaria polifasica
 861	Scintigrafia scheletrica totale corporea
@@ -20172,7 +20133,7 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 843	Scintigrafia sequenziale del transito e/o reflusso
 844	Scintigrafia sequenziale epatobiliare
 845	Scintigrafia sequenziale ghiandole salivari con indici funzionali
-867	Scintigrafia sequenziale renale con calcolo indici di funzionalità
+867	Scintigrafia sequenziale renale con calcolo indici di funzionalità 
 881	Scintigrafia tiroidea
 886	Scintigrafia totale con tracciante recettoriale
 896	Scintigrafia totale corporea
@@ -20181,8 +20142,7 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 882	Scintigrafia totale corporea per ricerca localizzazioni radioiodiocaptanti
 891	Scintigrafia un segmento con indicatori positivi e metodica polifasica
 2200	Sclerectomia
-2201	Sclerotomia (come unico intervento)
-771	Screening per displasia delle anche
+2201	Sclerotomia
 1444	Seconda applicazione di stent sulla stessa arteria
 2467	Secondamento manuale
 2520	Seni paranasali, intervento per mucocele
@@ -20191,21 +20151,15 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 2523	Seno frontale, svuotamento per via esterna
 2524	Seno frontale, svuotamento per via nasale
 1774	Seno mascellare, apertura per processo alveolare
-2525	Seno mascellare, puntura diameatica del
+2525	Puntura diameatica del seno mascellare
 2526	Seno mascellare, svuotamento radicale bilaterale
 2527	Seno mascellare, svuotamento radicale monolaterale
 2528	Seno sfenoidale, apertura per via transnasale
 463	Serotonina urinaria
-2022	Setto vaginale, asportazione chirurgicatracheloplastica (come unico intervento)
-2529	Setto-etmoidosfenotomia decompressiva neurovascolare radicale di primo e secondo grado monolaterale allargata
-2530	Setto-etmoidosfenotomia decompressiva neurovascolare radicale di terzo grado monolaterale allargata
-2531	Setto-etmoidostenotomia decompressiva neurovascolare conservativa conturbinotomie funzionalisettoplastica ricostruttiva o funzionale con turbinotomia
-1422	Sezione o legatura del dotto arterioso di botallo
+2529	Setto-etmoidosfenotomia decompressiva neurovascolare
 919	Sfigmogramma periferico per arto
-1619	Sfinterotomia (come unico intervento)
-464	Sideremia
+1619	Sfinterotomia
 465	Sierodiagnosi
-2098	Simpatico dorsale: intervento associato sul simpatico toracico e sui nervi splancnici+b2035+b1018
 1306	Simulazione con fusione di immagini tc e rmn
 1307	Simulazione del trattamento: mediante rm
 1308	Simulazione del trattamento: mediante tac
@@ -20216,40 +20170,46 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1876	Sindromi stretto toracico superiore
 2532	Sinechie nasali, recisione di
 2225	Sinechiotomia
-2830	Singolo attacco di semiprecisione /precisione in lnp o lp fuso prefabbricatoigiene orale e parodontologia
-1488	Sinovialectomia (come unico intervento)
-2417	Sinovialectomia grandi e medie articolazioni (come unico intervento)
-2418	Sinoviectomia piccole articolazioni (come unico intervento)
-1312	Sistema immobilizzazione per radioterapia 3d e dinamica
-904	Skin prick test (qualsiasi numero)
-466	Sodiemia
+2830	Singolo attacco di precisione per prefabbricato di igiene orale e parodontologia
+2417	Sinovialectomia grandi e medie articolazioni
 467	Sodio eritrocitario
 468	Sodio urinario
 469	Somatomedina c
 470	Somatomedina igfbp1
 471	Somatomedina igfbp3
-1178	Somministrazione di farmaco subaracnoideo/ intratecale (test di prova)
-1947	Sondaggio duodenale
-1556	Sondaggio esofageo per dilatazione graduale (ciclo completo)
-1948	Sondaggio gastrico
-1949	Sondaggio gastrico frazionato con prove di stimolazione
-2162	Sondaggio o lavaggio vie lacrimali (per seduta)
+1178	Somministrazione di farmaco subaracnoideo/ intratecale
+730	Stratigrafia laringe a riposo e con fonazione
+2771	Stent vascolari
+2614	Stenting ureterale monolaterale
 1241	Sonoterapia
+2174	Sutura di ferita congiuntivale
+1100	Spirometria di base e dopo test di broncodilatazione
+1106	Spirometria globale più curva flusso-volume
+1424	Sostituzioni valvolari con by-pass aorto coronarico
+1505	Sutura di ferita profonda della faccia
+974	Striscio vaginale per ricerca epstein bar virus
+2186	Tatuaggio corneale
+2456	Sutura di lacerazione cervicale
+791	Tc a.t.m. 3 d bilaterale
+1556	Sondaggio esofageo per dilatazione graduale
+1948	Sondaggio gastrico
+823	Spettroscopia in mri
+2202	Sutura sclerale
+789	Tc a fascio conico 3d
+714	Stratigrafia ghiandole salivari
+715	Studio dinamico della deglutizione
+1949	Sondaggio gastrico frazionato con prove di stimolazione
+2162	Sondaggio o lavaggio vie lacrimali
 472	Sorbitolo deidrogenasi
 1179	Sostituzione di elettrostimolatore midollare
 1445	Sostituzione generatore pace-maker definitivo
-1423	Sostituzione valvolare singola (c.e.c.)
-1424	Sostituzioni valvolari con by-pass aorto coronarico (c.e.c.)
-823	Spettroscopia in mri
+1423	Sostituzione valvolare singola
 684	Spinal mouse
 1098	Spirometria con misura di vt, fr, v, vo2
-1099	Spirometria di base (cv o cvf, vems, mvv)
-1100	Spirometria di base e dopo test di broncodilatazione
-1101	Spirometria di base e dopo test di scatenamento aspecifico (broncocostrizione)spirometria di base e dopo test di scatenamento specifico (allergeni)
+1099	Spirometria di base
 1103	Spirometria di base più curva flusso-volume
 1102	Spirometria di base più curva flusso-volume dopo test di broncodilatazione
-1104	Spirometria globale (cv, vri, vre, cfr, ct, vems, mvv, ci, vr/cpt, vems/cvf)
-1106	Spirometria globale più curva flusso-volume
+1104	Spirometria globale
 1105	Spirometria globale più curva flusso-volume dopo test di broncodilatazione
 1666	Splenectomia
 1446	Stand by cardiochirurgico
@@ -20260,27 +20220,25 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 1558	Stenosi esofagee, trattamento endoscopico con laser
 2419	Stenosi vertebrale e lombare
 2105	Stenosi vertebrale lombare
-2771	Stent vascolari
-2615	Stenting ureterale bilaterale (come unico intervento)
-2614	Stenting ureterale monolaterale (come unico intervento)
+2615	Stenting ureterale bilaterale
 2106	Stereotassi, intervento di talamotomia, pallidotomia ed altri interventi similari
 2107	Strappamenti e blocchi di tronchi periferici del trigemino e di altri nervi cranici
+720	Stratigrafia arti o articolazioni
 717	Stratigrafia a.t.m. A bocca aperta e chiusa bilaterale
 718	Stratigrafia a.t.m. A bocca aperta e chiusa monolaterale
 719	Stratigrafia a.t.m. Pluridirezionale
-720	Stratigrafia arti o articolazioni
 728	Stratigrafia cavità nasali
 729	Stratigrafia cavità nasali pluridirezionale
 721	Stratigrafia colonna vertebrale
 712	Stratigrafia faringe
-713	Stratigrafia fegato, vie biliari, pancreas (con o senza contrasto)
-714	Stratigrafia ghiandole salivari (con o senza contrasto)
-730	Stratigrafia laringe a riposo e con fonazione
+713	Stratigrafia fegato, vie biliari, pancreas
 731	Stratigrafia laringe pluridirezionale
 726	Stratigrafia mastoide / rocca petrosa bilaterale
 743	Stratigrafia mediastino
 722	Stratigrafia mirata del cranio
 723	Stratigrafia mirata del cranio pluridirezionale
+737	Stratigrafia orbita
+738	Stratigrafia orbita pluridirezionale
 711	Stratigrafia o tomografia apparato digerente
 716	Stratigrafia o tomografia apparato osteoarticolare e tessuti molli
 727	Stratigrafia o tomografia apparato respiratorio
@@ -20288,11 +20246,8 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 736	Stratigrafia o tomografia apparato visivo
 739	Stratigrafia o tomografia sistema nervoso
 742	Stratigrafia o tomografia torace e mediastino
-737	Stratigrafia orbita
-738	Stratigrafia orbita pluridirezionale
 734	Stratigrafia regione vescicale
 735	Stratigrafia regioni renali
-724	Stratigrafia scheletro toracico
 740	Stratigrafia sella turcica
 741	Stratigrafia sella turcica pluridirezionale
 725	Stratigrafia seni paranasali
@@ -20301,91 +20256,92 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 732	Stratigrafia trachea
 473	Streptococco m test
 474	Streptozyme
-2163	Stricturotomia (come unico intervento)
-974	Striscio vaginale per ricerca epstein bar virus
+2163	Stricturotomia
 1085	Stroboscopia
 854	Studio completo ferrocinetica con misure sedi emopoiesi e emocratesi
-1028	Studio della velocità di conduzione motoria e sensitiva (per arto)
-715	Studio dinamico della deglutizione
+1028	Studio della velocità di conduzione motoria e sensitiva
 1313	Studio dosimetrico
 1447	Studio elettrofisiologico endocavitario
 935	Studio elettrofisiologico trans-esofageo
 1029	Studio neurofisiologico del pavimento pelvico
 824	Studio perfusionale
 1030	Studio reflessologico del tronco dell'encefalo
-2641	Surrenectomia (trattamento completo)
-2185	Sutura corneale (come unico intervento)
-2146	Sutura cute palpebrale (come unico intervento)
+2641	Surrenectomia
+2185	Sutura corneale
+2146	Sutura cute palpebrale
 2226	Sutura dell'irideinterventi chirurgici oculistica - retina
-2174	Sutura di ferita congiuntivale
-1505	Sutura di ferita profonda della faccia
-2456	Sutura di lacerazione cervicale
 2131	Sutura ferite
-2147	Sutura per ferite a tutto spessore (come unico intervento)
-2202	Sutura sclerale
+2147	Sutura per ferite a tutto spessore
 2420	Svuotamento di focolai metastatici ed armatura con sintesi più cemento
 2533	Tamponamento nasale anteriore
 2534	Tamponamento nasale antero-posteriore
 475	Tampone vaginale
 2496	Tappi di cerume, estrazione di
-2148	Tarsorrafia (come unico intervento)
-2186	Tatuaggio corneale
-788	Tc - rm
-789	Tc a fascio conico 3d (1 arcata)
-790	Tc a fascio conico 3d (2 arcata)
-791	Tc a.t.m. 3 d bilaterale
-792	Tc a.t.m. Monolaterale
+2148	Tarsorrafia
 793	Tc addome completo
 794	Tc addome inferiore
 795	Tc addome superiore
+790	Tc a fascio conico 3d
+792	Tc a.t.m. Monolaterale
 796	Tc calcium score
+788	Tc - rm
+936	Test ergometrico
+1314	Telecobaltoterapia cinetica
+1877	Timectomia
+1818	Toilette di ustioni di grandi estensioni
+1165	Terapia antalgica - compensi professionali - assistenza equipe medica
+476	Tempo di protrombina
+489	Test di coombs moreschi diretto
+1684	Terapia chirurgica di fratture dei mascellari
+1254	Terapia shiatsu
+495	Test di stamey
+1180	Terapia antalgica mediante infusione endovenosa
+1315	Telecobaltoterapia od altre sorgenti gamma - statica
+1950	Test all'idrogeno respiratorio per malassorbimento od intolleranza al lattosio
+772	Tempo svuotamento gastrico ecografico
+515	Titolo antistafilolisinico
+2439	Tenoplastica, mioplastica, miorrafia
+1107	Titolazione c-pap
+1206	Terapia antalgica transcutanea
+610	Telecuore
+1317	Terapia conformazionale per la prostata od altri organi, ove necessaria
+1536	Tiroidectomia totale con svuotamento laterocervicale bilaterale
+1243	Terapie fisiche mirate
+477	Tempo di protrombina inr
+1140	Tecniche depurative crrt
+512	Tiroxina libera
+2313	Terapia con onde d'urto
 797	Tc cardiaca completa
+2703	Terapia rieducativa minzionale
+905	Test epicutanei x farmaci e/o additivi
 798	Tc colonna due metameri
 799	Tc colonna: ogni metamero aggiuntivo
 800	Tc cuore
 801	Tc per endoscopie virtuali
 802	Tc per fusione
-803	Tc per ogni organo o distretto o apparato
 804	Tc per ogni organo, distretto o apparato in più stessa seduta
+803	Tc per ogni organo o distretto o apparato
 805	Tc torace
 806	Tc total body
-1255	Tecarterapia (per seduta)
-1140	Tecniche depurative crrt (emodialisi, emofiltrazione, emodiafiltrazione)
-1314	Telecobaltoterapia cinetica (per seduta)
-1315	Telecobaltoterapia od altre sorgenti gamma - statica (per seduta)
-610	Telecuore
+1255	Tecarterapia
 611	Telecuore con esofago baritato
 2859	Teleradiografia
-1064	Tempo di circolo della fluorescina (compreso anestesista)
-476	Tempo di protrombina (pt)
-477	Tempo di protrombina inr
+1064	Tempo di circolo della fluorescina
 478	Tempo di protrombina residua
 479	Tempo di reptilase
-480	Tempo di tromboplastina parziale (ptt)
-772	Tempo svuotamento gastrico ecografico
-2438	Tenolisi (come unico intervento)
-2439	Tenoplastica, mioplastica, miorrafia
+480	Tempo di tromboplastina parziale
+2438	Tenolisi
 2440	Tenorrafia complessa
-2441	Tenotomia, miotomia, aponeurectomia (come unico intervento)
-1165	Terapia antalgica - compensi professionali - assistenza equipe medica (trattamenti completi)
-1180	Terapia antalgica mediante infusione endovenosa (per ogni giornata di trattamento)
+2441	Tenotomia, miotomia, aponeurectomia
 1181	Terapia antalgica segmentaria
-1206	Terapia antalgica transcutanea (per seduta)
-1684	Terapia chirurgica di fratture dei mascellari
-1316	Terapia con acceleratore lineare fotoni od elettroni (per seduta)
-2313	Terapia con onde d'urto (solo per calcificazioni periarticolari) per seduta
-1317	Terapia conformazionale per la prostata od altri organi, ove necessaria (per seduta)
-1141	Terapia infusionale (fleboclisi) escluso farmaco
-1253	Terapia occupazionale (per seduta)
-2703	Terapia rieducativa minzionale (per seduta)
-1254	Terapia shiatsu (per seduta)
-1243	Terapie fisiche mirate
+1316	Terapia con acceleratore lineare fotoni od elettroni
+1141	Terapia infusionale escluso farmaco
+1253	Terapia occupazionale
 1272	Terapie varie
 2109	Termorizotomia dei nervi spinali
 2108	Termorizotomia del g. Di gasser o altri nervi cranici
 1258	Termoterapia
-1031	Test afasie (diagnostica delle afasie)
-1950	Test all'idrogeno respiratorio per malassorbimento od intolleranza al lattosio
+1031	Test afasie
 1951	Test all'idrogeno respiratorio per proliferazione batterica del tenue
 481	Test citotossico per additivi
 482	Test citotossico per alimenti
@@ -20394,10 +20350,10 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 484	Test di adesività piastrinica
 486	Test di aggregazione piastrinica
 485	Test di aggregazione piastrinica con aggregometro
+1086	Test diagnostico al mannitolo compreso farmaco
 487	Test di autoemolisi
 883	Test di captazione tiroidea
-488	Test di conferma per infezioni virali hcv (western-blot)
-489	Test di coombs moreschi diretto
+488	Test di conferma per infezioni virali hcv
 490	Test di coombs moreschi indiretto
 491	Test di frammentazione del dna spermatico
 492	Test di inibizione fattore reumatoide e/o c1q al lattice
@@ -20406,24 +20362,17 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 907	Test di provocazione bronchiale
 908	Test di provocazione con alimenti ed additivitest di provocazione congiuntivale
 909	Test di provocazione nasale
-494	Test di ricerca emazie fetali (kleihauer)
-495	Test di stamey
-496	Test di stimolazione linfocitaria (fitoemoagglu. Blastogenesi)
-1086	Test diagnostico al mannitolo (sindrome di meniere) compreso farmaco
-905	Test epicutanei x farmaci e/o additivi (prick test più 8 test intradermici)
-936	Test ergometrico
+494	Test di ricerca emazie fetali
+496	Test di stimolazione linfocitaria
 1032	Test farmacologico per cefalea
 1033	Test farmacologico per miastenia
 959	Test idrogeno respiratorio per proliferazione batterica nel tenue
 497	Test isaac
-498	Test per ricerca di intolleranze alimentari, dosaggio delle igg (batteria completa) - esame non ripetibile
-499	Test per ricerca di intolleranze alimentari, test citotossico (batteria completa) - esame non ripetibile
-500	Test per ricerca hpv (papilloma virus nel secreto vaginale)testosterone libero
 501	Testosterone totale plasmatico
 502	Testosterone urinario
+500	Test per ricerca hpv testosterone libero
 503	Thinprep
-604	Thinprep (esame citologico vaginale su strato sottile in fase liquida)
-1877	Timectomia
+604	Thinprep
 2497	Timpanoplastica con mastoidectomia
 2498	Timpanoplastica senza mastoidectomia
 2500	Timpanotomia esplorativa
@@ -20431,202 +20380,190 @@ COPY public.exam_type (exam_id, exam_description) FROM stdin;
 505	Tipizzazione crioglobuline
 506	Tipizzazione hla b27
 507	Tipizzazione linfocitaria
-508	Tipizzazione tissutale antigeni hla (loci a.b.c.) Ciascuno
-509	Tipizzazione tissutale hla (b, c, dr, dq) ciascuno
+508	Tipizzazione tissutale antigeni hla Ciascuno
+509	Tipizzazione tissutale hla ciascuno
 510	Tireoglobulina
-1535	Tiroidectomia complicata con trattamento per via sternotomica o toracotomia (gozzo immerso)
-1536	Tiroidectomia totale con svuotamento laterocervicale bilaterale
+1535	Tiroidectomia complicata con trattamento per via sternotomica o toracotomia
 1537	Tiroidectomia totale senza svuotamento laterocervicale
-511	Tiroxina (t4)
-512	Tiroxina libera (ft4 ot4 libero)
-1107	Titolazione c-pap
-513	Titolo anti o streptolisinico (tas)
+511	Tiroxina
+513	Titolo anti o streptolisinico
 514	Titolo anti streptojaluronidasico
-515	Titolo antistafilolisinico
 2422	Toilette chirurgica e piccole suture
-1228	Toilette chirurgica lesioni cutanee da decubito (per seduta)
-1818	Toilette di ustioni di grandi estensioni (prestazione ambulatoriale)
-1819	Toilette di ustioni di piccole estensioni (prestazione ambulatoriale)
-777	Tomografia computerizzata (tac)
-875	Tomoscintigrafia (spet) cerebrale
-835	Tomoscintigrafia (spet) del pool ematico cardiaco
-837	Tomoscintigrafia (spet) miocardica
-836	Tomoscintigrafia (spet) miocardica di perfusone a riposo e dopo test
+1228	Toilette chirurgica lesioni cutanee da decubito
+777	Tomografia computerizzata
+875	Tomoscintigrafia cerebrale
+518	Transferrina
+519	Transferrina
+522	Trigliceridi
+1067	Transilluminazione
+1002	Translucenza nucale - ultrascreentri-test
+1930	Trattamento mediante laser di alterazioni cutanee virali
+523	Triiodotironina libera
+2644	Transuretero-ureteroanastomosi
+835	Tomoscintigrafia del pool ematico cardiaco
+837	Tomoscintigrafia miocardica
+836	Tomoscintigrafia miocardica di perfusone a riposo e dopo test
+524	Triiodotironina totale
+525	Tripsina sangue/urine
+1912	Trombectomia venosa superficiale
 704	Tomosintesi mammaria bilaterale
-1318	Tomoterapia pet (per seduta)
+1318	Tomoterapia pet
 1065	Tonografia e test di provocazione
-1066	Tonometria (come unico atto medico)
+1066	Tonometria
 2550	Tonsillectomia
+526	Trombina coagulasi
+1913	Tromboendoarteriectomia aorto-iliaca ed eventuale plastica vasale
+1885	Trapianto di polmone
+2642	Trapianto di rene
 1878	Torace carenato o escavato, trattamento chirurgico correttivo
+1934	Trattamento mediante laser di malformazioni vascolari superficiali
+1820	Trasferimento di lembo libero microvascolare
+1821	Trasferimento di lembo libero peduncolato
+1933	Trattamento mediante laser di malformazioni vascolari superficiali
+1936	Trattamento mediante laser di tumori maligni cutanei
+1882	Toracotomia esplorativa
 1879	Toracentesi
 1880	Toracoplastica, primo tempo
 1881	Toracoplastica, secondo tempo
 1108	Toracoscopia diagnostica e di stadiazione
-1882	Toracotomia esplorativa (come unico intervento)
-2315	Torcicollo e scoliosi su letto speciale, correzione di interventi chirurgici ortopedia e traumatologia - interventi cruenti
+2424	Traslazione muscoli cuffia e rotatori della spalla
+2541	Trattamento per narici del setto
+825	Trattografia mnr
+1269	Trazioni vertebrali cervicali
+2315	Torcicollo e scoliosi su letto speciale
 2214	Trabeculectomia
 2215	Trabeculectomia + asportazione cataratta / intervento combinato
-2216	Trabeculectomia + asportazione cataratta + impianto cristallino artificiale intervento combinato
+2216	Trabeculectomia con asportazione cataratta
+1819	Toilette di ustioni di piccole estensioni
 2217	Trabeculotomia
+1109	Tracheobroncoscopia diagnostica
 1883	Tracheo- broncoscopia esplorativa
 1884	Tracheo- broncoscopia operativa
-1109	Tracheobroncoscopia diagnostica
 1538	Tracheostomia, chiusura e plastica
 1486	Tracheotomia con tracheostomia di elezione
 1539	Tracheotomia con tracheostomia d'urgenza
-516	Transaminasi glutammico ossalacetica (got o ast)
-517	Transaminasi glutammico piruvica (gpt o alt)
-519	Transferrina
-518	Transferrina (carboidrato carente)
-1067	Transilluminazione
-1002	Translucenza nucale - ultrascreentri-test (esclusa ecografia)
-2644	Transuretero-ureteroanastomosi
+516	Transaminasi glutammico ossalacetica
+517	Transaminasi glutammico piruvica
 2110	Trapanazione cranica per puntura e drenaggio ventricolare
-2443	Trapianti tendinei e muscolari o nervosi (trattamento completo)
-2111	Trapianti, innesti ed altre operazioni plastiche (come unico intervento)
+2111	Trapianti, innesti ed altre operazioni plastiche
+2443	Trapianti tendinei e muscolari o nervosi
 1425	Trapianto cardiaco
 2187	Trapianto corneale a tutto spessore
 2188	Trapianto corneale lamellare
 1648	Trapianto di fegato
-2423	Trapianto di midollo osseo (omnicomprensivo di servizi ed atti medici)
+2423	Trapianto di midollo osseo
 2780	Trapianto di organo
 1667	Trapianto di pancreas
-1885	Trapianto di polmone
-2642	Trapianto di rene
-1820	Trasferimento di lembo libero microvascolare
-1821	Trasferimento di lembo libero peduncolato
-2424	Traslazione muscoli cuffia e rotatori della spalla
 2256	Trattamenti laser per cataratta secondaria
 2798	Trattamento chimico dell'ipersensibilità e profilassi carie con applicazioni topiche
 2035	Trattamento chirurgico conservativo laparotomico per gravidanza extrauterina
-2023	Trattamento chirurgico conservativo monolaterale per via laparoscopica localizzazioni endometriosiche addomino-pelviche-annessiali
-2025	Trattamento chirurgico conservativo monolaterale per via laparotomica localizzazioni endometriosiche addomino-pelviche-annessiali
-2031	Trattamento chirurgico demolitivo bilaterale per via laparoscopica localizzazioni endometriosiche addomino-pelviche-annessiali
-2033	Trattamento chirurgico demolitivo bilaterale per via laparotomica localizzazioni endometriosiche addomino-pelviche-annessiali
 2036	Trattamento chirurgico demolitivo laparotomico per gravidanza extrauterina
-2029	Trattamento chirurgico demolitivo monolaterale per via laparatomica localizzazioni endometriosiche addomino-pelviche-annessiali
-2027	Trattamento chirurgico demolitivo monolaterale per via laparoscopica localizzazioni endometriosiche addomino-pelviche-annessiali
 1967	Trattamento chirurgico di ascessi o diverticoli o cisti parauretrali
 2435	Trattamento chirurgico di neurinomi
 2014	Trattamento chirurgico di prolasso mucoso orifizio uretrale esterno
 1476	Trattamento chirurgico per mano spastica - paralisi flaccide
-2706	Trattamento completo uretroplastiche (lembi liberi o peduncolati)
+2706	Trattamento completo uretroplastiche
 2239	Trattamento di recessione-resezione-inginocchiamento
-1319	Trattamento di termofrequenza mirato (per seduta)
-1953	Trattamento endoscopico stenosi esofagee (1a seduta)
-1955	Trattamento endoscopico stenosi esofagee (sedute successive)
-1956	Trattamento endoscopico varici esofagee (1a seduta)
-1959	Trattamento endoscopico varici esofagee (sedute successive)
+1319	Trattamento di termofrequenza mirato
+1953	Trattamento endoscopico stenosi esofagee
+1955	Trattamento endoscopico stenosi esofagee
+1959	Trattamento endoscopico varici esofagee
+1956	Trattamento endoscopico varici esofagee
 1970	Trattamento laser per atrofia vaginale
-1930	Trattamento mediante laser di alterazioni cutanee virali (verruche, condilomi, ecc...) (prima seduta)
-1931	Trattamento mediante laser di alterazioni cutanee virali (verruche, condilomi, ecc...) (sedute successive)
-1933	Trattamento mediante laser di malformazioni vascolari superficiali (prima seduta)
-1934	Trattamento mediante laser di malformazioni vascolari superficiali (sedute successive)
-1936	Trattamento mediante laser di tumori maligni cutanei (trattamento completo)
-1489	Trattamento microchirurgico delle lesioni del plesso brachialeinterventi chirurgici chirurgia generale - piccoli interventi - varie
-2541	Trattamento per narici del setto
-825	Trattografia mnr
-1269	Trazioni vertebrali cervicali (per seduta)
-1270	Trazioni vertebrali lombosacrali (per seduta)
-1271	Trazioni vertebrali meccaniche (per seduta)
+1931	Trattamento mediante laser di alterazioni cutanee virali
+1270	Trazioni vertebrali lombosacrali
+1271	Trazioni vertebrali meccaniche
 520	Trichomonas : ricerca antigene
 521	Trichomonas: ricerca microscopica
-522	Trigliceridi
-523	Triiodotironina libera (ft3 o t3 libero)
-524	Triiodotironina totale (t3)
-525	Tripsina sangue/urine
-1912	Trombectomia venosa superficiale (come unico intervento)
-526	Trombina coagulasi
-1913	Tromboendoarteriectomia aorto-iliaca ed eventuale plastica vasale
+2538	Turbinati medi, intervento su
+1256	Vacumterapia
+2654	Ureterolisi più omentoplastica
+2655	Ureterolitotomia lombo-iliaca
+1517	Asportazione di tumore superficiale o sottocutaneo benigno o cisti tronco/arti
+1644	Asportazione tumore maligno della parete addominale
 1914	Tromboendoarteriectomia e by-pass e/o embolectomia di carotide e vasi epiaortici
 1915	Tromboendoarteriectomia e patch e/o embolectomia di carotide e vasi epiaortici
 1916	Tromboendoarteriectomia e plastica arteria femorale
 1917	Tromboendoarteriectomia e trapianto e/o embolectomia di carotide e vasi epiaortici
 527	Troponina t
-1644	Tumore maligno della parete addominale, asportazione dipapillostomia, per via transduodenale (come unico intervento)
 2114	Tumore orbitale, asportazione per via endocranica
-1517	Tumore superficiale o sottocutaneo benigno o cisti tronco/arti, asportazione di (trattamento completo)
 2116	Tumori della base cranica, intervento per via transorale
 2117	Tumori orbitali, intervento per via epipalpebrale
-1823	Tumori superficiali benigni o cisti del viso, intervento per (trattamento completo)
-2537	Turbinati inferiori, svuotamento funzionale (come unico intervento)
-2538	Turbinati medi, intervento su (come unico intervento)
-2539	Turbinati, cauterizzazione dei (come unico intervento)
-2540	Turbinotomia (come unico intervento)
+1823	Intervento per tumori superficiali benigni o cisti del viso
+2539	Turbinati, cauterizzazione dei
+2537	Turbinati inferiori, svuotamento funzionale
+2540	Turbinotomia
+2656	Ureterolitotomia pelvica
+2044	Vulvectomia totale
+2619	Wall stent per stenosi uretrali compresa nefrostomia
+2620	Wall stent per stenosi uretrali per via endoscopica
+1182	Wash out farmacologico per cefalea cronica
+537	Zinco
 2773	Tutore di funzione arto inferiore
 2774	Tutore di funzione arto superiore
+2554	Velofaringoplastica
+2594	Ureteroscopia
+1572	Vagotomia selettiva, tronculare con piloroplastica
+1125	Ureteroscopia
+1190	Ventilazione polmonare strumentale
 2775	Tutore di funzione: tronco corsetti ortopedici
 2776	Tutore di riposo o di posizione
 2553	Ugulotomia
-1242	Ultrasuoni (per seduta)
-1210	Ultravioletti applicazioni uva (per seduta)
-2429	Uncoforaminotomia o vertebrotomia (trattamento completo)volkmann, intervento per retrazioni ischemiche
+1242	Ultrasuoni
+1210	Ultravioletti applicazioni uva
+1266	Vertebroterapia manu medica
+2429	Uncoforaminotomia o vertebrotomia
+2679	Vescica, plastiche di ampliamento
 528	Urati clearance
 529	Urea clearance
+1573	Vagotomia superselettiva
 2648	Ureterocistoneostomia bilaterale
+2680	Vescicoplastica antireflusso bilaterale
+1775	Valutazione elettrognatomiografica delle a.t.m.
+2681	Vescicoplastica antireflusso unilaterale
 2647	Ureterocistoneostomia monolaterale
 2650	Ureterocutaneostomia bilaterale
 2649	Ureterocutaneostomia monolaterale
 2646	Uretero-ileo-anastomosi bilaterale
 2645	Uretero-ileo-anastomosi monolaterale
 2653	Ureteroileocutaneostomia non continente
-2654	Ureterolisi più omentoplastica
-2655	Ureterolitotomia lombo-iliaca
-2656	Ureterolitotomia pelvica
-1125	Ureteroscopia
-2594	Ureteroscopia (omnicomprensiva)
 2658	Ureterosigmoidoscopia bilaterale
 2657	Ureterosigmoidoscopia monolaterale
-2587	Uretra, dilatazione con sonde morbide o rigide (per seduta)
+2587	Uretra, dilatazione con sonde morbide o rigide
 2704	Uretrectomia totale
-2595	Uretrocistoscopia semplice (come unico atto diagnostico)
+2595	Uretrocistoscopia semplice
 2707	Uretrostomia perineale
 2617	Uretrotomia endoscopica
 530	Uricemia
 1126	Uroflussimetria
 696	Urografia
 697	Urografia con stratigrafia e diretta reni
+705	Vabb
 975	V.a.b.r.a. A scopo diagnostico
 2039	V.a.b.r.a. A scopo diagnostico
-705	Vabb (comprensivo di esame istologico)
-1256	Vacumterapia (per seduta)
-1572	Vagotomia selettiva, tronculare con piloroplastica
-1573	Vagotomia superselettiva
-1775	Valutazione elettrognatomiografica delle a.t.m.
 2777	Valvola cardiaca
-2618	Valvola uretrale, resezione endoscopica (come unico intervento)
+2618	Valvola uretrale, resezione endoscopica
 1426	Valvuloplastica cardiaca
-1918	Varicectomia (come unico intervento)
-1919	Varicectomia con legatura di vene comunicanti (come unico intervento)
-1559	Varici esofagee, sclero terapia endoscopica
+1918	Varicectomia
+1919	Varicectomia con legatura di vene comunicanti
 1560	Varici esofagee: emostasi con sonda tamponante
 1561	Varici esofagee: intervento transtoracico o addominale
+1559	Varici esofagee, sclero terapia endoscopica
 1920	Varici recidive
-1921	Varicocele (scleroembolizzazione)
+1921	Varicocele
 2744	Varicocele con tecnica microchirurgica
-532	Velocità di sedimentazione delle emazie (ves)
-2554	Velofaringoplastica
-1190	Ventilazione polmonare strumentale (per seduta)
-1266	Vertebroterapia manu medica
-2679	Vescica, plastiche di ampliamento (colon/ileo)
-2680	Vescicoplastica antireflusso bilaterale
-2681	Vescicoplastica antireflusso unilaterale
-533	Vibrione colerico nelle feci (ricerca diretta)
+532	Velocità di sedimentazione delle emazie
+533	Vibrione colerico nelle feci
 1127	Video urodinamica
 1649	Vie biliari, interventi palliativi
 1650	Vie biliari, reinterventi
-1003	Villocentesi (cariotipo su villi coriali compreso prelievo bioptico)
-534	Virus respiratorio sinciziale (ricerca diretta)
+1003	Villocentesi
+534	Virus respiratorio sinciziale
 535	Viscosità ematica
-1279	Viss (vibration sound system) (per seduta)
-536	Vitamine (dosaggio per singola determinazione)
+1279	Viss
+536	Vitamine
 2234	Vitrectomia anteriore o posteriore
 2040	Vulvectomia parziale
-2044	Vulvectomia totale
-2619	Wall stent per stenosi uretrali compresa nefrostomia
-2620	Wall stent per stenosi uretrali per via endoscopica (urolume)
-1182	Wash out farmacologico per cefalea cronica (compresi farmaci) in day hospital - almeno 5 sedute
-537	Zinco
 \.
 
 
@@ -20844,8 +20781,6 @@ sergius.polani@virgilio.it	Sergius	Polani	1945-05-30 00:00:00	Borgomanero	PLNSGS
 amadeo.toscanini@libero.it	Amadeo	Toscanini	1943-11-22 00:00:00	Vedeseta	TSCMDA43S22L707C	M	giorgio.barcaccia@yahoo.it	NU	Galtellì
 dolores.trillini@gmail.com	Dolores	Trillini	1963-01-03 00:00:00	Campagnatico	TRLDRS63A43B497A	F	giorgio.barcaccia@yahoo.it	NU	Talana
 santino.micheletti@yahoo.it	Santino	Micheletti	1990-01-04 00:00:00	San Tammaro	MCHSTN90A04I261C	M	giorgio.barcaccia@yahoo.it	NU	Onanì
-antonina.filzi@hotmail.com	Antonina	Filzi	1945-06-24 00:00:00	Ferruzzano	FLZNNN45H64D557V	F	giorgio.barcaccia@yahoo.it	NU	Noragugume
-orlando.boito@virgilio.it	Orlando	Boito	1953-07-27 00:00:00	Martignacco	BTORND53L27E982R	M	giorgio.barcaccia@yahoo.it	NU	Siniscola
 patrizia.bonomo@virgilio.it	Patrizia	Bonomo	2008-07-09 00:00:00	Beinette	BNMPRZ08L49A735U	F	giorgio.barcaccia@yahoo.it	NU	Onanì
 manuel.grossi@yahoo.it	Manuel	Grossi	1967-02-06 00:00:00	Caselette	GRSMNL67B06B955I	M	giorgio.barcaccia@yahoo.it	NU	Ussassai
 tatiana.villarosa@hotmail.com	Tatiana	Villarosa	1965-09-19 00:00:00	Grizzana Morandi	VLLTTN65P59E187T	F	giorgio.barcaccia@yahoo.it	NU	Bolotana
@@ -20866,7 +20801,6 @@ rosario.roero@libero.it	Rosario	Roero	2006-07-12 00:00:00	Melissano	RRORSR06L12F
 adelasia.castiglione@hotmail.com	Adelasia	Castiglione	2017-12-29 00:00:00	Villafranca Padovana	CSTDLS17T69L947H	F	atenulf.lanfranchi@hotmail.com	MT	Pomarico
 sylvia.raimondi@yahoo.it	Sylvia	Raimondi	1955-05-13 00:00:00	Pavullo nel Frignano	RMNSLV55E53G393V	F	temistocle.parini@yahoo.it	TV	Monastier di Treviso
 pasquale.scaduto@libero.it	Pasquale	Scaduto	1992-12-17 00:00:00	San Giorgio Ionico	SCDPQL92T17H882R	M	temistocle.parini@yahoo.it	TV	Maser
-agnolo.farnese@virgilio.it	Agnolo	Farnese	2010-01-11 00:00:00	Brissago-Valtravaglia	FRNGNL10A11B191V	M	temistocle.parini@yahoo.it	TV	Resana
 amanda.mattarella@gmail.com	Amanda	Mattarella	1949-03-03 00:00:00	Isnello	MTTMND49C43E337V	F	temistocle.parini@yahoo.it	TV	Mogliano Veneto
 guido.baggio@gmail.com	Guido	Baggio	2005-05-31 00:00:00	Seclì	BGGGDU05E31I559P	M	temistocle.parini@yahoo.it	TV	Altivole
 renzo.gianetti@libero.it	Renzo	Gianetti	1962-01-07 00:00:00	Fornace	GNTRNZ62A07D714N	M	temistocle.parini@yahoo.it	TV	Vidor
@@ -20887,6 +20821,8 @@ alessandra.giulietti@hotmail.com	Alessandra	Giulietti	1951-03-09 00:00:00	Caspog
 milo.mussolini@gmail.com	Milo	Mussolini	1978-02-13 00:00:00	Canda	MSSMLI78B13B582C	M	rosina.tedesco@gmail.com	MT	Nova Siri
 lara.vattimo@virgilio.it	Lara	Vattimo	1959-09-28 00:00:00	Ferentillo	VTTLRA59P68D538U	F	rosina.tedesco@gmail.com	MT	Tricarico
 nicolò.lovato@gmail.com	Nicolò	Lovato	1942-07-13 00:00:00	Salvitelle	LVTNCL42L13H732T	M	rosina.tedesco@gmail.com	MT	Rotondella
+antonina.filzi@hotmail.com	Antonina	Filzi	1945-06-24 00:00:00	Ferruzzano	FLZNNN45H64D557V	F	natalia.zetticci@gmail.com	NU	Noragugume
+orlando.boito@virgilio.it	Orlando	Boito	1953-07-27 00:00:00	Martignacco	BTORND53L27E982R	M	marissa.barzini@yahoo.it	NU	Siniscola
 milo.borgia@yahoo.it	Milo	Borgia	2017-02-02 00:00:00	Buttapietra	BRGMLI17B02B304H	M	rosina.tedesco@gmail.com	MT	Aliano
 irma.manolesso@hotmail.com	Irma	Manolesso	1988-05-25 00:00:00	Frassino	MNLRMI88E65D782K	F	rosina.tedesco@gmail.com	MT	Oliveto Lucano
 ivan.raurica@yahoo.it	Ivan	Raurica	1965-01-04 00:00:00	Monte San Biagio	RRCVNI65A04F616P	M	rosina.tedesco@gmail.com	MT	Miglionico
@@ -21134,6 +21070,7 @@ flavia.bellocchio@virgilio.it	Flavia	Bellocchio	2011-03-06 00:00:00	Mezzana Mort
 alfredo.desio@yahoo.it	Alfredo	Desio	1940-11-26 00:00:00	Taormina	DSELRD40S26L042L	M	luca.tutino@gmail.com	MT	Garaguso
 massimiliano.maggioli@virgilio.it	Massimiliano	Maggioli	1982-11-15 00:00:00	Villa del Conte	MGGMSM82S15L934K	M	luca.tutino@gmail.com	MT	Bernalda
 ida.moresi@yahoo.it	Ida	Moresi	1940-04-02 00:00:00	San Giovanni Bianco	MRSDIA40D42H910U	F	luca.tutino@gmail.com	MT	Calciano
+agnolo.farnese@virgilio.it	Agnolo	Farnese	2010-01-11 00:00:00	Brissago-Valtravaglia	FRNGNL10A11B191V	M	giovanna.rosiello@virgilio.it	TV	Resana
 \.
 
 
@@ -21142,351 +21079,351 @@ ida.moresi@yahoo.it	Ida	Moresi	1940-04-02 00:00:00	San Giovanni Bianco	MRSDIA40D
 --
 
 COPY public.photo (photo_id, patient_id, upload_date) FROM stdin;
-0	pompeo.pizzetti@virgilio.it	2019-12-14 00:00:00
-1	elmo.murialdo@gmail.com	2019-10-27 00:00:00
-2	antonello.detti@gmail.com	2019-10-06 00:00:00
-3	letizia.dibiasi@libero.it	2019-10-10 00:00:00
-4	rosina.abba@yahoo.it	2019-04-11 00:00:00
-5	gioacchino.antonetti@hotmail.com	2019-05-01 00:00:00
-6	michelangelo.gaiatto@virgilio.it	2019-06-01 00:00:00
-7	fortunata.gozzano@libero.it	2019-11-29 00:00:00
-8	fortunata.novaro@virgilio.it	2019-02-24 00:00:00
-9	etta.andreozzi@gmail.com	2019-05-15 00:00:00
-10	concetta.maccanelli@hotmail.com	2019-05-26 00:00:00
-11	giada.niggli@libero.it	2019-12-21 00:00:00
-12	zaira.zaguri@virgilio.it	2019-10-22 00:00:00
-13	paolo.valmarana@virgilio.it	2019-04-28 00:00:00
-14	matteo.prada@virgilio.it	2019-08-18 00:00:00
-15	rosa.pincherle@libero.it	2019-01-10 00:00:00
-16	caterina.taliani@yahoo.it	2019-09-01 00:00:00
-17	melina.micca@hotmail.com	2019-06-10 00:00:00
-18	annunziata.luzi@yahoo.it	2019-09-02 00:00:00
-19	roberto.pigafetta@hotmail.com	2019-03-25 00:00:00
-20	laureano.piazzi@virgilio.it	2019-07-09 00:00:00
-21	amalia.ravaglioli@gmail.com	2019-01-27 00:00:00
-22	rossana.battaglia@virgilio.it	2019-10-07 00:00:00
-23	martina.carducci@yahoo.it	2019-08-23 00:00:00
-24	serena.giannetti@virgilio.it	2019-10-01 00:00:00
-25	tullio.terragni@yahoo.it	2019-11-02 00:00:00
-26	napoleone.bellucci@libero.it	2019-01-16 00:00:00
-27	durante.grifeo@virgilio.it	2019-09-07 00:00:00
-28	paoletta.salandra@hotmail.com	2019-09-28 00:00:00
-29	adelasia.vespa@virgilio.it	2019-06-25 00:00:00
-30	severino.baresi@yahoo.it	2019-12-05 00:00:00
-31	rosalia.morosini@libero.it	2019-10-29 00:00:00
-32	napoleone.crespi@yahoo.it	2019-08-02 00:00:00
-33	rembrandt.respighi@libero.it	2019-05-01 00:00:00
-34	rosa.lercari@hotmail.com	2019-03-25 00:00:00
-35	serafina.respighi@hotmail.com	2019-08-14 00:00:00
-36	letizia.ruggeri@yahoo.it	2019-04-30 00:00:00
-37	gemma.forza@libero.it	2019-08-20 00:00:00
-38	giacobbe.lucarelli@gmail.com	2019-02-11 00:00:00
-39	vincenza.lombroso@yahoo.it	2019-08-21 00:00:00
-40	livio.camicione@yahoo.it	2019-04-01 00:00:00
-41	rosina.vento@yahoo.it	2019-02-24 00:00:00
-42	liberto.ricci@virgilio.it	2019-01-01 00:00:00
-43	lucia.sibilia@virgilio.it	2019-07-30 00:00:00
-44	eva.bonolis@hotmail.com	2019-03-04 00:00:00
-45	fiorenzo.falier@yahoo.it	2019-01-19 00:00:00
-46	isa.lollobrigida@libero.it	2019-12-14 00:00:00
-47	aria.castioni@hotmail.com	2019-12-18 00:00:00
-48	mauro.visintini@libero.it	2019-11-19 00:00:00
-49	dante.gagliardi@libero.it	2019-05-07 00:00:00
-50	lamberto.treves@gmail.com	2019-11-19 00:00:00
-51	sergius.polani@virgilio.it	2019-08-03 00:00:00
-52	amadeo.toscanini@libero.it	2019-01-28 00:00:00
-53	dolores.trillini@gmail.com	2019-02-04 00:00:00
-54	santino.micheletti@yahoo.it	2019-05-13 00:00:00
-55	antonina.filzi@hotmail.com	2019-04-19 00:00:00
-56	orlando.boito@virgilio.it	2019-12-05 00:00:00
-57	patrizia.bonomo@virgilio.it	2019-11-27 00:00:00
-58	manuel.grossi@yahoo.it	2019-09-23 00:00:00
-59	tatiana.villarosa@hotmail.com	2019-04-23 00:00:00
-60	virginia.manzoni@libero.it	2019-12-05 00:00:00
-61	milena.cerutti@gmail.com	2019-08-21 00:00:00
-62	maria.muratori@virgilio.it	2019-02-02 00:00:00
-63	lorenzo.pagliaro@hotmail.com	2019-10-09 00:00:00
-64	tullio.cundari@virgilio.it	2019-04-19 00:00:00
-65	gianluca.cainero@gmail.com	2019-01-14 00:00:00
-66	armando.bianchi@virgilio.it	2019-12-25 00:00:00
-67	griselda.cilea@yahoo.it	2019-01-09 00:00:00
-68	germana.benussi@yahoo.it	2019-01-31 00:00:00
-69	cipriano.antonello@hotmail.com	2019-12-26 00:00:00
-70	coriolano.ferrara@hotmail.com	2019-10-20 00:00:00
-71	emma.guidone@libero.it	2019-07-24 00:00:00
-72	giacobbe.bertolucci@libero.it	2019-03-13 00:00:00
-73	rosario.roero@libero.it	2019-03-30 00:00:00
-74	adelasia.castiglione@hotmail.com	2019-07-27 00:00:00
-75	sylvia.raimondi@yahoo.it	2019-07-07 00:00:00
-76	pasquale.scaduto@libero.it	2019-09-06 00:00:00
-77	agnolo.farnese@virgilio.it	2019-07-17 00:00:00
-78	amanda.mattarella@gmail.com	2019-03-05 00:00:00
-79	guido.baggio@gmail.com	2019-12-14 00:00:00
-80	renzo.gianetti@libero.it	2019-10-02 00:00:00
-81	ottavio.longhena@gmail.com	2019-12-10 00:00:00
-82	delfino.rosmini@gmail.com	2019-04-22 00:00:00
-83	maria.scotto@virgilio.it	2019-10-11 00:00:00
-84	benedetto.venturi@yahoo.it	2019-02-09 00:00:00
-85	fiamma.iannelli@gmail.com	2019-12-11 00:00:00
-86	melissa.navarria@hotmail.com	2019-12-12 00:00:00
-87	ruggero.dossetti@gmail.com	2019-08-27 00:00:00
-88	tiziana.iannuzzi@yahoo.it	2019-04-02 00:00:00
-89	gioachino.balbi@yahoo.it	2019-01-22 00:00:00
-90	tullio.beffa@hotmail.com	2019-04-14 00:00:00
-91	maura.mascagni@hotmail.com	2019-01-05 00:00:00
-92	olga.moschino@yahoo.it	2019-03-13 00:00:00
-93	adelasia.disdero@virgilio.it	2019-04-26 00:00:00
-94	alessandra.giulietti@hotmail.com	2019-12-10 00:00:00
-95	milo.mussolini@gmail.com	2019-12-10 00:00:00
-96	lara.vattimo@virgilio.it	2019-04-17 00:00:00
-97	nicolò.lovato@gmail.com	2019-10-07 00:00:00
-98	milo.borgia@yahoo.it	2019-11-13 00:00:00
-99	irma.manolesso@hotmail.com	2019-11-04 00:00:00
-100	ivan.raurica@yahoo.it	2019-01-24 00:00:00
-101	gioffre.tasso@virgilio.it	2019-05-29 00:00:00
-102	bianca.visintini@gmail.com	2019-06-22 00:00:00
-103	raimondo.ortolani@libero.it	2019-01-06 00:00:00
-104	laureano.bignardi@yahoo.it	2019-02-24 00:00:00
-105	ornella.altera@gmail.com	2019-04-11 00:00:00
-106	marta.guidone@virgilio.it	2019-03-21 00:00:00
-107	niccolò.blasi@virgilio.it	2019-06-22 00:00:00
-108	paulina.pizzo@yahoo.it	2019-07-21 00:00:00
-109	livia.agostini@libero.it	2019-01-25 00:00:00
-110	bruno.guariento@libero.it	2019-09-26 00:00:00
-111	graziella.leone@virgilio.it	2019-05-15 00:00:00
-112	tina.monicelli@yahoo.it	2019-09-20 00:00:00
-113	leonardo.chiappetta@gmail.com	2019-09-06 00:00:00
-114	piergiuseppe.piccinni@libero.it	2019-05-11 00:00:00
-115	annunziata.badoglio@gmail.com	2019-09-21 00:00:00
-116	annunziata.goldstein@gmail.com	2019-07-15 00:00:00
-117	stefano.dulbecco@libero.it	2019-02-21 00:00:00
-118	federigo.guarneri@gmail.com	2019-02-21 00:00:00
-119	sante.storladi@virgilio.it	2019-02-28 00:00:00
-120	massimiliano.fagotto@libero.it	2019-10-28 00:00:00
-121	giosuè.vigorelli@libero.it	2019-02-11 00:00:00
-122	vittoria.gucci@hotmail.com	2019-02-12 00:00:00
-123	fiorenzo.berlusconi@yahoo.it	2019-01-11 00:00:00
-124	stefani.castellitto@libero.it	2019-08-07 00:00:00
-125	nina.verdi@yahoo.it	2019-11-01 00:00:00
-126	ruggiero.simeoni@yahoo.it	2019-10-10 00:00:00
-127	michelangelo.garobbio@hotmail.com	2019-06-05 00:00:00
-128	alberico.marcacci@virgilio.it	2019-08-08 00:00:00
-129	giovanni.flaiano@virgilio.it	2019-04-20 00:00:00
-130	melania.bruscantini@virgilio.it	2019-11-20 00:00:00
-131	adelmo.stein@hotmail.com	2019-11-23 00:00:00
-132	cecilia.baracca@libero.it	2019-03-23 00:00:00
-133	massimo.troisi@hotmail.com	2019-08-17 00:00:00
-134	nanni.saffi@virgilio.it	2019-01-23 00:00:00
-135	gloria.staglieno@hotmail.com	2019-01-28 00:00:00
-136	fulvio.blasi@gmail.com	2019-10-11 00:00:00
-137	matilda.tutino@virgilio.it	2019-05-17 00:00:00
-138	lucia.corbo@yahoo.it	2019-03-24 00:00:00
-139	martino.falcone@virgilio.it	2019-06-10 00:00:00
-140	silvestro.dibiasi@yahoo.it	2019-02-01 00:00:00
-141	roberto.guarneri@gmail.com	2019-12-02 00:00:00
-142	salvi.renzi@libero.it	2019-06-17 00:00:00
-143	rosaria.dellucci@yahoo.it	2019-08-12 00:00:00
-144	luciana.argenti@virgilio.it	2019-09-11 00:00:00
-145	sandra.valier@virgilio.it	2019-03-27 00:00:00
-146	corrado.donarelli@gmail.com	2019-09-17 00:00:00
-147	beppe.campanella@virgilio.it	2019-04-29 00:00:00
-148	silvio.morucci@yahoo.it	2019-04-08 00:00:00
-149	giacobbe.filangieri@yahoo.it	2019-12-18 00:00:00
-150	mariana.tebaldi@virgilio.it	2019-05-05 00:00:00
-151	ezio.contrafatto@yahoo.it	2019-05-17 00:00:00
-152	arnaldo.guidotti@gmail.com	2019-06-22 00:00:00
-153	pierpaolo.galeati@gmail.com	2019-10-08 00:00:00
-154	ernesto.dallapé@hotmail.com	2019-02-09 00:00:00
-155	leone.marrone@hotmail.com	2019-06-08 00:00:00
-156	piermaria.jacuzzi@libero.it	2019-09-06 00:00:00
-157	annamaria.mazzocchi@yahoo.it	2019-02-19 00:00:00
-158	orazio.paolucci@libero.it	2019-11-20 00:00:00
-159	bettina.morucci@hotmail.com	2019-02-20 00:00:00
-160	lisa.carosone@yahoo.it	2019-06-19 00:00:00
-161	adele.volterra@gmail.com	2019-08-20 00:00:00
-162	lidia.leonetti@libero.it	2019-12-19 00:00:00
-163	lidia.rastelli@libero.it	2019-05-04 00:00:00
-164	rosaria.gussoni@yahoo.it	2019-09-22 00:00:00
-165	melissa.cipolla@hotmail.com	2019-05-20 00:00:00
-166	melania.necci@virgilio.it	2019-10-05 00:00:00
-167	fabrizia.fusani@libero.it	2019-03-21 00:00:00
-168	francesco.basadonna@hotmail.com	2019-07-18 00:00:00
-169	aurora.emo@gmail.com	2019-04-10 00:00:00
-170	francesco.tropea@yahoo.it	2019-06-01 00:00:00
-171	ronaldo.spallanzani@gmail.com	2019-05-01 00:00:00
-172	antonia.bellucci@gmail.com	2019-10-31 00:00:00
-173	agostino.ceri@gmail.com	2019-11-11 00:00:00
-174	eliana.parri@yahoo.it	2019-09-09 00:00:00
-175	giulietta.troisi@virgilio.it	2019-02-27 00:00:00
-176	gioachino.argurio@hotmail.com	2019-08-24 00:00:00
-177	tiziano.ciampi@gmail.com	2019-03-12 00:00:00
-178	livia.sonnino@yahoo.it	2019-01-26 00:00:00
-179	susanna.viola@libero.it	2019-07-26 00:00:00
-180	toni.trupiano@libero.it	2019-12-16 00:00:00
-181	cecilia.costanzi@yahoo.it	2019-03-19 00:00:00
-182	annunziata.disdero@libero.it	2019-03-30 00:00:00
-183	coriolano.lattuada@virgilio.it	2019-03-27 00:00:00
-184	ramona.bonaventura@gmail.com	2019-10-03 00:00:00
-185	osvaldo.falcone@virgilio.it	2019-01-16 00:00:00
-186	enrico.santoro@gmail.com	2019-02-12 00:00:00
-187	galasso.baglioni@gmail.com	2019-07-17 00:00:00
-188	aurora.faugno@yahoo.it	2019-04-15 00:00:00
-189	costantino.bresciani@yahoo.it	2019-09-22 00:00:00
-190	licia.pignatti@gmail.com	2019-10-27 00:00:00
-191	lisa.soprano@gmail.com	2019-11-23 00:00:00
-192	luisa.bertoli@libero.it	2019-06-05 00:00:00
-193	giacobbe.dovara@yahoo.it	2019-05-01 00:00:00
-194	sonia.cipolla@hotmail.com	2019-06-10 00:00:00
-195	fulvio.ritacca@yahoo.it	2019-12-26 00:00:00
-196	adelasia.sommaruga@gmail.com	2019-04-15 00:00:00
-197	mirco.gaito@gmail.com	2019-09-05 00:00:00
-198	fiamma.tarantino@hotmail.com	2019-11-08 00:00:00
-199	elisa.ioppi@libero.it	2019-06-07 00:00:00
-200	chiara.travaglia@gmail.com	2019-02-21 00:00:00
-201	mattia.soranzo@yahoo.it	2019-04-02 00:00:00
-202	beppe.falcone@hotmail.com	2019-08-05 00:00:00
-203	umberto.jovinelli@virgilio.it	2019-08-11 00:00:00
-204	piergiuseppe.ortese@virgilio.it	2019-09-29 00:00:00
-205	sonia.cerquiglini@gmail.com	2019-12-03 00:00:00
-206	serafina.napolitano@hotmail.com	2019-11-15 00:00:00
-207	nicola.ferragamo@libero.it	2019-05-26 00:00:00
-208	orlando.tarantini@yahoo.it	2019-05-10 00:00:00
-209	marissa.busoni@libero.it	2019-12-23 00:00:00
-210	imelda.rapisardi@virgilio.it	2019-12-19 00:00:00
-211	veronica.polesel@hotmail.com	2019-03-31 00:00:00
-212	vincenzo.roth@libero.it	2019-04-23 00:00:00
-213	maurizio.treves@hotmail.com	2019-02-12 00:00:00
-214	raffaele.salvemini@hotmail.com	2019-01-30 00:00:00
-215	durante.corradi@yahoo.it	2019-01-10 00:00:00
-216	loretta.bersani@virgilio.it	2019-10-26 00:00:00
-217	tonia.mazzi@yahoo.it	2019-11-15 00:00:00
-218	pasqual.pezzali@virgilio.it	2019-02-11 00:00:00
-219	filippo.bernetti@yahoo.it	2019-11-17 00:00:00
-220	ugo.interminelli@virgilio.it	2019-11-14 00:00:00
-221	berenice.gioberti@virgilio.it	2019-07-19 00:00:00
-222	santino.randazzo@yahoo.it	2019-04-02 00:00:00
-223	hugo.basadonna@yahoo.it	2019-10-15 00:00:00
-224	mauro.dallara@libero.it	2019-01-05 00:00:00
-225	leone.verdi@virgilio.it	2019-12-05 00:00:00
-226	concetta.botticelli@gmail.com	2019-10-10 00:00:00
-227	sonia.fabrizi@libero.it	2019-01-24 00:00:00
-228	gianpietro.bajardi@virgilio.it	2019-07-25 00:00:00
-229	angelina.sermonti@libero.it	2019-02-19 00:00:00
-230	aria.vergassola@virgilio.it	2019-08-03 00:00:00
-231	nadia.giusti@yahoo.it	2019-12-20 00:00:00
-232	ubaldo.totino@gmail.com	2019-05-10 00:00:00
-233	filippo.piccinni@yahoo.it	2019-07-24 00:00:00
-234	cassandra.crispi@virgilio.it	2019-10-14 00:00:00
-235	ezio.soffici@virgilio.it	2019-02-13 00:00:00
-236	costantino.andreozzi@hotmail.com	2019-02-03 00:00:00
-237	enzo.fittipaldi@libero.it	2019-10-15 00:00:00
-238	corrado.perozzo@yahoo.it	2019-10-30 00:00:00
-239	gemma.gagliano@gmail.com	2019-03-21 00:00:00
-240	margherita.baracca@gmail.com	2019-12-20 00:00:00
-241	tonia.bossi@gmail.com	2019-12-05 00:00:00
-242	rosa.nicolini@virgilio.it	2019-08-08 00:00:00
-243	ubaldo.bocelli@hotmail.com	2019-01-01 00:00:00
-244	benvenuto.tozzi@hotmail.com	2019-01-04 00:00:00
-245	vincenzo.angiolello@gmail.com	2019-06-08 00:00:00
-246	ugolino.nosiglia@libero.it	2019-08-23 00:00:00
-247	marta.casarin@libero.it	2019-11-11 00:00:00
-248	raffaella.tonisto@gmail.com	2019-03-19 00:00:00
-249	ruggero.muratori@gmail.com	2019-02-26 00:00:00
-250	pasquale.tarantino@hotmail.com	2019-09-27 00:00:00
-251	agnolo.mussolini@virgilio.it	2019-06-03 00:00:00
-252	veronica.cilea@hotmail.com	2019-01-20 00:00:00
-253	martina.fracci@virgilio.it	2019-08-30 00:00:00
-254	pierluigi.capone@virgilio.it	2019-08-20 00:00:00
-255	fabrizio.tiepolo@gmail.com	2019-07-02 00:00:00
-256	antonino.visintini@hotmail.com	2019-12-02 00:00:00
-257	luciano.falier@yahoo.it	2019-11-30 00:00:00
-258	lara.lanfranchi@hotmail.com	2019-01-06 00:00:00
-259	ugolino.cesarotti@hotmail.com	2019-03-05 00:00:00
-260	bianca.malatesta@virgilio.it	2019-09-13 00:00:00
-261	licia.biagi@virgilio.it	2019-09-10 00:00:00
-262	amleto.bombieri@libero.it	2019-10-01 00:00:00
-263	lucio.callegaro@yahoo.it	2019-09-09 00:00:00
-264	giuseppe.nugnes@hotmail.com	2019-05-26 00:00:00
-265	dante.pometta@gmail.com	2019-01-03 00:00:00
-266	fortunata.trotta@virgilio.it	2019-05-05 00:00:00
-267	raffaellino.busoni@yahoo.it	2019-11-18 00:00:00
-268	milo.nosiglia@libero.it	2019-10-09 00:00:00
-269	lolita.gentili@hotmail.com	2019-06-11 00:00:00
-270	alphons.finzi@virgilio.it	2019-12-17 00:00:00
-271	damiano.schiaparelli@hotmail.com	2019-02-03 00:00:00
-272	ivo.tartaglia@gmail.com	2019-02-13 00:00:00
-273	gelsomina.greco@libero.it	2019-04-29 00:00:00
-274	melina.sagredo@gmail.com	2019-04-24 00:00:00
-275	ronaldo.dandolo@hotmail.com	2019-06-22 00:00:00
-276	rita.tarantini@hotmail.com	2019-08-23 00:00:00
-277	marta.marrone@gmail.com	2019-09-07 00:00:00
-278	lucia.pisano@hotmail.com	2019-08-15 00:00:00
-279	ivan.favata@gmail.com	2019-09-25 00:00:00
-280	fredo.ruberto@libero.it	2019-08-18 00:00:00
-281	coriolano.pastine@hotmail.com	2019-03-19 00:00:00
-282	alessia.morandi@libero.it	2019-02-25 00:00:00
-283	coluccio.cammarata@hotmail.com	2019-12-13 00:00:00
-284	roman.leopardi@libero.it	2019-10-20 00:00:00
-285	barbara.celentano@virgilio.it	2019-09-04 00:00:00
-286	vittorio.poerio@libero.it	2019-05-17 00:00:00
-287	santino.tartaglia@gmail.com	2019-03-11 00:00:00
-288	fortunata.bignami@yahoo.it	2019-11-18 00:00:00
-289	stefani.gangemi@yahoo.it	2019-12-06 00:00:00
-290	vito.cilea@virgilio.it	2019-08-22 00:00:00
-291	teresa.tirabassi@virgilio.it	2019-06-05 00:00:00
-292	martino.spinola@libero.it	2019-04-14 00:00:00
-293	guglielmo.togliatti@yahoo.it	2019-09-12 00:00:00
-294	giulio.bragaglia@gmail.com	2019-07-21 00:00:00
-295	vito.campano@hotmail.com	2019-07-19 00:00:00
-296	michela.sabatini@libero.it	2019-07-16 00:00:00
-297	fabio.aloisio@libero.it	2019-06-11 00:00:00
-298	fulvio.pedroni@virgilio.it	2019-07-28 00:00:00
-299	guglielmo.curci@libero.it	2019-09-21 00:00:00
-300	stefani.dandolo@libero.it	2019-02-21 00:00:00
-301	etta.gemito@libero.it	2019-03-18 00:00:00
-302	uberto.turchi@gmail.com	2019-11-30 00:00:00
-303	lorenzo.vigliotti@yahoo.it	2019-05-20 00:00:00
-304	patrizia.ramazzotti@gmail.com	2019-12-05 00:00:00
-305	simonetta.zaccagnini@gmail.com	2019-02-26 00:00:00
-306	marcella.ruggieri@hotmail.com	2019-01-17 00:00:00
-307	diana.scarfoglio@hotmail.com	2019-03-01 00:00:00
-308	goffredo.pagliaro@gmail.com	2019-08-01 00:00:00
-309	giuseppe.garzoni@gmail.com	2019-08-05 00:00:00
-310	veronica.pietrangeli@virgilio.it	2019-11-15 00:00:00
-311	marco.papetti@yahoo.it	2019-08-17 00:00:00
-312	durante.fermi@yahoo.it	2019-10-28 00:00:00
-313	antonella.roero@virgilio.it	2019-11-21 00:00:00
-314	fabia.garozzo@hotmail.com	2019-03-21 00:00:00
-315	raimondo.onisto@gmail.com	2019-03-15 00:00:00
-316	gelsomina.comeriato@yahoo.it	2019-06-29 00:00:00
-317	berenice.capecchi@virgilio.it	2019-09-13 00:00:00
-318	ruggiero.juvara@hotmail.com	2019-08-27 00:00:00
-319	ernesto.tomasetti@hotmail.com	2019-03-20 00:00:00
-320	loretta.balbo@gmail.com	2019-07-09 00:00:00
-321	napoleone.tiepolo@virgilio.it	2019-05-24 00:00:00
-322	lidia.tutino@libero.it	2019-08-19 00:00:00
-323	piergiuseppe.corradi@libero.it	2019-10-31 00:00:00
-324	lara.cassarà@yahoo.it	2019-10-30 00:00:00
-325	tina.giannone@yahoo.it	2019-10-21 00:00:00
-326	greca.boitani@hotmail.com	2019-05-11 00:00:00
-327	michele.prodi@yahoo.it	2019-11-09 00:00:00
-328	antonella.petrocelli@yahoo.it	2019-01-11 00:00:00
-329	franco.salvemini@yahoo.it	2019-01-01 00:00:00
-330	romina.bellini@virgilio.it	2019-08-26 00:00:00
-331	ennio.benedetti@yahoo.it	2019-08-31 00:00:00
-332	serena.briccialdi@virgilio.it	2019-06-23 00:00:00
-333	flavio.galilei@hotmail.com	2019-09-30 00:00:00
-334	lilla.parini@virgilio.it	2019-11-19 00:00:00
-335	giorgia.calbo@gmail.com	2019-09-19 00:00:00
-336	alfio.camuccini@yahoo.it	2019-03-14 00:00:00
-337	barbara.murialdo@gmail.com	2019-06-03 00:00:00
-338	alessandra.bettoni@libero.it	2019-07-31 00:00:00
-339	ludovico.pratesi@virgilio.it	2019-09-16 00:00:00
-340	laureano.comboni@hotmail.com	2019-10-17 00:00:00
-341	flavia.bellocchio@virgilio.it	2019-02-20 00:00:00
-342	alfredo.desio@yahoo.it	2019-08-21 00:00:00
-343	massimiliano.maggioli@virgilio.it	2019-02-23 00:00:00
-344	ida.moresi@yahoo.it	2019-03-20 00:00:00
+0	pompeo.pizzetti@virgilio.it	2020-01-02 00:00:00
+1	elmo.murialdo@gmail.com	2020-01-01 00:00:00
+2	antonello.detti@gmail.com	2020-01-03 00:00:00
+3	letizia.dibiasi@libero.it	2020-01-03 00:00:00
+4	rosina.abba@yahoo.it	2020-01-02 00:00:00
+5	gioacchino.antonetti@hotmail.com	2020-01-02 00:00:00
+6	michelangelo.gaiatto@virgilio.it	2020-01-02 00:00:00
+7	fortunata.gozzano@libero.it	2020-01-03 00:00:00
+8	fortunata.novaro@virgilio.it	2020-01-02 00:00:00
+9	etta.andreozzi@gmail.com	2020-01-01 00:00:00
+10	concetta.maccanelli@hotmail.com	2020-01-03 00:00:00
+11	giada.niggli@libero.it	2020-01-02 00:00:00
+12	zaira.zaguri@virgilio.it	2020-01-02 00:00:00
+13	paolo.valmarana@virgilio.it	2020-01-03 00:00:00
+14	matteo.prada@virgilio.it	2020-01-04 00:00:00
+15	rosa.pincherle@libero.it	2020-01-04 00:00:00
+16	caterina.taliani@yahoo.it	2020-01-02 00:00:00
+17	melina.micca@hotmail.com	2020-01-03 00:00:00
+18	annunziata.luzi@yahoo.it	2020-01-03 00:00:00
+19	roberto.pigafetta@hotmail.com	2020-01-01 00:00:00
+20	laureano.piazzi@virgilio.it	2020-01-03 00:00:00
+21	amalia.ravaglioli@gmail.com	2020-01-02 00:00:00
+22	rossana.battaglia@virgilio.it	2020-01-01 00:00:00
+23	martina.carducci@yahoo.it	2020-01-04 00:00:00
+24	serena.giannetti@virgilio.it	2020-01-01 00:00:00
+25	tullio.terragni@yahoo.it	2020-01-02 00:00:00
+26	napoleone.bellucci@libero.it	2020-01-01 00:00:00
+27	durante.grifeo@virgilio.it	2020-01-01 00:00:00
+28	paoletta.salandra@hotmail.com	2020-01-04 00:00:00
+29	adelasia.vespa@virgilio.it	2020-01-01 00:00:00
+30	severino.baresi@yahoo.it	2020-01-02 00:00:00
+31	rosalia.morosini@libero.it	2020-01-03 00:00:00
+32	napoleone.crespi@yahoo.it	2020-01-03 00:00:00
+33	rembrandt.respighi@libero.it	2020-01-01 00:00:00
+34	rosa.lercari@hotmail.com	2020-01-01 00:00:00
+35	serafina.respighi@hotmail.com	2020-01-02 00:00:00
+36	letizia.ruggeri@yahoo.it	2020-01-02 00:00:00
+37	gemma.forza@libero.it	2020-01-01 00:00:00
+38	giacobbe.lucarelli@gmail.com	2020-01-02 00:00:00
+39	vincenza.lombroso@yahoo.it	2020-01-01 00:00:00
+40	livio.camicione@yahoo.it	2020-01-01 00:00:00
+41	rosina.vento@yahoo.it	2020-01-04 00:00:00
+42	liberto.ricci@virgilio.it	2020-01-02 00:00:00
+43	lucia.sibilia@virgilio.it	2020-01-03 00:00:00
+44	eva.bonolis@hotmail.com	2020-01-04 00:00:00
+45	fiorenzo.falier@yahoo.it	2020-01-03 00:00:00
+46	isa.lollobrigida@libero.it	2020-01-03 00:00:00
+47	aria.castioni@hotmail.com	2020-01-01 00:00:00
+48	mauro.visintini@libero.it	2020-01-04 00:00:00
+49	dante.gagliardi@libero.it	2020-01-02 00:00:00
+50	lamberto.treves@gmail.com	2020-01-02 00:00:00
+51	sergius.polani@virgilio.it	2020-01-02 00:00:00
+52	amadeo.toscanini@libero.it	2020-01-01 00:00:00
+53	dolores.trillini@gmail.com	2020-01-02 00:00:00
+54	santino.micheletti@yahoo.it	2020-01-01 00:00:00
+55	orlando.boito@virgilio.it	2020-01-01 00:00:00
+56	patrizia.bonomo@virgilio.it	2020-01-03 00:00:00
+57	manuel.grossi@yahoo.it	2020-01-01 00:00:00
+58	tatiana.villarosa@hotmail.com	2020-01-04 00:00:00
+59	virginia.manzoni@libero.it	2020-01-02 00:00:00
+60	milena.cerutti@gmail.com	2020-01-04 00:00:00
+61	maria.muratori@virgilio.it	2020-01-03 00:00:00
+62	lorenzo.pagliaro@hotmail.com	2020-01-03 00:00:00
+63	tullio.cundari@virgilio.it	2020-01-02 00:00:00
+64	gianluca.cainero@gmail.com	2020-01-01 00:00:00
+65	armando.bianchi@virgilio.it	2020-01-02 00:00:00
+66	griselda.cilea@yahoo.it	2020-01-04 00:00:00
+67	germana.benussi@yahoo.it	2020-01-02 00:00:00
+68	cipriano.antonello@hotmail.com	2020-01-01 00:00:00
+69	coriolano.ferrara@hotmail.com	2020-01-04 00:00:00
+70	emma.guidone@libero.it	2020-01-01 00:00:00
+71	giacobbe.bertolucci@libero.it	2020-01-04 00:00:00
+72	rosario.roero@libero.it	2020-01-02 00:00:00
+73	adelasia.castiglione@hotmail.com	2020-01-04 00:00:00
+74	sylvia.raimondi@yahoo.it	2020-01-04 00:00:00
+75	pasquale.scaduto@libero.it	2020-01-04 00:00:00
+76	amanda.mattarella@gmail.com	2020-01-01 00:00:00
+77	guido.baggio@gmail.com	2020-01-02 00:00:00
+78	renzo.gianetti@libero.it	2020-01-01 00:00:00
+79	ottavio.longhena@gmail.com	2020-01-01 00:00:00
+80	delfino.rosmini@gmail.com	2020-01-01 00:00:00
+81	maria.scotto@virgilio.it	2020-01-04 00:00:00
+82	benedetto.venturi@yahoo.it	2020-01-01 00:00:00
+83	fiamma.iannelli@gmail.com	2020-01-02 00:00:00
+84	melissa.navarria@hotmail.com	2020-01-02 00:00:00
+85	ruggero.dossetti@gmail.com	2020-01-04 00:00:00
+86	tiziana.iannuzzi@yahoo.it	2020-01-04 00:00:00
+87	gioachino.balbi@yahoo.it	2020-01-03 00:00:00
+88	tullio.beffa@hotmail.com	2020-01-02 00:00:00
+89	maura.mascagni@hotmail.com	2020-01-02 00:00:00
+90	olga.moschino@yahoo.it	2020-01-01 00:00:00
+91	adelasia.disdero@virgilio.it	2020-01-01 00:00:00
+92	alessandra.giulietti@hotmail.com	2020-01-03 00:00:00
+93	milo.mussolini@gmail.com	2020-01-01 00:00:00
+94	lara.vattimo@virgilio.it	2020-01-01 00:00:00
+95	nicolò.lovato@gmail.com	2020-01-03 00:00:00
+96	antonina.filzi@hotmail.com	2020-01-01 00:00:00
+97	milo.borgia@yahoo.it	2020-01-04 00:00:00
+98	irma.manolesso@hotmail.com	2020-01-04 00:00:00
+99	ivan.raurica@yahoo.it	2020-01-02 00:00:00
+100	gioffre.tasso@virgilio.it	2020-01-02 00:00:00
+101	bianca.visintini@gmail.com	2020-01-02 00:00:00
+102	raimondo.ortolani@libero.it	2020-01-03 00:00:00
+103	laureano.bignardi@yahoo.it	2020-01-03 00:00:00
+104	ornella.altera@gmail.com	2020-01-03 00:00:00
+105	marta.guidone@virgilio.it	2020-01-02 00:00:00
+106	niccolò.blasi@virgilio.it	2020-01-01 00:00:00
+107	paulina.pizzo@yahoo.it	2020-01-02 00:00:00
+108	livia.agostini@libero.it	2020-01-03 00:00:00
+109	bruno.guariento@libero.it	2020-01-04 00:00:00
+110	graziella.leone@virgilio.it	2020-01-01 00:00:00
+111	tina.monicelli@yahoo.it	2020-01-02 00:00:00
+112	leonardo.chiappetta@gmail.com	2020-01-01 00:00:00
+113	piergiuseppe.piccinni@libero.it	2020-01-04 00:00:00
+114	annunziata.badoglio@gmail.com	2020-01-04 00:00:00
+115	annunziata.goldstein@gmail.com	2020-01-02 00:00:00
+116	stefano.dulbecco@libero.it	2020-01-01 00:00:00
+117	federigo.guarneri@gmail.com	2020-01-02 00:00:00
+118	sante.storladi@virgilio.it	2020-01-02 00:00:00
+119	massimiliano.fagotto@libero.it	2020-01-03 00:00:00
+120	giosuè.vigorelli@libero.it	2020-01-01 00:00:00
+121	vittoria.gucci@hotmail.com	2020-01-04 00:00:00
+122	fiorenzo.berlusconi@yahoo.it	2020-01-02 00:00:00
+123	stefani.castellitto@libero.it	2020-01-01 00:00:00
+124	nina.verdi@yahoo.it	2020-01-03 00:00:00
+125	ruggiero.simeoni@yahoo.it	2020-01-01 00:00:00
+126	michelangelo.garobbio@hotmail.com	2020-01-03 00:00:00
+127	alberico.marcacci@virgilio.it	2020-01-02 00:00:00
+128	giovanni.flaiano@virgilio.it	2020-01-03 00:00:00
+129	melania.bruscantini@virgilio.it	2020-01-02 00:00:00
+130	adelmo.stein@hotmail.com	2020-01-01 00:00:00
+131	cecilia.baracca@libero.it	2020-01-01 00:00:00
+132	massimo.troisi@hotmail.com	2020-01-03 00:00:00
+133	nanni.saffi@virgilio.it	2020-01-03 00:00:00
+134	gloria.staglieno@hotmail.com	2020-01-04 00:00:00
+135	fulvio.blasi@gmail.com	2020-01-04 00:00:00
+136	matilda.tutino@virgilio.it	2020-01-04 00:00:00
+137	lucia.corbo@yahoo.it	2020-01-03 00:00:00
+138	martino.falcone@virgilio.it	2020-01-03 00:00:00
+139	silvestro.dibiasi@yahoo.it	2020-01-02 00:00:00
+140	roberto.guarneri@gmail.com	2020-01-04 00:00:00
+141	salvi.renzi@libero.it	2020-01-01 00:00:00
+142	rosaria.dellucci@yahoo.it	2020-01-02 00:00:00
+143	luciana.argenti@virgilio.it	2020-01-01 00:00:00
+144	sandra.valier@virgilio.it	2020-01-02 00:00:00
+145	corrado.donarelli@gmail.com	2020-01-04 00:00:00
+146	beppe.campanella@virgilio.it	2020-01-02 00:00:00
+147	silvio.morucci@yahoo.it	2020-01-01 00:00:00
+148	giacobbe.filangieri@yahoo.it	2020-01-03 00:00:00
+149	mariana.tebaldi@virgilio.it	2020-01-01 00:00:00
+150	ezio.contrafatto@yahoo.it	2020-01-03 00:00:00
+151	arnaldo.guidotti@gmail.com	2020-01-03 00:00:00
+152	pierpaolo.galeati@gmail.com	2020-01-03 00:00:00
+153	ernesto.dallapé@hotmail.com	2020-01-02 00:00:00
+154	leone.marrone@hotmail.com	2020-01-01 00:00:00
+155	piermaria.jacuzzi@libero.it	2020-01-04 00:00:00
+156	annamaria.mazzocchi@yahoo.it	2020-01-03 00:00:00
+157	orazio.paolucci@libero.it	2020-01-04 00:00:00
+158	bettina.morucci@hotmail.com	2020-01-04 00:00:00
+159	lisa.carosone@yahoo.it	2020-01-02 00:00:00
+160	adele.volterra@gmail.com	2020-01-02 00:00:00
+161	lidia.leonetti@libero.it	2020-01-03 00:00:00
+162	lidia.rastelli@libero.it	2020-01-04 00:00:00
+163	rosaria.gussoni@yahoo.it	2020-01-04 00:00:00
+164	melissa.cipolla@hotmail.com	2020-01-03 00:00:00
+165	melania.necci@virgilio.it	2020-01-01 00:00:00
+166	fabrizia.fusani@libero.it	2020-01-03 00:00:00
+167	francesco.basadonna@hotmail.com	2020-01-04 00:00:00
+168	aurora.emo@gmail.com	2020-01-03 00:00:00
+169	francesco.tropea@yahoo.it	2020-01-01 00:00:00
+170	ronaldo.spallanzani@gmail.com	2020-01-04 00:00:00
+171	antonia.bellucci@gmail.com	2020-01-02 00:00:00
+172	agostino.ceri@gmail.com	2020-01-04 00:00:00
+173	eliana.parri@yahoo.it	2020-01-02 00:00:00
+174	giulietta.troisi@virgilio.it	2020-01-04 00:00:00
+175	gioachino.argurio@hotmail.com	2020-01-01 00:00:00
+176	tiziano.ciampi@gmail.com	2020-01-02 00:00:00
+177	livia.sonnino@yahoo.it	2020-01-03 00:00:00
+178	susanna.viola@libero.it	2020-01-01 00:00:00
+179	toni.trupiano@libero.it	2020-01-04 00:00:00
+180	cecilia.costanzi@yahoo.it	2020-01-02 00:00:00
+181	annunziata.disdero@libero.it	2020-01-01 00:00:00
+182	coriolano.lattuada@virgilio.it	2020-01-01 00:00:00
+183	ramona.bonaventura@gmail.com	2020-01-04 00:00:00
+184	osvaldo.falcone@virgilio.it	2020-01-02 00:00:00
+185	enrico.santoro@gmail.com	2020-01-02 00:00:00
+186	galasso.baglioni@gmail.com	2020-01-04 00:00:00
+187	aurora.faugno@yahoo.it	2020-01-03 00:00:00
+188	costantino.bresciani@yahoo.it	2020-01-03 00:00:00
+189	licia.pignatti@gmail.com	2020-01-02 00:00:00
+190	lisa.soprano@gmail.com	2020-01-02 00:00:00
+191	luisa.bertoli@libero.it	2020-01-02 00:00:00
+192	giacobbe.dovara@yahoo.it	2020-01-03 00:00:00
+193	sonia.cipolla@hotmail.com	2020-01-02 00:00:00
+194	fulvio.ritacca@yahoo.it	2020-01-03 00:00:00
+195	adelasia.sommaruga@gmail.com	2020-01-03 00:00:00
+196	mirco.gaito@gmail.com	2020-01-04 00:00:00
+197	fiamma.tarantino@hotmail.com	2020-01-02 00:00:00
+198	elisa.ioppi@libero.it	2020-01-01 00:00:00
+199	chiara.travaglia@gmail.com	2020-01-02 00:00:00
+200	mattia.soranzo@yahoo.it	2020-01-03 00:00:00
+201	beppe.falcone@hotmail.com	2020-01-01 00:00:00
+202	umberto.jovinelli@virgilio.it	2020-01-02 00:00:00
+203	piergiuseppe.ortese@virgilio.it	2020-01-03 00:00:00
+204	sonia.cerquiglini@gmail.com	2020-01-03 00:00:00
+205	serafina.napolitano@hotmail.com	2020-01-03 00:00:00
+206	nicola.ferragamo@libero.it	2020-01-02 00:00:00
+207	orlando.tarantini@yahoo.it	2020-01-02 00:00:00
+208	marissa.busoni@libero.it	2020-01-02 00:00:00
+209	imelda.rapisardi@virgilio.it	2020-01-02 00:00:00
+210	veronica.polesel@hotmail.com	2020-01-04 00:00:00
+211	vincenzo.roth@libero.it	2020-01-01 00:00:00
+212	maurizio.treves@hotmail.com	2020-01-02 00:00:00
+213	raffaele.salvemini@hotmail.com	2020-01-02 00:00:00
+214	durante.corradi@yahoo.it	2020-01-01 00:00:00
+215	loretta.bersani@virgilio.it	2020-01-01 00:00:00
+216	tonia.mazzi@yahoo.it	2020-01-01 00:00:00
+217	pasqual.pezzali@virgilio.it	2020-01-03 00:00:00
+218	filippo.bernetti@yahoo.it	2020-01-04 00:00:00
+219	ugo.interminelli@virgilio.it	2020-01-02 00:00:00
+220	berenice.gioberti@virgilio.it	2020-01-04 00:00:00
+221	santino.randazzo@yahoo.it	2020-01-03 00:00:00
+222	hugo.basadonna@yahoo.it	2020-01-03 00:00:00
+223	mauro.dallara@libero.it	2020-01-04 00:00:00
+224	leone.verdi@virgilio.it	2020-01-04 00:00:00
+225	concetta.botticelli@gmail.com	2020-01-03 00:00:00
+226	sonia.fabrizi@libero.it	2020-01-02 00:00:00
+227	gianpietro.bajardi@virgilio.it	2020-01-02 00:00:00
+228	angelina.sermonti@libero.it	2020-01-04 00:00:00
+229	aria.vergassola@virgilio.it	2020-01-03 00:00:00
+230	nadia.giusti@yahoo.it	2020-01-03 00:00:00
+231	ubaldo.totino@gmail.com	2020-01-02 00:00:00
+232	filippo.piccinni@yahoo.it	2020-01-03 00:00:00
+233	cassandra.crispi@virgilio.it	2020-01-04 00:00:00
+234	ezio.soffici@virgilio.it	2020-01-03 00:00:00
+235	costantino.andreozzi@hotmail.com	2020-01-01 00:00:00
+236	enzo.fittipaldi@libero.it	2020-01-02 00:00:00
+237	corrado.perozzo@yahoo.it	2020-01-04 00:00:00
+238	gemma.gagliano@gmail.com	2020-01-03 00:00:00
+239	margherita.baracca@gmail.com	2020-01-02 00:00:00
+240	tonia.bossi@gmail.com	2020-01-02 00:00:00
+241	rosa.nicolini@virgilio.it	2020-01-04 00:00:00
+242	ubaldo.bocelli@hotmail.com	2020-01-01 00:00:00
+243	benvenuto.tozzi@hotmail.com	2020-01-03 00:00:00
+244	vincenzo.angiolello@gmail.com	2020-01-02 00:00:00
+245	ugolino.nosiglia@libero.it	2020-01-01 00:00:00
+246	marta.casarin@libero.it	2020-01-04 00:00:00
+247	raffaella.tonisto@gmail.com	2020-01-02 00:00:00
+248	ruggero.muratori@gmail.com	2020-01-01 00:00:00
+249	pasquale.tarantino@hotmail.com	2020-01-01 00:00:00
+250	agnolo.mussolini@virgilio.it	2020-01-01 00:00:00
+251	veronica.cilea@hotmail.com	2020-01-01 00:00:00
+252	martina.fracci@virgilio.it	2020-01-01 00:00:00
+253	pierluigi.capone@virgilio.it	2020-01-04 00:00:00
+254	fabrizio.tiepolo@gmail.com	2020-01-01 00:00:00
+255	antonino.visintini@hotmail.com	2020-01-02 00:00:00
+256	luciano.falier@yahoo.it	2020-01-02 00:00:00
+257	lara.lanfranchi@hotmail.com	2020-01-03 00:00:00
+258	ugolino.cesarotti@hotmail.com	2020-01-04 00:00:00
+259	bianca.malatesta@virgilio.it	2020-01-04 00:00:00
+260	licia.biagi@virgilio.it	2020-01-01 00:00:00
+261	amleto.bombieri@libero.it	2020-01-03 00:00:00
+262	lucio.callegaro@yahoo.it	2020-01-04 00:00:00
+263	giuseppe.nugnes@hotmail.com	2020-01-02 00:00:00
+264	dante.pometta@gmail.com	2020-01-03 00:00:00
+265	fortunata.trotta@virgilio.it	2020-01-02 00:00:00
+266	raffaellino.busoni@yahoo.it	2020-01-03 00:00:00
+267	milo.nosiglia@libero.it	2020-01-03 00:00:00
+268	lolita.gentili@hotmail.com	2020-01-01 00:00:00
+269	alphons.finzi@virgilio.it	2020-01-03 00:00:00
+270	damiano.schiaparelli@hotmail.com	2020-01-03 00:00:00
+271	ivo.tartaglia@gmail.com	2020-01-03 00:00:00
+272	gelsomina.greco@libero.it	2020-01-02 00:00:00
+273	melina.sagredo@gmail.com	2020-01-04 00:00:00
+274	ronaldo.dandolo@hotmail.com	2020-01-02 00:00:00
+275	rita.tarantini@hotmail.com	2020-01-04 00:00:00
+276	marta.marrone@gmail.com	2020-01-01 00:00:00
+277	lucia.pisano@hotmail.com	2020-01-04 00:00:00
+278	ivan.favata@gmail.com	2020-01-04 00:00:00
+279	fredo.ruberto@libero.it	2020-01-02 00:00:00
+280	coriolano.pastine@hotmail.com	2020-01-03 00:00:00
+281	alessia.morandi@libero.it	2020-01-02 00:00:00
+282	coluccio.cammarata@hotmail.com	2020-01-04 00:00:00
+283	roman.leopardi@libero.it	2020-01-01 00:00:00
+284	barbara.celentano@virgilio.it	2020-01-03 00:00:00
+285	vittorio.poerio@libero.it	2020-01-02 00:00:00
+286	santino.tartaglia@gmail.com	2020-01-02 00:00:00
+287	fortunata.bignami@yahoo.it	2020-01-04 00:00:00
+288	stefani.gangemi@yahoo.it	2020-01-02 00:00:00
+289	vito.cilea@virgilio.it	2020-01-02 00:00:00
+290	teresa.tirabassi@virgilio.it	2020-01-03 00:00:00
+291	martino.spinola@libero.it	2020-01-03 00:00:00
+292	guglielmo.togliatti@yahoo.it	2020-01-03 00:00:00
+293	giulio.bragaglia@gmail.com	2020-01-03 00:00:00
+294	vito.campano@hotmail.com	2020-01-03 00:00:00
+295	michela.sabatini@libero.it	2020-01-03 00:00:00
+296	fabio.aloisio@libero.it	2020-01-04 00:00:00
+297	fulvio.pedroni@virgilio.it	2020-01-04 00:00:00
+298	guglielmo.curci@libero.it	2020-01-04 00:00:00
+299	stefani.dandolo@libero.it	2020-01-04 00:00:00
+300	etta.gemito@libero.it	2020-01-02 00:00:00
+301	uberto.turchi@gmail.com	2020-01-04 00:00:00
+302	lorenzo.vigliotti@yahoo.it	2020-01-02 00:00:00
+303	patrizia.ramazzotti@gmail.com	2020-01-02 00:00:00
+304	simonetta.zaccagnini@gmail.com	2020-01-02 00:00:00
+305	marcella.ruggieri@hotmail.com	2020-01-04 00:00:00
+306	diana.scarfoglio@hotmail.com	2020-01-01 00:00:00
+307	goffredo.pagliaro@gmail.com	2020-01-01 00:00:00
+308	giuseppe.garzoni@gmail.com	2020-01-01 00:00:00
+309	veronica.pietrangeli@virgilio.it	2020-01-04 00:00:00
+310	marco.papetti@yahoo.it	2020-01-02 00:00:00
+311	durante.fermi@yahoo.it	2020-01-01 00:00:00
+312	antonella.roero@virgilio.it	2020-01-02 00:00:00
+313	fabia.garozzo@hotmail.com	2020-01-01 00:00:00
+314	raimondo.onisto@gmail.com	2020-01-02 00:00:00
+315	gelsomina.comeriato@yahoo.it	2020-01-04 00:00:00
+316	berenice.capecchi@virgilio.it	2020-01-02 00:00:00
+317	ruggiero.juvara@hotmail.com	2020-01-03 00:00:00
+318	ernesto.tomasetti@hotmail.com	2020-01-04 00:00:00
+319	loretta.balbo@gmail.com	2020-01-04 00:00:00
+320	napoleone.tiepolo@virgilio.it	2020-01-03 00:00:00
+321	lidia.tutino@libero.it	2020-01-02 00:00:00
+322	piergiuseppe.corradi@libero.it	2020-01-04 00:00:00
+323	lara.cassarà@yahoo.it	2020-01-01 00:00:00
+324	tina.giannone@yahoo.it	2020-01-01 00:00:00
+325	greca.boitani@hotmail.com	2020-01-04 00:00:00
+326	michele.prodi@yahoo.it	2020-01-02 00:00:00
+327	antonella.petrocelli@yahoo.it	2020-01-01 00:00:00
+328	franco.salvemini@yahoo.it	2020-01-02 00:00:00
+329	romina.bellini@virgilio.it	2020-01-03 00:00:00
+330	ennio.benedetti@yahoo.it	2020-01-04 00:00:00
+331	serena.briccialdi@virgilio.it	2020-01-04 00:00:00
+332	flavio.galilei@hotmail.com	2020-01-04 00:00:00
+333	lilla.parini@virgilio.it	2020-01-03 00:00:00
+334	giorgia.calbo@gmail.com	2020-01-04 00:00:00
+335	alfio.camuccini@yahoo.it	2020-01-02 00:00:00
+336	barbara.murialdo@gmail.com	2020-01-03 00:00:00
+337	alessandra.bettoni@libero.it	2020-01-02 00:00:00
+338	ludovico.pratesi@virgilio.it	2020-01-04 00:00:00
+339	laureano.comboni@hotmail.com	2020-01-01 00:00:00
+340	flavia.bellocchio@virgilio.it	2020-01-01 00:00:00
+341	alfredo.desio@yahoo.it	2020-01-04 00:00:00
+342	massimiliano.maggioli@virgilio.it	2020-01-04 00:00:00
+343	ida.moresi@yahoo.it	2020-01-03 00:00:00
+344	agnolo.farnese@virgilio.it	2020-01-02 00:00:00
 \.
 
 
@@ -22387,8 +22324,17 @@ ida.moresi@yahoo.it	3DDD58B2159F127022E586D1174929A312C1F18FBB613D92D122158E97A5
 --
 
 COPY public.visit (visit_id, practitioner_id, patient_id, visit_date, report_available, report, booked) FROM stdin;
-21	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	\N	f	\N	f
-20	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2019-12-26 11:34:00	t	Mi viene un colpo al cuore, sono Post Malore	t
+22	carolina.malatesta@libero.it	luciana.argenti@virgilio.it	2020-01-03 09:15:00	f	\N	t
+23	carolina.malatesta@libero.it	luciana.argenti@virgilio.it	2020-01-01 15:00:00	f	\N	t
+26	giovanna.rosiello@virgilio.it	agnolo.farnese@virgilio.it	\N	f	\N	f
+27	luca.tutino@gmail.com	alfredo.desio@yahoo.it	\N	f	\N	f
+28	carolina.malatesta@libero.it	rosaria.dellucci@yahoo.it	\N	f	\N	f
+21	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2020-01-03 09:45:00	f	\N	t
+20	giorgio.barcaccia@yahoo.it	orlando.boito@virgilio.it	2019-12-26 11:34:00	t	Dolore addominale, appendicite	t
+29	natalia.zetticci@gmail.com	antonina.filzi@hotmail.com	\N	f	\N	f
+30	atenulf.lanfranchi@hotmail.com	gianluca.cainero@gmail.com	\N	f	\N	f
+31	eraldo.abba@yahoo.it	giovanni.flaiano@virgilio.it	\N	f	\N	f
+32	paloma.zamengo@libero.it	eva.bonolis@hotmail.com	\N	f	\N	f
 \.
 
 
@@ -22403,14 +22349,14 @@ SELECT pg_catalog.setval('public.drug_list_drug_id_seq', 682, true);
 -- Name: drug_prescription_drug_prescription_id_seq; Type: SEQUENCE SET; Schema: public; Owner: guhncjua
 --
 
-SELECT pg_catalog.setval('public.drug_prescription_drug_prescription_id_seq', 38, true);
+SELECT pg_catalog.setval('public.drug_prescription_drug_prescription_id_seq', 53, true);
 
 
 --
 -- Name: exams_exam_id_seq; Type: SEQUENCE SET; Schema: public; Owner: guhncjua
 --
 
-SELECT pg_catalog.setval('public.exams_exam_id_seq', 154, true);
+SELECT pg_catalog.setval('public.exams_exam_id_seq', 170, true);
 
 
 --
@@ -22445,7 +22391,7 @@ SELECT pg_catalog.setval('public.temp_id_seq', 15828, true);
 -- Name: visit_visit_id_seq; Type: SEQUENCE SET; Schema: public; Owner: guhncjua
 --
 
-SELECT pg_catalog.setval('public.visit_visit_id_seq', 21, true);
+SELECT pg_catalog.setval('public.visit_visit_id_seq', 32, true);
 
 
 --
@@ -22457,10 +22403,10 @@ ALTER TABLE ONLY public.chemist
 
 
 --
--- Name: doctor_exams doctor_exams_pkey; Type: CONSTRAINT; Schema: public; Owner: guhncjua
+-- Name: doctor_exam doctor_exams_pkey; Type: CONSTRAINT; Schema: public; Owner: guhncjua
 --
 
-ALTER TABLE ONLY public.doctor_exams
+ALTER TABLE ONLY public.doctor_exam
     ADD CONSTRAINT doctor_exams_pkey PRIMARY KEY (doctor_id, exam_id);
 
 
@@ -22631,19 +22577,19 @@ ALTER TABLE ONLY public.comune
 
 
 --
--- Name: doctor_exams doctor_exams_doctor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: guhncjua
+-- Name: doctor_exam doctor_exams_doctor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: guhncjua
 --
 
-ALTER TABLE ONLY public.doctor_exams
+ALTER TABLE ONLY public.doctor_exam
     ADD CONSTRAINT doctor_exams_doctor_id_fkey FOREIGN KEY (doctor_id) REFERENCES public.specialized_doctor(doctor_id);
 
 
 --
--- Name: doctor_exams doctor_exams_exam_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: guhncjua
+-- Name: doctor_exam doctor_exams_exam_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: guhncjua
 --
 
-ALTER TABLE ONLY public.doctor_exams
-    ADD CONSTRAINT doctor_exams_exam_id_fkey FOREIGN KEY (exam_id) REFERENCES public.exam_type(exam_id);
+ALTER TABLE ONLY public.doctor_exam
+    ADD CONSTRAINT doctor_exams_exam_id_fkey FOREIGN KEY (exam_id) REFERENCES public.exam_type(exam_id) ON DELETE CASCADE;
 
 
 --

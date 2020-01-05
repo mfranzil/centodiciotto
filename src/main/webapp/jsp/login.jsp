@@ -52,7 +52,7 @@
         </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
             <div style="display: flex">
-                <img id="form-image" class="mini-icon mr-2" style="place-self: center" src="" alt="...">
+                <img id="form-image" class="mini-icon mr-2" style="place-self: center" src="" alt="Nothing">
                 <div class="width-100">
                     <div class="form-label-group mb-2">
                         <input autofocus class="form-control" id="user-id-login" name="userID"

@@ -52,6 +52,35 @@ function getNameFromID(role) {
     }
 }
 
+/**
+ * Animates a three-dot ellipsis "..." every 600 milliseconds
+ */
+$.fn.startEllipsis = function () {
+    let jqItem = $(this);
+    jqItem.attr("dots", 0);
+    jqItem.attr("originalHTML", jqItem.html());
+    jqItem.attr("interval", setInterval(() => {
+            if (parseInt(jqItem.attr("dots")) < 3) {
+                jqItem.append('.');
+                jqItem.attr("dots", parseInt(jqItem.attr("dots")) + 1);
+            } else {
+                jqItem.html(jqItem.attr("originalHTML"));
+                jqItem.attr("dots", 0);
+            }
+        }, 600)
+    );
+    return this;
+};
+
+$.fn.stopEllipsis = function () {
+    try {
+        clearInterval($(this).attr("interval"));
+    } catch (error) {
+        console.log("No interval to clear.");
+    }
+    return this;
+};
+
 $("document").ready(() => {
     enablePopup();
 

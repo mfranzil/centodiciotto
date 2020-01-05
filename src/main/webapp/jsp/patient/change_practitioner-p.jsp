@@ -37,7 +37,7 @@
 
             $("#practitioner").submit(function (e) {
                 e.preventDefault();
-                $("#submit").prop("disabled", true).html("Requesting change...");
+                $("#submit").prop("disabled", true).html("Requesting change").startEllipsis();
 
                 let form = $(this);
                 let pract = $(".practitioner-id:checked");
@@ -57,8 +57,8 @@
                         $("#title").html("Your practitioner change request has been receieved. " +
                             "You will receive a confirmation email soon.");
                         $("#message,#subtitle").slideUp();
-                        $("#submit").html("Practitioner changed.");
-                        $("#table-select div").unbind();
+                        $("#submit").stopEllipsis().html("Practitioner changed.");
+                        $("#table-select div").off();
                     }
                 });
             });

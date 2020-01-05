@@ -7,7 +7,10 @@
     <script>
         $("document").ready(() => {
             const url = window.location.href;
+
+            let dots = 0;
             let datepicker = $(".datepicker");
+
             $("#include,#generate-new,#download,#loading-container").hide();
 
             datepicker.datepicker({
@@ -19,10 +22,10 @@
                 showButtonPanel: true,
                 onClose: dateText => {
                     if (dateText !== "") {
-                        $("#include").slideDown();
+                        $("#include,#submit").slideDown();
                         $("#choose-date").slideUp();
                     } else {
-                        $("#include").slideUp();
+                        $("#include,#submit").slideUp();
                         $("#choose-date").slideDown();
                     }
                 }
@@ -31,17 +34,17 @@
             $("#generate").submit(function (e) {
                 e.preventDefault();
 
-                let form = $(this);
-                let data = form.serialize();
-
-                $("#submit").prop("disabled", true).html("Requesting...");
-                $("input").prop("disabled", true);
-                $("#loading-container").slideDown();
-
                 if ($("#date").val() === "") {
                     alert("Insert a valid date.");
                     return;
                 }
+
+                let form = $(this);
+                let data = form.serialize();
+
+                $("#submit").prop("disabled", true).html("Requesting").startEllipsis();
+                $("input").prop("disabled", true);
+                $("#loading-container").slideDown();
 
                 $.ajax({
                     type: "POST",
@@ -55,35 +58,23 @@
                         $(".datepicker").prop("disabled", true);
                         $("#download").click(() => {
                             e.preventDefault();
-
                             let downloadButton = $("#download");
-
-                            downloadButton.html("Download started");
-                            setTimeout(() => downloadButton.html("Download started."), 500);
-                            setTimeout(() => downloadButton.html("Download started.."), 1000);
-                            setTimeout(() => downloadButton.html("Download started..."), 1500);
-                            setTimeout(() => downloadButton.html("Download started...."), 2000);
-                            setTimeout(() => downloadButton.html("Download report"), 3000);
-
+                            downloadButton.html("Download started").startEllipsis();
                             window.location.href = json.path;
                         });
                     },
-                    error: () => {
-                        restart();
-                    }
+                    error: () => restart()
                 });
             });
 
-            $("#generate-new").click(() => {
-                restart();
-            });
+            $("#generate-new").click(() => restart());
 
             function restart() {
                 $("#include,#generate-new,#download,#loading-container").slideUp();
                 $("#choose-date").slideDown();
-                $("#submit").prop("disabled", false).html("Generate report").slideDown();
-                $("#download").prop("disabled", false).html("Download report");
-                $(".datepicker").val("");
+                $("#submit").prop("disabled", false).html("Generate report").stopEllipsis();
+                $("#download").prop("disabled", false).html("Download report").stopEllipsis();
+                datepicker.val("");
                 $("input,.datepicker").prop("disabled", false);
             }
         });
