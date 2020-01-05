@@ -127,7 +127,7 @@ public class ChangePractitionerServlet extends HttpServlet {
                 message = "Dear " + user.toString() + ",\n\n" +
                         "we inform you that your general practitioner has been successfully changed.\n\n" +
                         "Here are the practitioner details:\n\n" +
-                        oldPract.toString() + "\n" +
+                        newPract.toString() + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - Practitioner change notification";
 
