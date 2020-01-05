@@ -21,11 +21,11 @@ import java.util.List;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCDoctorExamDAO extends JDBCDAO<DoctorExam, Pair<String, Integer>> implements DoctorExamDAO {
 
-    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM doctor_exams WHERE doctor_id = ? AND exam_id = ?;";
-    final private String GET_ALL = "SELECT * FROM doctor_exams;";
-    final private String COUNT = "SELECT COUNT(*) FROM doctor_exams;";
+    final private String GET_BY_PRIMARY_KEY = "SELECT * FROM doctor_exam WHERE doctor_id = ? AND exam_id = ?;";
+    final private String GET_ALL = "SELECT * FROM doctor_exam;";
+    final private String COUNT = "SELECT COUNT(*) FROM doctor_exam;";
 
-    final private String GET_BY_EXAM_TYPE = "SELECT * FROM doctor_exams WHERE exam_id = ?;";
+    final private String GET_BY_EXAM_TYPE = "SELECT * FROM doctor_exam WHERE exam_id = ?;";
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.
