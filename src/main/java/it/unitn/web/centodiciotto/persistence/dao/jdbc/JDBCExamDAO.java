@@ -290,6 +290,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
                 }
                 if (res.size() > 1) {
                     throw new DAOException("Error getting pending and not booked Exams by PatientID: more than one pending");
+                } else if (res.size() == 0) {
+                    return null;
                 }
                 return res.get(0);
             }
