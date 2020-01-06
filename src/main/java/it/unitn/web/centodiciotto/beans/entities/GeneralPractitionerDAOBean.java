@@ -103,4 +103,16 @@ public class GeneralPractitionerDAOBean implements Serializable {
             throw new BeanException("Error getting booked Visits: ", e);
         }
     }
+
+    public List<Visit> getNotDoneVisits() throws BeanException {
+        if (practitionerID == null) {
+            throw new BeanException("Practitioner is null.");
+        }
+
+        try {
+            return visitDAO.getNotDoneByPractitioner(practitionerID);
+        } catch (DAOException e) {
+            throw new BeanException("Error getting booked Visits: ", e);
+        }
+    }
 }

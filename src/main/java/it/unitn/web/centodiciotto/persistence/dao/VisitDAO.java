@@ -37,6 +37,18 @@ public interface VisitDAO extends DAO<Visit, Integer> {
     List<Visit> getBookedByPractitioner(String practitionerID) throws DAOException;
 
     /**
+     * Returns a {@link List} of booked but not done {@link Visit}s from a given {@code practitionerID}.
+     * <p>
+     * An {@link Visit} is considered not done if it is booked
+     * and the done flag has been set to {@code false}
+     *
+     * @param practitionerID the {@code practitionerID}
+     * @return a {@link List} of booked {@link Visit}s from a given {@code practitionerID}
+     * @throws DAOException in case of a malformed input or query
+     */
+    List<Visit> getNotDoneByPractitioner(String practitionerID) throws DAOException;
+
+    /**
      * Returns a {@link List} of done {@link Visit}s from a given {@code practitionerID}.
      * <p>
      * An {@link Visit} is considered booked when the done flag has been set to {@code true}.

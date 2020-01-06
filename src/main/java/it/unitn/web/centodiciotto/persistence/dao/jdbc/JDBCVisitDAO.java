@@ -18,10 +18,10 @@ import java.util.logging.Logger;
 public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
 
     final private String INSERT = "INSERT INTO visit " +
-            "(practitioner_id, patient_id, visit_date, report_available, report, booked) values (?, ?, ?, ?, ?, ?);";
+            "(practitioner_id, patient_id, visit_date, report_available, report, booked, completed) values (?, ?, ?, ?, ?, ?, ?);";
     final private String UPDATE = "UPDATE visit SET " +
-            "(practitioner_id, patient_id, visit_date, report_available, report, booked) =" +
-            " (?, ?, ?, ?, ?, ?) WHERE visit_id = ?;";
+            "(practitioner_id, patient_id, visit_date, report_available, report, booked, completed) =" +
+            " (?, ?, ?, ?, ?, ?, ?) WHERE visit_id = ?;";
     final private String DELETE = "DELETE FROM visit WHERE visit_id = ?;";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM visit WHERE visit_id = ?;";
@@ -34,9 +34,11 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             "practitioner_id = ? AND booked = TRUE AND visit_date IS NOT null " +
             "AND report_available = FALSE ORDER BY visit_date DESC;";
     final private String GET_DONE_BY_PRACTITIONER = "SELECT * FROM visit WHERE " +
-            "practitioner_id = ? AND report_available = TRUE ORDER BY visit_date DESC;";
+            "practitioner_id = ? AND completed = TRUE ORDER BY visit_date DESC;";
+    final private String GET_NOT_DONE_BY_PRACTITIONER = "SELECT * FROM visit WHERE " +
+            "practitioner_id = ? AND booked = TRUE AND completed = FALSE ORDER BY visit_date DESC;";
     final private String GET_DONE_BY_PATIENT = "SELECT * FROM visit WHERE patient_id = ?" +
-            " AND report_available = TRUE ORDER BY visit_date DESC;";
+            " AND completed = TRUE ORDER BY visit_date DESC;";
     final private String GET_LAST_BY_PATIENT = "SELECT * FROM visit WHERE patient_id = " +
             "? AND visit_date <= localtimestamp ORDER BY visit_date DESC limit 1;";
     final private String GET_PENDING_BY_PRACTITIONER_AND_PATIENT = "SELECT * FROM visit " +
@@ -63,6 +65,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
             stm.setBoolean(6, visit.getBooked());
+            stm.setBoolean(7, visit.getCompleted());
 
             int row = stm.executeUpdate();
             Logger.getLogger("C18").info("VisitDAO::insert affected " + row + " rows");
@@ -81,7 +84,8 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             stm.setBoolean(4, visit.getReportAvailable());
             stm.setString(5, visit.getReport());
             stm.setBoolean(6, visit.getBooked());
-            stm.setInt(7, visit.getID());
+            stm.setBoolean(7, visit.getCompleted());
+            stm.setInt(8, visit.getID());
 
             int row = stm.executeUpdate();
             Logger.getLogger("C18").info("VisitDAO::update affected " + row + " rows");
@@ -175,6 +179,24 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
         List<Visit> res = new ArrayList<>();
         Visit tmp;
         try (PreparedStatement stm = CON.prepareStatement(GET_BOOKED_BY_PRACTITIONER)) {
+            stm.setString(1, practitionerID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting Booked Visits by practitionerID: ", e);
+        }
+    }
+
+    public List<Visit> getNotDoneByPractitioner(String practitionerID) throws DAOException {
+        List<Visit> res = new ArrayList<>();
+        Visit tmp;
+        try (PreparedStatement stm = CON.prepareStatement(GET_NOT_DONE_BY_PRACTITIONER)) {
             stm.setString(1, practitionerID);
 
             try (ResultSet rs = stm.executeQuery()) {
@@ -293,6 +315,7 @@ public class JDBCVisitDAO extends JDBCDAO<Visit, Integer> implements VisitDAO {
             visit.setReportAvailable(rs.getBoolean("report_available"));
             visit.setReport(rs.getString("report"));
             visit.setBooked(rs.getBoolean("booked"));
+            visit.setCompleted(rs.getBoolean("completed"));
 
             return visit;
         } catch (SQLException e) {
