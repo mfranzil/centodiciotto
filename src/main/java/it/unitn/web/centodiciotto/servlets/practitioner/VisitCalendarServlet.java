@@ -97,7 +97,7 @@ public class VisitCalendarServlet extends HttpServlet {
                     return;
                 }
 
-                visit.setReportAvailable(true);
+                visit.setCompleted(true);
                 visitDAO.update(visit);
 
                 Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
