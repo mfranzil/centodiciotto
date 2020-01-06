@@ -1,18 +1,18 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
 import com.google.gson.Gson;
-import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
-import it.unitn.web.centodiciotto.persistence.dao.ExamDAO;
-import it.unitn.web.centodiciotto.persistence.dao.HealthServiceDAO;
-import it.unitn.web.centodiciotto.persistence.dao.SpecializedDoctorDAO;
+import it.unitn.web.centodiciotto.persistence.dao.*;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
-import it.unitn.web.centodiciotto.persistence.entities.*;
+import it.unitn.web.centodiciotto.persistence.entities.DrugPrescription;
+import it.unitn.web.centodiciotto.persistence.entities.Exam;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
+import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-import it.unitn.web.centodiciotto.servlets.shared.PatientListServlet;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
+import it.unitn.web.centodiciotto.utils.DrugPrescriptionState;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 
 import javax.servlet.ServletException;
@@ -32,8 +32,14 @@ import java.util.logging.Logger;
  * <p>
  * GET requests pass through.
  * <p>
- * POST requests set a ticket as paid and are filtered depending on the {@code type} parameter, as the ticket may
- * be from an {@link Exam} or from a {@link DrugPrescription}.
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> ticketPay: sets a ticket as paid and are filtered depending on the {@code type} parameter,
+ *     as the ticket may be from an {@link Exam} or from a {@link DrugPrescription}.
+ *     <li> examTicketList: AJAX response generator for returning a list of {@link Exam}s
+ *     <li> prescriptionTicketList: AJAX response generator for returning a list of {@link DrugPrescription}s
+ * </ul>
+ * POST requests
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/patient/tickets")
@@ -43,6 +49,7 @@ public class TicketServlet extends HttpServlet {
     private HealthServiceDAO healthServiceDAO;
     private SpecializedDoctorDAO specializedDoctorDAO;
     private DrugPrescriptionDAO drugPrescriptionDAO;
+    private ChemistDAO chemistDAO;
 
     private EmailService emailService;
 
@@ -58,6 +65,7 @@ public class TicketServlet extends HttpServlet {
             specializedDoctorDAO = daoFactory.getDAO(SpecializedDoctorDAO.class);
             healthServiceDAO = daoFactory.getDAO(HealthServiceDAO.class);
             drugPrescriptionDAO = daoFactory.getDAO(DrugPrescriptionDAO.class);
+            chemistDAO = daoFactory.getDAO(ChemistDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
         }
@@ -84,9 +92,9 @@ public class TicketServlet extends HttpServlet {
         PrintWriter writer = response.getWriter();
         response.setContentType("application/json");
 
-        switch (requestType) {
-            case "ticketPay": {
-                if (user instanceof Patient) {
+        if (user instanceof Patient) {
+            switch (requestType) {
+                case "ticketPay": {
                     String type = request.getParameter("type");
                     Integer ID = Integer.valueOf(request.getParameter("ID"));
                     if (type.equals("exam")) {
@@ -161,76 +169,157 @@ public class TicketServlet extends HttpServlet {
                         Logger.getLogger("C18").severe(json);
                     }
 
+                    break;
                 }
-                break;
-            }
-            case "examTicketList": {
-                System.out.println("Im here");
-                if (user instanceof Patient) {
+                case "examTicketList": {
                     try {
                         List<ExamTicketListElement> examTicketListElements = new ArrayList<>();
 
                         List<Exam> examList = examDAO.getNotPendingByPatient(user.getID());
                         for (Exam exam : examList) {
                             if (exam.getHealthServiceID() != null) {
+
                                 HTMLAction button;
                                 if (exam.getTicketPaid()) {
                                     button = new HTMLAction("Paid", false);
+                                } else if (exam.getTicket() == 0) {
+                                    button = new HTMLAction("Free", false);
                                 } else {
                                     button = new HTMLAction("Pay", true);
                                 }
-                                examTicketListElements.add(new ExamTicketListElement(healthServiceDAO.getByPrimaryKey(exam.getHealthServiceID()).toString(), exam.getType().getDescription(), exam.getDate().toString(), "$" + exam.getTicket(), button, "e"+ exam.getID()));
+                                examTicketListElements.add(new ExamTicketListElement(
+                                        healthServiceDAO.getByPrimaryKey(exam.getHealthServiceID()).toString(),
+                                        exam.getType().getDescription(),
+                                        CustomDTFormatter.formatDate(exam.getDate()),
+                                        "$" + exam.getTicket(),
+                                        button,
+                                        "e" + exam.getID()));
                             } else {
                                 HTMLAction button;
                                 if (exam.getTicketPaid()) {
                                     button = new HTMLAction("Paid", false);
+                                } else if (exam.getTicket() == 0) {
+                                    button = new HTMLAction("Free", false);
                                 } else {
                                     button = new HTMLAction("Pay", true);
                                 }
-                                examTicketListElements.add(new ExamTicketListElement(specializedDoctorDAO.getByPrimaryKey(exam.getDoctorID()).toString(), exam.getType().getDescription(), exam.getDate().toString(), "$" + exam.getTicket(), button, "e"+ exam.getID()));
+                                examTicketListElements.add(new ExamTicketListElement(
+                                        specializedDoctorDAO.getByPrimaryKey(exam.getDoctorID()).toString(),
+                                        exam.getType().getDescription(),
+                                        CustomDTFormatter.formatDate(exam.getDate()),
+                                        "$" + exam.getTicket(),
+                                        button,
+                                        "e" + exam.getID()));
                             }
                         }
                         Gson gson = new Gson();
                         writer.write(gson.toJson(examTicketListElements));
-                    } catch(DAOException e){
+                    } catch (DAOException e) {
                         e.printStackTrace();
                     }
+                    break;
+                }
+                case "prescriptionTicketList": {
+                    try {
+                        List<PrescriptionTicketListElement> prescriptionTicketListElements = new ArrayList<>();
 
+                        List<DrugPrescription> drugPrescriptionList = drugPrescriptionDAO.getByPatient(user.getID());
+                        for (DrugPrescription drugPrescription : drugPrescriptionList) {
+                            DrugPrescriptionState state = DrugPrescriptionState.getState(drugPrescription);
+                            if (state == DrugPrescriptionState.UNPAID || state == DrugPrescriptionState.PAID) {
+                                HTMLAction button;
+                                if (drugPrescription.getTicketPaid()) {
+                                    button = new HTMLAction("Paid", false);
+                                } else {
+                                    button = new HTMLAction("Pay", true);
+                                }
 
+                                prescriptionTicketListElements.add(new PrescriptionTicketListElement(
+                                        chemistDAO.getByPrimaryKey(drugPrescription.getChemistID()).toString(),
+                                        drugPrescription.getType().getDescription(),
+                                        CustomDTFormatter.formatDate(drugPrescription.getDatePrescribed()),
+                                        CustomDTFormatter.formatDate(drugPrescription.getDateSold()),
+                                        "$" + drugPrescription.getTicket(),
+                                        button,
+                                        "p" + drugPrescription.getID()));
+                            }
+                        }
+                        Gson gson = new Gson();
+                        writer.write(gson.toJson(prescriptionTicketListElements));
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
             }
-            break;
         }
     }
-}
-
-/**
- * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
- */
-private static class ExamTicketListElement implements Serializable {
-    private String doctor;
-    private String exam;
-    private String date;
-    private String amount;
-    private HTMLAction action;
-    private String ID;
 
     /**
-     * Instantiates a new Exam list element.
-     *
-     * @param doctor the doctor
-     * @param exam   the exam
-     * @param date   the date
-     * @param amount the amount
-     * @param ID     the id
-     * @param action the action
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
-    public ExamTicketListElement(String doctor, String exam, String date, String amount, HTMLAction action, String ID) {
-        this.doctor = doctor;
-        this.exam = exam;
-        this.date = date;
-        this.amount = amount;
-        this.action = action;
-        this.ID = ID;
+    private static class ExamTicketListElement implements Serializable {
+        private String doctor;
+        private String exam;
+        private String date;
+        private String amount;
+        private HTMLAction action;
+        private String ID;
+
+        /**
+         * Instantiates a new Exam ticket list element.
+         *
+         * @param doctor the doctor
+         * @param exam   the exam
+         * @param date   the date
+         * @param amount the amount
+         * @param action the action
+         * @param ID     the id
+         */
+        public ExamTicketListElement(String doctor, String exam, String date, String amount,
+                                     HTMLAction action, String ID) {
+            this.doctor = doctor;
+            this.exam = exam;
+            this.date = date;
+            this.amount = amount;
+            this.action = action;
+            this.ID = ID;
+        }
     }
-}
+
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
+    private static class PrescriptionTicketListElement implements Serializable {
+        private String chemist;
+        private String drug;
+        private String prescription;
+        private String sale;
+        private String amount;
+        private HTMLAction action;
+        private String ID;
+
+        /**
+         * Instantiates a new Prescription ticket list element.
+         *
+         * @param chemist      the chemist
+         * @param drug         the drug
+         * @param prescription the prescription
+         * @param sale         the sale
+         * @param amount       the amount
+         * @param action       the action
+         * @param ID           the id
+         */
+        public PrescriptionTicketListElement(String chemist, String drug, String prescription,
+                                             String sale, String amount, HTMLAction action, String ID) {
+            this.chemist = chemist;
+            this.drug = drug;
+            this.prescription = prescription;
+            this.sale = sale;
+            this.amount = amount;
+            this.action = action;
+            this.ID = ID;
+        }
+    }
+
 }

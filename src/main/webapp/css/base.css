@@ -292,7 +292,7 @@ body {
     white-space: nowrap;
 }
 
-.custom-file {
+.custom-file, input.custom-file-input {
     cursor: pointer;
 }
 

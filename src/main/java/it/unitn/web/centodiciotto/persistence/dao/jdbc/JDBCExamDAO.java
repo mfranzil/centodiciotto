@@ -221,25 +221,6 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getByPatientLastYear(String patientID) throws DAOException {
-        List<Exam> res = new ArrayList<>();
-        Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_BY_PATIENT_LAST_YEAR)) {
-            stm.setString(1, patientID);
-
-            try (ResultSet rs = stm.executeQuery()) {
-                while (rs.next()) {
-                    tmp = mapRowToEntity(rs);
-                    res.add(tmp);
-                }
-                return res;
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error getting last year Exams by PatientID: ", e);
-        }
-    }
-
-    @Override
     public List<Exam> getUnpaidByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;

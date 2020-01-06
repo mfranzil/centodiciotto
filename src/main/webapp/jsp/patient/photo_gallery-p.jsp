@@ -20,9 +20,11 @@
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
 <div class="jumbotron mt-4">
-    <h1>Select an image from Gallery</h1>
+    <h1>Profile Photos</h1>
     <p class="lead mt-4 mx-4">
-        If you want to change your profile picture with an already uploaded image you can select it from this gallery.
+        The following is a list of your past profile photos.<br>
+        If you want to change your profile picture with an already uploaded image,
+        you can select it from this gallery.
     </p>
 </div>
 <div class="container flex-wrap">
@@ -30,7 +32,9 @@
     <jsp:setProperty name="patientDAO" property="patientID" value="${sessionScope.user.ID}"/>
     <jsp:setProperty name="patientDAO" property="init" value=""/>
 
-    <c:forEach items="${patientDAO.allPhotos}" var="photo">
+    <c:forEach items="${patientDAO.allPhotos}" var="pair">
+        <c:set value="${pair.first}" var="photo"/>
+        <c:set value="${pair.second}" var="date"/>
         <figure class="col-md">
             <img alt="picture" class="avatar img-fluid popup-opener" src="${pageContext.request.contextPath}/${photo}">
             <div class="popup-window">
@@ -50,6 +54,7 @@
                     <button class="btn btn-lg btn-block btn-secondary popup-closer">Exit</button>
                 </div>
             </div>
+            <figcaption style="font-size: 10pt; color: var(--118-darkest)">${date}</figcaption>
         </figure>
     </c:forEach>
 </div>

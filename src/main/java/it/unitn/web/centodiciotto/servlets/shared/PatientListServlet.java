@@ -247,7 +247,7 @@ public class PatientListServlet extends HttpServlet {
                         }
 
                         // Last exam
-                        List<Exam> examPatientList = examDAO.getByPatientLastYear(patientID);
+                        List<Exam> examPatientList = examDAO.getByPatient(patientID);
                         if (!examPatientList.isEmpty()) {
                             jsonResponse.add(new HTMLElement().setElementType("h4")
                                     .setElementClass("").setElementContent("Last exams"));
@@ -269,7 +269,7 @@ public class PatientListServlet extends HttpServlet {
                         }
 
                         // Drugs
-                        List<DrugPrescription> prescriptions = drugPrescriptionDAO.getLastMonthByPatient(patientID);
+                        List<DrugPrescription> prescriptions = drugPrescriptionDAO.getByPatient(patientID);
                         if (!prescriptions.isEmpty()) {
                             jsonResponse.add(new HTMLElement().setElementType("h4")
                                     .setElementClass("").setElementContent("Last prescriptions"));

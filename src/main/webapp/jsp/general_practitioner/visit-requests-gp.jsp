@@ -35,7 +35,7 @@
                 let button = form.find("button.submit");
                 let data = form.serialize();
 
-                button.prop("disabled", true).html("Confirming...");
+                button.prop("disabled", true).html("Confirming").startEllipsis();
 
                 $.ajax({
                     type: "POST",
@@ -43,9 +43,12 @@
                     cache: false,
                     data: data,
                     success: () => {
-                        button.html("Confirmed");
+                        button.stopEllipsis().html("Confirmed");
                         $(".popup-window").fadeOut();
                         $("#confirm-v-" + inputVisitID).html("Confirmed").prop("disabled", true);
+                    },
+                    error: () => {
+                        button.stopEllipsis().prop("disabled", false).html("Confirm the appointment");
                     }
                 });
             });

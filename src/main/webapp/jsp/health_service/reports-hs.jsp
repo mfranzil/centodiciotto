@@ -141,9 +141,11 @@
                                  src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
                         </div>
                     </div>
-                    <button type="button" id="download" class="btn btn-block btn-personal mt-2">Download report</button>
-                    <button type="button" id="generate-new" class="btn btn-block btn-personal mt-2">Generate new
-                                                                                                    report
+                    <button type="button" id="download" class="btn btn-block btn-personal mt-2">
+                        Download report
+                    </button>
+                    <button type="button" id="generate-new" class="btn btn-block btn-personal mt-2">
+                        Generate new report
                     </button>
                 </form>
             </div>

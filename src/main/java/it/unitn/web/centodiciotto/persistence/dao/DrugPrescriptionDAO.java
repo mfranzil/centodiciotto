@@ -25,15 +25,13 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
     List<DrugPrescription> getValidByPatient(String patientID) throws DAOException;
 
     /**
-     * Returns a {@link List} of valid {@link DrugPrescription}s from a given {@code patientID}.
-     * <p>
-     * A prescription is considered valid if it has been prescribed no more than a month ago.
+     * Returns a {@link List} of {@link DrugPrescription}s from a given {@code patientID}.
      *
      * @param patientID the {@code patientID}
-     * @return {@link List} of valid {@link DrugPrescription}s from a given {@code patientID}
+     * @return {@link List} of {@link DrugPrescription}s from a given {@code patientID}
      * @throws DAOException in case of a malformed input or query
      */
-    List<DrugPrescription> getLastMonthByPatient(String patientID) throws DAOException;
+    List<DrugPrescription> getByPatient(String patientID) throws DAOException;
 
     /**
      * Returns a {@link List} of {@link DrugPrescription}s from a given
@@ -47,15 +45,4 @@ public interface DrugPrescriptionDAO extends DAO<DrugPrescription, Integer> {
      */
     List<DrugPrescription> getByDateSold(Timestamp ts) throws DAOException;
 
-    /**
-     * Returns a {@link List} of unpaid {@link DrugPrescription}s from a given {@code patientID}.
-     * <p>
-     * A prescription is considered unpaid if it was sold (the date_sold parameter is not {@code null})
-     * but the ticket hasn't been paid yet.
-     *
-     * @param patientID the {@code patientID}
-     * @return {@link List} of unpaid {@link DrugPrescription}s from a given {@code patientID}
-     * @throws DAOException in case of a malformed input or query
-     */
-    List<DrugPrescription> getUnpaidByPatient(String patientID) throws DAOException;
 }

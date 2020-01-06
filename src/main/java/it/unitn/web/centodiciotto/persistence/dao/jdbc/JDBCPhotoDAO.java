@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
 
-    final private String INSERT = "INSERT INTO photo (patient_id, upload_date) values (?, ?) " +
+    final private String INSERT = "INSERT INTO photo (patient_id, upload_date, extension) values (?, ?, ?) " +
             "RETURNING photo_id;";
-    final private String UPDATE = "UPDATE photo SET upload_date = ? WHERE photo_id = ?";
+    final private String UPDATE = "UPDATE photo SET upload_date = ?, extension = ? WHERE photo_id = ?";
     final private String DELETE = "DELETE FROM photo WHERE photo_id = ?";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM photo WHERE photo_id = ?;";
@@ -50,11 +50,17 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             PreparedStatement stm = CON.prepareStatement(INSERT);
             stm.setString(1, photo.getPatientID());
             stm.setTimestamp(2, photo.getUploadDate());
+            stm.setString(3, photo.getExtension());
 
-            int photoID = stm.executeUpdate();
+            ResultSet rs = stm.executeQuery();
 
-            photo.setID(photoID);
-            Logger.getLogger("C18").info("PhotoDAO::insert row affected returned " + photoID);
+            if (rs.next()) {
+                Integer photoID = rs.getInt("photo_id");
+                photo.setID(photoID);
+                Logger.getLogger("C18").info("PhotoDAO::insert row affected returned " + photoID);
+            } else {
+                throw new DAOException("Error inserting Photo, query returnet an empty ResultSet.");
+            }
         } catch (SQLException e) {
             throw new DAOException("Error inserting Photo: ", e);
         }
@@ -65,7 +71,8 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
         try {
             PreparedStatement stm = CON.prepareStatement(UPDATE);
             stm.setTimestamp(1, photo.getUploadDate());
-            stm.setInt(2, photo.getID());
+            stm.setString(2, photo.getExtension());
+            stm.setInt(3, photo.getID());
 
             int row = stm.executeUpdate();
             Logger.getLogger("C18").info("PhotoDAO::update affected " + row + " rows");
@@ -179,6 +186,7 @@ public class JDBCPhotoDAO extends JDBCDAO<Photo, Integer> implements PhotoDAO {
             photo.setID(rs.getInt("photo_id"));
             photo.setPatientID(rs.getString("patient_id"));
             photo.setUploadDate(rs.getTimestamp("upload_date"));
+            photo.setExtension(rs.getString("extension"));
 
             return photo;
         } catch (SQLException e) {

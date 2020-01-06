@@ -4,7 +4,10 @@ import it.unitn.web.centodiciotto.persistence.dao.PhotoDAO;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
+import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import javax.servlet.ServletContext;
 import java.io.File;
@@ -19,6 +22,7 @@ import java.util.List;
  * The service needs an initialized DAOFactory to instantiate a PhotoDAO, and a
  * servletContext for retrieving the system path.
  */
+@SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 public class PhotoService {
     private static PhotoService instance;
 
@@ -91,15 +95,17 @@ public class PhotoService {
     }
 
     /**
-     * Gets a {@link List} of {@link Photo}s of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}.
+     * Gets a {@link List} of {@link Photo}s of a {@link Patient}, represented as a list of {@link Pair}s
+     * with the photo path and the corresponding date.
      *
      * @param patientID the patient id
-     * @return a {@link List} of file paths representing the relative positions of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}.
+     * @return a {@link List} of {@link Pair}s containing file paths representing the relative positions
+     * of a {@link Patient} with the corresponding date.
      * @throws ServiceException in case of error during processing
      */
-    public List<String> getAllPhotos(String patientID) throws ServiceException {
+    public List<Pair<String, String>> getAllPhotos(String patientID) throws ServiceException {
         List<Photo> photos;
-        List<String> photoPaths = new ArrayList<>();
+        List<Pair<String, String>> photoPaths = new ArrayList<>();
 
         if (patientID == null) {
             return null;
@@ -112,14 +118,16 @@ public class PhotoService {
         }
 
         for (Photo photo : photos) {
-            photoPaths.add(getPhotoPath(photo));
+            photoPaths.add(Pair.makePair(getPhotoPath(photo),
+                    CustomDTFormatter.formatDateTime(photo.getUploadDate())
+            ));
         }
 
         return photoPaths;
     }
 
     /**
-     * Retrieves the file path for a given photo using its {@code ID} and the {@code patientID}.
+     * Retrieves the file path for a given photo using its {@code ID}, the {@code patientID} and the file extension.
      *
      * @param photo the photo entity
      * @return a file path representing the relative position of a {@link it.unitn.web.centodiciotto.persistence.entities.Patient}
@@ -136,15 +144,12 @@ public class PhotoService {
         String systemPath = sc.getRealPath("/");
         String photoPath = patientAvatarFolder + File.separator + photo.getID();
 
-        String[] extensions = {".jpg", ".jpeg", ".png", ".jfif"};
-
-        for (String extension : extensions) {
-            if (new File(systemPath + photoPath + extension).exists()) {
-                return photoPath.replace('\\', '/').replace("//", "/") + extension;
-            }
+        if (new File(systemPath + photoPath +  "." + photo.getExtension()).exists()) {
+            return photoPath.replace('\\', '/')
+                    .replace("//", "/") + "." + photo.getExtension();
+        } else {
+            return avatarFolder + File.separator + "default.png";
         }
-
-        return avatarFolder + File.separator + "default.png";
     }
 
     /**

@@ -73,7 +73,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
                 recall.setID(recallID);
                 Logger.getLogger("C18").info("RecallDAO::insert row affected returned " + recallID);
             } else {
-                throw new DAOException("Error inserting Recall, query returnet an empty ResultSet.");
+                throw new DAOException("Error inserting Recall, query returned an empty ResultSet.");
             }
         } catch (SQLException e) {
             throw new DAOException("Error inserting Recall: ", e);

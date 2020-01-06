@@ -9,6 +9,7 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.entities.Pair;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -103,12 +104,13 @@ public class PatientDAOBean implements Serializable {
     }
 
     /**
-     * Gets a {@link List} of {@link Photo} paths associated with this {@link Patient}, in antichronological order.
+     * Gets a {@link List} of {@link Pair}s, each containing a {@link Photo} path associated with this {@link Patient},
+     * and a {@link String} representing a fully-formatted date of upload for such photo, in antichronological order.
      *
-     * @return a {@link List} of {@link Photo} paths associated with this {@link Patient}, in antichronological order
+     * @return a {@link List} of {@link Pair}s with photo paths and dates
      * @throws BeanException thrown for any generic exception
      */
-    public List<String> getAllPhotos() throws BeanException {
+    public List<Pair<String, String>> getAllPhotos() throws BeanException {
         if (patientID == null) {
             throw new BeanException("Practitioner is null");
         }
@@ -117,24 +119,6 @@ public class PatientDAOBean implements Serializable {
             return photoService.getAllPhotos(patientID);
         } catch (ServiceException e) {
             throw new BeanException("Error getting PhotoPath in patientDaoBean: ", e);
-        }
-    }
-
-    /**
-     * Gets the last {@link Visit} done by this {@link Patient}.
-     *
-     * @return a {@link Visit}, the last one made chronologically by the {@link Patient}
-     * @throws BeanException thrown for any generic exception
-     */
-    public Visit getLastVisit() throws BeanException {
-        if (patientID == null) {
-            throw new BeanException("Practitioner is null");
-        }
-
-        try {
-            return visitDAO.getLastByPatient(patientID);
-        } catch (DAOException e) {
-            throw new BeanException("Error getting lastVisit in patientDaoBean: ", e);
         }
     }
 
@@ -211,33 +195,12 @@ public class PatientDAOBean implements Serializable {
     }
 
     /**
-     * Gets this {@link Patient}'s valid {@link DrugPrescription}s.
+     * Gets all this {@link Patient}'s {@link DrugPrescription}s.
      *
-     * @return the {@link Patient}'s valid {@link DrugPrescription}s
+     * @return the {@link Patient}'s {@link DrugPrescription}s
      * @throws BeanException thrown for any generic exception
      */
-    public List<DrugPrescription> getValidPrescriptions() throws BeanException {
-        List<DrugPrescription> prescriptions;
-
-        if (patientID == null) {
-            throw new BeanException("Practitioner is null");
-        }
-
-        try {
-            prescriptions = drugPrescriptionDAO.getValidByPatient(patientID);
-        } catch (DAOException e) {
-            throw new BeanException("Error getting drugPre list in patientDaoBean: ", e);
-        }
-        return prescriptions;
-    }
-
-    /**
-     * Gets this {@link Patient}'s unpaid {@link DrugPrescription}s.
-     *
-     * @return the {@link Patient}'s unpaid {@link DrugPrescription}s
-     * @throws BeanException thrown for any generic exception
-     */
-    public List<DrugPrescription> getUnpaidPrescriptions() throws BeanException {
+    public List<DrugPrescription> getPrescriptions() throws BeanException {
         List<DrugPrescription> prescriptions;
 
         if (patientID == null) {
@@ -245,7 +208,7 @@ public class PatientDAOBean implements Serializable {
         }
 
         try {
-            prescriptions = drugPrescriptionDAO.getUnpaidByPatient(patientID);
+            prescriptions = drugPrescriptionDAO.getByPatient(patientID);
         } catch (DAOException e) {
             throw new BeanException("Error getting unpaid Prescriptions in patientDaoBean: ", e);
         }

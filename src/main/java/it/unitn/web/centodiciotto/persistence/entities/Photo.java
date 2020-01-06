@@ -9,6 +9,7 @@ public class Photo {
     private Integer ID;
     private String patientID;
     private Timestamp uploadDate;
+    private String extension;
 
     /**
      * Gets the ID.
@@ -17,6 +18,15 @@ public class Photo {
      */
     public Integer getID() {
         return ID;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param ID the id
+     */
+    public void setID(Integer ID) {
+        this.ID = ID;
     }
 
     /**
@@ -63,4 +73,23 @@ public class Photo {
     public void setUploadDate(Timestamp uploadDate) {
         this.uploadDate = uploadDate;
     }
+
+    /**
+     * Gets extension.
+     *
+     * @return the extension
+     */
+    public String getExtension() {
+        return extension;
+    }
+
+    /**
+     * Sets extension.
+     *
+     * @param extension the extension
+     */
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
 }

@@ -1,5 +1,6 @@
 package it.unitn.web.centodiciotto.servlets.patient;
 
+import com.google.gson.Gson;
 import it.unitn.web.centodiciotto.persistence.dao.DrugPrescriptionDAO;
 import it.unitn.web.centodiciotto.persistence.dao.GeneralPractitionerDAO;
 import it.unitn.web.centodiciotto.persistence.dao.PatientDAO;
@@ -12,6 +13,9 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.services.PDFService;
 import it.unitn.web.centodiciotto.services.ServiceException;
+import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
+import it.unitn.web.centodiciotto.utils.DrugPrescriptionState;
+import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import org.apache.pdfbox.pdmodel.PDDocument;
 
 import javax.servlet.ServletException;
@@ -22,6 +26,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -29,9 +36,12 @@ import java.util.logging.Logger;
  * <p>
  * GET requests pass through.
  * <p>
- * POST requests get a {@code prescriptionID}, a {@code patientID}, and a {@code practitionerID} and pass
- * them to a {@link PDFService} instance for the generation of a PDF prescription, which is
- * then shown to the user.
+ * POST requests are filtered depending on the {@code requestType} parameter:
+ * <ul>
+ *     <li> prescriptionList: AJAX response generator for returning a list of {@link DrugPrescription}s
+ *     <li> getPrescription: receives a {@code prescriptionID} and passes it to a {@link PDFService} instance
+ *     for the generation of a PDF prescription, which is then shown to the user.
+ * </ul>
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 @WebServlet("/restricted/patient/prescriptions")
@@ -75,71 +85,100 @@ public class DrugPrescriptionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+        String requestType = request.getParameter("requestType");
+
+        if (requestType == null) {
+            response.setStatus(400);
+            PrintWriter writer = response.getWriter();
+            response.setContentType("application/json");
+            String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
+            writer.write(json);
+            Logger.getLogger("C18").severe(json);
+            return;
+        }
 
         if (user instanceof Patient) {
-            String practitionerID = request.getParameter("practitionerID");
-            String patientID = request.getParameter("patientID");
-            Integer prescriptionID;
+            switch (requestType) {
+                case "prescriptionList": {
+                    try {
+                        List<PrescriptionElement> drugPrescriptionElements = new ArrayList<>();
+                        List<DrugPrescription> drugPrescriptionList = drugPrescriptionDAO.getByPatient(user.getID());
 
-            try {
-                prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
-            } catch (NumberFormatException | NullPointerException e) {
-                response.setStatus(400);
+                        for (DrugPrescription drugPrescription : drugPrescriptionList) {
+                            GeneralPractitioner practitioner =
+                                    practitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
+                            DrugPrescriptionState state = DrugPrescriptionState.getState(drugPrescription);
+                            drugPrescriptionElements.add(new PrescriptionElement(
+                                    practitioner.toString(),
+                                    CustomDTFormatter.formatDateTime(drugPrescription.getDatePrescribed()),
+                                    state.toString(),
+                                    new HTMLAction("Download", state == DrugPrescriptionState.AVAILABLE),
+                                    drugPrescription.getID()
+                            ));
+                        }
 
-                PrintWriter writer = response.getWriter();
-                response.setContentType("application/json");
-
-                String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
-                writer.write(json);
-                Logger.getLogger("C18").severe(json);
-                return;
-            }
-
-            if (practitionerID == null || patientID == null) {
-                response.setStatus(400);
-
-                PrintWriter writer = response.getWriter();
-                response.setContentType("application/json");
-
-                String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
-                writer.write(json);
-                Logger.getLogger("C18").severe(json);
-                return;
-            }
-
-            try {
-                GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(practitionerID);
-                DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
-                Patient patient = patientDAO.getByPrimaryKey(patientID);
-
-                String filePath = getServletContext().getRealPath("/") +
-                        getServletContext().getInitParameter("pdf-folder");
-                String fileName = prescription.getDatePrescribed().getTime() + "-" + prescription.getID() + ".pdf";
-
-                if (new File(filePath + File.separator + fileName).exists()) {
-                    PDDocument.load(new File(filePath + File.separator + fileName)).save(response.getOutputStream());
-                    Logger.getLogger("C18").info("Supplying already-generated PDF prescription " + filePath + File.separator + fileName);
-                    return;
+                        PrintWriter writer = response.getWriter();
+                        response.setContentType("application/json");
+                        Gson gson = new Gson();
+                        writer.write(gson.toJson(drugPrescriptionElements));
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
+                    }
+                    break;
                 }
+                case "getPrescription": {
+                    Integer prescriptionID;
 
-                // Saves the current URL, which is possible only at request level,
-                // in order to let the service generate the QR code properly
-                String qrCodeURL = getCurrentURL(request);
+                    try {
+                        prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
+                    } catch (NumberFormatException | NullPointerException e) {
+                        response.setStatus(400);
 
-                PDDocument prescriptionDoc = pdfService.createDrugPrescription(
-                        prescription, patient, practitioner, qrCodeURL);
+                        PrintWriter writer = response.getWriter();
+                        response.setContentType("application/json");
 
-                response.setContentType("application/pdf");
-                response.setHeader("Content-Disposition", "inline; filename='prescription.pdf'");
+                        String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
+                        writer.write(json);
+                        Logger.getLogger("C18").severe(json);
+                        return;
+                    }
 
-                Logger.getLogger("C18").info("Supplying new PDF prescription " + filePath + File.separator + fileName);
+                    try {
+                        DrugPrescription prescription = drugPrescriptionDAO.getByPrimaryKey(prescriptionID);
+                        GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
+                        Patient patient = patientDAO.getByPrimaryKey(prescription.getPatientID());
 
-                prescriptionDoc.save(filePath + File.separator + fileName);
-                prescriptionDoc.save(response.getOutputStream());
-            } catch (DAOException e) {
-                throw new ServletException("Error in DAO usage: ", e);
-            } catch (ServiceException e) {
-                throw new ServletException("Error in PDF generation: ", e);
+                        String filePath = getServletContext().getRealPath("/") +
+                                getServletContext().getInitParameter("pdf-folder");
+                        String fileName = prescription.getDatePrescribed().getTime() + "-" + prescription.getID() + ".pdf";
+
+                        if (new File(filePath + File.separator + fileName).exists()) {
+                            PDDocument.load(new File(filePath + File.separator + fileName)).save(response.getOutputStream());
+                            Logger.getLogger("C18").info("Supplying already-generated PDF prescription " + filePath + File.separator + fileName);
+                            return;
+                        }
+
+                        // Saves the current URL, which is possible only at request level,
+                        // in order to let the service generate the QR code properly
+                        String qrCodeURL = getCurrentURL(request);
+
+                        PDDocument prescriptionDoc = pdfService.createDrugPrescription(
+                                prescription, patient, practitioner, qrCodeURL);
+
+                        response.setContentType("application/pdf");
+                        response.setHeader("Content-Disposition", "inline; filename='prescription.pdf'");
+
+                        Logger.getLogger("C18").info("Supplying new PDF prescription " + filePath + File.separator + fileName);
+
+                        prescriptionDoc.save(filePath + File.separator + fileName);
+                        prescriptionDoc.save(response.getOutputStream());
+                    } catch (DAOException e) {
+                        throw new ServletException("Error in DAO usage: ", e);
+                    } catch (ServiceException e) {
+                        throw new ServletException("Error in PDF generation: ", e);
+                    }
+                    break;
+                }
             }
         }
     }
@@ -149,5 +188,34 @@ public class DrugPrescriptionServlet extends HttpServlet {
                 "http".equals(request.getScheme()) && request.getServerPort() == 80 ||
                         "https".equals(request.getScheme()) && request.getServerPort() == 443
                         ? "" : ":" + request.getServerPort());
+    }
+
+
+    /**
+     * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
+     */
+    private static class PrescriptionElement implements Serializable {
+        private String pract;
+        private String date;
+        private String state;
+        private HTMLAction action;
+        private Integer ID;
+
+        /**
+         * Instantiates a new Prescription element.
+         *
+         * @param pract  the pract
+         * @param date   the date
+         * @param state  the state
+         * @param action the action
+         * @param ID     the id
+         */
+        PrescriptionElement(String pract, String date, String state, HTMLAction action, Integer ID) {
+            this.pract = pract;
+            this.date = date;
+            this.state = state;
+            this.action = action;
+            this.ID = ID;
+        }
     }
 }

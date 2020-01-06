@@ -23,17 +23,6 @@ public interface ExamDAO extends DAO<Exam, Integer> {
     List<Exam> getByPatient(String patientID) throws DAOException;
 
     /**
-     * Returns a {@link List} of {@link Exam}s made in the last year from a given {@code patientID}.
-     * <p>
-     * Eventual {@link Exam}s with {@code null} date will be discarded.
-     *
-     * @param patientID the {@code patientID}
-     * @return a {@link List} of {@link Exam}s made in the last year from a given {@code patientID}
-     * @throws DAOException in case of a malformed input or query
-     */
-    List<Exam> getByPatientLastYear(String patientID) throws DAOException;
-
-    /**
      * Returns a {@link List} of unpaid {@link Exam}s from a given {@code patientID}.
      * <p>
      * An {@link Exam} is considered unpaid if it has been done, but the ticket hasn't been paid yet.

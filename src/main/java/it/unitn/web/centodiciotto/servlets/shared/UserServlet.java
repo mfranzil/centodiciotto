@@ -13,6 +13,7 @@ import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ import java.sql.Timestamp;
 import java.util.logging.Logger;
 
 /**
- * UserSerlvet for handling requests to /restricted/user.
+ * UserServlet for handling requests to /restricted/user.
  * <p>
  * GET requests pass through.
  * <p>
@@ -37,6 +38,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings({"FieldCanBeLocal", "unused", "DuplicatedCode"})
 @WebServlet("/restricted/user")
+@MultipartConfig
 public class UserServlet extends HttpServlet {
 
     private PhotoDAO photoDAO;
@@ -77,7 +79,13 @@ public class UserServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
-        String requestType = request.getParameter("requestType");
+        String requestType;
+
+        if (request.getContentType().split(";")[0].equals("multipart/form-data")) {
+            requestType = "photoUpload";
+        } else {
+            requestType = request.getParameter("requestType");
+        }
         PrintWriter writer = response.getWriter();
         response.setContentType("application/json");
 
@@ -151,6 +159,7 @@ public class UserServlet extends HttpServlet {
                     Photo photo = new Photo();
                     photo.setPatientID(user.getID());
                     photo.setUploadDate(new Timestamp(System.currentTimeMillis()));
+                    photo.setExtension(extension);
 
                     try {
                         photoDAO.insert(photo);

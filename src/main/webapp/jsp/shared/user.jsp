@@ -189,7 +189,6 @@
                                        name="avatarSelect" id="avatar-select" accept="image/png, image/jpeg">
                                 <label class="custom-file-label" for="avatar-select">Choose file</label>
                                 <input id="extension" type="hidden" name="extension" value="none">
-                                <input type="hidden" name="requestType" value="uploadPhoto">
                             </div>
                             <button class="btn btn-block mt-2 btn-personal" type="submit">
                                 Upload
