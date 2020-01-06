@@ -264,8 +264,8 @@ public class PatientListServlet extends HttpServlet {
                         }
 
                         // Drugs
-                        List<DrugPrescription> prescriptions = drugPrescriptionDAO.getValidByPatient(patientID);
-                        if (!examPatientList.isEmpty()) {
+                        List<DrugPrescription> prescriptions = drugPrescriptionDAO.getLastMonthByPatient(patientID);
+                        if (!prescriptions.isEmpty()) {
                             jsonResponse.add(new HTMLElement().setElementType("h4")
                                     .setElementClass("").setElementContent("Last prescriptions"));
                             jsonResponse.add(new HTMLElement().setElementType("table")

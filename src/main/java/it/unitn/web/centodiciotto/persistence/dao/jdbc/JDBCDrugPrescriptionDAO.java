@@ -37,6 +37,8 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             "WHERE date_prescribed + interval '1 month' >= now() AND patient_id = ? " +
             "AND chemist_id IS NULL AND date_sold IS NULL AND ticket_paid = FALSE " +
             "ORDER BY date_prescribed ASC;";
+    final private String GET_LAST_MONTH_BY_PATIENT = "SELECT * FROM drug_prescription " +
+            " WHERE date_prescribed + interval '1 month' >= now() AND patient_id = ? ORDER BY date_prescribed ASC;";
     final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM drug_prescription " +
             "WHERE patient_id = ? AND chemist_id IS NOT NULL AND date_sold IS NOT NULL AND ticket_paid = FALSE " +
             "ORDER BY date_prescribed ASC;";
@@ -179,6 +181,25 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
             }
         } catch (SQLException e) {
             throw new DAOException("Error getting valid DrugPrescriptions by patient: : ", e);
+        }
+    }
+
+    public List<DrugPrescription> getLastMonthByPatient(String patientID) throws DAOException {
+        List<DrugPrescription> res = new ArrayList<>();
+        DrugPrescription tmp;
+
+        try (PreparedStatement stm = CON.prepareStatement(GET_LAST_MONTH_BY_PATIENT)) {
+            stm.setString(1, patientID);
+
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    tmp = mapRowToEntity(rs);
+                    res.add(tmp);
+                }
+                return res;
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error getting last month DrugPrescriptions by patient: : ", e);
         }
     }
 
