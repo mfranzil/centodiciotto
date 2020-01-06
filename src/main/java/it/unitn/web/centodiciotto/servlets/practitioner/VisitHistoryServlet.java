@@ -212,6 +212,7 @@ public class VisitHistoryServlet extends HttpServlet {
                     try {
                         Visit visit = visitDAO.getByPrimaryKey(visitID);
                         visit.setReport(StringEscapeUtils.escapeHtml4(reportText));
+                        visit.setReportAvailable(true);
                         visitDAO.update(visit);
 
                         Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());

@@ -13,6 +13,7 @@ public class Visit {
     private Boolean reportAvailable;
     private String report;
     private boolean booked;
+    private boolean completed;
 
     /**
      * Is booked boolean.
@@ -138,5 +139,23 @@ public class Visit {
      */
     public void setReport(String report) {
         this.report = report;
+    }
+
+    /**
+     * Is completed boolean.
+     *
+     * @return true if the visit is booked
+     */
+    public boolean getCompleted() {
+        return completed;
+    }
+
+    /**
+     * Sets the completed flag
+     *
+     * @param completed true if the visit is booked
+     */
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

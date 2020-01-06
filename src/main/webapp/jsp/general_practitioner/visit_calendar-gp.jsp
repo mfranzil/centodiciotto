@@ -87,7 +87,7 @@
 
                 <jsp:useBean id="currentDate" class="java.util.Date"/>
 
-                <c:forEach items="${practitionerID.bookedVisits}" var="visit">
+                <c:forEach items="${practitionerID.notDoneVisits}" var="visit">
                     <jsp:setProperty name="patientDAO" property="patientID" value="${visit.patientID}"/>
                     <c:set var="patient" value="${patientDAO.patient}"/>
 
