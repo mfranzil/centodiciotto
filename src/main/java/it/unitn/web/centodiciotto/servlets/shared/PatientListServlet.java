@@ -224,22 +224,26 @@ public class PatientListServlet extends HttpServlet {
                         jsonResponse.add(JSONUtils.createTableEntry("Practitioner", practitioner.toString()));
 
                         // Last visit
-                        Visit lastVisit = visitDAO.getLastByPatient(patientID);
-                        if (lastVisit != null) {
-                            GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(
-                                    lastVisit.getPractitionerID());
+                        List<Visit> visitList = visitDAO.getDoneByPatient(patientID);
 
+                        if (!visitList.isEmpty()) {
                             jsonResponse.add(new HTMLElement().setElementType("h4")
-                                    .setElementClass("").setElementContent("Last visit"));
+                                    .setElementClass("").setElementContent("Last visits"));
                             jsonResponse.add(new HTMLElement().setElementType("table")
                                     .setElementClass("table table-unresponsive").setElementContent(""));
 
-                            jsonResponse.add(JSONUtils.createTableEntry("Date",
-                                    CustomDTFormatter.formatDateTime(lastVisit.getDate())));
-                            jsonResponse.add(JSONUtils.createTableEntry("Practitioner",
-                                    visitPractitioner.toString()));
-                            jsonResponse.add(JSONUtils.createTableEntry("Report",
-                                    lastVisit.getReport()));
+                            for (Visit visit : visitList) {
+                                GeneralPractitioner visitPractitioner = practitionerDAO.getByPrimaryKey(
+                                        visit.getPractitionerID());
+                                jsonResponse.add(JSONUtils.createTableEntry("Date",
+                                        CustomDTFormatter.formatDateTime(visit.getDate())));
+                                jsonResponse.add(JSONUtils.createTableEntry("Practitioner",
+                                        visitPractitioner.toString()));
+                                jsonResponse.add(JSONUtils.createTableEntry("Report",
+                                        visit.getReport()));
+                                jsonResponse.add(JSONUtils.createTableEntry("", ""));
+                            }
+
                         }
 
                         // Last exam
