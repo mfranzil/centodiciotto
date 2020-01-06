@@ -210,6 +210,7 @@ public class PatientListServlet extends HttpServlet {
 
                         jsonResponse.add(JSONUtils.createTableEntry("Name", patient.getFirstName()));
                         jsonResponse.add(JSONUtils.createTableEntry("Surname", patient.getLastName()));
+                        jsonResponse.add(JSONUtils.createTableEntry("Email", patient.getID()));
                         jsonResponse.add(JSONUtils.createTableEntry("SSN", patient.getSSN()));
                         jsonResponse.add(JSONUtils.createTableEntry("Gender",
                                 patient.getFullGender()));
