@@ -94,8 +94,8 @@ public class ExamHistoryServlet extends HttpServlet {
                             examHistoryElements.add(new ExamHistoryElement(
                                     exam.getType().getDescription(),
                                     CustomDTFormatter.formatDateTime(exam.getDate()),
-                                    exam.getDone(),
-                                    new HTMLAction("See report", exam.getDone()),
+                                    exam.getResult()!=null,
+                                    new HTMLAction("See report", exam.getResult()!=null),
                                     exam.getID()));
                         }
 
