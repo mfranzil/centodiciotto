@@ -148,7 +148,7 @@ public class UserServlet extends HttpServlet {
                     Part filePart = request.getPart("avatarSelect");
                     String extension = request.getParameter("extension");
 
-                    if (filePart == null || extension == null) {
+                    if (filePart == null || extension == null || filePart.getSize() == 0) {
                         response.setStatus(400);
                         String json = "{\"error\": \"File upload failed. Please try again.\"}";
                         writer.write(json);
