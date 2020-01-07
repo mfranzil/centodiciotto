@@ -26,6 +26,6 @@ $("document").ready(() => {
 
         setTimeout(() => {
             message.html("Change your password").css("background-color", "");
-        }, 2000);
+        }, 500);
     });
 });

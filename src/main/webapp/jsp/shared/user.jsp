@@ -171,7 +171,7 @@
                         <input class="form-control mb-2" id="new-password-confirm" name="newPasswordConfirm"
                                placeholder="Confirm your new password"
                                required type="password">
-                        <input type="hidden" name="requestType" value="request">
+                        <input type="hidden" name="requestType" value="passwordChange">
                     </div>
                     <button id="password-change-button" class="btn btn-block mt-2 btn-personal" disabled type="submit">
                         Change password

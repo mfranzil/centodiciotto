@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class JDBCUserDAO extends JDBCDAO<User, String> implements UserDAO {
 
     final private String INSERT = "INSERT INTO user_ (user_id, hash, salt) values (?, ?, ?);";
-    final private String UPDATE = "UPDATE user_ SET hash = ? AND salt = ? WHERE user_id = ?;";
+    final private String UPDATE = "UPDATE user_ SET hash = ?, salt = ? WHERE user_id = ?;";
     final private String DELETE = "DELETE FROM user_ WHERE user_id = ?;";
 
     final private String GET_BY_PRIMARY_KEY = "SELECT * FROM user_ WHERE user_id = ?;";
