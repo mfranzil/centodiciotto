@@ -67,24 +67,30 @@
 
                 $(".popup-opener").off().click(function aw(e) {
                     e.preventDefault();
-                    let form = $('<form />', {
-                        action: url,
-                        method: "POST",
-                        style: "display: none;",
-                        target: "_blank",
-                        id: "pdf"
-                    });
-                    $('<input />', {
-                        type: 'hidden',
-                        name: "prescriptionID",
-                        value: $(this).attr("id").split(/btn-([0-9]*)/)[1]
-                    }).appendTo(form);
-                    $('<input />', {
-                        type: 'hidden',
-                        name: "requestType",
-                        value: "getPrescription"
-                    }).appendTo(form);
-                    form.appendTo(this).submit();
+                    let label = $(this).html();
+
+                    if (label === "Download") {
+                        let form = $('<form />', {
+                            action: url,
+                            method: "POST",
+                            style: "display: none;",
+                            target: "_blank",
+                            id: "pdf"
+                        });
+                        $('<input />', {
+                            type: 'hidden',
+                            name: "prescriptionID",
+                            value: $(this).attr("id").split(/btn-([0-9]*)/)[1]
+                        }).appendTo(form);
+                        $('<input />', {
+                            type: 'hidden',
+                            name: "requestType",
+                            value: "getPrescription"
+                        }).appendTo(form);
+                        form.appendTo(this).submit();
+                    } else if (label === "Pay now") {
+                        window.location = getContextPath() + "restricted/patient/tickets";
+                    }
                 });
             }
         });

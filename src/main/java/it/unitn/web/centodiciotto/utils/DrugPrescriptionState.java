@@ -39,10 +39,19 @@ public enum DrugPrescriptionState {
 
     /**
      * Returns the state of the prescription provided.
+     *
      * @param drugPrescription the prescription to check the status
      * @return a {@link DrugPrescriptionState} representing the state
      */
     public static DrugPrescriptionState getState(DrugPrescription drugPrescription) {
+        if (drugPrescription.getDateSold() != null && drugPrescription.getChemistID() != null) {
+            if (!drugPrescription.getTicketPaid()) {
+                return UNPAID;
+            } else {
+                return PAID;
+            }
+        }
+
         Timestamp ts = drugPrescription.getDatePrescribed();
         Calendar cal = Calendar.getInstance();
         cal.setTime(ts);
@@ -51,14 +60,6 @@ public enum DrugPrescriptionState {
 
         if (ts.before(new Timestamp(System.currentTimeMillis()))) {
             return EXPIRED;
-        }
-
-        if (drugPrescription.getDateSold() != null && drugPrescription.getChemistID() != null) {
-            if (!drugPrescription.getTicketPaid()) {
-                return UNPAID;
-            } else {
-                return PAID;
-            }
         }
 
         return AVAILABLE;

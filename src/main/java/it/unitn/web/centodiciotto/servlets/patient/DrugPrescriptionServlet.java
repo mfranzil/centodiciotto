@@ -108,11 +108,23 @@ public class DrugPrescriptionServlet extends HttpServlet {
                             GeneralPractitioner practitioner =
                                     practitionerDAO.getByPrimaryKey(drugPrescription.getPractitionerID());
                             DrugPrescriptionState state = DrugPrescriptionState.getState(drugPrescription);
+
+                            HTMLAction action;
+                            if (state == DrugPrescriptionState.AVAILABLE) {
+                                action = new HTMLAction("Download", true);
+                            } else if (state == DrugPrescriptionState.EXPIRED) {
+                                action = new HTMLAction("Expired", false);
+                            } else if (state == DrugPrescriptionState.UNPAID) {
+                                action = new HTMLAction("Pay now", true);
+                            } else {
+                                action = new HTMLAction("Paid", false);
+                            }
+
                             drugPrescriptionElements.add(new PrescriptionElement(
                                     practitioner.toString(),
                                     CustomDTFormatter.formatDateTime(drugPrescription.getDatePrescribed()),
                                     state.toString(),
-                                    new HTMLAction("Download", state == DrugPrescriptionState.AVAILABLE),
+                                    action,
                                     drugPrescription.getID()
                             ));
                         }

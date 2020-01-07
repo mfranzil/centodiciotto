@@ -8,9 +8,8 @@ import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 /**
@@ -31,8 +30,6 @@ public class EmailService {
     private final transient String username;
     private final transient String password;
 
-    private transient ExecutorService executorService;
-
     private EmailService() throws ServiceException {
         Properties data = new Properties();
         InputStream stream = EmailService.class.getClassLoader().getResourceAsStream("email.properties");
@@ -48,7 +45,7 @@ public class EmailService {
             username = data.getProperty("smtp-username");
             password = data.getProperty("smtp-password");
 
-            sender = new InternetAddress(username, username.trim());
+            sender = new InternetAddress(username, "CentoDiciotto");
 
             Properties systemProperties = System.getProperties();
 
@@ -64,8 +61,6 @@ public class EmailService {
         } catch (IOException e) {
             throw new ServiceException("Error sending email", e);
         }
-
-        executorService = Executors.newCachedThreadPool();
     }
 
     /**
@@ -97,9 +92,6 @@ public class EmailService {
 
     /**
      * Sends an email.
-     * <p>
-     * The method creates a new {@link Runnable} for the outgoing message and dispatches it immediately to
-     * a {@link Thread}.
      *
      * @param recipient the recipient
      * @param message   the message
@@ -107,28 +99,47 @@ public class EmailService {
      * @throws ServiceException in case of error during processing
      */
     public void sendEmail(final String recipient, final String message, final String subject) throws ServiceException {
-        var throwableWrapper = new Object() {
-            Throwable tr = null;
-        };
+        try {
+            process(new Address[]{new InternetAddress(recipient, recipient.trim())}, message, subject);
+        } catch (Exception e) {
+            throw new ServiceException(e);
+        }
+    }
 
-        Runnable runnable = () -> {
+    /**
+     * Sends an email to multiple recipients.
+     *
+     * @param recipients the recipients
+     * @param message    the message
+     * @param subject    the subject
+     * @throws ServiceException in case of error during processing
+     */
+    public void sendMultipleEmails(final String[] recipients, final String message, final String subject) throws ServiceException {
+        Address[] cc = new Address[recipients.length];
+
+        for (int i = 0; i < recipients.length; i++) {
+            String rec = recipients[i].replace('à', 'a')
+                    .replace('ò', 'o')
+                    .replace('ì', 'i')
+                    .replace('è', 'e')
+                    .replace('ù', 'u');
             try {
-                process(recipient, message, subject);
-            } catch (Exception e) {
-                throwableWrapper.tr = e;
+                cc[i] = new InternetAddress(rec, rec.trim());
+            } catch (UnsupportedEncodingException e) {
+                throw new ServiceException("Unknown encoding for address " + recipients[i], e);
             }
-        };
+        }
 
-        executorService.execute(runnable);
-
-        if (throwableWrapper.tr != null) {
-            throw new ServiceException(throwableWrapper.tr);
+        try {
+            process(cc, message, subject);
+        } catch (Exception e) {
+            throw new ServiceException(e);
         }
     }
 
     @SuppressWarnings("StringBufferReplaceableByString")
-    private synchronized void process(String recipient, String message, String subject)
-            throws MessagingException, UnsupportedEncodingException {
+    private void process(Address[] recipients, String message, String subject)
+            throws MessagingException {
         StringBuilder plainTextMessageBuilder = new StringBuilder();
         plainTextMessageBuilder.append(message).append("\n");
 
@@ -149,9 +160,14 @@ public class EmailService {
         multipart.addBodyPart(messageBodyPart2);
 
         Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress(recipient, "CentoDiciotto"));
+        msg.setFrom(sender);
 
-        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient, recipient.trim()));
+        if (recipients.length == 1) {
+            msg.setRecipient(Message.RecipientType.TO, recipients[0]);
+        } else {
+            msg.addRecipients(Message.RecipientType.BCC, recipients);
+        }
+
         msg.setRecipient(Message.RecipientType.CC, sender);
 
         msg.setSubject(subject);
@@ -163,6 +179,7 @@ public class EmailService {
         msg.saveChanges();
         transport.sendMessage(msg, msg.getAllRecipients());
 
-        Logger.getLogger("C18").info("Email sent to " + recipient + " with subject " + subject);
+        Logger.getLogger("C18").info("Email sent to " + Arrays.toString(recipients)
+                + " with subject " + subject);
     }
 }

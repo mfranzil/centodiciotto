@@ -27,6 +27,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -137,6 +138,7 @@ public class RecallServlet extends HttpServlet {
                 }
                 case "newRecall": {
                     try {
+                        System.out.println(request.getParameter("minAge"));
                         Integer examID = Integer.valueOf(request.getParameter("examID"));
                         Integer minAge = Integer.valueOf(request.getParameter("minAge"));
                         Integer maxAge = Integer.valueOf(request.getParameter("maxAge"));
@@ -166,7 +168,11 @@ public class RecallServlet extends HttpServlet {
                             List<Patient> allPatients = patientDAO.getByProvince(
                                     ((HealthService) user).getOperatingProvince().getID());
 
-                            for (Patient patient : allPatients) {
+                            String[] recipients = new String[allPatients.size()];
+
+                            for (int i = 0; i < allPatients.size(); i++) {
+                                Patient patient = allPatients.get(i);
+                                recipients[i] = patient.getID();
                                 if (isWithinAgeRange(patient.getBirthDate(), minAge, maxAge)) {
                                     Exam pending = examDAO.getPendingRecallByHSPatientType(
                                             user.getID(), patient.getID(), examType.getID());
@@ -184,7 +190,6 @@ public class RecallServlet extends HttpServlet {
 
                                         examDAO.insert(exam);
 
-                                        recipient = patient.getID();
                                         message = "Dear " + patient.toString() + ",\n\n" +
                                                 "a recall was just started in your local SSP area for this exam:\n\n" +
                                                 examType.getDescription() + "\n\nPlease contact a Specialized Doctor " +
@@ -192,11 +197,11 @@ public class RecallServlet extends HttpServlet {
                                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                                         subject = "CentoDiciotto - Recall exam notification";
 
-                                        // Notifies the patient of the incoming recall
-                                        emailService.sendEmail(recipient, message, subject);
                                     }
                                 }
                             }
+                            // Notifies all patients of the incoming recall
+                            emailService.sendMultipleEmails(recipients, message, subject);
 
                             writer.write("{}");
                         } else {
@@ -213,7 +218,8 @@ public class RecallServlet extends HttpServlet {
                         response.setStatus(400);
                         String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
                         writer.write(json);
-                        Logger.getLogger("C18").severe(json);
+                        System.out.println(Arrays.toString(e.getStackTrace()));
+                        Logger.getLogger("C18").severe(json );
                         return;
                     }
                     break;
