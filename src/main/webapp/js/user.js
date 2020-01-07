@@ -33,14 +33,14 @@ $("document").ready(() => {
 
     $("#avatar-select").on("change", function () {
         const filename = $("#avatar-select").val();
-
+        /*
         if (filename === "" || typeof filename === "undefined") {
             alert("Please upload a photo in PNG or JPG format.");
             return;
         }
-
+        */
         let extension = filename.replace(/^.*\./, "").toLowerCase();
-
+        /*
         if (extension === filename || extension !== 'jpg' || extension !== 'png') {
             $("#upload-avatar").prop("disabled", true);
             alert("Please upload a photo in PNG or JPG format.");
@@ -48,7 +48,10 @@ $("document").ready(() => {
         } else {
             $("#upload-avatar").prop("disabled", false);
         }
-
+        */
+        if(filename != null && filename != ""){
+            $("#upload-avatar").prop("disabled", false);
+        }
         $("#extension").attr("value", extension);
         $(this).next(".custom-file-label").html(filename.replace("C:\\fakepath\\", ""));
     });
