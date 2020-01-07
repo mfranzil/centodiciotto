@@ -216,12 +216,12 @@ public class PatientDAOBean implements Serializable {
     }
 
     /**
-     * Gets this {@link Patient}'s unpaid {@link Exam}s.
+     * Gets this {@link Patient}'s done {@link Exam}s.
      *
-     * @return the {@link Patient}'s unpaid {@link Exam}s
+     * @return the {@link Patient}'s done {@link Exam}s
      * @throws BeanException thrown for any generic exception
      */
-    public List<Exam> getUnpaidExams() throws BeanException {
+    public List<Exam> getDoneExams() throws BeanException {
         List<Exam> exams;
 
         if (patientID == null) {
@@ -229,7 +229,7 @@ public class PatientDAOBean implements Serializable {
         }
 
         try {
-            exams = examDAO.getUnpaidByPatient(patientID);
+            exams = examDAO.getDoneByPatient(patientID);
         } catch (DAOException e) {
             throw new BeanException("Error getting unpaid Exams in patientDaoBean: ", e);
         }

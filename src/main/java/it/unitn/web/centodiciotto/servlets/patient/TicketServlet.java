@@ -175,7 +175,7 @@ public class TicketServlet extends HttpServlet {
                     try {
                         List<ExamTicketListElement> examTicketListElements = new ArrayList<>();
 
-                        List<Exam> examList = examDAO.getNotPendingByPatient(user.getID());
+                        List<Exam> examList = examDAO.getDoneByPatient(user.getID());
                         for (Exam exam : examList) {
                             if (exam.getHealthServiceID() != null) {
 

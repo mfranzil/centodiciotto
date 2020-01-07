@@ -5,6 +5,8 @@
  */
 
 $("document").ready(() => {
+    $("#upload-avatar").prop("disabled", true);
+
     $("#password-change").submit(function (e) {
         e.preventDefault();
         let form = $(this);
@@ -31,12 +33,20 @@ $("document").ready(() => {
 
     $("#avatar-select").on("change", function () {
         const filename = $("#avatar-select").val();
-        let extension = filename.replace(/^.*\./, "");
 
-        if (extension === filename) {
-            extension = "";
+        if (filename === "" || typeof filename === "undefined") {
+            alert("Please upload a photo in PNG or JPG format.");
+            return;
+        }
+
+        let extension = filename.replace(/^.*\./, "").toLowerCase();
+
+        if (extension === filename || extension !== 'jpg' || extension !== 'png') {
+            $("#upload-avatar").prop("disabled", true);
+            alert("Please upload a photo in PNG or JPG format.");
+            return;
         } else {
-            extension = extension.toLowerCase();
+            $("#upload-avatar").prop("disabled", false);
         }
 
         $("#extension").attr("value", extension);
@@ -47,6 +57,7 @@ $("document").ready(() => {
         e.preventDefault();
         let form = $(this);
         let url = form.attr("action");
+
 
         $.ajax({
             type: "POST",

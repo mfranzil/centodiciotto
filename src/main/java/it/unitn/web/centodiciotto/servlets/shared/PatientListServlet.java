@@ -9,6 +9,7 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
+import it.unitn.web.centodiciotto.utils.DrugPrescriptionState;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 import it.unitn.web.centodiciotto.utils.json.JSONResult;
@@ -255,10 +256,16 @@ public class PatientListServlet extends HttpServlet {
                                     .setElementClass("table table-unresponsive").setElementContent(""));
 
                             for (Exam exam : examPatientList) {
-                                jsonResponse.add(JSONUtils.createTableEntry("Date",
-                                        CustomDTFormatter.formatDateTime(exam.getDate())));
-                                jsonResponse.add(JSONUtils.createTableEntry("Description",
-                                        exam.getType().getDescription()));
+                                jsonResponse.add(JSONUtils.createTableEntry("Exam", exam.getType().getDescription()));
+
+                                String date;
+                                if (exam.getDate() == null) {
+                                    date = "Pending";
+                                } else {
+                                    date = CustomDTFormatter.formatDateTime(exam.getDate());
+                                }
+
+                                jsonResponse.add(JSONUtils.createTableEntry("Date", date));
 
                                 if (exam.getResult() != null) {
                                     jsonResponse.add(JSONUtils.createTableEntry("Result", exam.getResult()));
@@ -269,18 +276,20 @@ public class PatientListServlet extends HttpServlet {
                         }
 
                         // Drugs
-                        List<DrugPrescription> prescriptions = drugPrescriptionDAO.getByPatient(patientID);
-                        if (!prescriptions.isEmpty()) {
+                        List<DrugPrescription> prescriptionList = drugPrescriptionDAO.getByPatient(patientID);
+                        if (!prescriptionList.isEmpty()) {
                             jsonResponse.add(new HTMLElement().setElementType("h4")
                                     .setElementClass("").setElementContent("Last prescriptions"));
                             jsonResponse.add(new HTMLElement().setElementType("table")
                                     .setElementClass("table table-unresponsive").setElementContent(""));
 
-                            for (DrugPrescription prescription : prescriptions) {
+                            for (DrugPrescription prescription : prescriptionList) {
                                 jsonResponse.add(JSONUtils.createTableEntry("Prescription date",
                                         CustomDTFormatter.formatDate(prescription.getDatePrescribed())));
-                                jsonResponse.add(JSONUtils.createTableEntry("Drug description",
+                                jsonResponse.add(JSONUtils.createTableEntry("Drug",
                                         prescription.getType().getDescription()));
+                                jsonResponse.add(JSONUtils.createTableEntry("Status",
+                                        DrugPrescriptionState.getState(prescription).toString()));
                                 if (prescription.getDescription() != null) {
                                     jsonResponse.add(JSONUtils.createTableEntry("Description",
                                             prescription.getDescription()));

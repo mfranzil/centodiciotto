@@ -190,7 +190,7 @@
                                 <label class="custom-file-label" for="avatar-select">Choose file</label>
                                 <input id="extension" type="hidden" name="extension" value="none">
                             </div>
-                            <button class="btn btn-block mt-2 btn-personal" type="submit">
+                            <button class="btn btn-block mt-2 btn-personal" id="upload-avatar" type="submit">
                                 Upload
                             </button>
                         </form>

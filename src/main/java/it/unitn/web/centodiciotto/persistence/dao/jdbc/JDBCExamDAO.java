@@ -32,10 +32,8 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     final private String COUNT = "SELECT COUNT(*) FROM exam;";
 
     final private String GET_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? ORDER BY date desc";
-    final private String GET_BY_PATIENT_LAST_YEAR = "SELECT * FROM exam WHERE date <= localtimestamp AND " +
-            "date > localtimestamp - interval '1 year' AND patient_id = ? ORDER BY date desc;";
-    final private String GET_UNPAID_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
-            "AND ticket_paid = FALSE AND done = TRUE ORDER BY date desc";
+    final private String GET_DONE_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
+            "AND done = TRUE ORDER BY date desc";
     final private String GET_NOT_PENDING_BY_PATIENT = "SELECT * FROM exam WHERE patient_id = ? " +
             "AND date IS NOT NULL ORDER BY date desc";
 
@@ -221,10 +219,10 @@ public class JDBCExamDAO extends JDBCDAO<Exam, Integer> implements ExamDAO {
     }
 
     @Override
-    public List<Exam> getUnpaidByPatient(String patientID) throws DAOException {
+    public List<Exam> getDoneByPatient(String patientID) throws DAOException {
         List<Exam> res = new ArrayList<>();
         Exam tmp;
-        try (PreparedStatement stm = CON.prepareStatement(GET_UNPAID_BY_PATIENT)) {
+        try (PreparedStatement stm = CON.prepareStatement(GET_DONE_BY_PATIENT)) {
             stm.setString(1, patientID);
 
             try (ResultSet rs = stm.executeQuery()) {
