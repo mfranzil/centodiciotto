@@ -12,7 +12,11 @@
     <style>
         @media (min-width: 992px) {
             .table-cell.pract {
-                width: 30%;
+                width: 20%;
+            }
+
+            .table-cell.drug {
+                width: 15%;
             }
 
             .table-cell.date {
@@ -20,7 +24,7 @@
             }
 
             .table-cell.state {
-                width: 25%;
+                width: 20%;
             }
 
             .table-cell.action {
@@ -33,7 +37,8 @@
             const url = window.location.href;
 
             let tableHeaders = [
-                {field: "pract", type: "string", text: "Exam"},
+                {field: "pract", type: "string", text: "Practitioner"},
+                {field: "drug", type: "string", text: "Drug"},
                 {field: "date", type: "string", text: "Date"},
                 {field: "state", type: "string", text: "State"},
                 {field: "action", type: "button", text: "&nbsp;"}

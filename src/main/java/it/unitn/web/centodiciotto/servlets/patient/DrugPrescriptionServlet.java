@@ -122,6 +122,7 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
                             drugPrescriptionElements.add(new PrescriptionElement(
                                     practitioner.toString(),
+                                    drugPrescription.getType().getDescription(),
                                     CustomDTFormatter.formatDateTime(drugPrescription.getDatePrescribed()),
                                     state.toString(),
                                     action,
@@ -208,6 +209,7 @@ public class DrugPrescriptionServlet extends HttpServlet {
      */
     private static class PrescriptionElement implements Serializable {
         private String pract;
+        private String drug;
         private String date;
         private String state;
         private HTMLAction action;
@@ -222,8 +224,9 @@ public class DrugPrescriptionServlet extends HttpServlet {
          * @param action the action
          * @param ID     the id
          */
-        PrescriptionElement(String pract, String date, String state, HTMLAction action, Integer ID) {
+        PrescriptionElement(String pract, String drug, String date, String state, HTMLAction action, Integer ID) {
             this.pract = pract;
+            this.drug = drug;
             this.date = date;
             this.state = state;
             this.action = action;
