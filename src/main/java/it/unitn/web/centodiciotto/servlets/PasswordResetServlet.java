@@ -7,6 +7,7 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.centodiciotto.services.CryptoService;
 import it.unitn.web.centodiciotto.services.EmailService;
+import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 
 import javax.servlet.ServletException;
@@ -55,6 +56,13 @@ public class PasswordResetServlet extends HttpServlet {
             prDAO = daoFactory.getDAO(PasswordResetDAO.class);
         } catch (DAOFactoryException e) {
             throw new ServletException("Error in DAO retrieval: ", e);
+        }
+
+        try {
+            cryptoService = CryptoService.getInstance();
+            emailService = EmailService.getInstance();
+        } catch (ServiceException e) {
+            throw new ServletException("Error in initializing services: ", e);
         }
 
         contextPath = getServletContext().getContextPath();
