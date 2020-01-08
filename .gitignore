@@ -10,10 +10,6 @@ etc/
 .classpath
 .project
 
-# Config file
-resources/
-*.properties
-
 # Compiled class file
 *.class
 
