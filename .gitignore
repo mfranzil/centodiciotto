@@ -10,6 +10,9 @@ etc/
 .classpath
 .project
 
+src/main/resources/database.properties
+src/main/resources/email.properties
+
 # Compiled class file
 *.class
 

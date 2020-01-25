@@ -109,7 +109,7 @@ These instructions will get you a copy of the project up and running on your loc
   3. Copy the `dump.sql` file in the current folder and restore the database
 
      ```console
-        psql centodiciotto < dump.sql
+     psql centodiciotto < dump.sql
      ```
 
 ## Resource files
@@ -118,7 +118,7 @@ Two resource files are required for this project. Please place them into `src/ma
 
 ### database.properties
 
-> A PostgresSQL database is required in this current version. Please change the JDBC driver accordingly if you wish to use a different service.
+> A PostgresSQL database is required in this version. Please change the JDBC driver accordingly if you wish to use a different service.
 
 ```text
 HostName=
@@ -129,7 +129,7 @@ Password=
 
 ### email.properties
 
-> A Gmail account is currently used in this version. Other email providers should work without extra modifcations.
+> Gmail users should take extra caution due to the "Insecure apps" settings that might interfere with the package. Please log in as the Gmail account and authorize the usage of non secure apps before trying to start up the server. Other email providers should work without extra modifcations.
 
 ```text
 smtp-hostname=
@@ -174,4 +174,4 @@ The following is a list of requirements for the project.
 
 This project is licensed under the MIT License - see the [LICENCE](LICENCE) file for details
 
-© CentoDiciotto 2020
+`© CentoDiciotto 2020`
