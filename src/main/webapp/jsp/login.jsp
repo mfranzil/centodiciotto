@@ -8,6 +8,7 @@
     <%@ include file="/jsp/fragments/head.jsp" %>
     <link href="${pageContext.request.contextPath}/css/login.css" rel="stylesheet" type="text/css">
     <script src="${pageContext.request.contextPath}/js/login.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
 <%@ include file="/jsp/fragments/nav.jsp" %>
@@ -78,6 +79,8 @@
             </div>
             <input name="role" id="role" type="hidden" value="none">
             <input name="referrer" id="referrer" type="hidden" value="${param.referrer}">
+            <div align="center" class="g-recaptcha" data-sitekey="6LdazG4aAAAAAA159B3FAnWj4KdaaK0VRsMr68d7"></div>
+            <br/>
             <button class="btn btn-lg btn-block btn-personal" id="form-name" type="submit">Login</button>
             <button class="btn btn-lg btn-block btn-secondary popup-closer" type="button" id="close-form">Cancel
             </button>

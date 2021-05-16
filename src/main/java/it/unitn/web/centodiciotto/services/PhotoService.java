@@ -9,7 +9,7 @@ import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
