@@ -56,7 +56,7 @@ public class WebAppContextListener implements ServletContextListener {
             sc.setAttribute("resourceServer", resourceServer);
             sc.setAttribute("imageServer", resourceServer + "/img");
             sc.setAttribute("excelServer", resourceServer + "/xls");
-            sc.setAttribute("pdfServer", resourceServer + "/pdf");
+            sc.setAttribute("pdfServer", "/centodiciotto/pdf");
 
 
         } catch (ServiceException e) {

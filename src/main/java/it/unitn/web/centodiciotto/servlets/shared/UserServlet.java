@@ -11,7 +11,6 @@ import it.unitn.web.centodiciotto.services.CryptoService;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,9 +18,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.logging.Logger;
 
@@ -165,6 +168,14 @@ public class UserServlet extends HttpServlet {
                         photoDAO.insert(photo);
 
                         String fileName = photo.getID() + "." + extension;
+                        String path = photoService.getPatientAvatarFolder(user.getID());
+
+                        URL outputURL = new URL(path + "/" + fileName);
+                        HttpURLConnection outputConn = (HttpURLConnection) outputURL.openConnection();
+                        outputConn.setDoOutput(true);
+                        outputConn.setRequestMethod("PUT");
+
+                        /*
                         String path = getServletContext().getRealPath("/")
                                 + photoService.getPatientAvatarFolder(user.getID());
 
@@ -179,19 +190,19 @@ public class UserServlet extends HttpServlet {
 
                         while ((read = filecontent.read(bytes)) != -1) {
                             out.write(bytes, 0, read);
-                        }
+                        }*/
 
                         writer.write("{\"output\": true}");
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
-                    } finally {
+                    } /*finally {
                         if (out != null) {
                             out.close();
                         }
                         if (filecontent != null) {
                             filecontent.close();
                         }
-                    }
+                    }*/
                 }
                 break;
             }

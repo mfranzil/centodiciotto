@@ -4,13 +4,12 @@ import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.services.ExcelService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.File;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -78,9 +77,8 @@ public class ReportServlet extends HttpServlet {
                     return;
                 }
 
-                String reportPath = getServletContext().getContextPath() + File.separator +
-                        excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
-                                includeDoctorExams, includeHealthServiceExams, includePrescriptions);
+                String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
+                        includeDoctorExams, includeHealthServiceExams, includePrescriptions);
 
                 writer.write("{\"path\": \"" + reportPath.replace("\\", "\\\\") + "\"}");
             } catch (ParseException e) {

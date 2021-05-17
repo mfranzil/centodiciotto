@@ -16,7 +16,7 @@ $("document").ready(() => {
     $(".hover-button").click(function () {
         let id = this.id;
         let role = getNameFromID(id);
-        $("#form-image").attr("src", imageServer + "classes/" + id + ".png");
+        $("#form-image").attr("src", imageServer + "/classes/" + id + ".png");
         $("#form-name").html("Log in as " + role);
         $("#form-window").show();
         //$(".container,nav,.footer").css("filter", "blur(2px)");

@@ -5,11 +5,13 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import jakarta.servlet.ServletContext;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 
-import jakarta.servlet.ServletContext;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -185,15 +187,37 @@ public class ExcelService {
             String fileName = healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
 
+            URL inputURL = new URL(filePath + "report.xlsx");
+            HttpURLConnection inputConn = (HttpURLConnection) inputURL.openConnection();
+            inputConn.setRequestMethod("GET");
 
-            try (InputStream is = new FileInputStream(filePath + "report.xlsx")) {
-                try (OutputStream os = new FileOutputStream(filePath + fileName)) {
+            try (InputStream is = inputConn.getInputStream()) {
+                URL outputURL = new URL(filePath + fileName);
+                HttpURLConnection outputConn = (HttpURLConnection) outputURL.openConnection();
+                outputConn.setDoOutput(true);
+                outputConn.setRequestMethod("PUT");
+                try (OutputStream os = outputConn.getOutputStream()) {
                     Context context = new Context();
                     context.putVar("report", report);
                     context.putVar("entries", entries);
                     JxlsHelper.getInstance().processTemplate(is, os, context);
                 }
             }
+
+            /*
+            inputConn.setConnectTimeout(5000);
+            inputConn.setReadTimeout(5000);
+
+            con.setInstanceFollowRedirects(false);
+
+            int status = con.getResponseCode();
+
+            if (status == HttpURLConnection.HTTP_MOVED_TEMP
+                    || status == HttpURLConnection.HTTP_MOVED_PERM) {
+                String location = con.getHeaderField("Location");
+                URL newUrl = new URL(location);
+                con = (HttpURLConnection) newUrl.openConnection();
+            }*/
 
             return sc.getAttribute("excelServer") + File.separator + fileName;
         } catch (DAOException e) {

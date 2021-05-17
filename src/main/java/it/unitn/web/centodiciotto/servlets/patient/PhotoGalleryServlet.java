@@ -66,10 +66,10 @@ public class PhotoGalleryServlet extends HttpServlet {
 
 
         if (user instanceof Patient) {
-            Integer photoID;
+            int photoID;
 
             try {
-                photoID = Integer.valueOf(request.getParameter("photoID"));
+                photoID = Integer.parseInt(request.getParameter("photoID"));
             } catch (NumberFormatException | NullPointerException e) {
                 response.setStatus(400);
                 String json = "{\"error\": \"Malformed input. Please try the photo again.\"}";

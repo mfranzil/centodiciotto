@@ -8,9 +8,11 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
-
 import jakarta.servlet.ServletContext;
-import java.io.File;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,6 +81,7 @@ public class PhotoService {
      * @throws ServiceException in case of error during processing
      */
     public String getLastPhoto(String patientID) throws ServiceException {
+        System.out.println("getLastPhoto(" + patientID + ")");
         Photo photo;
 
         if (patientID == null) {
@@ -136,19 +139,18 @@ public class PhotoService {
         String avatarFolder = getAvatarFolder();
 
         if (photo == null) {
-            return avatarFolder + File.separator + "default.png";
+            return avatarFolder + "/default.png";
         }
 
         String patientAvatarFolder = getPatientAvatarFolder(photo.getPatientID());
 
-        String systemPath = sc.getRealPath("/");
-        String photoPath = patientAvatarFolder + File.separator + photo.getID();
+        String photoPath = patientAvatarFolder + "/" + photo.getID();
 
-        if (new File(systemPath + photoPath +  "." + photo.getExtension()).exists()) {
+        if (photoExists(photoPath + "." + photo.getExtension())) {
             return photoPath.replace('\\', '/')
                     .replace("//", "/") + "." + photo.getExtension();
         } else {
-            return avatarFolder + File.separator + "default.png";
+            return avatarFolder + "/default.png";
         }
     }
 
@@ -169,5 +171,21 @@ public class PhotoService {
      */
     public String getPatientAvatarFolder(String patientID) {
         return sc.getAttribute("imageServer") + "/avatars/" + patientID;
+    }
+
+    public boolean photoExists(String URL) {
+/*        System.out.println(sc.getRealPath("/").replace("\\centodiciotto\\", "") + URL);
+        return new File(sc.getRealPath("/").replace("\\centodiciotto\\", "")
+                + URL).exists();*/
+
+        try {
+            URL url = new URL(URL);
+            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
+            int responseCode = huc.getResponseCode();
+            return HttpURLConnection.HTTP_OK == responseCode;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
