@@ -7,11 +7,11 @@
             class="navbar-brand white navbar-toggler navbar-button-personal"
             data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <img id="logo" class="navbar-logo" src="${pageContext.request.contextPath}/img/logo_white.svg" alt="">
+        <img id="logo" class="navbar-logo" src="${initParam['image-server']}/logo_white.svg" alt="">
     </button>
 
     <a href="${pageContext.request.contextPath}/">
-        <img class="landscape-logo" src="${pageContext.request.contextPath}/img/logo_white.svg" alt="">
+        <img class="landscape-logo" src="${initParam['image-server']}/logo_white.svg" alt="">
     </a>
 
     <div id="log-menu-open">
@@ -168,7 +168,7 @@
                 <a class="nav-link nav-link-personal"
                    href="${pageContext.request.contextPath}/restricted/logout_handler">
                     Logout
-                    <img src="${pageContext.request.contextPath}/img/logout_white.png" class="nav-icon" alt="Logout">
+                    <img src="${initParam['image-server']}/logout_white.png" class="nav-icon" alt="Logout">
                 </a>
             </div>
         </div>
@@ -189,7 +189,7 @@
             <div id="nav-log" class="nav-item">
                 <a class="nav-link nav-link-personal" href="${pageContext.request.contextPath}/login">
                     Login
-                    <img src="${pageContext.request.contextPath}/img/login_white.png" class="nav-icon" alt="Login">
+                    <img src="${initParam['image-server']}/login_white.png" class="nav-icon" alt="Login">
                 </a>
             </div>
         </div>

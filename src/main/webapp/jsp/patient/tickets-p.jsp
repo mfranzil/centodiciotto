@@ -183,7 +183,7 @@
                 <div id="exam-table"></div>
                 <div class="justify-content-center loading" id="exam-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
+                         src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
                 </div>
             </div>
         </div>
@@ -197,7 +197,7 @@
                 <div id="prescription-table"></div>
                 <div class="justify-content-center loading" id="prescription-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
+                         src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
                 </div>
             </div>
         </div>

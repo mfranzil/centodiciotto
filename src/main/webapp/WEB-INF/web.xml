@@ -14,9 +14,14 @@
         <param-value>pdf</param-value>
     </context-param>
     <context-param>
-        <description>The folder where Excel files are saved.</description>
+        <description>The folder where Excel files are saved. (usato dentro i servlet)</description>
         <param-name>excel-folder</param-name>
         <param-value>xls</param-value>
+    </context-param>
+    <context-param>
+        <description>The folder where all images are saved.</description>
+        <param-name>image-server</param-name>
+        <param-value>/centodiciotto/img</param-value>
     </context-param>
 
     <!-- Pages directly served to the user -->

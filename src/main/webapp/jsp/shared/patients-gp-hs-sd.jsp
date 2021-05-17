@@ -171,7 +171,7 @@
                 <div class="justify-content-center loading my-2" id="main-loading-container"
                      style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${pageContext.request.contextPath}/img/logo_blue.svg" alt="Loading..."/>
+                         src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
                 </div>
             </div>
         </div>
