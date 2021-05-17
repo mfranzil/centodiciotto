@@ -11,14 +11,14 @@
 </head>
 <body id="page-top" style="padding-top: 0"> <!-- COZZA CON LA NAVBAR! Non toccare a meno che non sistemiate la nav -->
 <%@ include file="/jsp/fragments/nav.jsp" %>
-<header class="masthead" style="background-image: url(${initParam['image-server']}/landing-page-bg.jpg)">
+<header class="masthead" style="background-image: url(${applicationScope['imageServer']}/landing-page-bg.jpg)">
     <div class="container h-100">
         <div class="row h-100 align-items-center justify-content-center text-center">
             <div class="col-lg-10 align-self-end">
                 <h1 class="text-uppercase text-white font-weight-bold">CentoDiciotto</h1>
             </div>
             <div class="col-lg-8 align-self-baseline">
-                <img class="my-4" src="${initParam['image-server']}/logo_white.svg" style="width: 150px"
+                <img class="my-4" src="${applicationScope['imageServer']}/logo_white.svg" style="width: 150px"
                      alt="Picture of an hospital.">
                 <p class="my-4 white">
                     An all-inclusive platform where your local health service meets patients, doctors and chemists,
@@ -47,7 +47,7 @@
         <div class="row no-gutters">
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="${initParam['image-server']}/portfolio/1.jpg" alt="">
+                    <img class="img-fluid" src="${applicationScope['imageServer']}/portfolio/1.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Patients
@@ -60,7 +60,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="${initParam['image-server']}/portfolio/2.jpg" alt="">
+                    <img class="img-fluid" src="${applicationScope['imageServer']}/portfolio/2.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             General practitioner
@@ -73,7 +73,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="${initParam['image-server']}/portfolio/3.jpg" alt="">
+                    <img class="img-fluid" src="${applicationScope['imageServer']}/portfolio/3.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Specialized doctor
@@ -86,7 +86,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="${initParam['image-server']}/portfolio/4.jpg" alt="">
+                    <img class="img-fluid" src="${applicationScope['imageServer']}/portfolio/4.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Local Health Service
@@ -99,7 +99,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="${initParam['image-server']}/portfolio/5.jpg" alt="">
+                    <img class="img-fluid" src="${applicationScope['imageServer']}/portfolio/5.jpg" alt="">
                     <div class="portfolio-box-caption">
                         <div class="project-category">
                             Chemist's
@@ -112,7 +112,7 @@
             </div>
             <div class="col-lg-4 col-sm-6">
                 <a class="portfolio-box">
-                    <img class="img-fluid" src="${initParam['image-server']}/portfolio/6.jpg" alt="">
+                    <img class="img-fluid" src="${applicationScope['imageServer']}/portfolio/6.jpg" alt="">
                     <div class="portfolio-box-caption p-3">
                         <div class="project-category">
                             National Health Service

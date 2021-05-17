@@ -179,12 +179,12 @@ public class ExcelService {
                 }
             }
 
-            String filePath = sc.getRealPath("/") + File.separator
-                    + sc.getInitParameter("excel-folder") + File.separator;
+            String filePath = sc.getAttribute("excelServer") + File.separator;
 
             // Format: AA_20200101.xlsx
             String fileName = healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
+
 
             try (InputStream is = new FileInputStream(filePath + "report.xlsx")) {
                 try (OutputStream os = new FileOutputStream(filePath + fileName)) {
@@ -195,7 +195,7 @@ public class ExcelService {
                 }
             }
 
-            return sc.getInitParameter("excel-folder") + File.separator + fileName;
+            return sc.getAttribute("excelServer") + File.separator + fileName;
         } catch (DAOException e) {
             throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
         } catch (IOException e) {

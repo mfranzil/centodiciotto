@@ -7,6 +7,7 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.QRCodeCreator;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
+import jakarta.servlet.ServletContext;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -15,7 +16,6 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import jakarta.servlet.ServletContext;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -154,7 +154,7 @@ public class PDFService {
                 220, 220).file();
 
         try {
-            String imagePath = sc.getRealPath("/") + File.separator + "img" + File.separator + "prescription.png";
+            String imagePath  = sc.getAttribute("imageServer") + "/prescription.png";
 
             PDImageXObject QRCode = PDImageXObject.createFromFileByContent(file, doc);
             PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, doc);

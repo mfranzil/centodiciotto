@@ -20,3 +20,7 @@
 <%-- CSS e JS personali --%>
 <link href="${pageContext.request.contextPath}/css/base.css" rel="stylesheet">
 <script src="${pageContext.request.contextPath}/js/base.js"></script>
+<script>
+    const resourceServer = "${applicationScope['resourceServer']}";
+    const imageServer = "${applicationScope['imageServer']}";
+</script>

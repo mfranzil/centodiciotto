@@ -19,27 +19,27 @@
     <div class="icon-container">
         <div class="hover-button" id="patient">
             <img alt="Patient" class="mb-2 icon"
-                 src="${initParam['image-server']}/classes/patient.png">
+                 src="${applicationScope['imageServer']}/classes/patient.png">
             <br>Patient
         </div>
         <div class="hover-button" id="general_practitioner">
             <img alt="General practitioner" class="mb-2 icon"
-                 src="${initParam['image-server']}/classes/general_practitioner.png">
+                 src="${applicationScope['imageServer']}/classes/general_practitioner.png">
             <br>General<br>practitioner
         </div>
         <div class="hover-button" id="specialized_doctor">
             <img alt="Specialized doctor" class="mb-2 icon"
-                 src="${initParam['image-server']}/classes/specialized_doctor.png">
+                 src="${applicationScope['imageServer']}/classes/specialized_doctor.png">
             <br>Specialized<br>doctor
         </div>
         <div class="hover-button" id="chemist">
             <img alt="Chemist's" class="mb-2 icon"
-                 src="${initParam['image-server']}/classes/chemist.png">
+                 src="${applicationScope['imageServer']}/classes/chemist.png">
             <br>Chemist's
         </div>
         <div class="hover-button" id="health_service">
             <img alt="Health Service" class="mb-2 icon"
-                 src="${initParam['image-server']}/classes/health_service.png">
+                 src="${applicationScope['imageServer']}/classes/health_service.png">
             <br>Health Service
         </div>
     </div>
@@ -49,7 +49,7 @@
         <div class="justify-content-center loading" id="loading-container"
              style="text-align: center; display: none !important">
             <img class="rotating" role="status" style="width: 64px"
-                 src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
+                 src="${applicationScope['imageServer']}/logo_blue.svg" alt="Loading..."/>
         </div>
         <form action="${pageContext.request.contextPath}/login" id="login" method="POST">
             <div style="display: flex">

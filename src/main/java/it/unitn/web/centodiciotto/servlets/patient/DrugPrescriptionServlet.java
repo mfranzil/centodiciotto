@@ -161,8 +161,8 @@ public class DrugPrescriptionServlet extends HttpServlet {
                         GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
                         Patient patient = patientDAO.getByPrimaryKey(prescription.getPatientID());
 
-                        String filePath = getServletContext().getRealPath("/") +
-                                getServletContext().getInitParameter("pdf-folder");
+                        String filePath = (String) getServletContext().getAttribute("pdfServer");
+
                         String fileName = prescription.getDatePrescribed().getTime() + "-" + prescription.getID() + ".pdf";
 
                         if (new File(filePath + File.separator + fileName).exists()) {

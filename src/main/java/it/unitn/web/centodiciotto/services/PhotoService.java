@@ -158,7 +158,7 @@ public class PhotoService {
      * @return the avatar folder as a relative path
      */
     public String getAvatarFolder() {
-        return File.separator + sc.getInitParameter("avatar-folder");
+        return sc.getAttribute("imageServer") + "/avatars";
     }
 
     /**
@@ -168,6 +168,6 @@ public class PhotoService {
      * @return the {@link it.unitn.web.centodiciotto.persistence.entities.Patient}'s avatar folder as a relative path
      */
     public String getPatientAvatarFolder(String patientID) {
-        return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;
+        return sc.getAttribute("imageServer") + "/avatars/" + patientID;
     }
 }

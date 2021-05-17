@@ -215,7 +215,7 @@ $("document").ready(() => {
                                 let loadingImage = document.createElement("img");
                                 loadingImage.classList.add("rotating");
                                 loadingImage.style.width = "64px";
-                                loadingImage.src = getContextPath() + "img/logo_blue.svg";
+                                loadingImage.src = imageServer + "/logo_blue.svg";
                                 loadingImage.alt = "Loading";
                                 loading.append(loadingImage);
 

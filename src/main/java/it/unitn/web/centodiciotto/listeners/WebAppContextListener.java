@@ -4,11 +4,14 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.centodiciotto.services.*;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * ContextListener for this web application.
@@ -36,8 +39,32 @@ public class WebAppContextListener implements ServletContextListener {
             PDFService.configure(sc);
 
             sc.setAttribute("daoFactory", daoFactory);
-        } catch (DAOFactoryException | ServiceException e) {
+
+            // Load the resource server URL
+
+            Properties data = new Properties();
+            InputStream stream = WebAppContextListener.class
+                    .getClassLoader().getResourceAsStream("resource-server.properties");
+
+            if (stream == null) {
+                throw new ServiceException("Error loading email.properties file");
+            }
+
+            data.load(stream);
+            String resourceServer = data.getProperty("URL");
+
+            sc.setAttribute("resourceServer", resourceServer);
+            sc.setAttribute("imageServer", resourceServer + "/img");
+            sc.setAttribute("excelServer", resourceServer + "/xls");
+            sc.setAttribute("pdfServer", resourceServer + "/pdf");
+
+
+        } catch (ServiceException e) {
             throw new RuntimeException("Error during WebApplication init: ", e);
+        } catch (IOException e) {
+            throw new RuntimeException("I/O error while opening email.properties file", e);
+        } catch (DAOFactoryException e) {
+            throw new RuntimeException("Service initialization error for DAO", e);
         }
     }
 

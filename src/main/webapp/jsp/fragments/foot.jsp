@@ -7,7 +7,7 @@
             <br>
             <a href="${pageContext.request.contextPath}/privacy">Privacy</a>
             - <a href="${pageContext.request.contextPath}/cookies">Cookies</a>
-            - <a href="${pageContext.request.contextPath}/${initParam['pdf-folder']}/codice_comportamento.pdf">
+            - <a href="${applicationScope['pdfServer']}/codice_comportamento.pdf">
             Code of Conduct</a>
         </div>
     </div>

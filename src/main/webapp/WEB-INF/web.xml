@@ -3,27 +3,6 @@
          version="3.1"
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <context-param>
-        <description>The folder where the user avatar images are saved.</description>
-        <param-name>avatar-folder</param-name>
-        <param-value>img/avatars</param-value>
-    </context-param>
-    <context-param>
-        <description>The folder where PDF files are saved.</description>
-        <param-name>pdf-folder</param-name>
-        <param-value>pdf</param-value>
-    </context-param>
-    <context-param>
-        <description>The folder where Excel files are saved. (usato dentro i servlet)</description>
-        <param-name>excel-folder</param-name>
-        <param-value>xls</param-value>
-    </context-param>
-    <context-param>
-        <description>The folder where all images are saved.</description>
-        <param-name>image-server</param-name>
-        <param-value>/centodiciotto/img</param-value>
-    </context-param>
-
     <!-- Pages directly served to the user -->
     <servlet>
         <servlet-name>Cookies</servlet-name>
