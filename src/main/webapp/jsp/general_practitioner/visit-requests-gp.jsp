@@ -111,8 +111,7 @@
                     <c:set var="patient" value="${patientDAO.patient}"/>
                     <div class="table-personal">
                         <div class="table-cell avt">
-                            <img class="avatar-small" alt=""
-                                 src="${pageContext.request.contextPath}/${patientDAO.photoPath}">
+                            <img class="avatar-small" alt="" src="${patientDAO.photoPath}">
                         </div>
                         <div class="table-cell patient">${patient}</div>
                         <div class="table-cell ssn">${patient.SSN}</div>

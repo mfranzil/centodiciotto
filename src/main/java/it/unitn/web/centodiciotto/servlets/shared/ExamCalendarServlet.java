@@ -9,12 +9,12 @@ import it.unitn.web.centodiciotto.persistence.entities.*;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Logger;
@@ -72,10 +72,10 @@ public class ExamCalendarServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (user instanceof SpecializedDoctor || user instanceof HealthService) {
-            Integer examID;
+            int examID;
 
             try {
-                examID = Integer.valueOf(request.getParameter("examID"));
+                examID = Integer.parseInt(request.getParameter("examID"));
             } catch (NumberFormatException e) {
                 response.setStatus(400);
                 String json = "{\"error\": \"Malformed input. Please try again.\"}";
@@ -93,11 +93,11 @@ public class ExamCalendarServlet extends HttpServlet {
                 String handler = user instanceof SpecializedDoctor ? "Specialized Doctor" : "Local Health Service";
 
                 String recipient = patient.getID();
-                String message = "Dear " + patient.toString() + ",\n\n" +
+                String message = "Dear " + patient + ",\n\n" +
                         "your exam with your " + handler + " was just completed.\n\n" +
                         "Here are the exam details:\n\n" +
                         "Exam: " + exam.getType().getDescription() + "\n" +
-                        "Exam handler: " + user.toString() + "\n" +
+                        "Exam handler: " + user + "\n" +
                         "Date: " + CustomDTFormatter.formatDate(exam.getDate()) +
                         "\n\nYou will receieve an additional notification once" +
                         " your " + handler + " inserts a result." +

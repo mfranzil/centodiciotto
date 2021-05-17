@@ -20,6 +20,7 @@ import java.util.Properties;
 /**
  * A JDBC implementation of {@link DAOFactory}.
  */
+@SuppressWarnings("unchecked")
 public class JDBCDAOFactory implements DAOFactory {
     private static JDBCDAOFactory instance;
     private final transient Connection CON;

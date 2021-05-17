@@ -13,12 +13,12 @@ import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 import it.unitn.web.centodiciotto.utils.json.JSONResult;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -128,7 +128,7 @@ public class PrescriptionServlet extends HttpServlet {
 
         if (user instanceof GeneralPractitioner) {
             switch (requestType) {
-                case "patientList": {
+                case "patientList" -> {
                     try {
                         String patientID = request.getParameter("patientID");
 
@@ -165,7 +165,7 @@ public class PrescriptionServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "detailedInfo": {
+                case "detailedInfo" -> {
                     String patientID = request.getParameter("item");
 
                     if (patientID == null) {
@@ -235,7 +235,7 @@ public class PrescriptionServlet extends HttpServlet {
 
                     break;
                 }
-                case "examSearch": {
+                case "examSearch" -> {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -254,7 +254,7 @@ public class PrescriptionServlet extends HttpServlet {
                     writer.write(gson.toJson(new JSONResult<>(results.toArray(new ExamSearchResult[0]))));
                     break;
                 }
-                case "examAdd": {
+                case "examAdd" -> {
                     Integer examID;
                     String patientID = request.getParameter("patientID");
 
@@ -314,7 +314,7 @@ public class PrescriptionServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "drugSearch": {
+                case "drugSearch" -> {
                     String userInput = request.getParameter("term");
 
                     List<DrugSearchResult> results;
@@ -334,7 +334,7 @@ public class PrescriptionServlet extends HttpServlet {
 
                     break;
                 }
-                case "drugAdd": {
+                case "drugAdd" -> {
                     try {
                         Integer drugID;
                         String patientID = request.getParameter("patientID");
@@ -390,8 +390,7 @@ public class PrescriptionServlet extends HttpServlet {
                     }
                     break;
                 }
-                default:
-                    throw new IllegalStateException("Unexpected value: " + requestType);
+                default -> throw new IllegalStateException("Unexpected value: " + requestType);
             }
         }
     }
@@ -400,11 +399,11 @@ public class PrescriptionServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PatientListElement implements Serializable {
-        private String name;
-        private String ssn;
-        private String avt;
-        private HTMLAction action;
-        private String ID;
+        private final String name;
+        private final String ssn;
+        private final String avt;
+        private final HTMLAction action;
+        private final String ID;
 
         /**
          * Instantiates a new Patient list element.
@@ -428,8 +427,8 @@ public class PrescriptionServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class DrugSearchResult implements Serializable {
-        private Integer id;
-        private String text;
+        private final Integer id;
+        private final String text;
 
         /**
          * Instantiates a new Drug search result.

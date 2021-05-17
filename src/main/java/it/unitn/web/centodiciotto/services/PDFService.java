@@ -34,7 +34,7 @@ import java.util.List;
 public class PDFService {
 
     private static PDFService instance;
-    private transient ServletContext sc;
+    private final transient ServletContext sc;
 
     private PDFService(ServletContext servletContext) {
         sc = servletContext;

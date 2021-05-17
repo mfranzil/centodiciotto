@@ -9,7 +9,10 @@ import jakarta.servlet.ServletContext;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -30,17 +33,17 @@ public class ExcelService {
 
     private static ExcelService instance;
 
-    private transient ServletContext sc;
+    private final transient ServletContext sc;
 
-    private transient PatientDAO patientDAO;
-    private transient GeneralPractitionerDAO practitionerDAO;
-    private transient SpecializedDoctorDAO doctorDAO;
-    private transient ChemistDAO chemistDAO;
-    private transient HealthServiceDAO healthServiceDAO;
+    private final transient PatientDAO patientDAO;
+    private final transient GeneralPractitionerDAO practitionerDAO;
+    private final transient SpecializedDoctorDAO doctorDAO;
+    private final transient ChemistDAO chemistDAO;
+    private final transient HealthServiceDAO healthServiceDAO;
 
-    private transient ExamDAO examDAO;
-    private transient VisitDAO visitDAO;
-    private transient DrugPrescriptionDAO drugPrescriptionDAO;
+    private final transient ExamDAO examDAO;
+    private final transient VisitDAO visitDAO;
+    private final transient DrugPrescriptionDAO drugPrescriptionDAO;
 
     private ExcelService(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         sc = servletContext;
@@ -235,15 +238,15 @@ public class ExcelService {
         /**
          * The Region.
          */
-        public String region;
+        public final String region;
         /**
          * The Province.
          */
-        public String province;
+        public final String province;
         /**
          * The Day.
          */
-        public String day;
+        public final String day;
 
         /**
          * Instantiates a new Report.
@@ -267,39 +270,39 @@ public class ExcelService {
         /**
          * The Id.
          */
-        public int ID;
+        public final int ID;
         /**
          * The Patient id.
          */
-        public String patientID;
+        public final String patientID;
         /**
          * The Patient first name.
          */
-        public String patientFirstName;
+        public final String patientFirstName;
         /**
          * The Patient last name.
          */
-        public String patientLastName;
+        public final String patientLastName;
         /**
          * The Type.
          */
-        public String type;
+        public final String type;
         /**
          * The Dispatcher id.
          */
-        public String dispatcherID;
+        public final String dispatcherID;
         /**
          * The Dispatcher first name.
          */
-        public String dispatcherFirstName;
+        public final String dispatcherFirstName;
         /**
          * The Dispatcher last name.
          */
-        public String dispatcherLastName;
+        public final String dispatcherLastName;
         /**
          * The Ticket.
          */
-        public int ticket;
+        public final int ticket;
 
         /**
          * Instantiates a new Entry.

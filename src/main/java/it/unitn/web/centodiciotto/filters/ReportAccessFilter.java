@@ -2,12 +2,12 @@ package it.unitn.web.centodiciotto.filters;
 
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 /**
@@ -51,7 +51,7 @@ public class ReportAccessFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
 

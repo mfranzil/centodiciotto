@@ -12,12 +12,12 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -108,10 +108,10 @@ public class VisitRequestServlet extends HttpServlet {
                     Patient patient = patientDAO.getByPrimaryKey(pendingVisit.getPatientID());
 
                     String recipient = patient.getID();
-                    String message = "Dear " + patient.toString() + ",\n\n" +
+                    String message = "Dear " + patient + ",\n\n" +
                             "a visit with your General Practitioner was just appointed.\n\n" +
                             "Here are the visit details:\n\n" +
-                            "Practitioner: " + user.toString() + "\n" +
+                            "Practitioner: " + user + "\n" +
                             "Date: " + CustomDTFormatter.formatDate(pendingVisit.getDate()) +
                             "\n\nYours,\nThe CentoDiciotto team.\n";
                     String subject = "CentoDiciotto - Visit appointment notification";

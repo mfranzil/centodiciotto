@@ -101,7 +101,7 @@ public class UserServlet extends HttpServlet {
         }
 
         switch (requestType) {
-            case "passwordChange": {
+            case "passwordChange" -> {
                 if (user != null) {
                     try {
                         String oldPassword = request.getParameter("oldPassword");
@@ -119,7 +119,7 @@ public class UserServlet extends HttpServlet {
                                 cryptoService.changePassword(user.getID(), newPassword);
 
                                 String recipient = user.getID();
-                                String message = "Dear " + user.toString() + ",\n\n" +
+                                String message = "Dear " + user + ",\n\n" +
                                         "your account password has been changed. If this wasn't you," +
                                         " please request a password reset immediately or contact us." +
                                         "\n\nYours,\nThe CentoDiciotto team.\n";
@@ -141,9 +141,8 @@ public class UserServlet extends HttpServlet {
                         throw new ServletException("Failed to change password / send email: ", e);
                     }
                 }
-                break;
             }
-            case "photoUpload": {
+            case "photoUpload" -> {
                 if (user instanceof Patient) {
                     OutputStream out = null;
                     InputStream filecontent = null;
@@ -182,29 +181,33 @@ public class UserServlet extends HttpServlet {
                         // Create the necessary folder path if the user hasn't uploaded one yet
                         Files.createDirectories(Paths.get(path));
 
-                        out = new FileOutputStream(new File(path + File.separator + fileName));
+                        out = new FileOutputStream(new File(path + File.separator + fileName));*/
                         filecontent = filePart.getInputStream();
+
+                        out = outputConn.getOutputStream();
+
+                        //httpCon.getInputStream();
 
                         int read;
                         final byte[] bytes = new byte[2048];
 
                         while ((read = filecontent.read(bytes)) != -1) {
                             out.write(bytes, 0, read);
-                        }*/
+                        }
+                        out.close();
 
                         writer.write("{\"output\": true}");
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
-                    } /*finally {
+                    } finally {
                         if (out != null) {
                             out.close();
                         }
                         if (filecontent != null) {
                             filecontent.close();
                         }
-                    }*/
+                    }
                 }
-                break;
             }
         }
     }

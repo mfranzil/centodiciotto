@@ -30,13 +30,13 @@ public class CryptoService {
     private transient final int KEY_LENGTH = 512;
     private transient final int SALT_LENGTH = 8;
 
-    private transient Random RANDOM;
-    private transient UserDAO userDAO;
-    private transient PatientDAO patientDAO;
-    private transient GeneralPractitionerDAO practitionerDAO;
-    private transient SpecializedDoctorDAO doctorDAO;
-    private transient ChemistDAO chemistDAO;
-    private transient HealthServiceDAO healthServiceDAO;
+    private final transient Random RANDOM;
+    private final transient UserDAO userDAO;
+    private final transient PatientDAO patientDAO;
+    private final transient GeneralPractitionerDAO practitionerDAO;
+    private final transient SpecializedDoctorDAO doctorDAO;
+    private final transient ChemistDAO chemistDAO;
+    private final transient HealthServiceDAO healthServiceDAO;
 
     private CryptoService(DAOFactory daoFactory) throws ServiceException {
         RANDOM = new SecureRandom();
@@ -205,20 +205,14 @@ public class CryptoService {
             User user = userDAO.getByPrimaryKey(ID);
 
             if (user != null && isExpectedPassword(password, user.getSalt(), user.getHash())) {
-                switch (role) {
-                    case "patient":
-                        return patientDAO.getByPrimaryKey(ID);
-                    case "general_practitioner":
-                        return practitionerDAO.getByPrimaryKey(ID);
-                    case "specialized_doctor":
-                        return doctorDAO.getByPrimaryKey(ID);
-                    case "chemist":
-                        return chemistDAO.getByPrimaryKey(ID);
-                    case "health_service":
-                        return healthServiceDAO.getByPrimaryKey(ID);
-                    default:
-                        return null;
-                }
+                return switch (role) {
+                    case "patient" -> patientDAO.getByPrimaryKey(ID);
+                    case "general_practitioner" -> practitionerDAO.getByPrimaryKey(ID);
+                    case "specialized_doctor" -> doctorDAO.getByPrimaryKey(ID);
+                    case "chemist" -> chemistDAO.getByPrimaryKey(ID);
+                    case "health_service" -> healthServiceDAO.getByPrimaryKey(ID);
+                    default -> null;
+                };
             } else {
                 return null;
             }

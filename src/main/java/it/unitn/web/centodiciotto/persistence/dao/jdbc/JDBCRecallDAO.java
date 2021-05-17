@@ -42,7 +42,7 @@ public class JDBCRecallDAO extends JDBCDAO<Recall, Integer> implements RecallDAO
     /**
      * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
      */
-    private ExamTypeDAO examTypeDAO;
+    private final ExamTypeDAO examTypeDAO;
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.

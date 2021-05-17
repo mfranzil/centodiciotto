@@ -36,7 +36,7 @@
         <c:set value="${pair.first}" var="photo"/>
         <c:set value="${pair.second}" var="date"/>
         <figure class="col-md">
-            <img alt="picture" class="avatar img-fluid popup-opener" src="${pageContext.request.contextPath}/${photo}">
+            <img alt="picture" class="avatar img-fluid popup-opener" src="${photo}">
             <div class="popup-window">
                 <div class="popup animate-in">
                     <form action="${pageContext.request.contextPath}/restricted/patient/photo_gallery"
@@ -44,7 +44,7 @@
                         <div id="message" class="mb-2 center-100">
                             Do you want to swap your profile photo with this?
                         </div>
-                        <img class="avatar mb-2" src="${pageContext.request.contextPath}/${photo}" alt="${photo}">
+                        <img class="avatar mb-2" src="${photo}" alt="${photo}">
                         <label>
                             <input type="text" hidden name="photoID" class="photo-path" value="${photo}">
                         </label>

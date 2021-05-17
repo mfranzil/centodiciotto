@@ -12,12 +12,12 @@ import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 import it.unitn.web.centodiciotto.utils.json.JSONResult;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -119,9 +119,9 @@ public class ExamBookingServlet extends HttpServlet {
 
         if (user instanceof Patient) {
             switch (requestType) {
-                case "examList": {
+                case "examList" -> {
                     try {
-                        Boolean onlyAvailable = Boolean.valueOf(request.getParameter("onlyAvailable"));
+                        boolean onlyAvailable = Boolean.parseBoolean(request.getParameter("onlyAvailable"));
 
                         String examID = request.getParameter("examID");
 
@@ -164,9 +164,8 @@ public class ExamBookingServlet extends HttpServlet {
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
-                    break;
                 }
-                case "examSearch": {
+                case "examSearch" -> {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -183,9 +182,8 @@ public class ExamBookingServlet extends HttpServlet {
 
                     Gson gson = new Gson();
                     writer.write(gson.toJson(new JSONResult<>(results.toArray(new ExamSearchResult[0]))));
-                    break;
                 }
-                case "doctorSearch": {
+                case "doctorSearch" -> {
                     String userInput = request.getParameter("term");
                     String examID = request.getParameter("examID");
 
@@ -222,15 +220,14 @@ public class ExamBookingServlet extends HttpServlet {
                             throw new ServletException("Error in DAO usage: ", e);
                         }
                     }
-                    break;
                 }
-                case "doctorExamBook": {
-                    Integer examID;
+                case "doctorExamBook" -> {
+                    int examID;
                     String doctorID = request.getParameter("doctorID");
                     String isHealthService = request.getParameter("isHealthService");
 
                     try {
-                        examID = Integer.valueOf(request.getParameter("examID"));
+                        examID = Integer.parseInt(request.getParameter("examID"));
                     } catch (NumberFormatException e) {
                         response.setStatus(400);
                         String json = "{\"error\":\"Malformed input. Please choose a valid exam.\"}";
@@ -268,7 +265,7 @@ public class ExamBookingServlet extends HttpServlet {
                                 examDAO.update(toUpdate);
 
                                 String recipient = user.getID();
-                                String message = "Dear " + user.toString() + ",\n\n" +
+                                String message = "Dear " + user + ",\n\n" +
                                         "your exam booking request for the following exam has been accepted:\n\n" +
                                         "Exam: " + examType.getDescription() + "\n\n" +
                                         performerType + ": " + performer.toString() + "\n\n" +
@@ -299,9 +296,8 @@ public class ExamBookingServlet extends HttpServlet {
                         writer.write(json);
                         Logger.getLogger("C18").severe(json);
                     }
-                    break;
                 }
-                case "detailedInfo": {
+                case "detailedInfo" -> {
                     String examID = request.getParameter("item");
 
                     if (examID == null) {
@@ -330,7 +326,6 @@ public class ExamBookingServlet extends HttpServlet {
 
                     Gson gson = new Gson();
                     writer.write(gson.toJson(jsonResponse));
-                    break;
                 }
             }
         }
@@ -340,9 +335,9 @@ public class ExamBookingServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class ExamListElement implements Serializable {
-        private String exam;
-        private HTMLAction action;
-        private Integer ID;
+        private final String exam;
+        private final HTMLAction action;
+        private final Integer ID;
 
         /**
          * Instantiates a new Exam list element.
@@ -362,9 +357,9 @@ public class ExamBookingServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class DoctorSearchResult implements Serializable {
-        private String id;
-        private String text;
-        private Boolean healthService;
+        private final String id;
+        private final String text;
+        private final Boolean healthService;
 
         /**
          * Instantiates a new Doctor search result.

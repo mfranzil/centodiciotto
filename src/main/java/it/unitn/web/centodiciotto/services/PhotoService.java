@@ -28,8 +28,8 @@ import java.util.List;
 public class PhotoService {
     private static PhotoService instance;
 
-    private transient ServletContext sc;
-    private transient PhotoDAO photoDAO;
+    private final transient ServletContext sc;
+    private final transient PhotoDAO photoDAO;
 
     private PhotoService(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         sc = servletContext;
@@ -81,7 +81,6 @@ public class PhotoService {
      * @throws ServiceException in case of error during processing
      */
     public String getLastPhoto(String patientID) throws ServiceException {
-        System.out.println("getLastPhoto(" + patientID + ")");
         Photo photo;
 
         if (patientID == null) {
@@ -147,8 +146,7 @@ public class PhotoService {
         String photoPath = patientAvatarFolder + "/" + photo.getID();
 
         if (photoExists(photoPath + "." + photo.getExtension())) {
-            return photoPath.replace('\\', '/')
-                    .replace("//", "/") + "." + photo.getExtension();
+            return photoPath + "." + photo.getExtension();
         } else {
             return avatarFolder + "/default.png";
         }

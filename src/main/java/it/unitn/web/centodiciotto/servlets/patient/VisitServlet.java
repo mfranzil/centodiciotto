@@ -11,12 +11,12 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -88,7 +88,7 @@ public class VisitServlet extends HttpServlet {
 
                 String message = "Dear " + practitioner.toString() + ",\n\n" +
                         "one of your patients just asked for a visit. Here are the details:\n\n" +
-                        "Patient: " + user.toString() +
+                        "Patient: " + user +
                         "\n\nPlease visit CentoDiciotto to set a date and time for this visit." +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Visit request notification";

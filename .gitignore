@@ -10,6 +10,8 @@ etc/
 .classpath
 .project
 
+resource-server/
+
 /src/main/resources/
 src/main/resources/database.properties
 src/main/resources/email.properties

@@ -14,12 +14,12 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.DrugPrescriptionState;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -94,7 +94,7 @@ public class TicketServlet extends HttpServlet {
 
         if (user instanceof Patient) {
             switch (requestType) {
-                case "ticketPay": {
+                case "ticketPay" -> {
                     String type = request.getParameter("type");
                     Integer ID = Integer.valueOf(request.getParameter("ID"));
                     if (type.equals("exam")) {
@@ -111,7 +111,7 @@ public class TicketServlet extends HttpServlet {
                                 examDAO.update(selectedExam);
 
                                 String recipient = user.getID();
-                                String message = "Dear " + user.toString() + ",\n\n" +
+                                String message = "Dear " + user + ",\n\n" +
                                         "we are glad to inform your that the ticket payment for the " +
                                         "following exam has been accepted:\n\n" +
                                         "Exam: " + selectedExam.getType().getDescription() +
@@ -144,7 +144,7 @@ public class TicketServlet extends HttpServlet {
                                 drugPrescriptionDAO.update(selectedPrescription);
 
                                 String recipient = user.getID();
-                                String message = "Dear " + user.toString() + ",\n\n" +
+                                String message = "Dear " + user + ",\n\n" +
                                         "we are glad to inform your that the ticket payment for the " +
                                         "following drug prescription has been accepted:\n\n" +
                                         "Drug: " + selectedPrescription.getType().getDescription() +
@@ -171,7 +171,7 @@ public class TicketServlet extends HttpServlet {
 
                     break;
                 }
-                case "examTicketList": {
+                case "examTicketList" -> {
                     try {
                         List<ExamTicketListElement> examTicketListElements = new ArrayList<>();
 
@@ -219,7 +219,7 @@ public class TicketServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "prescriptionTicketList": {
+                case "prescriptionTicketList" -> {
                     try {
                         List<PrescriptionTicketListElement> prescriptionTicketListElements = new ArrayList<>();
 
@@ -259,12 +259,12 @@ public class TicketServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class ExamTicketListElement implements Serializable {
-        private String doctor;
-        private String exam;
-        private String date;
-        private String amount;
-        private HTMLAction action;
-        private String ID;
+        private final String doctor;
+        private final String exam;
+        private final String date;
+        private final String amount;
+        private final HTMLAction action;
+        private final String ID;
 
         /**
          * Instantiates a new Exam ticket list element.
@@ -291,13 +291,13 @@ public class TicketServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PrescriptionTicketListElement implements Serializable {
-        private String chemist;
-        private String drug;
-        private String prescription;
-        private String sale;
-        private String amount;
-        private HTMLAction action;
-        private String ID;
+        private final String chemist;
+        private final String drug;
+        private final String prescription;
+        private final String sale;
+        private final String amount;
+        private final HTMLAction action;
+        private final String ID;
 
         /**
          * Instantiates a new Prescription ticket list element.

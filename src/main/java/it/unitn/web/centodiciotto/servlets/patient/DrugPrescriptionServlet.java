@@ -16,13 +16,13 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.DrugPrescriptionState;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
-import org.apache.pdfbox.pdmodel.PDDocument;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.pdfbox.pdmodel.PDDocument;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -99,7 +99,7 @@ public class DrugPrescriptionServlet extends HttpServlet {
 
         if (user instanceof Patient) {
             switch (requestType) {
-                case "prescriptionList": {
+                case "prescriptionList" -> {
                     try {
                         List<PrescriptionElement> drugPrescriptionElements = new ArrayList<>();
                         List<DrugPrescription> drugPrescriptionList = drugPrescriptionDAO.getByPatient(user.getID());
@@ -137,10 +137,9 @@ public class DrugPrescriptionServlet extends HttpServlet {
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
-                    break;
                 }
-                case "getPrescription": {
-                    Integer prescriptionID;
+                case "getPrescription" -> {
+                    int prescriptionID;
 
                     try {
                         prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
@@ -190,7 +189,6 @@ public class DrugPrescriptionServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         throw new ServletException("Error in PDF generation: ", e);
                     }
-                    break;
                 }
             }
         }
@@ -208,12 +206,12 @@ public class DrugPrescriptionServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PrescriptionElement implements Serializable {
-        private String pract;
-        private String drug;
-        private String date;
-        private String state;
-        private HTMLAction action;
-        private Integer ID;
+        private final String pract;
+        private final String drug;
+        private final String date;
+        private final String state;
+        private final HTMLAction action;
+        private final Integer ID;
 
         /**
          * Instantiates a new Prescription element.

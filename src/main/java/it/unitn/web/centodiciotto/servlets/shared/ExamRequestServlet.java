@@ -13,12 +13,12 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -106,7 +106,7 @@ public class ExamRequestServlet extends HttpServlet {
         }
 
         switch (requestType) {
-            case "requestBook": {
+            case "requestBook" -> {
                 if (user instanceof SpecializedDoctor || user instanceof HealthService) {
                     Integer progressiveExamID;
                     String examDate, examTime;
@@ -144,10 +144,10 @@ public class ExamRequestServlet extends HttpServlet {
                                         "Specialized Doctor" : "Local Health Service";
 
                                 String recipient = patient.getID();
-                                String message = "Dear " + patient.toString() + ",\n\n" +
+                                String message = "Dear " + patient + ",\n\n" +
                                         "an exam with your " + handler + " was just appointed.\n\n" +
                                         "Here are the exam details:\n\n" +
-                                        "Exam handler: " + user.toString() + "\n" +
+                                        "Exam handler: " + user + "\n" +
                                         "Date: " + CustomDTFormatter.formatDate(pendingExam.getDate()) +
                                         "\n\nYours,\nThe CentoDiciotto team.\n";
                                 String subject = "CentoDiciotto - Exam appointment notification";
@@ -173,7 +173,7 @@ public class ExamRequestServlet extends HttpServlet {
                 }
                 break;
             }
-            case "requestList": {
+            case "requestList" -> {
                 if (user instanceof SpecializedDoctor || user instanceof HealthService) {
                     try {
                         List<ExamRequestListElement> examRequestListElements = new ArrayList<>();
@@ -204,7 +204,7 @@ public class ExamRequestServlet extends HttpServlet {
                 }
                 break;
             }
-            case "detailedInfo": {
+            case "detailedInfo" -> {
                 Integer progressiveExamID;
 
                 try {
@@ -277,11 +277,11 @@ public class ExamRequestServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class ExamRequestListElement implements Serializable {
-        private String avt;
-        private String patient;
-        private String exam;
-        private HTMLAction action;
-        private String ID;
+        private final String avt;
+        private final String patient;
+        private final String exam;
+        private final HTMLAction action;
+        private final String ID;
 
         ExamRequestListElement(String avt, String patient, String exam, HTMLAction action, String ID) {
             this.avt = avt;
