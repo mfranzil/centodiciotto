@@ -77,8 +77,11 @@ public class ReportServlet extends HttpServlet {
                     return;
                 }
 
-                String reportPath = excelService.createReport(user.getID(), date, includeVisits, includeRecalls,
-                        includeDoctorExams, includeHealthServiceExams, includePrescriptions);
+                String reportPath = excelService.createReport(user.getID(), date,
+                        (String) getServletContext().getAttribute("xAuthToken"),
+                        includeVisits, includeRecalls,
+                        includeDoctorExams, includeHealthServiceExams,
+                        includePrescriptions);
 
                 writer.write("{\"path\": \"" + reportPath.replace("\\", "\\\\") + "\"}");
             } catch (ParseException e) {

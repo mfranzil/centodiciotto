@@ -170,23 +170,18 @@ public class UserServlet extends HttpServlet {
                         String path = photoService.getPatientAvatarFolder(user.getID());
 
                         URL outputURL = new URL(path + "/" + fileName);
+                        System.out.println(path + "/" + fileName);
+
+                        // TODO port to ApacheHTTP
+
                         HttpURLConnection outputConn = (HttpURLConnection) outputURL.openConnection();
                         outputConn.setDoOutput(true);
                         outputConn.setRequestMethod("PUT");
-
-                        /*
-                        String path = getServletContext().getRealPath("/")
-                                + photoService.getPatientAvatarFolder(user.getID());
-
-                        // Create the necessary folder path if the user hasn't uploaded one yet
-                        Files.createDirectories(Paths.get(path));
-
-                        out = new FileOutputStream(new File(path + File.separator + fileName));*/
-                        filecontent = filePart.getInputStream();
+                        outputConn.setRequestProperty("X-Auth-Token",
+                                (String) getServletContext().getAttribute("xAuthToken"));
 
                         out = outputConn.getOutputStream();
-
-                        //httpCon.getInputStream();
+                        filecontent = filePart.getInputStream();
 
                         int read;
                         final byte[] bytes = new byte[2048];
@@ -195,6 +190,8 @@ public class UserServlet extends HttpServlet {
                             out.write(bytes, 0, read);
                         }
                         out.close();
+
+                        outputConn.getInputStream();
 
                         writer.write("{\"output\": true}");
                     } catch (DAOException e) {

@@ -9,7 +9,6 @@ import jakarta.servlet.ServletContext;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -107,7 +106,8 @@ public class ExcelService {
      * @return the relative path and name of the XLS file created
      * @throws ServiceException in case of error during processing
      */
-    public String createReport(String healthServiceID, Date date, boolean includeVisits, boolean includeRecalls,
+    public String createReport(String healthServiceID, Date date, String xAuthToken,
+                               boolean includeVisits, boolean includeRecalls,
                                boolean includeDoctorExams, boolean includeHealthServiceExams,
                                boolean includePrescriptions) throws ServiceException {
         try {
@@ -184,21 +184,23 @@ public class ExcelService {
                 }
             }
 
-            String filePath = sc.getAttribute("excelServer") + File.separator;
+            String filePath = (String) sc.getAttribute("excelServer");
 
             // Format: AA_20200101.xlsx
             String fileName = healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
 
-            URL inputURL = new URL(filePath + "report.xlsx");
+            // TODO Port to ApacheHTTP
+            URL inputURL = new URL(filePath + "/report.xlsx");
             HttpURLConnection inputConn = (HttpURLConnection) inputURL.openConnection();
             inputConn.setRequestMethod("GET");
 
             try (InputStream is = inputConn.getInputStream()) {
-                URL outputURL = new URL(filePath + fileName);
+                URL outputURL = new URL(filePath + "/" + fileName);
                 HttpURLConnection outputConn = (HttpURLConnection) outputURL.openConnection();
                 outputConn.setDoOutput(true);
                 outputConn.setRequestMethod("PUT");
+                outputConn.setRequestProperty("X-Auth-Token", xAuthToken);
                 try (OutputStream os = outputConn.getOutputStream()) {
                     Context context = new Context();
                     context.putVar("report", report);
@@ -207,22 +209,7 @@ public class ExcelService {
                 }
             }
 
-            /*
-            inputConn.setConnectTimeout(5000);
-            inputConn.setReadTimeout(5000);
-
-            con.setInstanceFollowRedirects(false);
-
-            int status = con.getResponseCode();
-
-            if (status == HttpURLConnection.HTTP_MOVED_TEMP
-                    || status == HttpURLConnection.HTTP_MOVED_PERM) {
-                String location = con.getHeaderField("Location");
-                URL newUrl = new URL(location);
-                con = (HttpURLConnection) newUrl.openConnection();
-            }*/
-
-            return sc.getAttribute("excelServer") + File.separator + fileName;
+            return filePath + "/" + fileName;
         } catch (DAOException e) {
             throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
         } catch (IOException e) {

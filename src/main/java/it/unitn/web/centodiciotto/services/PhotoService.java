@@ -9,10 +9,13 @@ import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
 import jakarta.servlet.ServletContext;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -172,15 +175,13 @@ public class PhotoService {
     }
 
     public boolean photoExists(String URL) {
-/*        System.out.println(sc.getRealPath("/").replace("\\centodiciotto\\", "") + URL);
-        return new File(sc.getRealPath("/").replace("\\centodiciotto\\", "")
-                + URL).exists();*/
-
         try {
-            URL url = new URL(URL);
-            HttpURLConnection huc = (HttpURLConnection) url.openConnection();
-            int responseCode = huc.getResponseCode();
-            return HttpURLConnection.HTTP_OK == responseCode;
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+            HttpGet request = new HttpGet(URL);
+            HttpResponse response = client.execute(request);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            return HttpURLConnection.HTTP_OK == statusCode;
         } catch (IOException e) {
             e.printStackTrace();
             return false;

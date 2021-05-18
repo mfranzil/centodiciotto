@@ -167,7 +167,7 @@ $("document").ready(() => {
                         case "photo" : {
                             let img = document.createElement("img");
                             img.className = "avatar-small";
-                            img.src = getContextPath() + item[header.field];
+                            img.src = item[header.field];
                             img.alt = "Profile photo";
 
                             cell.appendChild(img);

@@ -8,9 +8,17 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import org.apache.http.Header;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -51,14 +59,44 @@ public class WebAppContextListener implements ServletContextListener {
             }
 
             data.load(stream);
-            String resourceServer = data.getProperty("URL");
+            String resourceServer = data.getProperty("resource_server");
 
             sc.setAttribute("resourceServer", resourceServer);
             sc.setAttribute("imageServer", resourceServer + "/img");
             sc.setAttribute("excelServer", resourceServer + "/xls");
             sc.setAttribute("pdfServer", "/centodiciotto/pdf");
 
+            CloseableHttpClient client = HttpClientBuilder.create().build();
 
+            StringEntity requestEntity = new StringEntity(
+                    "{ \"auth\": { " +
+                            "\"identity\": { " +
+                            "\"methods\": [\"password\"], " +
+                            "\"password\": { " +
+                            "\"user\": { " +
+                            "\"name\": \"" + data.getProperty("name") + "\", " +
+                            "\"domain\": { \"id\": \"default\" }, " +
+                            "\"password\": \"" + data.getProperty("password") + "\" } } }, " +
+                            "\"scope\": { \"project\": { " +
+                            "\"name\": \"" + data.getProperty("project") + "\", " +
+                            "\"domain\": { \"id\": \"default\" } } } } }",
+                    ContentType.APPLICATION_JSON);
+
+            HttpPost request = new HttpPost(data.getProperty("authentication_server"));
+            request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+            request.setHeader("User-Agent", "Java client");
+            request.setEntity(requestEntity);
+
+            CloseableHttpResponse response = client.execute(request);
+
+            Header[] xauthtoken = response.getHeaders("X-Subject-Token");
+
+            if (xauthtoken == null || xauthtoken.length != 1) {
+                throw new RuntimeException("Error in retrieval of the token: " + Arrays.toString(xauthtoken));
+            }
+
+            sc.setAttribute("xAuthToken", xauthtoken[0].getValue());
         } catch (ServiceException e) {
             throw new RuntimeException("Error during WebApplication init: ", e);
         } catch (IOException e) {
