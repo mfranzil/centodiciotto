@@ -16,7 +16,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -68,12 +67,6 @@ public class WebAppContextListener implements ServletContextListener {
             sc.setAttribute("pdfServer", resourceServer + "/pdf");
 
             sc.setAttribute("tmpFolder", "/tmp");
-            File directory = new File(sc.getContextPath() + "/tmp");
-            boolean tempFolderCreated = directory.mkdirs();
-
-            if (!tempFolderCreated) {
-                throw new RuntimeException("Cannot access temporary folder; aborting");
-            }
 
             String xAuthToken = getXAuthToken(
                     data.getProperty("authentication_server"), data.getProperty("name"),

@@ -188,10 +188,12 @@ public class ExcelService {
             String inputFile = sc.getAttribute("excelServer") + "/report.xlsx";
 
             // Format: AA_20200101.xlsx
-            String outputFile = sc.getRealPath("/") + File.separator    // Context path from OS standpoint
-                    + sc.getAttribute("tmpFolder") + File.separator + // tmp/
+            String outputRelativeFile = sc.getAttribute("tmpFolder") + File.separator + // tmp/
                     healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
+
+            String outputFile = sc.getRealPath("/") + File.separator + outputRelativeFile;
+            String outputRelativePath = sc.getContextPath() + "/" + outputRelativeFile;
 
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet request = new HttpGet(inputFile);
@@ -209,7 +211,7 @@ public class ExcelService {
             }
 
             Logger.getLogger("C18").info("Writing report to temporary folder: " + outputFile);
-            return outputFile;
+            return outputRelativePath;
         } catch (DAOException e) {
             throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
         } catch (IOException e) {
