@@ -7,14 +7,13 @@ import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.PasswordReset;
 import it.unitn.web.centodiciotto.services.CryptoService;
 import it.unitn.web.centodiciotto.services.EmailService;
-import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
@@ -114,7 +113,7 @@ public class PasswordResetServlet extends HttpServlet {
             }
 
             switch (requestType) {
-                case "confirm": {
+                case "confirm" -> {
                     String newPassword = request.getParameter("newPassword");
 
                     if (newPassword == null || newPassword.length() < 8 || newPassword.length() > 64) {
@@ -127,10 +126,14 @@ public class PasswordResetServlet extends HttpServlet {
                             cryptoService.changePassword(userID, newPassword);
                             prDAO.delete(prDAO.getByPrimaryKey(userID));
 
-                            String message = "Dear CentoDiciotto user,\n\n" +
-                                    "your account password has been changed. If this wasn't you," +
-                                    " please request a password reset immediately or contact us." +
-                                    "\n\nYours,\nThe CentoDiciotto team.\n";
+                            String message = """
+                                    Dear CentoDiciotto user,
+
+                                    your account password has been changed. If this wasn't you, please request a password reset immediately or contact us.
+
+                                    Yours,
+                                    The CentoDiciotto team.
+                                    """;
                             String subject = "CentoDiciotto - Password change notification";
 
                             // Notifies the user of the password change
@@ -143,9 +146,8 @@ public class PasswordResetServlet extends HttpServlet {
                             throw new ServletException("Error in CryptoService while changing password: ", e);
                         }
                     }
-                    break;
                 }
-                case "request": {
+                case "request" -> {
                     try {
                         PasswordReset pr = new PasswordReset();
                         pr.setUserID(userID);

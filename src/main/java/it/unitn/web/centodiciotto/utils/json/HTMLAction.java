@@ -4,8 +4,8 @@ package it.unitn.web.centodiciotto.utils.json;
  * HTML HTMLAction wrapper, used to represent a button that may or may not enabled with a specific label.
  */
 public class HTMLAction {
-    private String label;
-    private Boolean enable;
+    private final String label;
+    private final Boolean enable;
 
     /**
      * Instantiates a new HTMLAction.

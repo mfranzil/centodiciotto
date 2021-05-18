@@ -12,12 +12,12 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Logger;
@@ -101,11 +101,11 @@ public class ChangePractitionerServlet extends HttpServlet {
                 }
 
                 String recipient = oldPract.getID();
-                String message = "Dear " + oldPract.toString() + ",\n\n" +
+                String message = "Dear " + oldPract + ",\n\n" +
                         "one of your patients just asked for a change of practitioner " +
                         "and will be no longer on your patient list.\n\n" +
                         "Here are the patient details:\n\n" +
-                        user.toString() + "\n" +
+                        user + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 String subject = "CentoDiciotto - Patient change notification";
 
@@ -113,10 +113,10 @@ public class ChangePractitionerServlet extends HttpServlet {
                 emailService.sendEmail(recipient, message, subject);
 
                 recipient = newPract.getID();
-                message = "Dear " + newPract.toString() + ",\n\n" +
+                message = "Dear " + newPract + ",\n\n" +
                         "we are glad to tell you that you have a new patient on your patient list.\n\n" +
                         "Here are the patient details:\n\n" +
-                        user.toString() + "\n" +
+                        user + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - New patient notification";
 
@@ -124,10 +124,10 @@ public class ChangePractitionerServlet extends HttpServlet {
                 emailService.sendEmail(recipient, message, subject);
 
                 recipient = user.getID();
-                message = "Dear " + user.toString() + ",\n\n" +
+                message = "Dear " + user + ",\n\n" +
                         "we inform you that your general practitioner has been successfully changed.\n\n" +
                         "Here are the practitioner details:\n\n" +
-                        newPract.toString() + "\n" +
+                        newPract + "\n" +
                         "\n\nYours,\nThe CentoDiciotto team.\n";
                 subject = "CentoDiciotto - Practitioner change notification";
 

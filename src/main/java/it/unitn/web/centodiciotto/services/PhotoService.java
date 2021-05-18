@@ -8,11 +8,17 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.persistence.entities.Photo;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
-
 import jakarta.servlet.ServletContext;
-import java.io.File;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * PhotoService service class, used to generate file paths for profile pictures.
@@ -26,8 +32,8 @@ import java.util.List;
 public class PhotoService {
     private static PhotoService instance;
 
-    private transient ServletContext sc;
-    private transient PhotoDAO photoDAO;
+    private final transient ServletContext sc;
+    private final transient PhotoDAO photoDAO;
 
     private PhotoService(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         sc = servletContext;
@@ -136,19 +142,17 @@ public class PhotoService {
         String avatarFolder = getAvatarFolder();
 
         if (photo == null) {
-            return avatarFolder + File.separator + "default.png";
+            return avatarFolder + "/default.png";
         }
 
         String patientAvatarFolder = getPatientAvatarFolder(photo.getPatientID());
 
-        String systemPath = sc.getRealPath("/");
-        String photoPath = patientAvatarFolder + File.separator + photo.getID();
+        String photoPath = patientAvatarFolder + "/" + photo.getID();
 
-        if (new File(systemPath + photoPath +  "." + photo.getExtension()).exists()) {
-            return photoPath.replace('\\', '/')
-                    .replace("//", "/") + "." + photo.getExtension();
+        if (photoExists(photoPath + "." + photo.getExtension())) {
+            return photoPath + "." + photo.getExtension();
         } else {
-            return avatarFolder + File.separator + "default.png";
+            return avatarFolder + "/default.png";
         }
     }
 
@@ -158,7 +162,7 @@ public class PhotoService {
      * @return the avatar folder as a relative path
      */
     public String getAvatarFolder() {
-        return File.separator + sc.getInitParameter("avatar-folder");
+        return sc.getAttribute("imageServer") + "/avatars";
     }
 
     /**
@@ -168,6 +172,23 @@ public class PhotoService {
      * @return the {@link it.unitn.web.centodiciotto.persistence.entities.Patient}'s avatar folder as a relative path
      */
     public String getPatientAvatarFolder(String patientID) {
-        return File.separator + sc.getInitParameter("avatar-folder") + File.separator + patientID;
+        return sc.getAttribute("imageServer") + "/avatars/" + patientID;
+    }
+
+    public boolean photoExists(String URL) {
+        try {
+            CloseableHttpClient client = HttpClientBuilder.create().build();
+
+            HttpGet request = new HttpGet(URL);
+            Logger.getLogger("C18").info("HTTP GET " + URL);
+
+            HttpResponse response = client.execute(request);
+            int statusCode = response.getStatusLine().getStatusCode();
+
+            return HttpURLConnection.HTTP_OK == statusCode;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

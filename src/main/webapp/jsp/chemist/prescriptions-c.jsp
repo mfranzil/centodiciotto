@@ -65,7 +65,7 @@
                     $("#main-loading-container").slideDown();
                     $("#patient-name").html(e.params.data.fullName);
                     $("#patient-ssn").html(e.params.data.SSN);
-                    $("#patient-avatar").prop("src", getContextPath() + e.params.data.photoPath);
+                    $("#patient-avatar").prop("src", e.params.data.photoPath);
                     $("#patient-info").slideDown();
                     renderPrescriptions(e.params.data.patientID);
                 })
@@ -142,7 +142,7 @@
                 $("#main-loading-container").slideDown();
                 $("#patient-name").html("${requestScope.patient}");
                 $("#patient-ssn").html("${requestScope.patient.SSN}");
-                $("#patient-avatar").prop("src", getContextPath() + "${requestScope.patientPhoto}");
+                $("#patient-avatar").prop("src", "${requestScope.patientPhoto}");
                 $("#patient-info").slideDown();
                 renderPrescriptions("${requestScope.patient.ID}");
             }
@@ -177,7 +177,7 @@
                 <div class="justify-content-center loading mt-2" id="main-loading-container"
                      style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
+                         src="${applicationScope['imageServer']}/logo_blue.svg" alt="Loading..."/>
                 </div>
             </div>
         </div>

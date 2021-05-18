@@ -38,7 +38,7 @@ public class JDBCGeneralPractitionerDAO extends JDBCDAO<GeneralPractitioner, Str
     /**
      * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
      */
-    private ProvinceDAO provinceDAO;
+    private final ProvinceDAO provinceDAO;
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.

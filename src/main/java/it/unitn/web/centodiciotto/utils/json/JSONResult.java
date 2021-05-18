@@ -10,7 +10,7 @@ import com.google.gson.Gson;
  * @param <T> the type parameter
  */
 public class JSONResult<T> {
-    private T[] results;
+    private final T[] results;
 
     /**
      * Instantiates a new Json results.

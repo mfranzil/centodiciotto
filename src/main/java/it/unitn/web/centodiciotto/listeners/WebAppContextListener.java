@@ -4,11 +4,23 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.dao.factories.jdbc.JDBCDAOFactory;
 import it.unitn.web.centodiciotto.services.*;
-
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import org.apache.http.Header;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * ContextListener for this web application.
@@ -36,8 +48,37 @@ public class WebAppContextListener implements ServletContextListener {
             PDFService.configure(sc);
 
             sc.setAttribute("daoFactory", daoFactory);
-        } catch (DAOFactoryException | ServiceException e) {
+
+            // Load the resource server URL
+            Properties data = new Properties();
+            InputStream stream = WebAppContextListener.class
+                    .getClassLoader().getResourceAsStream("resource-server.properties");
+
+            if (stream == null) {
+                throw new ServiceException("Error loading email.properties file");
+            }
+
+            data.load(stream);
+            String resourceServer = data.getProperty("resource_server");
+
+            sc.setAttribute("resourceServer", resourceServer);
+            sc.setAttribute("imageServer", resourceServer + "/img");
+            sc.setAttribute("excelServer", resourceServer + "/xls");
+            sc.setAttribute("pdfServer", resourceServer + "/pdf");
+
+            sc.setAttribute("tmpFolder", "/tmp");
+
+            String xAuthToken = getXAuthToken(
+                    data.getProperty("authentication_server"), data.getProperty("name"),
+                    data.getProperty("password"), data.getProperty("project"));
+
+            sc.setAttribute("xAuthToken", xAuthToken);
+        } catch (ServiceException e) {
             throw new RuntimeException("Error during WebApplication init: ", e);
+        } catch (IOException e) {
+            throw new RuntimeException("I/O error while opening email.properties file", e);
+        } catch (DAOFactoryException e) {
+            throw new RuntimeException("Service initialization error for DAO", e);
         }
     }
 
@@ -51,5 +92,42 @@ public class WebAppContextListener implements ServletContextListener {
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error during WebApplication closure: ", e);
         }
+    }
+
+    private String getXAuthToken(String authenticationServer,
+                                 String name, String password, String project) throws IOException {
+        CloseableHttpClient client = HttpClientBuilder.create().build();
+
+        StringEntity requestEntity = new StringEntity(
+                "{ \"auth\": { " +
+                        "\"identity\": { " +
+                        "\"methods\": [\"password\"], " +
+                        "\"password\": { " +
+                        "\"user\": { " +
+                        "\"name\": \"" + name + "\", " +
+                        "\"domain\": { \"id\": \"default\" }, " +
+                        "\"password\": \"" + password + "\" } } }, " +
+                        "\"scope\": { \"project\": { " +
+                        "\"name\": \"" + project + "\", " +
+                        "\"domain\": { \"id\": \"default\" } } } } }",
+                ContentType.APPLICATION_JSON);
+
+        HttpPost request = new HttpPost(authenticationServer);
+        Logger.getLogger("C18").info("HTTP POST " + authenticationServer);
+
+        request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+        request.setHeader("User-Agent", "Java client");
+        request.setEntity(requestEntity);
+
+        CloseableHttpResponse response = client.execute(request);
+
+        Header[] xauthtoken = response.getHeaders("X-Subject-Token");
+
+        if (xauthtoken == null || xauthtoken.length != 1) {
+            throw new RuntimeException("Error in retrieval of the token: " + Arrays.toString(xauthtoken));
+        }
+
+        return xauthtoken[0].getValue();
     }
 }

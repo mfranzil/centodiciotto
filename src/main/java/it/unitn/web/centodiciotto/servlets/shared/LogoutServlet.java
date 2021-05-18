@@ -1,13 +1,12 @@
 package it.unitn.web.centodiciotto.servlets.shared;
 
 import it.unitn.web.centodiciotto.persistence.entities.User;
-
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 /**
@@ -22,7 +21,7 @@ public class LogoutServlet extends HttpServlet {
     private String contextPath;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         contextPath = getServletContext().getContextPath();
         if (!contextPath.endsWith("/")) {
             contextPath += "/";
@@ -45,13 +44,13 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         processRequest(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         processRequest(request, response);
     }
 }

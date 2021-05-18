@@ -14,12 +14,12 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.ExamSearchResult;
 import it.unitn.web.centodiciotto.utils.json.JSONResult;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -115,7 +115,7 @@ public class RecallServlet extends HttpServlet {
 
         if (user instanceof HealthService) {
             switch (requestType) {
-                case "recallHistory": {
+                case "recallHistory" -> {
                     try {
                         List<Recall> recallList = recallDAO.getByHealthService(user.getID());
 
@@ -134,9 +134,8 @@ public class RecallServlet extends HttpServlet {
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
-                    break;
                 }
-                case "newRecall": {
+                case "newRecall" -> {
                     try {
                         System.out.println(request.getParameter("minAge"));
                         Integer examID = Integer.valueOf(request.getParameter("examID"));
@@ -156,7 +155,7 @@ public class RecallServlet extends HttpServlet {
                             recallDAO.insert(recall);
 
                             String recipient = user.getID();
-                            String message = "Dear " + user.toString() + ",\n\n" +
+                            String message = "Dear " + user + ",\n\n" +
                                     "a recall was just started in your local SSP area for this exam:\n\n" +
                                     examType.getDescription() +
                                     "\n\nYours,\nThe CentoDiciotto team.\n";
@@ -190,7 +189,7 @@ public class RecallServlet extends HttpServlet {
 
                                         examDAO.insert(exam);
 
-                                        message = "Dear " + patient.toString() + ",\n\n" +
+                                        message = "Dear " + patient + ",\n\n" +
                                                 "a recall was just started in your local SSP area for this exam:\n\n" +
                                                 examType.getDescription() + "\n\nPlease contact a Specialized Doctor " +
                                                 "as soon as possible to book this exam." +
@@ -219,12 +218,11 @@ public class RecallServlet extends HttpServlet {
                         String json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
                         writer.write(json);
                         System.out.println(Arrays.toString(e.getStackTrace()));
-                        Logger.getLogger("C18").severe(json );
+                        Logger.getLogger("C18").severe(json);
                         return;
                     }
-                    break;
                 }
-                case "examRow": {
+                case "examRow" -> {
                     try {
                         String examID = request.getParameter("examID");
 
@@ -252,9 +250,8 @@ public class RecallServlet extends HttpServlet {
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
-                    break;
                 }
-                case "examSearch": {
+                case "examSearch" -> {
                     String userInput = request.getParameter("term");
 
                     List<ExamSearchResult> results;
@@ -271,7 +268,6 @@ public class RecallServlet extends HttpServlet {
                     Gson gson = new Gson();
                     writer.write(gson.toJson(new JSONResult<>(tmpResults.toArray(new ExamSearchResult[0]))));
                 }
-                break;
             }
         }
     }
@@ -290,9 +286,9 @@ public class RecallServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class TableExam implements Serializable {
-        private String exam;
-        private String date;
-        private String age;
+        private final String exam;
+        private final String date;
+        private final String age;
 
         /**
          * Instantiates a new Table exam.

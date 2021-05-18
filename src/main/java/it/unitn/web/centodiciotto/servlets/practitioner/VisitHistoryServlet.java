@@ -16,13 +16,13 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
-import org.apache.commons.text.StringEscapeUtils;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -105,7 +105,7 @@ public class VisitHistoryServlet extends HttpServlet {
 
         if (user instanceof GeneralPractitioner) {
             switch (requestType) {
-                case "visitList": {
+                case "visitList" -> {
                     try {
                         List<Visit> visitList = visitDAO.getDoneByPractitioner(user.getID());
                         List<VisitListElement> visitListElements = new ArrayList<>();
@@ -131,7 +131,7 @@ public class VisitHistoryServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "detailedInfo": {
+                case "detailedInfo" -> {
                     try {
                         String visitID = request.getParameter("item");
 
@@ -187,7 +187,7 @@ public class VisitHistoryServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "setReport": {
+                case "setReport" -> {
                     Integer visitID;
                     String reportText = request.getParameter("reportText");
 
@@ -218,10 +218,10 @@ public class VisitHistoryServlet extends HttpServlet {
                         Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
 
                         String recipient = patient.getID();
-                        String message = "Dear " + patient.toString() + ",\n\n" +
+                        String message = "Dear " + patient + ",\n\n" +
                                 "a visit with your General Practitioner has had its report updated.\n\n" +
                                 "Here are the visit details:\n\n" +
-                                "Practitioner: " + user.toString() + "\n" +
+                                "Practitioner: " + user + "\n" +
                                 "Date: " + CustomDTFormatter.formatDate(visit.getDate()) +
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Visit report update notification";
@@ -244,12 +244,12 @@ public class VisitHistoryServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class VisitListElement implements Serializable {
-        private String name;
-        private String ssn;
-        private String avt;
-        private String date;
-        private HTMLAction action;
-        private String ID;
+        private final String name;
+        private final String ssn;
+        private final String avt;
+        private final String date;
+        private final HTMLAction action;
+        private final String ID;
 
         /**
          * Instantiates a new Visit list element.

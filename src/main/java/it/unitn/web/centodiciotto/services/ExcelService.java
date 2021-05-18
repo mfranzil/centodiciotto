@@ -5,16 +5,21 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOException;
 import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException;
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
+import jakarta.servlet.ServletContext;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 
-import jakarta.servlet.ServletContext;
 import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * ExcelService service class, used to generate Health Service reports in XLS format.
@@ -28,17 +33,17 @@ public class ExcelService {
 
     private static ExcelService instance;
 
-    private transient ServletContext sc;
+    private final transient ServletContext sc;
 
-    private transient PatientDAO patientDAO;
-    private transient GeneralPractitionerDAO practitionerDAO;
-    private transient SpecializedDoctorDAO doctorDAO;
-    private transient ChemistDAO chemistDAO;
-    private transient HealthServiceDAO healthServiceDAO;
+    private final transient PatientDAO patientDAO;
+    private final transient GeneralPractitionerDAO practitionerDAO;
+    private final transient SpecializedDoctorDAO doctorDAO;
+    private final transient ChemistDAO chemistDAO;
+    private final transient HealthServiceDAO healthServiceDAO;
 
-    private transient ExamDAO examDAO;
-    private transient VisitDAO visitDAO;
-    private transient DrugPrescriptionDAO drugPrescriptionDAO;
+    private final transient ExamDAO examDAO;
+    private final transient VisitDAO visitDAO;
+    private final transient DrugPrescriptionDAO drugPrescriptionDAO;
 
     private ExcelService(DAOFactory daoFactory, ServletContext servletContext) throws ServiceException {
         sc = servletContext;
@@ -102,7 +107,8 @@ public class ExcelService {
      * @return the relative path and name of the XLS file created
      * @throws ServiceException in case of error during processing
      */
-    public String createReport(String healthServiceID, Date date, boolean includeVisits, boolean includeRecalls,
+    public String createReport(String healthServiceID, Date date, String xAuthToken,
+                               boolean includeVisits, boolean includeRecalls,
                                boolean includeDoctorExams, boolean includeHealthServiceExams,
                                boolean includePrescriptions) throws ServiceException {
         try {
@@ -179,15 +185,24 @@ public class ExcelService {
                 }
             }
 
-            String filePath = sc.getRealPath("/") + File.separator
-                    + sc.getInitParameter("excel-folder") + File.separator;
+            String inputFile = sc.getAttribute("excelServer") + "/report.xlsx";
 
             // Format: AA_20200101.xlsx
-            String fileName = healthService.getOperatingProvince().getID() + "_"
+            String outputRelativeFile = sc.getAttribute("tmpFolder") + File.separator + // tmp/
+                    healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
 
-            try (InputStream is = new FileInputStream(filePath + "report.xlsx")) {
-                try (OutputStream os = new FileOutputStream(filePath + fileName)) {
+            String outputFile = sc.getRealPath("/") + File.separator + outputRelativeFile;
+            String outputRelativePath = sc.getContextPath() + "/" + outputRelativeFile;
+
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet request = new HttpGet(inputFile);
+            Logger.getLogger("C18").info("HTTP GET " + inputFile);
+
+            CloseableHttpResponse response = httpClient.execute(request);
+
+            try (InputStream is = response.getEntity().getContent()) {
+                try (OutputStream os = new FileOutputStream(outputFile)) {
                     Context context = new Context();
                     context.putVar("report", report);
                     context.putVar("entries", entries);
@@ -195,7 +210,8 @@ public class ExcelService {
                 }
             }
 
-            return sc.getInitParameter("excel-folder") + File.separator + fileName;
+            Logger.getLogger("C18").info("Writing report to temporary folder: " + outputFile);
+            return outputRelativePath;
         } catch (DAOException e) {
             throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
         } catch (IOException e) {
@@ -211,15 +227,15 @@ public class ExcelService {
         /**
          * The Region.
          */
-        public String region;
+        public final String region;
         /**
          * The Province.
          */
-        public String province;
+        public final String province;
         /**
          * The Day.
          */
-        public String day;
+        public final String day;
 
         /**
          * Instantiates a new Report.
@@ -243,39 +259,39 @@ public class ExcelService {
         /**
          * The Id.
          */
-        public int ID;
+        public final int ID;
         /**
          * The Patient id.
          */
-        public String patientID;
+        public final String patientID;
         /**
          * The Patient first name.
          */
-        public String patientFirstName;
+        public final String patientFirstName;
         /**
          * The Patient last name.
          */
-        public String patientLastName;
+        public final String patientLastName;
         /**
          * The Type.
          */
-        public String type;
+        public final String type;
         /**
          * The Dispatcher id.
          */
-        public String dispatcherID;
+        public final String dispatcherID;
         /**
          * The Dispatcher first name.
          */
-        public String dispatcherFirstName;
+        public final String dispatcherFirstName;
         /**
          * The Dispatcher last name.
          */
-        public String dispatcherLastName;
+        public final String dispatcherLastName;
         /**
          * The Ticket.
          */
-        public int ticket;
+        public final int ticket;
 
         /**
          * Instantiates a new Entry.

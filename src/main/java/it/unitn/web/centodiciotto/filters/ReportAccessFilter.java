@@ -2,19 +2,19 @@ package it.unitn.web.centodiciotto.filters;
 
 import it.unitn.web.centodiciotto.persistence.entities.HealthService;
 import it.unitn.web.centodiciotto.persistence.entities.User;
-
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 /**
- * Filter for requests directed to the XLS folder. Users are given access if and only if
+ * Filter for requests directed to the temporary folder. Users are given access if and only if
  * they are an Health Service trying to access their reports (which are identified by the Province ID).
  */
-@WebFilter("/xls/*")
+@WebFilter("/tmp/*")
 public class ReportAccessFilter implements Filter {
 
     @Override
@@ -51,7 +51,7 @@ public class ReportAccessFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
 

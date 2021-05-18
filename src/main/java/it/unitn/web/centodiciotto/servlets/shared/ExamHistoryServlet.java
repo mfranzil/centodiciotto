@@ -13,13 +13,13 @@ import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
-import org.apache.commons.text.StringEscapeUtils;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -96,7 +96,7 @@ public class ExamHistoryServlet extends HttpServlet {
 
         if (user instanceof SpecializedDoctor || user instanceof HealthService) {
             switch (requestType) {
-                case "examList": {
+                case "examList" -> {
                     try {
                         List<Exam> examList;
 
@@ -130,9 +130,8 @@ public class ExamHistoryServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Photo path retrieval: ", e);
                     }
-                    break;
                 }
-                case "detailedInfo": {
+                case "detailedInfo" -> {
                     try {
                         String examID = request.getParameter("item");
 
@@ -185,16 +184,15 @@ public class ExamHistoryServlet extends HttpServlet {
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ");
                     }
-                    break;
                 }
-                case "setResult": {
-                    Integer examID;
+                case "setResult" -> {
+                    int examID;
                     String resultText = request.getParameter("resultText");
 
                     String json;
 
                     try {
-                        examID = Integer.valueOf(request.getParameter("examID"));
+                        examID = Integer.parseInt(request.getParameter("examID"));
                     } catch (NumberFormatException | NullPointerException e) {
                         response.setStatus(400);
                         json = "{\"error\": \"Malformed input. Please fill all parameters correctly.\"}";
@@ -220,11 +218,11 @@ public class ExamHistoryServlet extends HttpServlet {
                         String handler = user instanceof SpecializedDoctor ? "Specialized Doctor" : "Local Health Service";
 
                         String recipient = patient.getID();
-                        String message = "Dear " + patient.toString() + ",\n\n" +
+                        String message = "Dear " + patient + ",\n\n" +
                                 "an exam with your " + handler + " has had its report updated.\n\n" +
                                 "Here are the exam details:\n\n" +
                                 "Exam: " + exam.getType().getDescription() + "\n" +
-                                "Exam handler: " + user.toString() + "\n" +
+                                "Exam handler: " + user + "\n" +
                                 "Date: " + CustomDTFormatter.formatDate(exam.getDate()) +
                                 "\n\nYours,\nThe CentoDiciotto team.\n";
                         String subject = "CentoDiciotto - Exam report update notification";
@@ -239,7 +237,6 @@ public class ExamHistoryServlet extends HttpServlet {
                         throw new ServletException("Error in email sending: ", e);
                     }
 
-                    break;
                 }
             }
         }
@@ -249,12 +246,12 @@ public class ExamHistoryServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class ExamListElement implements Serializable {
-        private String name;
-        private String exam;
-        private String avt;
-        private String date;
-        private HTMLAction action;
-        private String ID;
+        private final String name;
+        private final String exam;
+        private final String avt;
+        private final String date;
+        private final HTMLAction action;
+        private final String ID;
 
         ExamListElement(String ID, String name, String exam, String avt, String date, HTMLAction action) {
             this.ID = ID;

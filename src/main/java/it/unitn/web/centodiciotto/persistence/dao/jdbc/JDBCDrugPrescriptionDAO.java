@@ -46,7 +46,7 @@ public class JDBCDrugPrescriptionDAO extends JDBCDAO<DrugPrescription, Integer> 
     /**
      * Friend DAO saved for optimization purposes (since invoking DAOFactory is slow)
      */
-    private DrugTypeDAO drugTypeDAO;
+    private final DrugTypeDAO drugTypeDAO;
 
     /**
      * Instantiates the {@link JDBCDAO} using the currently opened connection.

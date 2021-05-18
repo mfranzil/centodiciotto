@@ -7,6 +7,12 @@ import it.unitn.web.centodiciotto.persistence.entities.Patient;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.QRCodeCreator;
 import it.unitn.web.centodiciotto.utils.entities.Pair;
+import jakarta.servlet.ServletContext;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -15,13 +21,13 @@ import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import jakarta.servlet.ServletContext;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * PDFService service class, used to generate PDF prescriptions.
@@ -34,7 +40,7 @@ import java.util.List;
 public class PDFService {
 
     private static PDFService instance;
-    private transient ServletContext sc;
+    private final transient ServletContext sc;
 
     private PDFService(ServletContext servletContext) {
         sc = servletContext;
@@ -148,16 +154,25 @@ public class PDFService {
         parameters.add(Pair.makePair("prescriptionID", dp.getID()));
         parameters.add(Pair.makePair("patientID", pat.getID()));
 
-        File file = QRCodeCreator.createQRCodeURL(
-                qrCodeURL + sc.getContextPath() + File.separator +
-                        "restricted/chemist/prescriptions", parameters,
+        File qrCode = QRCodeCreator.createQRCodeURL(
+                qrCodeURL + sc.getContextPath() + "/restricted/chemist/prescriptions", parameters,
                 220, 220).file();
 
         try {
-            String imagePath = sc.getRealPath("/") + File.separator + "img" + File.separator + "prescription.png";
+            String backgroundPath = sc.getAttribute("imageServer") + "/prescription.png";
 
-            PDImageXObject QRCode = PDImageXObject.createFromFileByContent(file, doc);
-            PDImageXObject pdImage = PDImageXObject.createFromFile(imagePath, doc);
+            // Fetch the prescription background
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+
+            HttpGet request = new HttpGet(backgroundPath);
+            Logger.getLogger("C18").info("HTTP GET " + backgroundPath);
+
+            CloseableHttpResponse response = httpClient.execute(request);
+
+            PDImageXObject QRCode = PDImageXObject.createFromFileByContent(qrCode, doc);
+            PDImageXObject pdImage = PDImageXObject.createFromByteArray(doc,
+                    IOUtils.toByteArray(response.getEntity().getContent()), "pdImage");
+
             PDPageContentStream contents = new PDPageContentStream(doc, page);
 
             contents.drawImage(pdImage, 0, 0);

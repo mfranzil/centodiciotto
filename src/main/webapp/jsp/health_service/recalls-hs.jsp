@@ -186,7 +186,7 @@
                 <div class="justify-content-center loading mt-2" id="main-loading-container"
                      style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
+                         src="${applicationScope['imageServer']}/logo_blue.svg" alt="Loading..."/>
                 </div>
                 <div id="main-table" class="mt-4">
                     <div class="table-personal table-header">
@@ -244,7 +244,7 @@
             <div class="col-md">
                 <div class="justify-content-center loading" id="history-loading-container" style="text-align: center;">
                     <img class="rotating" role="status" style="width: 64px"
-                         src="${initParam['image-server']}/logo_blue.svg" alt="Loading..."/>
+                         src="${applicationScope['imageServer']}/logo_blue.svg" alt="Loading..."/>
                 </div>
                 <div id="history-table">
                 </div>

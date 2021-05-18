@@ -119,8 +119,7 @@
                     <jsp:setProperty name="examDate" property="date" value="${exam.date.time}"/>
                     <div class="table-personal">
                         <div class="table-cell avt">
-                            <img class="avatar-small" src="${pageContext.request.contextPath}/${patientDAO.photoPath}"
-                                 alt="">
+                            <img class="avatar-small" src="${patientDAO.photoPath}" alt="">
                         </div>
                         <div class="table-cell patient">${patient}</div>
                         <div class="table-cell exam">${exam.type.description}</div>

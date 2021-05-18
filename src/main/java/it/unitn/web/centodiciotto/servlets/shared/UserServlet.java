@@ -11,7 +11,6 @@ import it.unitn.web.centodiciotto.services.CryptoService;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.PhotoService;
 import it.unitn.web.centodiciotto.services.ServiceException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,9 +18,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.logging.Logger;
 
@@ -98,7 +101,7 @@ public class UserServlet extends HttpServlet {
         }
 
         switch (requestType) {
-            case "passwordChange": {
+            case "passwordChange" -> {
                 if (user != null) {
                     try {
                         String oldPassword = request.getParameter("oldPassword");
@@ -116,7 +119,7 @@ public class UserServlet extends HttpServlet {
                                 cryptoService.changePassword(user.getID(), newPassword);
 
                                 String recipient = user.getID();
-                                String message = "Dear " + user.toString() + ",\n\n" +
+                                String message = "Dear " + user + ",\n\n" +
                                         "your account password has been changed. If this wasn't you," +
                                         " please request a password reset immediately or contact us." +
                                         "\n\nYours,\nThe CentoDiciotto team.\n";
@@ -138,9 +141,8 @@ public class UserServlet extends HttpServlet {
                         throw new ServletException("Failed to change password / send email: ", e);
                     }
                 }
-                break;
             }
-            case "photoUpload": {
+            case "photoUpload" -> {
                 if (user instanceof Patient) {
                     OutputStream out = null;
                     InputStream filecontent = null;
@@ -165,13 +167,20 @@ public class UserServlet extends HttpServlet {
                         photoDAO.insert(photo);
 
                         String fileName = photo.getID() + "." + extension;
-                        String path = getServletContext().getRealPath("/")
-                                + photoService.getPatientAvatarFolder(user.getID());
+                        String path = photoService.getPatientAvatarFolder(user.getID());
 
-                        // Create the necessary folder path if the user hasn't uploaded one yet
-                        Files.createDirectories(Paths.get(path));
+                        URL outputURL = new URL(path + "/" + fileName);
+                        System.out.println(path + "/" + fileName);
 
-                        out = new FileOutputStream(new File(path + File.separator + fileName));
+                        // TODO port to ApacheHTTP
+
+                        HttpURLConnection outputConn = (HttpURLConnection) outputURL.openConnection();
+                        outputConn.setDoOutput(true);
+                        outputConn.setRequestMethod("PUT");
+                        outputConn.setRequestProperty("X-Auth-Token",
+                                (String) getServletContext().getAttribute("xAuthToken"));
+
+                        out = outputConn.getOutputStream();
                         filecontent = filePart.getInputStream();
 
                         int read;
@@ -180,6 +189,9 @@ public class UserServlet extends HttpServlet {
                         while ((read = filecontent.read(bytes)) != -1) {
                             out.write(bytes, 0, read);
                         }
+                        out.close();
+
+                        outputConn.getInputStream();
 
                         writer.write("{\"output\": true}");
                     } catch (DAOException e) {
@@ -193,7 +205,6 @@ public class UserServlet extends HttpServlet {
                         }
                     }
                 }
-                break;
             }
         }
     }

@@ -17,12 +17,12 @@ import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 import it.unitn.web.centodiciotto.utils.json.JSONResult;
 import it.unitn.web.centodiciotto.utils.json.JSONUtils;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -101,9 +101,9 @@ public class ChemistPrescriptionServlet extends HttpServlet {
             request.setAttribute("action", "none");
 
             if (action != null && action.equals("qr")) {
-                String practitionerID = null;
-                String patientID = null;
-                Integer prescriptionID = null;
+                String practitionerID;
+                String patientID;
+                Integer prescriptionID;
 
                 try {
                     practitionerID = request.getParameter("practitionerID");
@@ -164,11 +164,11 @@ public class ChemistPrescriptionServlet extends HttpServlet {
 
         if (user instanceof Chemist) {
             switch (requestType) {
-                case "serve": {
-                    Integer prescriptionID;
+                case "serve" -> {
+                    int prescriptionID;
 
                     try {
-                        prescriptionID = Integer.valueOf(request.getParameter("prescriptionID"));
+                        prescriptionID = Integer.parseInt(request.getParameter("prescriptionID"));
                     } catch (NumberFormatException | NullPointerException e) {
                         response.setStatus(400);
                         String json = "{\"error\": \"Malformed input.\"}";
@@ -194,7 +194,7 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                                     generalPractitionerDAO.getByPrimaryKey(dp.getPractitionerID());
 
                             String recipient = patient.getID();
-                            String message = "Dear " + patient.toString() + ",\n\n" +
+                            String message = "Dear " + patient + ",\n\n" +
                                     "a drug prescription was just dispatched to you. Here are the details:\n\n" +
                                     "Drug: " + dp.getType().getDescription() + "\n" +
                                     "Prescription: " + dp.getDescription() + "\n\n" +
@@ -221,9 +221,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Email sending: ", e);
                     }
-                    break;
                 }
-                case "patientSearch": {
+                case "patientSearch" -> {
                     try {
                         String userInput = request.getParameter("term");
                         Province province = ((Chemist) user).getProvince();
@@ -256,9 +255,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     } catch (ServiceException e) {
                         throw new ServletException("Error in Photo path retrieval: ", e);
                     }
-                    break;
                 }
-                case "prescriptions": {
+                case "prescriptions" -> {
                     try {
                         String patientID = request.getParameter("patientID");
 
@@ -288,9 +286,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                     } catch (DAOException e) {
                         throw new ServletException("Error in DAO usage: ", e);
                     }
-                    break;
                 }
-                case "detailedInfo": {
+                case "detailedInfo" -> {
                     try {
                         Integer prescriptionID = Integer.valueOf(request.getParameter("item"));
 
@@ -344,8 +341,8 @@ public class ChemistPrescriptionServlet extends HttpServlet {
                         Logger.getLogger("C18").severe(json);
                         return;
                     }
-                    break;
                 }
+                default -> throw new IllegalStateException("Unexpected value: " + requestType);
             }
         }
     }
@@ -354,12 +351,12 @@ public class ChemistPrescriptionServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PatientSearchResult implements Serializable {
-        private Integer id;
-        private String text;
-        private String patientID;
-        private String fullName;
-        private String SSN;
-        private String photoPath;
+        private final Integer id;
+        private final String text;
+        private final String patientID;
+        private final String fullName;
+        private final String SSN;
+        private final String photoPath;
 
         /**
          * Instantiates a new Patient search result.
@@ -386,11 +383,11 @@ public class ChemistPrescriptionServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PrescriptionListElement implements Serializable {
-        private String pract;
-        private String drug;
-        private String date;
-        private HTMLAction action;
-        private Integer ID;
+        private final String pract;
+        private final String drug;
+        private final String date;
+        private final HTMLAction action;
+        private final Integer ID;
 
         /**
          * Instantiates a new Prescription list element.

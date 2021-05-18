@@ -14,12 +14,12 @@ import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
 import it.unitn.web.centodiciotto.utils.json.JSONResult;
 import it.unitn.web.centodiciotto.utils.json.JSONUtils;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -119,7 +119,7 @@ public class PatientListServlet extends HttpServlet {
 
         if (user instanceof GeneralPractitioner || user instanceof HealthService || user instanceof SpecializedDoctor) {
             switch (requestType) {
-                case "patientList": {
+                case "patientList" -> {
                     Integer limit;
                     Integer offset;
                     Boolean isAscending;
@@ -185,7 +185,7 @@ public class PatientListServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "detailedInfo": {
+                case "detailedInfo" -> {
                     String patientID = request.getParameter("item");
 
                     if (patientID == null) {
@@ -305,7 +305,7 @@ public class PatientListServlet extends HttpServlet {
                     }
                     break;
                 }
-                case "patientSearch": {
+                case "patientSearch" -> {
                     try {
                         String userInput = request.getParameter("term");
 
@@ -353,11 +353,11 @@ public class PatientListServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PatientListElement implements Serializable {
-        private String name;
-        private String ssn;
-        private String avt;
-        private HTMLAction action;
-        private String ID;
+        private final String name;
+        private final String ssn;
+        private final String avt;
+        private final HTMLAction action;
+        private final String ID;
 
         /**
          * Instantiates a new Patient list element.
@@ -381,9 +381,9 @@ public class PatientListServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class PatientSearchResult implements Serializable {
-        private Integer id;
-        private String text;
-        private String patientID;
+        private final Integer id;
+        private final String text;
+        private final String patientID;
 
         /**
          * Instantiates a new Patient search result.

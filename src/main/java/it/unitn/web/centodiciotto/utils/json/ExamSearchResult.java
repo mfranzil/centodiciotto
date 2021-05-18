@@ -10,8 +10,8 @@ import java.io.Serializable;
  * This class is used by mutiple classes and is thus defined outside them to avoid duplicate code.
  */
 public class ExamSearchResult implements Serializable {
-    private Integer id;
-    private String text;
+    private final Integer id;
+    private final String text;
 
     /**
      * Instantiates a new Exam search result.

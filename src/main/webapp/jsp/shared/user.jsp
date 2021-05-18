@@ -23,7 +23,7 @@
         <jsp:setProperty name="birth" property="date" value="${sessionScope.user.birthDate.time}"/>
 
         <c:set var="practitioner" value="${patientDAO.practitioner}"/>
-        <img class="avatar" src="${pageContext.request.contextPath}/${patientDAO.photoPath}" alt="">
+        <img class="avatar" src="${patientDAO.photoPath}" alt="">
     </c:if>
     <p class="lead mt-4 mx-4">
         To get started, use the navigation bar on top.

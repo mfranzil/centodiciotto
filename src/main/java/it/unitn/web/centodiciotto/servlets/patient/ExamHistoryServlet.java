@@ -13,12 +13,12 @@ import it.unitn.web.centodiciotto.persistence.entities.User;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
 import it.unitn.web.centodiciotto.utils.json.HTMLAction;
 import it.unitn.web.centodiciotto.utils.json.HTMLElement;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serializable;
@@ -83,7 +83,7 @@ public class ExamHistoryServlet extends HttpServlet {
         }
 
         switch (requestType) {
-            case "historyList": {
+            case "historyList" -> {
                 try {
                     if (user instanceof Patient) {
                         List<ExamHistoryElement> examHistoryElements = new ArrayList<>();
@@ -94,8 +94,8 @@ public class ExamHistoryServlet extends HttpServlet {
                             examHistoryElements.add(new ExamHistoryElement(
                                     exam.getType().getDescription(),
                                     CustomDTFormatter.formatDateTime(exam.getDate()),
-                                    exam.getResult()!=null,
-                                    new HTMLAction("See report", exam.getResult()!=null),
+                                    exam.getResult() != null,
+                                    new HTMLAction("See report", exam.getResult() != null),
                                     exam.getID()));
                         }
 
@@ -107,7 +107,7 @@ public class ExamHistoryServlet extends HttpServlet {
                 }
                 break;
             }
-            case "detailedInfo": {
+            case "detailedInfo" -> {
                 try {
                     if (user instanceof Patient) {
                         String examID = request.getParameter("item");
@@ -155,11 +155,11 @@ public class ExamHistoryServlet extends HttpServlet {
      * Static serializable class used by {@link Gson} and sent back in JSON form to the JSP.
      */
     private static class ExamHistoryElement implements Serializable {
-        private String exam;
-        private String date;
-        private Boolean reportstate;
-        private HTMLAction action;
-        private Integer ID;
+        private final String exam;
+        private final String date;
+        private final Boolean reportstate;
+        private final HTMLAction action;
+        private final Integer ID;
 
         /**
          * Instantiates a new Exam history element.

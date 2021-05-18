@@ -12,12 +12,12 @@ import it.unitn.web.centodiciotto.persistence.entities.Visit;
 import it.unitn.web.centodiciotto.services.EmailService;
 import it.unitn.web.centodiciotto.services.ServiceException;
 import it.unitn.web.centodiciotto.utils.CustomDTFormatter;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -74,10 +74,10 @@ public class VisitCalendarServlet extends HttpServlet {
         response.setContentType("application/json");
 
         if (user instanceof GeneralPractitioner) {
-            Integer visitID;
+            int visitID;
 
             try {
-                visitID = Integer.valueOf(request.getParameter("visitID"));
+                visitID = Integer.parseInt(request.getParameter("visitID"));
             } catch (NumberFormatException | NullPointerException e) {
                 response.setStatus(400);
                 String json = "{\"error\": \"Malformed input. Please insert a valid requestType.\"}";
@@ -103,10 +103,10 @@ public class VisitCalendarServlet extends HttpServlet {
                 Patient patient = patientDAO.getByPrimaryKey(visit.getPatientID());
 
                 String recipient = patient.getID();
-                String message = "Dear " + patient.toString() + ",\n\n" +
+                String message = "Dear " + patient + ",\n\n" +
                         "your visit with your General Practitioner was just completed.\n\n" +
                         "Here are the visit details:\n\n" +
-                        "Practitioner: " + user.toString() + "\n" +
+                        "Practitioner: " + user + "\n" +
                         "Date: " + CustomDTFormatter.formatDate(visit.getDate()) +
                         "\n\nYou will receieve an additional notification once" +
                         " your General Practitioner inserts a report." +
