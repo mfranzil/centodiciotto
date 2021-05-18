@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * ContextListener for this web application.
@@ -64,7 +65,9 @@ public class WebAppContextListener implements ServletContextListener {
             sc.setAttribute("resourceServer", resourceServer);
             sc.setAttribute("imageServer", resourceServer + "/img");
             sc.setAttribute("excelServer", resourceServer + "/xls");
-            sc.setAttribute("pdfServer", "/centodiciotto/pdf");
+            sc.setAttribute("pdfServer", resourceServer + "/pdf");
+
+            sc.setAttribute("tmpFolder", sc.getContextPath() + "/tmp");
 
             CloseableHttpClient client = HttpClientBuilder.create().build();
 
@@ -82,7 +85,10 @@ public class WebAppContextListener implements ServletContextListener {
                             "\"domain\": { \"id\": \"default\" } } } } }",
                     ContentType.APPLICATION_JSON);
 
-            HttpPost request = new HttpPost(data.getProperty("authentication_server"));
+            String URL = data.getProperty("authentication_server");
+            HttpPost request = new HttpPost(URL);
+            Logger.getLogger("C18").info("HTTP POST " + URL);
+
             request.setHeader("Content-Type", "application/json; charset=UTF-8");
 
             request.setHeader("User-Agent", "Java client");

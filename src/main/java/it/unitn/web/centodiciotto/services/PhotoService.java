@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * PhotoService service class, used to generate file paths for profile pictures.
@@ -177,7 +178,10 @@ public class PhotoService {
     public boolean photoExists(String URL) {
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
+
             HttpGet request = new HttpGet(URL);
+            Logger.getLogger("C18").info("HTTP GET " + URL);
+
             HttpResponse response = client.execute(request);
             int statusCode = response.getStatusLine().getStatusCode();
 

@@ -6,19 +6,20 @@ import it.unitn.web.centodiciotto.persistence.dao.exceptions.DAOFactoryException
 import it.unitn.web.centodiciotto.persistence.dao.factories.DAOFactory;
 import it.unitn.web.centodiciotto.persistence.entities.*;
 import jakarta.servlet.ServletContext;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * ExcelService service class, used to generate Health Service reports in XLS format.
@@ -184,24 +185,21 @@ public class ExcelService {
                 }
             }
 
-            String filePath = (String) sc.getAttribute("excelServer");
+            String inputFile = sc.getAttribute("excelServer") + "/report.xlsx";
 
             // Format: AA_20200101.xlsx
-            String fileName = healthService.getOperatingProvince().getID() + "_"
+            String outputFile = sc.getAttribute("tmpFolder") + File.separator +
+                    healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
 
-            // TODO Port to ApacheHTTP
-            URL inputURL = new URL(filePath + "/report.xlsx");
-            HttpURLConnection inputConn = (HttpURLConnection) inputURL.openConnection();
-            inputConn.setRequestMethod("GET");
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpGet request = new HttpGet(inputFile);
+            Logger.getLogger("C18").info("HTTP GET " + inputFile);
 
-            try (InputStream is = inputConn.getInputStream()) {
-                URL outputURL = new URL(filePath + "/" + fileName);
-                HttpURLConnection outputConn = (HttpURLConnection) outputURL.openConnection();
-                outputConn.setDoOutput(true);
-                outputConn.setRequestMethod("PUT");
-                outputConn.setRequestProperty("X-Auth-Token", xAuthToken);
-                try (OutputStream os = outputConn.getOutputStream()) {
+            CloseableHttpResponse response = httpClient.execute(request);
+
+            try (InputStream is = response.getEntity().getContent()) {
+                try (OutputStream os = new FileOutputStream(outputFile)) {
                     Context context = new Context();
                     context.putVar("report", report);
                     context.putVar("entries", entries);
@@ -209,7 +207,8 @@ public class ExcelService {
                 }
             }
 
-            return filePath + "/" + fileName;
+            Logger.getLogger("C18").info("Writing report to temporary folder: " + outputFile);
+            return outputFile;
         } catch (DAOException e) {
             throw new ServiceException("Failed to retrieve data from DAO for the report: ", e);
         } catch (IOException e) {

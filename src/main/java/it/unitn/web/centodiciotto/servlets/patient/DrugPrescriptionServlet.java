@@ -160,13 +160,15 @@ public class DrugPrescriptionServlet extends HttpServlet {
                         GeneralPractitioner practitioner = practitionerDAO.getByPrimaryKey(prescription.getPractitionerID());
                         Patient patient = patientDAO.getByPrimaryKey(prescription.getPatientID());
 
-                        String filePath = (String) getServletContext().getAttribute("pdfServer");
+                        String filePath = (String) getServletContext().getAttribute("tmpFolder");
 
                         String fileName = prescription.getDatePrescribed().getTime() + "-" + prescription.getID() + ".pdf";
 
                         if (new File(filePath + File.separator + fileName).exists()) {
-                            PDDocument.load(new File(filePath + File.separator + fileName)).save(response.getOutputStream());
-                            Logger.getLogger("C18").info("Supplying already-generated PDF prescription " + filePath + File.separator + fileName);
+                            PDDocument.load(new File(filePath + File.separator + fileName))
+                                    .save(response.getOutputStream());
+                            Logger.getLogger("C18").info("Supplying already-generated PDF prescription "
+                                    + filePath + File.separator + fileName);
                             return;
                         }
 
@@ -180,7 +182,8 @@ public class DrugPrescriptionServlet extends HttpServlet {
                         response.setContentType("application/pdf");
                         response.setHeader("Content-Disposition", "inline; filename='prescription.pdf'");
 
-                        Logger.getLogger("C18").info("Supplying new PDF prescription " + filePath + File.separator + fileName);
+                        Logger.getLogger("C18").info("Supplying new PDF prescription "
+                                + filePath + File.separator + fileName);
 
                         prescriptionDoc.save(filePath + File.separator + fileName);
                         prescriptionDoc.save(response.getOutputStream());
