@@ -16,6 +16,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -50,7 +51,6 @@ public class WebAppContextListener implements ServletContextListener {
             sc.setAttribute("daoFactory", daoFactory);
 
             // Load the resource server URL
-
             Properties data = new Properties();
             InputStream stream = WebAppContextListener.class
                     .getClassLoader().getResourceAsStream("resource-server.properties");
@@ -67,42 +67,19 @@ public class WebAppContextListener implements ServletContextListener {
             sc.setAttribute("excelServer", resourceServer + "/xls");
             sc.setAttribute("pdfServer", resourceServer + "/pdf");
 
-            sc.setAttribute("tmpFolder", sc.getContextPath() + "/tmp");
+            sc.setAttribute("tmpFolder", "/tmp");
+            File directory = new File(sc.getContextPath() + "/tmp");
+            boolean tempFolderCreated = directory.mkdirs();
 
-            CloseableHttpClient client = HttpClientBuilder.create().build();
-
-            StringEntity requestEntity = new StringEntity(
-                    "{ \"auth\": { " +
-                            "\"identity\": { " +
-                            "\"methods\": [\"password\"], " +
-                            "\"password\": { " +
-                            "\"user\": { " +
-                            "\"name\": \"" + data.getProperty("name") + "\", " +
-                            "\"domain\": { \"id\": \"default\" }, " +
-                            "\"password\": \"" + data.getProperty("password") + "\" } } }, " +
-                            "\"scope\": { \"project\": { " +
-                            "\"name\": \"" + data.getProperty("project") + "\", " +
-                            "\"domain\": { \"id\": \"default\" } } } } }",
-                    ContentType.APPLICATION_JSON);
-
-            String URL = data.getProperty("authentication_server");
-            HttpPost request = new HttpPost(URL);
-            Logger.getLogger("C18").info("HTTP POST " + URL);
-
-            request.setHeader("Content-Type", "application/json; charset=UTF-8");
-
-            request.setHeader("User-Agent", "Java client");
-            request.setEntity(requestEntity);
-
-            CloseableHttpResponse response = client.execute(request);
-
-            Header[] xauthtoken = response.getHeaders("X-Subject-Token");
-
-            if (xauthtoken == null || xauthtoken.length != 1) {
-                throw new RuntimeException("Error in retrieval of the token: " + Arrays.toString(xauthtoken));
+            if (!tempFolderCreated) {
+                throw new RuntimeException("Cannot access temporary folder; aborting");
             }
 
-            sc.setAttribute("xAuthToken", xauthtoken[0].getValue());
+            String xAuthToken = getXAuthToken(
+                    data.getProperty("authentication_server"), data.getProperty("name"),
+                    data.getProperty("password"), data.getProperty("project"));
+
+            sc.setAttribute("xAuthToken", xAuthToken);
         } catch (ServiceException e) {
             throw new RuntimeException("Error during WebApplication init: ", e);
         } catch (IOException e) {
@@ -122,5 +99,42 @@ public class WebAppContextListener implements ServletContextListener {
         } catch (DAOFactoryException e) {
             throw new RuntimeException("Error during WebApplication closure: ", e);
         }
+    }
+
+    private String getXAuthToken(String authenticationServer,
+                                 String name, String password, String project) throws IOException {
+        CloseableHttpClient client = HttpClientBuilder.create().build();
+
+        StringEntity requestEntity = new StringEntity(
+                "{ \"auth\": { " +
+                        "\"identity\": { " +
+                        "\"methods\": [\"password\"], " +
+                        "\"password\": { " +
+                        "\"user\": { " +
+                        "\"name\": \"" + name + "\", " +
+                        "\"domain\": { \"id\": \"default\" }, " +
+                        "\"password\": \"" + password + "\" } } }, " +
+                        "\"scope\": { \"project\": { " +
+                        "\"name\": \"" + project + "\", " +
+                        "\"domain\": { \"id\": \"default\" } } } } }",
+                ContentType.APPLICATION_JSON);
+
+        HttpPost request = new HttpPost(authenticationServer);
+        Logger.getLogger("C18").info("HTTP POST " + authenticationServer);
+
+        request.setHeader("Content-Type", "application/json; charset=UTF-8");
+
+        request.setHeader("User-Agent", "Java client");
+        request.setEntity(requestEntity);
+
+        CloseableHttpResponse response = client.execute(request);
+
+        Header[] xauthtoken = response.getHeaders("X-Subject-Token");
+
+        if (xauthtoken == null || xauthtoken.length != 1) {
+            throw new RuntimeException("Error in retrieval of the token: " + Arrays.toString(xauthtoken));
+        }
+
+        return xauthtoken[0].getValue();
     }
 }

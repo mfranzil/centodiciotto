@@ -56,14 +56,4 @@
             <description>No direct access</description>
         </auth-constraint>
     </security-constraint>
-    <security-constraint>
-        <display-name>PDF direct access block</display-name>
-        <web-resource-collection>
-            <web-resource-name>PDF</web-resource-name>
-            <url-pattern>/pdf/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <description>No direct access</description>
-        </auth-constraint>
-    </security-constraint>
 </web-app>

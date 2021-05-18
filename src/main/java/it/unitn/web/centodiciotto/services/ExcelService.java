@@ -188,7 +188,8 @@ public class ExcelService {
             String inputFile = sc.getAttribute("excelServer") + "/report.xlsx";
 
             // Format: AA_20200101.xlsx
-            String outputFile = sc.getAttribute("tmpFolder") + File.separator +
+            String outputFile = sc.getRealPath("/") + File.separator    // Context path from OS standpoint
+                    + sc.getAttribute("tmpFolder") + File.separator + // tmp/
                     healthService.getOperatingProvince().getID() + "_"
                     + new SimpleDateFormat("yyyyMMdd").format(date) + ".xlsx";
 
