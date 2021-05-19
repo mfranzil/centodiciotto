@@ -116,7 +116,7 @@ Version `2` and newer have been ported to Docker. Simply add the required resour
 
 ## Resource files
 
-Three resource files are required for this project. Please place them into `src/main/resources` and update them appropriately.
+Three resource files are required for this project. Please place them into `src/main/resources` and update them appropriately. Sample and required files are accessible in the `init` folder. 
 
 ### database.properties
 
