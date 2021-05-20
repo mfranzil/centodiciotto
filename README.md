@@ -4,7 +4,7 @@ Managing an Health Service has never been easier.
 
 Meet CentoDiciotto, a full-fledged platform that puts you in control of your health and your healthcare services.
 
-[Please read the PDF assignment for project information](docs/ProgettoWeb.pdf).
+[Please read the PDF assignment for project information](project-spec.pdf).
 
 ## Description
 
@@ -46,7 +46,11 @@ All notifications are delivered as emails to all roles.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-### Preparation
+### Preparation (`2.0.0`)
+
+Version `2` and newer have been ported to Docker. Simply add the required resource files, execute the Dockerfile and the image is ready to go.
+
+### Preparation (`1.0.0`)
 
   1. **Clone** this repo on your host using [Git](https://git-scm.com)
 
@@ -75,13 +79,13 @@ These instructions will get you a copy of the project up and running on your loc
   5. Copy the war file **CentoDiciotto.war** into the folder **CATALINA_HOME/webapps**
 
      ```console
-     cp CentoDiciotto.war CATALINA_HOME/webapps
+     cp CentoDiciotto.war $CATALINA_HOME/webapps
      ```
 
   6. Change current directory
   
      ```console
-     cd CATALINA_HOME/bin
+     cd $CATALINA_HOME/bin
      ```
 
   7. Start Tomcat server
@@ -91,8 +95,6 @@ These instructions will get you a copy of the project up and running on your loc
      ```
 
 ### Restore the database backup
-
-  > Please change **database.properties** before you start the database
 
   1. Open the PSQL Shell
 
@@ -114,11 +116,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Resource files
 
-Two resource files are required for this project. Please place them into `src/main/resources` and update them appropriately.
+Three resource files are required for this project. Please place them into `src/main/resources` and update them appropriately. Sample and required files are accessible in the `init` folder. 
 
 ### database.properties
 
-> A PostgresSQL database is required in this version. Please change the JDBC driver accordingly if you wish to use a different service.
+A PostgresSQL database is required in this version. Please change the JDBC driver accordingly if you wish to use a different service.
 
 ```text
 HostName=
@@ -129,7 +131,7 @@ Password=
 
 ### email.properties
 
-> Gmail users should take extra caution due to the "Insecure apps" settings that might interfere with the package. Please log in as the Gmail account and authorize the usage of non secure apps before trying to start up the server. Other email providers should work without extra modifcations.
+Gmail users should take extra caution due to the "Insecure apps" settings that might interfere with the package. Please log in as the Gmail account and authorize the usage of non secure apps before trying to start up the server. Other email providers should work without extra modifcations.
 
 ```text
 smtp-hostname=
@@ -138,27 +140,72 @@ smtp-username=
 smtp-password=
 ```
 
+### resource-server.properties
+
+This file defines connections to a RESTful web service (by default: OpenStack Swift) for retrieving content originally stored in the `/img, /xls, /pdf` folders. As of version `2.0.0` they have been delocalized, removed from the repository, and HTTP requests were added to the code along with an automated authentication token request. Please be wary that the image server must contain all the following file tree:
+
+```text
+.
+├── img
+│   ├── avatars
+|   |   └── (all the required images for the database. default: blank)
+│   ├── classes
+│   │   ├── chemist.png
+│   │   ├── general_practitioner.png
+│   │   ├── health_service.png
+│   │   ├── patient.png
+│   │   └── specialized_doctor.png
+│   ├── landing-page-bg.jpg
+│   ├── login_white.png
+│   ├── logo_blue.svg
+│   ├── logo_white.svg
+│   ├── logout_white.png
+│   ├── portfolio
+│   │   ├── 1.jpg
+│   │   ├── 2.jpg
+│   │   ├── 3.jpg
+│   │   ├── 4.jpg
+│   │   ├── 5.jpg
+│   │   └── 6.jpg
+│   └── prescription.png
+├── pdf
+│   └── codice_comportamento.pdf
+└── xls
+    └── report.xlsx
+```
+
+These are the fields for the file:
+
+```text
+resource_server=
+authentication_server=
+name=
+password=
+project=
+```
+
 ## Requirements
 
 The following is a list of requirements for the project.
 
 ### Environments
 
-* [Java](https://www.java.com) `version == 11`
-* [Maven](https://maven.apache.org/) `version == 3.6.0`
-* [Tomcat](https://tomcat.apache.org) `version == 9.0.27`
+* [Java](https://www.java.com) `version == 16`
+* [Maven](https://maven.apache.org/) `version == 3.8.1`
+* [Tomcat](https://tomcat.apache.org) `version == 10.0.6`
 
 ### Maven Dependencies
 
+* JakartaEE Web Platform `jakarta.platform:jakarta.jakartaee-api:9.0.0` (provided)
+* Jakarta JSTL API `org.glassfish.web:jakarta.servlet.jsp.jstl:2.0.0`
+* Jakarta Mail `com.sun.mail:jakarta.mail:2.0.1`
 * Apache Commons Text `org.apache.commons:commons-text:1.8`
-* JavaX Mail `com.sun.mail:javax.mail:1.6.2`
-* JSTL `jstl:jstl:1.2`
-* JavaEE Web Api `javax:javaee-web-api:7.0`
-* Apache PDFBox `org.apache.pdfbox:pdfbox:2.0.16`
+* Apache HTTPClient `org.apache.httpcomponents:httpclient:4.5.13`
+* Apache PDFBox  `org.apache.pdfbox:pdfbox:2.0.16`
 * Boxable `com.github.dhorions:boxable:1.5`
 * JXLS `org.jxls:jxls:2.7.0`
 * JXLS POI `org.jxls:jxls-poi:1.3.0`
-* Postgres JDBC Driver `org.postgresql:postgresql:42.2.8.jre7`
+* Postgres JDBC Driver `org.postgresql:postgresql:42.2.20`
 * GLXN QRCode Generator `net.glxn:qrgen:1.4`
 * Google Gson `com.google.code.gson:gson:2.8.5`
 * SLF4J `org.slf4j:slf4j-api:1.7.10`
@@ -174,4 +221,4 @@ The following is a list of requirements for the project.
 
 This project is licensed under the MIT License - see the [LICENCE](LICENCE) file for details
 
-`© CentoDiciotto 2020`
+`© CentoDiciotto 2021`
