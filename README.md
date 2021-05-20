@@ -44,83 +44,16 @@ All notifications are delivered as emails to all roles.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine for development and testing
+purposes. First, clone this repo on your host using [Git](https://git-scm.com).
 
-### Preparation (`2.0.0`)
+## Adding properties files
 
-Version `2` and newer have been ported to Docker. Simply add the required resource files, execute the Dockerfile and the image is ready to go.
-
-### Preparation (`1.0.0`)
-
-  1. **Clone** this repo on your host using [Git](https://git-scm.com)
-
-     ```console
-     git clone https://gitlab.com/mfranzil/centodiciotto.git
-     ```
-
-  2. **Change** current working **directory**
-
-     ```console
-     cd CentoDiciotto
-     ```
-
-  3. Create the war file
-
-     ```console
-     mvn clean install package
-     ```
-
-  4. Change current directory
-
-     ```console
-     cd target
-     ```
-
-  5. Copy the war file **CentoDiciotto.war** into the folder **CATALINA_HOME/webapps**
-
-     ```console
-     cp CentoDiciotto.war $CATALINA_HOME/webapps
-     ```
-
-  6. Change current directory
-  
-     ```console
-     cd $CATALINA_HOME/bin
-     ```
-
-  7. Start Tomcat server
-
-     ```console
-     startup.sh
-     ```
-
-### Restore the database backup
-
-  1. Open the PSQL Shell
-
-     ```console
-     psql
-     ```
-
-  2. Create the database
-
-     ```console
-     CREATE DATABASE centodiciotto;
-     ```
-
-  3. Copy the `dump.sql` file in the current folder and restore the database
-
-     ```console
-     psql centodiciotto < dump.sql
-     ```
-
-## Resource files
-
-Three resource files are required for this project. Please place them into `src/main/resources` and update them appropriately. Sample and required files are accessible in the `init` folder. 
+The following resource files are required for this project. Please place them into `src/main/resources`.
 
 ### database.properties
 
-A PostgresSQL database is required in this version. Please change the JDBC driver accordingly if you wish to use a different service.
+A PostgresSQL database is required. Please change the JDBC driver accordingly if you wish to use a different service.
 
 ```text
 HostName=
@@ -142,7 +75,24 @@ smtp-password=
 
 ### resource-server.properties
 
-This file defines connections to a RESTful web service (by default: OpenStack Swift) for retrieving content originally stored in the `/img, /xls, /pdf` folders. As of version `2.0.0` they have been delocalized, removed from the repository, and HTTP requests were added to the code along with an automated authentication token request. Please be wary that the image server must contain all the following file tree:
+This file defines connections to a RESTful web service (by default: OpenStack Swift) for retrieving content originally
+stored in the `/img, /xls, /pdf` folders.
+
+These are the fields for the file:
+
+```text
+resource_server=
+authentication_server=
+name=
+password=
+project=
+```
+
+## Adding resource files
+
+As of version `2.0.0` resource files have been delocalized, removed from the repository, and HTTP requests were added to
+the code along with an automated authentication token request. Please add to your resource server, set up in the
+previous paragraph, all the following file tree (available in the `rs` folder):
 
 ```text
 .
@@ -174,15 +124,41 @@ This file defines connections to a RESTful web service (by default: OpenStack Sw
     └── report.xlsx
 ```
 
-These are the fields for the file:
+## Building the project (`2.0.0`)
 
-```text
-resource_server=
-authentication_server=
-name=
-password=
-project=
+Version `2.0.0` and newer have been ported to Docker. Please follow these instructions in order to finalize the
+deployment.
+
+### Setting up the database
+
+The `sql` folder contains a Dockerfile and two files, `11_pre.sql` and `13_post.sql`. Two files are excluded from the
+repository for confidential purposes:
+
+- `10_init.sql`
+- `12_data.sql`
+
+The former MUST contain an initialization string for a Postgres role, such as:
+
 ```
+CREATE ROLE "sqldiciotto" WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'blabla';
+```
+
+The latter may be excluded, and it contains preliminary data to be added to tables.
+
+### Building Java/Tomcat files
+
+Finally, build the project using
+
+```console
+mvn clean install package
+```
+
+Make sure that the obtained `war` file is in the same folder as the Dockerfile for the web server.
+
+### Deploying containers
+
+Once the above steps are done, execute the two Dockerfiles. Once built, set them up in a proper Docker or Kubernetes
+environment with networking (e.g. with bridges, Ingress, etc..) and it's all set.
 
 ## Requirements
 
