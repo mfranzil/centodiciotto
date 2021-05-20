@@ -10,9 +10,10 @@ etc/
 .classpath
 .project
 
-/resource-server/
-
 /src/main/resources/
+/rs/img/avatars/
+/sql/12_data.sql
+/sql/10_init.sql
 
 # Compiled class file
 *.class
