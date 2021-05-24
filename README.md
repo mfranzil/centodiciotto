@@ -134,10 +134,10 @@ deployment.
 The `sql` folder contains a Dockerfile and two files, `11_pre.sql` and `13_post.sql`. Two files are excluded from the
 repository for confidential purposes:
 
-- `10_init.sql`
+- `10_init.sql` (not mandatory for Kubernetes deployments)
 - `12_data.sql`
 
-The former MUST contain an initialization string for a Postgres role, such as:
+The former shall contain an initialization string for a Postgres role, such as:
 
 ```
 CREATE ROLE "sqldiciotto" WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'blabla';

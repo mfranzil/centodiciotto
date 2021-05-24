@@ -25,6 +25,7 @@ public class JDBCDAOFactory implements DAOFactory {
     private static JDBCDAOFactory instance;
     private final transient Connection CON;
     private final transient HashMap<Class, DAO> DAO_CACHE;
+    private final int MAX_RETRIES = 10;
 
     /**
      * Private singleton constructor for this {@link DAOFactory}.
@@ -65,10 +66,23 @@ public class JDBCDAOFactory implements DAOFactory {
             throw new DAOFactoryException(cnfe.getMessage(), cnfe.getCause());
         }
 
-        try {
-            CON = DriverManager.getConnection(url, username, password);
-        } catch (SQLException sqle) {
-            throw new DAOFactoryException("Cannot create connection", sqle);
+        Connection tmpConn = null;
+        Exception thrownEx = null;
+
+        for (int i = 0; i < MAX_RETRIES && tmpConn == null; i++) {
+            try {
+                tmpConn = DriverManager.getConnection(url, username, password);
+            } catch (SQLException sqle) {
+                thrownEx = sqle;
+                System.out.println("Cannot create connection [" + sqle.getMessage() + "], " +
+                        "(retries left:" + (MAX_RETRIES - i) + ")...");
+            }
+        }
+
+        if (tmpConn != null) {
+            CON = tmpConn;
+        } else {
+            throw new DAOFactoryException("Cannot create connection. Out of tries.", thrownEx);
         }
 
         DAO_CACHE = new HashMap<>();
