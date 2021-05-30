@@ -25,7 +25,7 @@ public class JDBCDAOFactory implements DAOFactory {
     private static JDBCDAOFactory instance;
     private final transient Connection CON;
     private final transient HashMap<Class, DAO> DAO_CACHE;
-    private final int MAX_RETRIES = 10;
+    private final int MAX_RETRIES = 20;
 
     /**
      * Private singleton constructor for this {@link DAOFactory}.
