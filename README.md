@@ -131,19 +131,11 @@ deployment.
 
 ### Setting up the database
 
-The `sql` folder contains a Dockerfile and two files, `11_pre.sql` and `13_post.sql`. Two files are excluded from the
-repository for confidential purposes:
+The `sql` folder contains a Dockerfile and two files, `11_pre.sql` and `13_post.sql`. A file is excluded from the
+repository for confidential purposes,  `12_data.sql`. It contains the actual table data.
 
-- `10_init.sql` (not mandatory for Kubernetes deployments)
-- `12_data.sql`
-
-The former shall contain an initialization string for a Postgres role, such as:
-
-```
-CREATE ROLE "sqldiciotto" WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD 'blabla';
-```
-
-The latter may be excluded, and it contains preliminary data to be added to tables.
+Role creation is automatically handled by the Docker image itself once the POSTGRES_USER and POSTGRES_PASSWORD are
+provided. The name of the database is set the same as the POSTGRES_USER.
 
 ### Building Java/Tomcat files
 
